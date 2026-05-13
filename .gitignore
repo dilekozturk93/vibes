@@ -1,5 +1,6 @@
 target/
-.DS_Store/
+.DS_Store
+**/.DS_Store
 .project/
 .settings/
 .classpath
@@ -8,3 +9,8 @@ target/
 **/**/nbproject/
 .idea/
 *.iml
+.claude/
+.vscode/
+**/bin/
+vibes-example/*.dot
+vibes-example/*.png

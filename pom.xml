@@ -102,7 +102,7 @@
         <!--<module>vibes-transformation</module>-->
         <module>vibes-dsl</module>
         <module>vibes-toolbox</module>
-        <!--<module>vibes-example</module>-->
+        <module>vibes-example</module>
     </modules>
 
     <reporting>

@@ -1,7 +1,7 @@
 
 package be.unamur.info.vibes.example;
 
-import be.unamur.transitionsystem.dsl.FeaturedTransitionSystemDefinition;
+import be.vibes.dsl.ts.FeaturedTransitionSystemDefinition;
 
 /**
  * Model of the Soda Vending Machine product line
