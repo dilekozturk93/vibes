@@ -101,6 +101,7 @@
         <module>vibes-selection</module>
         <!--<module>vibes-transformation</module>-->
         <module>vibes-dsl</module>
+        <module>vibes-testgeneration</module>
         <module>vibes-toolbox</module>
         <module>vibes-example</module>
     </modules>
