@@ -1,0 +1,92 @@
+digraph G {
+rankdir=LR;
+state0[ label = "INIT", style=filled, color=green ];
+state1 [ label = "v125" ];
+state1 -> state2 [ label=" enter email 
+autoresponse 
+date interval/au " ];
+state3 [ label = "v103" ];
+state3 -> state4 [ label=" encrypt mail 
+with receiver's 
+public key/en " ];
+state2 [ label = "v124" ];
+state2 -> state1 [ label=" enter 
+autoresponse 
+email body/au " ];
+state5 [ label = "v131" ];
+state5 -> state0 [ label=" send email/e " ];
+state6 [ label = "v142" ];
+state6 -> state0 [ label=" send email/e " ];
+state0 -> state7 [ label=" compose new 
+email/e " ];
+state0 -> state8 [ label=" open mailbox/e " ];
+state0 -> state2 [ label=" enter email 
+autoresponse 
+date interval/au " ];
+state0 -> state1 [ label=" enter 
+autoresponse 
+email body/au " ];
+state0 -> state9 [ label=" create an 
+addressbook 
+for a receiver/ad " ];
+state8 [ label = "v74" ];
+state8 -> state10 [ label=" select email/e " ];
+state11 [ label = "v96" ];
+state11 -> state0 [ label=" enter alias 
+email addresses 
+of receiver/ad " ];
+state7 [ label = "v40" ];
+state7 -> state12 [ label=" enter 
+receiver's 
+email address/e " ];
+state7 -> state13 [ label=" enter
+ email 
+subject/e " ];
+state7 -> state14 [ label=" enter email 
+body/e " ];
+state13 [ label = "v43" ];
+state13 -> state14 [ label=" enter email 
+body/e " ];
+state13 -> state12 [ label=" enter 
+receiver's 
+email address/e " ];
+state13 -> state13 [ label=" enter
+ email 
+subject/e " ];
+state12 [ label = "v42" ];
+state12 -> state13 [ label=" enter
+ email 
+subject/e " ];
+state12 -> state0 [ label=" send email/e " ];
+state12 -> state12 [ label=" enter 
+receiver's 
+email address/e " ];
+state12 -> state5 [ label=" get alias 
+email addresses 
+of receiver/ad " ];
+state12 -> state3 [ label=" get receiver's  
+public key/en " ];
+state12 -> state15 [ label=" sign mail/s " ];
+state4 [ label = "v53" ];
+state4 -> state0 [ label=" send email/e " ];
+state14 [ label = "v45" ];
+state14 -> state12 [ label=" enter 
+receiver's 
+email address/e " ];
+state14 -> state14 [ label=" enter email 
+body/e " ];
+state14 -> state13 [ label=" enter
+ email 
+subject/e " ];
+state10 [ label = "v77" ];
+state10 -> state6 [ label=" enter forward 
+receiver's 
+email address/f " ];
+state9 [ label = "v117" ];
+state9 -> state11 [ label=" enter the  
+receiver's 
+email address/ad " ];
+state15 [ label = "v139" ];
+state15 -> state0 [ label=" send email/e " ];
+}
+

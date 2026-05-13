@@ -39,6 +39,8 @@ import static org.junit.Assert.assertTrue;
 public class MxeToFtsConverterTest {
 
     private static final String SVM_MXE_RESOURCE = "cases/SodaVendingMachine/SVM_ESGFx.mxe";
+    private static final String EMAIL_MXE_RESOURCE = "cases/eMail/eM_ESGFx.mxe";
+    private static final String ELEVATOR_MXE_RESOURCE = "cases/Elevator/El_ESGFx.mxe";
 
     @Test
     public void parseEventLabel_negatedFeature_producesNegation() {
@@ -109,9 +111,39 @@ public class MxeToFtsConverterTest {
         assertEquals(countTransitions(fts), countTransitions(reloaded));
     }
 
+    @Test
+    public void convert_emailSpl_producesExpectedCardinalities() throws Exception {
+        FeaturedTransitionSystem fts = convertResource(EMAIL_MXE_RESOURCE);
+        // eMail ESG has 17 event vertices + "[" + "]" = 19 total; 2 vertices are
+        // terminal-only and merged into INIT, leaving 15 event states + INIT = 16.
+        // 35 ESG edges minus 4 edges feeding "]" = 31 FTS transitions.
+        assertEquals("eMail FTS state count", 16, countStates(fts));
+        assertEquals("eMail FTS transition count", 31, countTransitions(fts));
+        assertEquals("INIT", fts.getInitialState().getName());
+        assertThat("eMail INIT outgoing transition count",
+                countOutgoing(fts, fts.getInitialState()), greaterThan(0));
+    }
+
+    @Test
+    public void convert_elevatorSpl_producesExpectedCardinalities() throws Exception {
+        FeaturedTransitionSystem fts = convertResource(ELEVATOR_MXE_RESOURCE);
+        // Elevator ESG has 19 event vertices + "[" + "]" = 21 total; 0 vertices are
+        // terminal-only (all events have a non-"]" successor), leaving 19 event
+        // states + INIT = 20. 80 ESG edges minus 10 edges feeding "]" = 70.
+        assertEquals("Elevator FTS state count", 20, countStates(fts));
+        assertEquals("Elevator FTS transition count", 70, countTransitions(fts));
+        assertEquals("INIT", fts.getInitialState().getName());
+        assertThat("Elevator INIT outgoing transition count",
+                countOutgoing(fts, fts.getInitialState()), greaterThan(0));
+    }
+
     private FeaturedTransitionSystem convertSvm() throws Exception {
-        URL url = getClass().getClassLoader().getResource(SVM_MXE_RESOURCE);
-        assertThat("SVM MXE resource must be on the classpath", url, is(notNullValue()));
+        return convertResource(SVM_MXE_RESOURCE);
+    }
+
+    private FeaturedTransitionSystem convertResource(String resourcePath) throws Exception {
+        URL url = getClass().getClassLoader().getResource(resourcePath);
+        assertThat("Resource must be on the classpath: " + resourcePath, url, is(notNullValue()));
         File mxeFile = new File(url.toURI());
         return new MxeToFtsConverter().convert(mxeFile);
     }

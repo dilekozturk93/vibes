@@ -1,0 +1,126 @@
+digraph G {
+rankdir=LR;
+state0[ label = "INIT", style=filled, color=green ];
+state1 [ label = "v160" ];
+state1 -> state2 [ label=" press door open/ManualDoorControl " ];
+state3 [ label = "v136" ];
+state3 -> state4 [ label=" press cabin lobby/ControlButtons " ];
+state3 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state3 -> state6 [ label=" press cabin roof/ControlButtons " ];
+state3 -> state7 [ label=" tap mobile
+key/MobileKey " ];
+state3 -> state8 [ label=" enter PIN/PinPad " ];
+state3 -> state9 [ label=" read card/CardReader " ];
+state9 [ label = "v158" ];
+state9 -> state6 [ label=" press cabin roof/ControlButtons " ];
+state9 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state9 -> state4 [ label=" press cabin lobby/ControlButtons " ];
+state9 -> state10 [ label=" press cabin 
+executive floor/ExecutiveFloor " ];
+state11 [ label = "v137" ];
+state11 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state11 -> state6 [ label=" press cabin roof/ControlButtons " ];
+state11 -> state7 [ label=" tap mobile
+key/MobileKey " ];
+state11 -> state8 [ label=" enter PIN/PinPad " ];
+state11 -> state9 [ label=" read card/CardReader " ];
+state2 [ label = "v159" ];
+state2 -> state1 [ label=" press door close/ManualDoorControl " ];
+state8 [ label = "v269" ];
+state8 -> state6 [ label=" press cabin roof/ControlButtons " ];
+state8 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state8 -> state4 [ label=" press cabin lobby/ControlButtons " ];
+state8 -> state10 [ label=" press cabin 
+executive floor/ExecutiveFloor " ];
+state12 [ label = "v134" ];
+state12 -> state13 [ label=" release door close/FirefighterService " ];
+state14 [ label = "v135" ];
+state14 -> state15 [ label=" release door open/FirefighterService " ];
+state7 [ label = "v157" ];
+state7 -> state6 [ label=" press cabin roof/ControlButtons " ];
+state7 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state7 -> state4 [ label=" press cabin lobby/ControlButtons " ];
+state7 -> state10 [ label=" press cabin 
+executive floor/ExecutiveFloor " ];
+state6 [ label = "v143" ];
+state6 -> state1 [ label=" press door close/ManualDoorControl " ];
+state6 -> state2 [ label=" press door open/ManualDoorControl " ];
+state6 -> state16 [ label=" press intercom/Intercom " ];
+state6 -> state12 [ label=" press&hold 
+door close/FirefighterService " ];
+state6 -> state14 [ label=" press&hold 
+door open/FirefighterService " ];
+state6 -> state17 [ label=" press alarm
+button/Alarm " ];
+state5 [ label = "v154" ];
+state5 -> state1 [ label=" press door close/ManualDoorControl " ];
+state5 -> state2 [ label=" press door open/ManualDoorControl " ];
+state5 -> state16 [ label=" press intercom/Intercom " ];
+state5 -> state14 [ label=" press&hold 
+door open/FirefighterService " ];
+state5 -> state12 [ label=" press&hold 
+door close/FirefighterService " ];
+state5 -> state17 [ label=" press alarm
+button/Alarm " ];
+state13 [ label = "v133" ];
+state13 -> state12 [ label=" press&hold 
+door close/FirefighterService " ];
+state10 [ label = "v144" ];
+state10 -> state1 [ label=" press door close/ManualDoorControl " ];
+state10 -> state16 [ label=" press intercom/Intercom " ];
+state10 -> state2 [ label=" press door open/ManualDoorControl " ];
+state10 -> state17 [ label=" press alarm
+button/Alarm " ];
+state4 [ label = "v141" ];
+state4 -> state1 [ label=" press door close/ManualDoorControl " ];
+state4 -> state2 [ label=" press door open/ManualDoorControl " ];
+state4 -> state16 [ label=" press intercom/Intercom " ];
+state4 -> state14 [ label=" press&hold 
+door open/FirefighterService " ];
+state4 -> state12 [ label=" press&hold 
+door close/FirefighterService " ];
+state4 -> state17 [ label=" press alarm
+button/Alarm " ];
+state17 [ label = "v152" ];
+state17 -> state14 [ label=" press&hold 
+door open/FirefighterService " ];
+state17 -> state12 [ label=" press&hold 
+door close/FirefighterService " ];
+state16 [ label = "v153" ];
+state16 -> state12 [ label=" press&hold 
+door close/FirefighterService " ];
+state16 -> state14 [ label=" press&hold 
+door open/FirefighterService " ];
+state0 -> state18 [ label=" press hall 
+RoofDown/ControlButtons " ];
+state0 -> state19 [ label=" press hall up/ControlButtons " ];
+state0 -> state3 [ label=" press hall down/ControlButtons " ];
+state0 -> state11 [ label=" press hall 
+LobbyUp/ControlButtons " ];
+state15 [ label = "v108" ];
+state15 -> state14 [ label=" press&hold 
+door open/FirefighterService " ];
+state18 [ label = "v138" ];
+state18 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state18 -> state4 [ label=" press cabin lobby/ControlButtons " ];
+state18 -> state7 [ label=" tap mobile
+key/MobileKey " ];
+state18 -> state8 [ label=" enter PIN/PinPad " ];
+state18 -> state9 [ label=" read card/CardReader " ];
+state19 [ label = "v139" ];
+state19 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state19 -> state6 [ label=" press cabin roof/ControlButtons " ];
+state19 -> state4 [ label=" press cabin lobby/ControlButtons " ];
+state19 -> state7 [ label=" tap mobile
+key/MobileKey " ];
+state19 -> state8 [ label=" enter PIN/PinPad " ];
+state19 -> state9 [ label=" read card/CardReader " ];
+}
+
