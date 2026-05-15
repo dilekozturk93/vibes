@@ -90,6 +90,25 @@ public final class EulerianBalancer {
                     "EulerianBalancer requires a strongly connected input; "
                             + "repair the FTS first (e.g. drop unreachable states or rewire sinks).");
         }
+        return balanceCore(fts);
+    }
+
+    /**
+     * Like {@link #balance} but skips the strong-connectivity precondition
+     * check. Intended for callers that know the graph is structured in such
+     * a way that balancing will RESTORE strong connectivity (e.g. pair
+     * graphs, which have a source-only INIT vertex whose missing incoming
+     * edges are exactly what balancing supplies).
+     *
+     * <p>The caller is responsible for verifying strong connectivity on the
+     * result if it matters downstream (Hierholzer requires it).
+     */
+    public static FeaturedTransitionSystem balanceWithoutPrecheck(FeaturedTransitionSystem fts) {
+        checkNotNull(fts, "FTS may not be null");
+        return balanceCore(fts);
+    }
+
+    private static FeaturedTransitionSystem balanceCore(FeaturedTransitionSystem fts) {
 
         Map<State, Integer> imbalance = computeImbalance(fts);
 
