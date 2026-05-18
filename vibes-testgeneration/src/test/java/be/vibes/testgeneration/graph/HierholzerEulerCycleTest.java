@@ -146,13 +146,13 @@ public class HierholzerEulerCycleTest {
 
         List<Transition> cycle = HierholzerEulerCycle.compute(balanced);
         assertCoversEveryTransition(balanced, cycle);
-        // SVM has 18 original transitions plus however many synthetic edges
-        // the balancer adds; the cycle length matches the total transition
-        // count of the balanced FTS.
+        // After bisimulation reduction SVM has 13 original transitions
+        // plus however many synthetic edges the balancer adds; the cycle
+        // length matches the total transition count of the balanced FTS.
         int totalTransitions = countIterator(balanced.transitions());
         assertEquals(totalTransitions, cycle.size());
         assertThat("Cycle should include at least every original SVM transition",
-                cycle.size(), greaterThan(17));
+                cycle.size(), greaterThan(12));
     }
 
     @Test

@@ -68,8 +68,12 @@ public class MxeToFtsConverterTest {
     @Test
     public void convert_svm_producesExpectedCardinalities() throws Exception {
         FeaturedTransitionSystem fts = convertSvm();
-        assertEquals("FTS state count", 11, countStates(fts));
-        assertEquals("FTS transition count", 18, countTransitions(fts));
+        // After bisimulation reduction the SVM FTS matches Devroey's
+        // hand-written canonical: 9 states, 13 transitions. (free/f and
+        // change/!f collapse to one state; serveSoda/s and serveTea/t
+        // collapse to another.)
+        assertEquals("FTS state count", 9, countStates(fts));
+        assertEquals("FTS transition count", 13, countTransitions(fts));
     }
 
     @Test
@@ -94,7 +98,7 @@ public class MxeToFtsConverterTest {
         FeaturedTransitionSystem fts = convertSvm();
         State init = fts.getInitialState();
         assertThat(init, is(notNullValue()));
-        assertEquals("INIT", init.getName());
+        assertEquals("state1", init.getName());
         // INIT must have outgoing transitions (the start of any test run).
         assertThat("INIT outgoing transition count",
                 countOutgoing(fts, init), greaterThan(0));
@@ -114,12 +118,13 @@ public class MxeToFtsConverterTest {
     @Test
     public void convert_emailSpl_producesExpectedCardinalities() throws Exception {
         FeaturedTransitionSystem fts = convertResource(EMAIL_MXE_RESOURCE);
-        // eMail ESG has 17 event vertices + "[" + "]" = 19 total; 2 vertices are
-        // terminal-only and merged into INIT, leaving 15 event states + INIT = 16.
-        // 35 ESG edges minus 4 edges feeding "]" = 31 FTS transitions.
-        assertEquals("eMail FTS state count", 16, countStates(fts));
-        assertEquals("eMail FTS transition count", 31, countTransitions(fts));
-        assertEquals("INIT", fts.getInitialState().getName());
+        // After bisimulation reduction: terminal vertices collapse into the
+        // initial state (state1), and equivalent event vertices share a
+        // single FTS state. SVM has 9, eMail 11, Elevator 14 states
+        // post-minimization.
+        assertEquals("eMail FTS state count", 11, countStates(fts));
+        assertEquals("eMail FTS transition count", 22, countTransitions(fts));
+        assertEquals("state1", fts.getInitialState().getName());
         assertThat("eMail INIT outgoing transition count",
                 countOutgoing(fts, fts.getInitialState()), greaterThan(0));
     }
@@ -127,12 +132,12 @@ public class MxeToFtsConverterTest {
     @Test
     public void convert_elevatorSpl_producesExpectedCardinalities() throws Exception {
         FeaturedTransitionSystem fts = convertResource(ELEVATOR_MXE_RESOURCE);
-        // Elevator ESG has 19 event vertices + "[" + "]" = 21 total; 0 vertices are
-        // terminal-only (all events have a non-"]" successor), leaving 19 event
-        // states + INIT = 20. 80 ESG edges minus 10 edges feeding "]" = 70.
-        assertEquals("Elevator FTS state count", 20, countStates(fts));
-        assertEquals("Elevator FTS transition count", 70, countTransitions(fts));
-        assertEquals("INIT", fts.getInitialState().getName());
+        // Elevator's raw ESG has 19 event vertices but heavy structural
+        // duplication (many press/release pairs with identical successor
+        // sets); bisimulation reduction collapses these aggressively.
+        assertEquals("Elevator FTS state count", 14, countStates(fts));
+        assertEquals("Elevator FTS transition count", 42, countTransitions(fts));
+        assertEquals("state1", fts.getInitialState().getName());
         assertThat("Elevator INIT outgoing transition count",
                 countOutgoing(fts, fts.getInitialState()), greaterThan(0));
     }

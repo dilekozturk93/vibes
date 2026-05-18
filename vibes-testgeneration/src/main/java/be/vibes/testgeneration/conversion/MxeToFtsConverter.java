@@ -15,9 +15,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.PrintStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -132,8 +136,26 @@ public class MxeToFtsConverter {
     }
 
     /**
-     * Builds the {@link FeaturedTransitionSystem} from the parsed ESG using
-     * the mapping rules documented in the class javadoc.
+     * Builds the {@link FeaturedTransitionSystem} from the parsed ESG.
+     *
+     * <p>Pipeline:
+     * <ol>
+     *   <li>Identify the {@code "["} start vertex, the {@code "]"} end
+     *       vertex, and "terminal" vertices (those whose every outgoing
+     *       edge targets {@code "]"}). Merge them all into a single
+     *       initial FTS state {@code state1}.</li>
+     *   <li>Run partition refinement on the remaining vertices to
+     *       collapse bisimulation-equivalent classes: two vertices with
+     *       identical outgoing multisets of {@code (action, fexpr,
+     *       target_class)} are merged. This is what reduces e.g. SVM's
+     *       {@code change/!f} and {@code free/f} into a single state,
+     *       matching Devroey's hand-written canonical FTS.</li>
+     *   <li>Assign sequential state names ({@code state1}, {@code state2},
+     *       …) by breadth-first traversal from the initial class.</li>
+     *   <li>Emit one FTS state per class and one FTS transition per
+     *       distinct {@code (action, fexpr, target_class)} outgoing
+     *       edge of each class representative.</li>
+     * </ol>
      */
     private FeaturedTransitionSystem buildFts(EsgGraph esg) {
         Map<String, EsgVertex> byId = esg.vertices;
@@ -144,20 +166,87 @@ public class MxeToFtsConverter {
             throw new IllegalArgumentException("ESG has no '[' (start) vertex");
         }
         if (endId == null) {
-            // Not fatal; a model may already be cyclic. But we currently rely on
-            // it for the canonical mapping; log and continue.
             LOG.warn("ESG has no ']' (end) vertex; cyclic-rewiring step will be a no-op");
         }
 
-        // Index outgoing edges by source vertex id, for efficient terminal detection.
+        // Index outgoing edges per source vertex (cycle-free table lookup).
         Map<String, List<EsgEdge>> outgoing = new HashMap<>();
         for (EsgEdge e : esg.edges) {
             outgoing.computeIfAbsent(e.source, k -> new ArrayList<>()).add(e);
         }
 
-        // A vertex is "terminal" iff it has at least one outgoing edge and ALL of
-        // them target the end vertex. Such vertices are merged with INIT.
-        Set<String> terminalIds = new HashSet<>();
+        Set<String> terminalIds = detectTerminalVertices(outgoing, startId, endId);
+        Set<String> initMembers = new HashSet<>();
+        initMembers.add(startId);
+        if (endId != null) {
+            initMembers.add(endId);
+        }
+        initMembers.addAll(terminalIds);
+        LOG.info("INIT-class members: start={}, end={}, terminals={}",
+                startId, endId, terminalIds);
+
+        // Vertices that are candidates for bisimulation merging.
+        List<String> nonInitIds = new ArrayList<>();
+        for (String vid : byId.keySet()) {
+            if (!initMembers.contains(vid)) {
+                nonInitIds.add(vid);
+            }
+        }
+
+        Map<String, Integer> classOf = partitionRefine(nonInitIds, outgoing, byId,
+                initMembers, endId);
+
+        // Pick one canonical representative per class (any member works since
+        // they are bisimulation-equivalent; we pick the first encountered).
+        Map<Integer, String> classRepresentative = new LinkedHashMap<>();
+        classRepresentative.put(INIT_CLASS, startId);
+        for (String vid : nonInitIds) {
+            classRepresentative.putIfAbsent(classOf.get(vid), vid);
+        }
+
+        // BFS from INIT to assign sequential state names state1, state2, ...
+        Map<Integer, String> classToStateName = assignSequentialStateNames(
+                classRepresentative, outgoing, classOf, initMembers, endId, byId);
+
+        // Build the FTS.
+        String initialStateName = classToStateName.get(INIT_CLASS);
+        FeaturedTransitionSystemFactory factory =
+                new FeaturedTransitionSystemFactory(initialStateName);
+        for (String stateName : classToStateName.values()) {
+            factory.addState(stateName);
+        }
+        int transitionCount = 0;
+        for (Map.Entry<Integer, String> entry : classRepresentative.entrySet()) {
+            int srcClass = entry.getKey();
+            String srcName = classToStateName.get(srcClass);
+            for (EsgEdge e : outgoing.getOrDefault(entry.getValue(), Collections.emptyList())) {
+                if (e.target.equals(endId)) {
+                    continue;
+                }
+                EsgVertex target = byId.get(e.target);
+                if (target == null) {
+                    continue;
+                }
+                int targetClass = initMembers.contains(e.target) ? INIT_CLASS : classOf.get(e.target);
+                String targetName = classToStateName.get(targetClass);
+                EventLabel label = parseEventLabel(target.rawName);
+                factory.addAction(label.action);
+                factory.addTransition(srcName, label.action, label.fexpr, targetName);
+                transitionCount++;
+            }
+        }
+        LOG.info("Built FTS: {} states (classes), {} transitions (post-dedup may be smaller)",
+                classToStateName.size(), transitionCount);
+
+        return factory.build();
+    }
+
+    private static final int INIT_CLASS = 0;
+
+    /** A vertex is "terminal" iff every outgoing edge of it targets {@code "]"}. */
+    private static Set<String> detectTerminalVertices(Map<String, List<EsgEdge>> outgoing,
+                                                      String startId, String endId) {
+        Set<String> terminals = new HashSet<>();
         for (Map.Entry<String, List<EsgEdge>> entry : outgoing.entrySet()) {
             String vid = entry.getKey();
             if (vid.equals(startId) || vid.equals(endId)) {
@@ -171,48 +260,133 @@ public class MxeToFtsConverter {
                 }
             }
             if (allToEnd) {
-                terminalIds.add(vid);
+                terminals.add(vid);
             }
         }
-        LOG.info("Identified {} terminal vertices (merged with {}): {}",
-                terminalIds.size(), INITIAL_STATE, terminalIds);
+        return terminals;
+    }
 
-        FeaturedTransitionSystemFactory factory = new FeaturedTransitionSystemFactory(INITIAL_STATE);
-
-        // Pre-declare states for every non-merged vertex so addTransition can
-        // resolve names deterministically. Vertex ids are used as state names
-        // (they are unique within an mxGraph document) prefixed for readability.
-        for (EsgVertex v : byId.values()) {
-            if (v.id.equals(startId) || v.id.equals(endId) || terminalIds.contains(v.id)) {
-                continue;
-            }
-            factory.addState(stateNameFor(v));
+    /**
+     * Partition-refinement bisimulation: starts with all non-INIT vertices in
+     * one class, refines by outgoing-edge signature
+     * {@code sorted [(action, fexpr, target_class)]} until stable.
+     */
+    private Map<String, Integer> partitionRefine(List<String> nonInitIds,
+                                                 Map<String, List<EsgEdge>> outgoing,
+                                                 Map<String, EsgVertex> byId,
+                                                 Set<String> initMembers,
+                                                 String endId) {
+        Map<String, Integer> classOf = new HashMap<>();
+        int firstNonInitClass = INIT_CLASS + 1;
+        for (String vid : nonInitIds) {
+            classOf.put(vid, firstNonInitClass);
         }
+        int nextClassId = firstNonInitClass + 1;
 
-        // Build transitions.
-        int added = 0;
-        int skipped = 0;
-        for (EsgEdge edge : esg.edges) {
-            if (edge.target.equals(endId)) {
-                // Already represented by terminal-vertex merging.
-                skipped++;
-                continue;
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+            Map<Integer, List<String>> byClass = new LinkedHashMap<>();
+            for (String vid : nonInitIds) {
+                byClass.computeIfAbsent(classOf.get(vid), k -> new ArrayList<>()).add(vid);
             }
-            EsgVertex target = byId.get(edge.target);
-            if (target == null) {
-                LOG.warn("Edge references unknown target vertex {}", edge.target);
-                continue;
+            Map<String, Integer> nextClassOf = new HashMap<>(classOf);
+            for (Map.Entry<Integer, List<String>> e : byClass.entrySet()) {
+                List<String> members = e.getValue();
+                if (members.size() <= 1) {
+                    continue;
+                }
+                Map<String, List<String>> bySignature = new LinkedHashMap<>();
+                for (String vid : members) {
+                    String sig = signatureOf(vid, outgoing, byId, classOf, initMembers, endId);
+                    bySignature.computeIfAbsent(sig, k -> new ArrayList<>()).add(vid);
+                }
+                if (bySignature.size() > 1) {
+                    boolean first = true;
+                    for (List<String> group : bySignature.values()) {
+                        if (first) {
+                            first = false;
+                            // First sub-group keeps the original class id.
+                        } else {
+                            int newId = nextClassId++;
+                            for (String vid : group) {
+                                nextClassOf.put(vid, newId);
+                            }
+                        }
+                    }
+                    changed = true;
+                }
             }
-            String sourceState = stateOf(edge.source, startId, terminalIds, byId);
-            String targetState = stateOf(edge.target, startId, terminalIds, byId);
-            EventLabel label = parseEventLabel(target.rawName);
-            factory.addAction(label.action);
-            factory.addTransition(sourceState, label.action, label.fexpr, targetState);
-            added++;
+            classOf = nextClassOf;
         }
-        LOG.info("Built FTS: {} transitions added, {} dropped (terminal merge)", added, skipped);
+        return classOf;
+    }
 
-        return factory.build();
+    /**
+     * Returns the canonical outgoing signature of a vertex: a sorted-multiset
+     * string of {@code action:fexpr:target_class} entries over its outgoing
+     * edges. Edges to {@code "]"} are excluded (they are handled by
+     * terminal-vertex merging).
+     */
+    private String signatureOf(String vid, Map<String, List<EsgEdge>> outgoing,
+                               Map<String, EsgVertex> byId, Map<String, Integer> classOf,
+                               Set<String> initMembers, String endId) {
+        List<String> parts = new ArrayList<>();
+        for (EsgEdge e : outgoing.getOrDefault(vid, Collections.emptyList())) {
+            if (e.target.equals(endId)) {
+                continue;
+            }
+            EsgVertex tgt = byId.get(e.target);
+            if (tgt == null) {
+                continue;
+            }
+            EventLabel label = parseEventLabel(tgt.rawName);
+            int tgtClass = initMembers.contains(e.target) ? INIT_CLASS : classOf.get(e.target);
+            parts.add(label.action + "/" + label.fexpr.applySimplification().toString()
+                    + ":" + tgtClass);
+        }
+        Collections.sort(parts);
+        return String.join("|", parts);
+    }
+
+    /**
+     * Performs a breadth-first traversal of the class-quotient graph starting
+     * from {@code INIT_CLASS} and assigns sequential state names
+     * {@code state1, state2, ...} in visitation order. The order is
+     * deterministic because outgoing edges are iterated in the order they
+     * appeared in the source MXE.
+     */
+    private Map<Integer, String> assignSequentialStateNames(
+            Map<Integer, String> classRepresentative,
+            Map<String, List<EsgEdge>> outgoing,
+            Map<String, Integer> classOf,
+            Set<String> initMembers,
+            String endId,
+            Map<String, EsgVertex> byId) {
+        Map<Integer, String> classToStateName = new LinkedHashMap<>();
+        classToStateName.put(INIT_CLASS, "state1");
+        int nextStateNumber = 2;
+        Deque<Integer> queue = new ArrayDeque<>();
+        queue.add(INIT_CLASS);
+        while (!queue.isEmpty()) {
+            int currentClass = queue.poll();
+            String rep = classRepresentative.get(currentClass);
+            for (EsgEdge e : outgoing.getOrDefault(rep, Collections.emptyList())) {
+                if (e.target.equals(endId)) {
+                    continue;
+                }
+                if (byId.get(e.target) == null) {
+                    continue;
+                }
+                int targetClass = initMembers.contains(e.target) ? INIT_CLASS : classOf.get(e.target);
+                if (!classToStateName.containsKey(targetClass)) {
+                    classToStateName.put(targetClass, "state" + nextStateNumber);
+                    nextStateNumber++;
+                    queue.add(targetClass);
+                }
+            }
+        }
+        return classToStateName;
     }
 
     private static String stateOf(String vertexId, String startId, Set<String> terminalIds,
