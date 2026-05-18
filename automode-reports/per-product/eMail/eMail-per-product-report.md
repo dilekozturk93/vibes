@@ -173,7 +173,7 @@ body`
 
 ## Product 3
 
-**Selected features:** selected = {e}
+**Selected features:** selected = {au, e}
 
 **Repaired FTS:** 3 states, 7 transitions
 
@@ -247,119 +247,43 @@ email address`
 
 ## Product 4
 
-**Selected features:** selected = {au, e, s}
+**Selected features:** selected = {au, e, f}
 
-**Repaired FTS:** 4 states, 9 transitions
+**Repaired FTS:** 6 states, 11 transitions
 
 ![Product 4 projected FTS](eMail-product4.png)
-
-### State coverage (1 test case, 3 transitions)
-
-```
-compose new 
-email -> enter 
-receiver's 
-email address -> sign mail
-```
-
-### All-transitions coverage (3 test cases, 9 transitions total)
-
-- **`eMail_p4_trans_seg0`**: `compose new 
-email -> enter email 
-body -> enter
- email 
-subject`
-- **`eMail_p4_trans_seg1`**: `send email`
-- **`eMail_p4_trans_seg2`**: `enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> sign mail -> send email`
-
-### All-transition-pairs coverage (4 test cases, 27 transitions total)
-
-- **`eMail_p4_pair_seg0`**: `compose new 
-email -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> sign mail -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> send email`
-- **`eMail_p4_pair_seg1`**: `enter 
-receiver's 
-email address -> sign mail`
-- **`eMail_p4_pair_seg2`**: `enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p4_pair_seg3`**: `enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter email 
-body`
-
-## Product 5
-
-**Selected features:** selected = {e, f, s}
-
-**Repaired FTS:** 6 states, 12 transitions
-
-![Product 5 projected FTS](eMail-product5.png)
 
 ### State coverage (1 test case, 6 transitions)
 
 ```
-compose new 
+open mailbox -> select email -> enter forward 
+receiver's 
+email address -> send email -> compose new 
 email -> enter 
 receiver's 
-email address -> sign mail -> send email -> open mailbox -> select email
+email address
 ```
 
-### All-transitions coverage (3 test cases, 12 transitions total)
+### All-transitions coverage (2 test cases, 11 transitions total)
 
-- **`eMail_p5_trans_seg0`**: `open mailbox -> select email -> enter forward 
+- **`eMail_p4_trans_seg0`**: `open mailbox -> select email -> enter forward 
 receiver's 
 email address -> send email -> compose new 
 email -> enter email 
 body -> enter
  email 
-subject`
-- **`eMail_p5_trans_seg1`**: `sign mail`
-- **`eMail_p5_trans_seg2`**: `enter
- email 
 subject -> enter 
 receiver's 
-email address -> enter 
+email address -> enter
+ email 
+subject`
+- **`eMail_p4_trans_seg1`**: `enter 
 receiver's 
 email address -> send email`
 
-### All-transition-pairs coverage (5 test cases, 33 transitions total)
+### All-transition-pairs coverage (5 test cases, 30 transitions total)
 
-- **`eMail_p5_pair_seg0`**: `compose new 
+- **`eMail_p4_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -367,7 +291,7 @@ subject -> enter
 subject -> enter email 
 body -> enter 
 receiver's 
-email address -> sign mail -> send email -> open mailbox -> select email -> enter forward 
+email address -> enter 
 receiver's 
 email address -> send email -> compose new 
 email -> enter email 
@@ -376,9 +300,10 @@ body -> enter
  email 
 subject -> enter 
 receiver's 
-email address -> enter 
+email address -> send email -> open mailbox -> select email -> enter forward 
 receiver's 
-email address -> send email -> compose new 
+email address -> send email -> open mailbox`
+- **`eMail_p4_pair_seg1`**: `send email -> compose new 
 email -> enter 
 receiver's 
 email address -> enter
@@ -386,14 +311,11 @@ email address -> enter
 subject -> enter
  email 
 subject`
-- **`eMail_p5_pair_seg1`**: `enter
+- **`eMail_p4_pair_seg2`**: `enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p5_pair_seg2`**: `enter 
-receiver's 
-email address -> sign mail`
-- **`eMail_p5_pair_seg3`**: `enter 
+- **`eMail_p4_pair_seg3`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -401,18 +323,18 @@ email address -> enter
  email 
 subject -> enter 
 receiver's 
-email address -> send email -> open mailbox`
-- **`eMail_p5_pair_seg4`**: `open mailbox`
+email address`
+- **`eMail_p4_pair_seg4`**: `open mailbox`
 
-## Product 6
+## Product 5
 
-**Selected features:** selected = {ad, e, en, s}
+**Selected features:** selected = {ad, au, e, s}
 
-**Repaired FTS:** 7 states, 15 transitions
+**Repaired FTS:** 6 states, 13 transitions
 
-![Product 6 projected FTS](eMail-product6.png)
+![Product 5 projected FTS](eMail-product5.png)
 
-### State coverage (1 test case, 7 transitions)
+### State coverage (1 test case, 6 transitions)
 
 ```
 create an 
@@ -424,15 +346,12 @@ email addresses
 of receiver -> compose new 
 email -> enter 
 receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key
+email address -> sign mail
 ```
 
-### All-transitions coverage (5 test cases, 15 transitions total)
+### All-transitions coverage (4 test cases, 13 transitions total)
 
-- **`eMail_p6_trans_seg0`**: `create an 
+- **`eMail_p5_trans_seg0`**: `create an 
 addressbook 
 for a receiver -> enter the  
 receiver's 
@@ -440,13 +359,9 @@ email address -> enter alias
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p6_trans_seg1`**: `send email`
-- **`eMail_p6_trans_seg2`**: `get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key`
-- **`eMail_p6_trans_seg3`**: `sign mail`
-- **`eMail_p6_trans_seg4`**: `enter
+- **`eMail_p5_trans_seg1`**: `send email`
+- **`eMail_p5_trans_seg2`**: `sign mail`
+- **`eMail_p5_trans_seg3`**: `enter
  email 
 subject -> enter email 
 body -> enter
@@ -459,7 +374,130 @@ email address -> get alias
 email addresses 
 of receiver -> send email`
 
-### All-transition-pairs coverage (10 test cases, 46 transitions total)
+### All-transition-pairs coverage (8 test cases, 40 transitions total)
+
+- **`eMail_p5_pair_seg0`**: `compose new 
+email -> enter
+ email 
+subject -> enter
+ email 
+subject -> enter email 
+body -> enter 
+receiver's 
+email address -> sign mail -> send email -> create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p5_pair_seg1`**: `create an 
+addressbook 
+for a receiver`
+- **`eMail_p5_pair_seg2`**: `enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email -> compose new 
+email -> enter email 
+body -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p5_pair_seg3`**: `enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p5_pair_seg4`**: `enter
+ email 
+subject -> enter email 
+body`
+- **`eMail_p5_pair_seg5`**: `enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p5_pair_seg6`**: `enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver`
+- **`eMail_p5_pair_seg7`**: `enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> send email -> create an 
+addressbook 
+for a receiver`
+
+## Product 6
+
+**Selected features:** selected = {ad, au, e, f, s}
+
+**Repaired FTS:** 8 states, 16 transitions
+
+![Product 6 projected FTS](eMail-product6.png)
+
+### State coverage (1 test case, 9 transitions)
+
+```
+open mailbox -> select email -> enter forward 
+receiver's 
+email address -> send email -> create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email -> enter 
+receiver's 
+email address
+```
+
+### All-transitions coverage (4 test cases, 16 transitions total)
+
+- **`eMail_p6_trans_seg0`**: `open mailbox -> select email -> enter forward 
+receiver's 
+email address -> send email -> create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p6_trans_seg1`**: `sign mail`
+- **`eMail_p6_trans_seg2`**: `get alias 
+email addresses 
+of receiver`
+- **`eMail_p6_trans_seg3`**: `enter
+ email 
+subject -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email`
+
+### All-transition-pairs coverage (11 test cases, 49 transitions total)
 
 - **`eMail_p6_pair_seg0`**: `compose new 
 email -> enter
@@ -480,6 +518,10 @@ addressbook
 for a receiver`
 - **`eMail_p6_pair_seg1`**: `enter 
 receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email -> open mailbox -> select email -> enter forward 
+receiver's 
 email address -> send email -> compose new 
 email -> enter email 
 body -> enter email 
@@ -487,45 +529,160 @@ body -> enter
  email 
 subject -> enter 
 receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email -> compose new 
-email -> enter 
-receiver's 
 email address -> enter 
 receiver's 
-email address -> sign mail`
-- **`eMail_p6_pair_seg2`**: `enter 
+email address -> send email -> compose new 
+email -> enter 
 receiver's 
-email address -> get alias 
-email addresses 
-of receiver`
-- **`eMail_p6_pair_seg3`**: `enter alias 
+email address -> send email -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p6_pair_seg2`**: `send email -> open mailbox`
+- **`eMail_p6_pair_seg3`**: `open mailbox`
+- **`eMail_p6_pair_seg4`**: `create an 
+addressbook 
+for a receiver`
+- **`eMail_p6_pair_seg5`**: `enter alias 
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p6_pair_seg4`**: `enter
+- **`eMail_p6_pair_seg6`**: `enter
  email 
 subject -> enter
  email 
 subject`
-- **`eMail_p6_pair_seg5`**: `enter 
-receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key -> send email`
-- **`eMail_p6_pair_seg6`**: `enter 
-receiver's 
-email address -> get receiver's  
-public key`
 - **`eMail_p6_pair_seg7`**: `enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p6_pair_seg8`**: `enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter 
 receiver's 
 email address -> enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p6_pair_seg8`**: `enter 
+- **`eMail_p6_pair_seg9`**: `enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver`
+- **`eMail_p6_pair_seg10`**: `enter alias 
+email addresses 
+of receiver -> open mailbox`
+
+## Product 7
+
+**Selected features:** selected = {ad, e, s}
+
+**Repaired FTS:** 6 states, 13 transitions
+
+![Product 7 projected FTS](eMail-product7.png)
+
+### State coverage (1 test case, 6 transitions)
+
+```
+create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email -> enter 
+receiver's 
+email address -> sign mail
+```
+
+### All-transitions coverage (4 test cases, 13 transitions total)
+
+- **`eMail_p7_trans_seg0`**: `create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p7_trans_seg1`**: `send email`
+- **`eMail_p7_trans_seg2`**: `sign mail`
+- **`eMail_p7_trans_seg3`**: `enter
+ email 
+subject -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email`
+
+### All-transition-pairs coverage (8 test cases, 40 transitions total)
+
+- **`eMail_p7_pair_seg0`**: `compose new 
+email -> enter
+ email 
+subject -> enter
+ email 
+subject -> enter email 
+body -> enter 
+receiver's 
+email address -> sign mail -> send email -> create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p7_pair_seg1`**: `create an 
+addressbook 
+for a receiver`
+- **`eMail_p7_pair_seg2`**: `enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email -> compose new 
+email -> enter email 
+body -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p7_pair_seg3`**: `enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p7_pair_seg4`**: `enter
+ email 
+subject -> enter email 
+body`
+- **`eMail_p7_pair_seg5`**: `enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p7_pair_seg6`**: `enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver`
+- **`eMail_p7_pair_seg7`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -536,17 +693,14 @@ receiver's
 email address -> send email -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p6_pair_seg9`**: `create an 
-addressbook 
-for a receiver`
 
-## Product 7
+## Product 8
 
-**Selected features:** selected = {e, en, s}
+**Selected features:** selected = {au, e, en, s}
 
 **Repaired FTS:** 5 states, 11 transitions
 
-![Product 7 projected FTS](eMail-product7.png)
+![Product 8 projected FTS](eMail-product8.png)
 
 ### State coverage (1 test case, 4 transitions)
 
@@ -562,17 +716,17 @@ public key
 
 ### All-transitions coverage (4 test cases, 11 transitions total)
 
-- **`eMail_p7_trans_seg0`**: `compose new 
+- **`eMail_p8_trans_seg0`**: `compose new 
 email -> enter email 
 body -> enter
  email 
 subject`
-- **`eMail_p7_trans_seg1`**: `send email`
-- **`eMail_p7_trans_seg2`**: `get receiver's  
+- **`eMail_p8_trans_seg1`**: `send email`
+- **`eMail_p8_trans_seg2`**: `get receiver's  
 public key -> encrypt mail 
 with receiver's 
 public key`
-- **`eMail_p7_trans_seg3`**: `enter
+- **`eMail_p8_trans_seg3`**: `enter
  email 
 subject -> enter 
 receiver's 
@@ -582,7 +736,7 @@ email address -> sign mail -> send email`
 
 ### All-transition-pairs coverage (6 test cases, 33 transitions total)
 
-- **`eMail_p7_pair_seg0`**: `compose new 
+- **`eMail_p8_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -606,17 +760,17 @@ email address -> get receiver's
 public key -> encrypt mail 
 with receiver's 
 public key -> send email`
-- **`eMail_p7_pair_seg1`**: `enter 
+- **`eMail_p8_pair_seg1`**: `enter 
 receiver's 
 email address -> send email`
-- **`eMail_p7_pair_seg2`**: `enter 
+- **`eMail_p8_pair_seg2`**: `enter 
 receiver's 
 email address -> sign mail`
-- **`eMail_p7_pair_seg3`**: `enter 
+- **`eMail_p8_pair_seg3`**: `enter 
 receiver's 
 email address -> get receiver's  
 public key`
-- **`eMail_p7_pair_seg4`**: `enter 
+- **`eMail_p8_pair_seg4`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -625,7 +779,7 @@ email address -> enter
 subject -> enter
  email 
 subject`
-- **`eMail_p7_pair_seg5`**: `enter
+- **`eMail_p8_pair_seg5`**: `enter
  email 
 subject -> enter 
 receiver's 
@@ -634,13 +788,13 @@ email address -> enter
 subject -> enter email 
 body`
 
-## Product 8
+## Product 9
 
 **Selected features:** selected = {ad, e, f, s}
 
 **Repaired FTS:** 8 states, 16 transitions
 
-![Product 8 projected FTS](eMail-product8.png)
+![Product 9 projected FTS](eMail-product9.png)
 
 ### State coverage (1 test case, 10 transitions)
 
@@ -659,7 +813,7 @@ email address
 
 ### All-transitions coverage (4 test cases, 16 transitions total)
 
-- **`eMail_p8_trans_seg0`**: `open mailbox -> select email -> enter forward 
+- **`eMail_p9_trans_seg0`**: `open mailbox -> select email -> enter forward 
 receiver's 
 email address -> send email -> create an 
 addressbook 
@@ -669,11 +823,11 @@ email address -> enter alias
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p8_trans_seg1`**: `sign mail`
-- **`eMail_p8_trans_seg2`**: `get alias 
+- **`eMail_p9_trans_seg1`**: `sign mail`
+- **`eMail_p9_trans_seg2`**: `get alias 
 email addresses 
 of receiver`
-- **`eMail_p8_trans_seg3`**: `enter
+- **`eMail_p9_trans_seg3`**: `enter
  email 
 subject -> enter email 
 body -> enter
@@ -686,7 +840,7 @@ email address -> send email`
 
 ### All-transition-pairs coverage (11 test cases, 49 transitions total)
 
-- **`eMail_p8_pair_seg0`**: `compose new 
+- **`eMail_p9_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -703,7 +857,7 @@ email addresses
 of receiver -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p8_pair_seg1`**: `enter 
+- **`eMail_p9_pair_seg1`**: `enter 
 receiver's 
 email address -> get alias 
 email addresses 
@@ -724,24 +878,24 @@ receiver's
 email address -> send email -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p8_pair_seg2`**: `send email -> open mailbox`
-- **`eMail_p8_pair_seg3`**: `open mailbox`
-- **`eMail_p8_pair_seg4`**: `create an 
+- **`eMail_p9_pair_seg2`**: `send email -> open mailbox`
+- **`eMail_p9_pair_seg3`**: `open mailbox`
+- **`eMail_p9_pair_seg4`**: `create an 
 addressbook 
 for a receiver`
-- **`eMail_p8_pair_seg5`**: `enter alias 
+- **`eMail_p9_pair_seg5`**: `enter alias 
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p8_pair_seg6`**: `enter
+- **`eMail_p9_pair_seg6`**: `enter
  email 
 subject -> enter
  email 
 subject`
-- **`eMail_p8_pair_seg7`**: `enter 
+- **`eMail_p9_pair_seg7`**: `enter 
 receiver's 
 email address -> sign mail`
-- **`eMail_p8_pair_seg8`**: `enter 
+- **`eMail_p9_pair_seg8`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -753,22 +907,104 @@ email address -> enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p8_pair_seg9`**: `enter 
+- **`eMail_p9_pair_seg9`**: `enter 
 receiver's 
 email address -> get alias 
 email addresses 
 of receiver`
-- **`eMail_p8_pair_seg10`**: `enter alias 
+- **`eMail_p9_pair_seg10`**: `enter alias 
 email addresses 
 of receiver -> open mailbox`
 
-## Product 9
+## Product 10
 
-**Selected features:** selected = {au, e, en, s}
+**Selected features:** selected = {e, f, s}
 
-**Repaired FTS:** 5 states, 11 transitions
+**Repaired FTS:** 6 states, 12 transitions
 
-![Product 9 projected FTS](eMail-product9.png)
+![Product 10 projected FTS](eMail-product10.png)
+
+### State coverage (1 test case, 6 transitions)
+
+```
+compose new 
+email -> enter 
+receiver's 
+email address -> sign mail -> send email -> open mailbox -> select email
+```
+
+### All-transitions coverage (3 test cases, 12 transitions total)
+
+- **`eMail_p10_trans_seg0`**: `open mailbox -> select email -> enter forward 
+receiver's 
+email address -> send email -> compose new 
+email -> enter email 
+body -> enter
+ email 
+subject`
+- **`eMail_p10_trans_seg1`**: `sign mail`
+- **`eMail_p10_trans_seg2`**: `enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email`
+
+### All-transition-pairs coverage (5 test cases, 33 transitions total)
+
+- **`eMail_p10_pair_seg0`**: `compose new 
+email -> enter
+ email 
+subject -> enter
+ email 
+subject -> enter email 
+body -> enter 
+receiver's 
+email address -> sign mail -> send email -> open mailbox -> select email -> enter forward 
+receiver's 
+email address -> send email -> compose new 
+email -> enter email 
+body -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p10_pair_seg1`**: `enter
+ email 
+subject -> enter email 
+body`
+- **`eMail_p10_pair_seg2`**: `enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p10_pair_seg3`**: `enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> send email -> open mailbox`
+- **`eMail_p10_pair_seg4`**: `open mailbox`
+
+## Product 11
+
+**Selected features:** selected = {e, en}
+
+**Repaired FTS:** 5 states, 10 transitions
+
+![Product 11 projected FTS](eMail-product11.png)
 
 ### State coverage (1 test case, 4 transitions)
 
@@ -782,210 +1018,26 @@ with receiver's
 public key
 ```
 
-### All-transitions coverage (4 test cases, 11 transitions total)
+### All-transitions coverage (3 test cases, 10 transitions total)
 
-- **`eMail_p9_trans_seg0`**: `compose new 
+- **`eMail_p11_trans_seg0`**: `compose new 
 email -> enter email 
 body -> enter
  email 
 subject`
-- **`eMail_p9_trans_seg1`**: `send email`
-- **`eMail_p9_trans_seg2`**: `get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key`
-- **`eMail_p9_trans_seg3`**: `enter
+- **`eMail_p11_trans_seg1`**: `send email`
+- **`eMail_p11_trans_seg2`**: `enter
  email 
 subject -> enter 
 receiver's 
 email address -> enter 
-receiver's 
-email address -> sign mail -> send email`
-
-### All-transition-pairs coverage (6 test cases, 33 transitions total)
-
-- **`eMail_p9_pair_seg0`**: `compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> sign mail -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter 
 receiver's 
 email address -> get receiver's  
 public key -> encrypt mail 
 with receiver's 
 public key -> send email`
-- **`eMail_p9_pair_seg1`**: `enter 
-receiver's 
-email address -> send email`
-- **`eMail_p9_pair_seg2`**: `enter 
-receiver's 
-email address -> sign mail`
-- **`eMail_p9_pair_seg3`**: `enter 
-receiver's 
-email address -> get receiver's  
-public key`
-- **`eMail_p9_pair_seg4`**: `enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p9_pair_seg5`**: `enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter email 
-body`
 
-## Product 10
-
-**Selected features:** selected = {au, e}
-
-**Repaired FTS:** 3 states, 7 transitions
-
-![Product 10 projected FTS](eMail-product10.png)
-
-### State coverage (1 test case, 2 transitions)
-
-```
-compose new 
-email -> enter 
-receiver's 
-email address
-```
-
-### All-transitions coverage (2 test cases, 7 transitions total)
-
-- **`eMail_p10_trans_seg0`**: `compose new 
-email -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter
- email 
-subject`
-- **`eMail_p10_trans_seg1`**: `enter 
-receiver's 
-email address -> send email`
-
-### All-transition-pairs coverage (4 test cases, 23 transitions total)
-
-- **`eMail_p10_pair_seg0`**: `compose new 
-email -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> send email`
-- **`eMail_p10_pair_seg1`**: `compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p10_pair_seg2`**: `enter
- email 
-subject -> enter email 
-body`
-- **`eMail_p10_pair_seg3`**: `enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter 
-receiver's 
-email address`
-
-## Product 11
-
-**Selected features:** selected = {ad, au, e, en, s}
-
-**Repaired FTS:** 7 states, 15 transitions
-
-![Product 11 projected FTS](eMail-product11.png)
-
-### State coverage (1 test case, 7 transitions)
-
-```
-create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email -> enter 
-receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key
-```
-
-### All-transitions coverage (5 test cases, 15 transitions total)
-
-- **`eMail_p11_trans_seg0`**: `create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p11_trans_seg1`**: `send email`
-- **`eMail_p11_trans_seg2`**: `get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key`
-- **`eMail_p11_trans_seg3`**: `sign mail`
-- **`eMail_p11_trans_seg4`**: `enter
- email 
-subject -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email`
-
-### All-transition-pairs coverage (10 test cases, 46 transitions total)
+### All-transition-pairs coverage (4 test cases, 28 transitions total)
 
 - **`eMail_p11_pair_seg0`**: `compose new 
 email -> enter
@@ -995,16 +1047,7 @@ subject -> enter
 subject -> enter email 
 body -> enter 
 receiver's 
-email address -> sign mail -> send email -> create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p11_pair_seg1`**: `enter 
+email address -> enter 
 receiver's 
 email address -> send email -> compose new 
 email -> enter email 
@@ -1012,267 +1055,43 @@ body -> enter email
 body -> enter
  email 
 subject -> enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email -> compose new 
-email -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> sign mail`
-- **`eMail_p11_pair_seg2`**: `enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver`
-- **`eMail_p11_pair_seg3`**: `enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p11_pair_seg4`**: `enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p11_pair_seg5`**: `enter 
 receiver's 
 email address -> get receiver's  
 public key -> encrypt mail 
 with receiver's 
-public key -> send email`
-- **`eMail_p11_pair_seg6`**: `enter 
+public key -> send email -> compose new 
+email -> enter 
+receiver's 
+email address -> send email`
+- **`eMail_p11_pair_seg1`**: `enter 
 receiver's 
 email address -> get receiver's  
 public key`
-- **`eMail_p11_pair_seg7`**: `enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter email 
-body`
-- **`eMail_p11_pair_seg8`**: `enter 
+- **`eMail_p11_pair_seg2`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
 email address -> enter
  email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p11_pair_seg3`**: `enter
+ email 
 subject -> enter 
 receiver's 
-email address -> send email -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p11_pair_seg9`**: `create an 
-addressbook 
-for a receiver`
+email address -> enter
+ email 
+subject -> enter email 
+body`
 
 ## Product 12
-
-**Selected features:** selected = {ad, e, s}
-
-**Repaired FTS:** 6 states, 13 transitions
-
-![Product 12 projected FTS](eMail-product12.png)
-
-### State coverage (1 test case, 6 transitions)
-
-```
-create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email -> enter 
-receiver's 
-email address -> sign mail
-```
-
-### All-transitions coverage (4 test cases, 13 transitions total)
-
-- **`eMail_p12_trans_seg0`**: `create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p12_trans_seg1`**: `send email`
-- **`eMail_p12_trans_seg2`**: `sign mail`
-- **`eMail_p12_trans_seg3`**: `enter
- email 
-subject -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email`
-
-### All-transition-pairs coverage (8 test cases, 40 transitions total)
-
-- **`eMail_p12_pair_seg0`**: `compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> sign mail -> send email -> create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p12_pair_seg1`**: `create an 
-addressbook 
-for a receiver`
-- **`eMail_p12_pair_seg2`**: `enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p12_pair_seg3`**: `enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p12_pair_seg4`**: `enter
- email 
-subject -> enter email 
-body`
-- **`eMail_p12_pair_seg5`**: `enter 
-receiver's 
-email address -> sign mail`
-- **`eMail_p12_pair_seg6`**: `enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver`
-- **`eMail_p12_pair_seg7`**: `enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> send email -> create an 
-addressbook 
-for a receiver`
-
-## Product 13
-
-**Selected features:** selected = {au, e, f}
-
-**Repaired FTS:** 6 states, 11 transitions
-
-![Product 13 projected FTS](eMail-product13.png)
-
-### State coverage (1 test case, 6 transitions)
-
-```
-open mailbox -> select email -> enter forward 
-receiver's 
-email address -> send email -> compose new 
-email -> enter 
-receiver's 
-email address
-```
-
-### All-transitions coverage (2 test cases, 11 transitions total)
-
-- **`eMail_p13_trans_seg0`**: `open mailbox -> select email -> enter forward 
-receiver's 
-email address -> send email -> compose new 
-email -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter
- email 
-subject`
-- **`eMail_p13_trans_seg1`**: `enter 
-receiver's 
-email address -> send email`
-
-### All-transition-pairs coverage (5 test cases, 30 transitions total)
-
-- **`eMail_p13_pair_seg0`**: `compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> send email -> open mailbox -> select email -> enter forward 
-receiver's 
-email address -> send email -> open mailbox`
-- **`eMail_p13_pair_seg1`**: `send email -> compose new 
-email -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p13_pair_seg2`**: `enter
- email 
-subject -> enter email 
-body`
-- **`eMail_p13_pair_seg3`**: `enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter 
-receiver's 
-email address`
-- **`eMail_p13_pair_seg4`**: `open mailbox`
-
-## Product 14
 
 **Selected features:** selected = {ad, au, e}
 
 **Repaired FTS:** 6 states, 12 transitions
 
-![Product 14 projected FTS](eMail-product14.png)
+![Product 12 projected FTS](eMail-product12.png)
 
 ### State coverage (1 test case, 6 transitions)
 
@@ -1293,7 +1112,7 @@ of receiver
 
 ### All-transitions coverage (3 test cases, 12 transitions total)
 
-- **`eMail_p14_trans_seg0`**: `create an 
+- **`eMail_p12_trans_seg0`**: `create an 
 addressbook 
 for a receiver -> enter the  
 receiver's 
@@ -1304,8 +1123,8 @@ email -> enter email
 body -> enter
  email 
 subject`
-- **`eMail_p14_trans_seg1`**: `send email`
-- **`eMail_p14_trans_seg2`**: `enter
+- **`eMail_p12_trans_seg1`**: `send email`
+- **`eMail_p12_trans_seg2`**: `enter
  email 
 subject -> enter 
 receiver's 
@@ -1316,6 +1135,213 @@ email addresses
 of receiver -> send email`
 
 ### All-transition-pairs coverage (7 test cases, 36 transitions total)
+
+- **`eMail_p12_pair_seg0`**: `compose new 
+email -> enter
+ email 
+subject -> enter
+ email 
+subject -> enter email 
+body -> enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email -> create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p12_pair_seg1`**: `send email -> compose new 
+email -> enter email 
+body -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p12_pair_seg2`**: `enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p12_pair_seg3`**: `enter
+ email 
+subject -> enter email 
+body`
+- **`eMail_p12_pair_seg4`**: `enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver`
+- **`eMail_p12_pair_seg5`**: `enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> send email -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p12_pair_seg6`**: `create an 
+addressbook 
+for a receiver`
+
+## Product 13
+
+**Selected features:** selected = {au, e, en}
+
+**Repaired FTS:** 5 states, 10 transitions
+
+![Product 13 projected FTS](eMail-product13.png)
+
+### State coverage (1 test case, 4 transitions)
+
+```
+compose new 
+email -> enter 
+receiver's 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key
+```
+
+### All-transitions coverage (3 test cases, 10 transitions total)
+
+- **`eMail_p13_trans_seg0`**: `compose new 
+email -> enter email 
+body -> enter
+ email 
+subject`
+- **`eMail_p13_trans_seg1`**: `send email`
+- **`eMail_p13_trans_seg2`**: `enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key -> send email`
+
+### All-transition-pairs coverage (4 test cases, 28 transitions total)
+
+- **`eMail_p13_pair_seg0`**: `compose new 
+email -> enter
+ email 
+subject -> enter
+ email 
+subject -> enter email 
+body -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter email 
+body -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key -> send email -> compose new 
+email -> enter 
+receiver's 
+email address -> send email`
+- **`eMail_p13_pair_seg1`**: `enter 
+receiver's 
+email address -> get receiver's  
+public key`
+- **`eMail_p13_pair_seg2`**: `enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p13_pair_seg3`**: `enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter email 
+body`
+
+## Product 14
+
+**Selected features:** selected = {ad, e, en}
+
+**Repaired FTS:** 7 states, 14 transitions
+
+![Product 14 projected FTS](eMail-product14.png)
+
+### State coverage (1 test case, 7 transitions)
+
+```
+create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email -> enter 
+receiver's 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key
+```
+
+### All-transitions coverage (4 test cases, 14 transitions total)
+
+- **`eMail_p14_trans_seg0`**: `create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p14_trans_seg1`**: `send email`
+- **`eMail_p14_trans_seg2`**: `get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key`
+- **`eMail_p14_trans_seg3`**: `enter
+ email 
+subject -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email`
+
+### All-transition-pairs coverage (8 test cases, 41 transitions total)
 
 - **`eMail_p14_pair_seg0`**: `compose new 
 email -> enter
@@ -1336,16 +1362,24 @@ email addresses
 of receiver -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p14_pair_seg1`**: `send email -> compose new 
+- **`eMail_p14_pair_seg1`**: `create an 
+addressbook 
+for a receiver`
+- **`eMail_p14_pair_seg2`**: `enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
 email -> enter email 
 body -> enter email 
 body -> enter
  email 
 subject -> enter 
 receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key -> send email -> compose new 
 email -> enter 
 receiver's 
 email address -> enter
@@ -1353,20 +1387,24 @@ email address -> enter
 subject -> enter
  email 
 subject`
-- **`eMail_p14_pair_seg2`**: `enter alias 
+- **`eMail_p14_pair_seg3`**: `enter alias 
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p14_pair_seg3`**: `enter
+- **`eMail_p14_pair_seg4`**: `enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p14_pair_seg4`**: `enter 
+- **`eMail_p14_pair_seg5`**: `enter 
 receiver's 
 email address -> get alias 
 email addresses 
 of receiver`
-- **`eMail_p14_pair_seg5`**: `enter 
+- **`eMail_p14_pair_seg6`**: `enter 
+receiver's 
+email address -> get receiver's  
+public key`
+- **`eMail_p14_pair_seg7`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -1375,9 +1413,6 @@ email address -> enter
 subject -> enter 
 receiver's 
 email address -> send email -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p14_pair_seg6`**: `create an 
 addressbook 
 for a receiver`
 
@@ -1467,217 +1502,11 @@ email address -> send email -> open mailbox`
 
 ## Product 16
 
-**Selected features:** selected = {e, en}
+**Selected features:** selected = {ad, au, e, f}
 
-**Repaired FTS:** 5 states, 10 transitions
+**Repaired FTS:** 8 states, 15 transitions
 
 ![Product 16 projected FTS](eMail-product16.png)
-
-### State coverage (1 test case, 4 transitions)
-
-```
-compose new 
-email -> enter 
-receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key
-```
-
-### All-transitions coverage (3 test cases, 10 transitions total)
-
-- **`eMail_p16_trans_seg0`**: `compose new 
-email -> enter email 
-body -> enter
- email 
-subject`
-- **`eMail_p16_trans_seg1`**: `send email`
-- **`eMail_p16_trans_seg2`**: `enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key -> send email`
-
-### All-transition-pairs coverage (4 test cases, 28 transitions total)
-
-- **`eMail_p16_pair_seg0`**: `compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key -> send email -> compose new 
-email -> enter 
-receiver's 
-email address -> send email`
-- **`eMail_p16_pair_seg1`**: `enter 
-receiver's 
-email address -> get receiver's  
-public key`
-- **`eMail_p16_pair_seg2`**: `enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p16_pair_seg3`**: `enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter email 
-body`
-
-## Product 17
-
-**Selected features:** selected = {ad, au, e, s}
-
-**Repaired FTS:** 6 states, 13 transitions
-
-![Product 17 projected FTS](eMail-product17.png)
-
-### State coverage (1 test case, 6 transitions)
-
-```
-create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email -> enter 
-receiver's 
-email address -> sign mail
-```
-
-### All-transitions coverage (4 test cases, 13 transitions total)
-
-- **`eMail_p17_trans_seg0`**: `create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p17_trans_seg1`**: `send email`
-- **`eMail_p17_trans_seg2`**: `sign mail`
-- **`eMail_p17_trans_seg3`**: `enter
- email 
-subject -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email`
-
-### All-transition-pairs coverage (8 test cases, 40 transitions total)
-
-- **`eMail_p17_pair_seg0`**: `compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> sign mail -> send email -> create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p17_pair_seg1`**: `create an 
-addressbook 
-for a receiver`
-- **`eMail_p17_pair_seg2`**: `enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p17_pair_seg3`**: `enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p17_pair_seg4`**: `enter
- email 
-subject -> enter email 
-body`
-- **`eMail_p17_pair_seg5`**: `enter 
-receiver's 
-email address -> sign mail`
-- **`eMail_p17_pair_seg6`**: `enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver`
-- **`eMail_p17_pair_seg7`**: `enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> send email -> create an 
-addressbook 
-for a receiver`
-
-## Product 18
-
-**Selected features:** selected = {ad, au, e, f, s}
-
-**Repaired FTS:** 8 states, 16 transitions
-
-![Product 18 projected FTS](eMail-product18.png)
 
 ### State coverage (1 test case, 9 transitions)
 
@@ -1696,9 +1525,9 @@ receiver's
 email address
 ```
 
-### All-transitions coverage (4 test cases, 16 transitions total)
+### All-transitions coverage (3 test cases, 15 transitions total)
 
-- **`eMail_p18_trans_seg0`**: `open mailbox -> select email -> enter forward 
+- **`eMail_p16_trans_seg0`**: `open mailbox -> select email -> enter forward 
 receiver's 
 email address -> send email -> create an 
 addressbook 
@@ -1708,11 +1537,7 @@ email address -> enter alias
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p18_trans_seg1`**: `sign mail`
-- **`eMail_p18_trans_seg2`**: `get alias 
-email addresses 
-of receiver`
-- **`eMail_p18_trans_seg3`**: `enter
+- **`eMail_p16_trans_seg1`**: `enter
  email 
 subject -> enter email 
 body -> enter
@@ -1721,11 +1546,14 @@ subject -> enter
 receiver's 
 email address -> enter 
 receiver's 
-email address -> send email`
+email address -> get alias 
+email addresses 
+of receiver`
+- **`eMail_p16_trans_seg2`**: `send email`
 
-### All-transition-pairs coverage (11 test cases, 49 transitions total)
+### All-transition-pairs coverage (10 test cases, 45 transitions total)
 
-- **`eMail_p18_pair_seg0`**: `compose new 
+- **`eMail_p16_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -1733,7 +1561,9 @@ subject -> enter
 subject -> enter email 
 body -> enter 
 receiver's 
-email address -> sign mail -> send email -> create an 
+email address -> get alias 
+email addresses 
+of receiver -> send email -> create an 
 addressbook 
 for a receiver -> enter the  
 receiver's 
@@ -1742,11 +1572,10 @@ email addresses
 of receiver -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p18_pair_seg1`**: `enter 
+- **`eMail_p16_pair_seg1`**: `open mailbox -> select email -> enter forward 
 receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email -> open mailbox -> select email -> enter forward 
+email address -> send email -> open mailbox`
+- **`eMail_p16_pair_seg2`**: `enter 
 receiver's 
 email address -> send email -> compose new 
 email -> enter email 
@@ -1757,30 +1586,16 @@ subject -> enter
 receiver's 
 email address -> enter 
 receiver's 
-email address -> send email -> compose new 
-email -> enter 
-receiver's 
-email address -> send email -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p18_pair_seg2`**: `send email -> open mailbox`
-- **`eMail_p18_pair_seg3`**: `open mailbox`
-- **`eMail_p18_pair_seg4`**: `create an 
-addressbook 
-for a receiver`
-- **`eMail_p18_pair_seg5`**: `enter alias 
+email address -> get alias 
+email addresses 
+of receiver`
+- **`eMail_p16_pair_seg3`**: `enter alias 
 email addresses 
 of receiver -> compose new 
-email`
-- **`eMail_p18_pair_seg6`**: `enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p18_pair_seg7`**: `enter 
+email -> enter 
 receiver's 
-email address -> sign mail`
-- **`eMail_p18_pair_seg8`**: `enter 
+email address -> send email -> open mailbox`
+- **`eMail_p16_pair_seg4`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -1792,22 +1607,30 @@ email address -> enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p18_pair_seg9`**: `enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver`
-- **`eMail_p18_pair_seg10`**: `enter alias 
+- **`eMail_p16_pair_seg5`**: `enter alias 
 email addresses 
 of receiver -> open mailbox`
+- **`eMail_p16_pair_seg6`**: `send email -> compose new 
+email`
+- **`eMail_p16_pair_seg7`**: `enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p16_pair_seg8`**: `send email -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p16_pair_seg9`**: `create an 
+addressbook 
+for a receiver`
 
-## Product 19
+## Product 17
 
 **Selected features:** selected = {ad, au, e, en}
 
 **Repaired FTS:** 7 states, 14 transitions
 
-![Product 19 projected FTS](eMail-product19.png)
+![Product 17 projected FTS](eMail-product17.png)
 
 ### State coverage (1 test case, 7 transitions)
 
@@ -1829,7 +1652,7 @@ public key
 
 ### All-transitions coverage (4 test cases, 14 transitions total)
 
-- **`eMail_p19_trans_seg0`**: `create an 
+- **`eMail_p17_trans_seg0`**: `create an 
 addressbook 
 for a receiver -> enter the  
 receiver's 
@@ -1837,12 +1660,12 @@ email address -> enter alias
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p19_trans_seg1`**: `send email`
-- **`eMail_p19_trans_seg2`**: `get receiver's  
+- **`eMail_p17_trans_seg1`**: `send email`
+- **`eMail_p17_trans_seg2`**: `get receiver's  
 public key -> encrypt mail 
 with receiver's 
 public key`
-- **`eMail_p19_trans_seg3`**: `enter
+- **`eMail_p17_trans_seg3`**: `enter
  email 
 subject -> enter email 
 body -> enter
@@ -1857,7 +1680,7 @@ of receiver -> send email`
 
 ### All-transition-pairs coverage (8 test cases, 41 transitions total)
 
-- **`eMail_p19_pair_seg0`**: `compose new 
+- **`eMail_p17_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -1876,10 +1699,10 @@ email addresses
 of receiver -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p19_pair_seg1`**: `create an 
+- **`eMail_p17_pair_seg1`**: `create an 
 addressbook 
 for a receiver`
-- **`eMail_p19_pair_seg2`**: `enter 
+- **`eMail_p17_pair_seg2`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -1901,24 +1724,24 @@ email address -> enter
 subject -> enter
  email 
 subject`
-- **`eMail_p19_pair_seg3`**: `enter alias 
+- **`eMail_p17_pair_seg3`**: `enter alias 
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p19_pair_seg4`**: `enter
+- **`eMail_p17_pair_seg4`**: `enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p19_pair_seg5`**: `enter 
+- **`eMail_p17_pair_seg5`**: `enter 
 receiver's 
 email address -> get alias 
 email addresses 
 of receiver`
-- **`eMail_p19_pair_seg6`**: `enter 
+- **`eMail_p17_pair_seg6`**: `enter 
 receiver's 
 email address -> get receiver's  
 public key`
-- **`eMail_p19_pair_seg7`**: `enter 
+- **`eMail_p17_pair_seg7`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -1930,13 +1753,13 @@ email address -> send email -> create an
 addressbook 
 for a receiver`
 
-## Product 20
+## Product 18
 
 **Selected features:** selected = {ad, e, f}
 
 **Repaired FTS:** 8 states, 15 transitions
 
-![Product 20 projected FTS](eMail-product20.png)
+![Product 18 projected FTS](eMail-product18.png)
 
 ### State coverage (1 test case, 10 transitions)
 
@@ -1957,7 +1780,7 @@ email address
 
 ### All-transitions coverage (3 test cases, 15 transitions total)
 
-- **`eMail_p20_trans_seg0`**: `open mailbox -> select email -> enter forward 
+- **`eMail_p18_trans_seg0`**: `open mailbox -> select email -> enter forward 
 receiver's 
 email address -> send email -> create an 
 addressbook 
@@ -1967,7 +1790,7 @@ email address -> enter alias
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p20_trans_seg1`**: `enter
+- **`eMail_p18_trans_seg1`**: `enter
  email 
 subject -> enter email 
 body -> enter
@@ -1979,11 +1802,11 @@ receiver's
 email address -> get alias 
 email addresses 
 of receiver`
-- **`eMail_p20_trans_seg2`**: `send email`
+- **`eMail_p18_trans_seg2`**: `send email`
 
 ### All-transition-pairs coverage (10 test cases, 45 transitions total)
 
-- **`eMail_p20_pair_seg0`**: `compose new 
+- **`eMail_p18_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -2002,10 +1825,10 @@ email addresses
 of receiver -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p20_pair_seg1`**: `open mailbox -> select email -> enter forward 
+- **`eMail_p18_pair_seg1`**: `open mailbox -> select email -> enter forward 
 receiver's 
 email address -> send email -> open mailbox`
-- **`eMail_p20_pair_seg2`**: `enter 
+- **`eMail_p18_pair_seg2`**: `enter 
 receiver's 
 email address -> send email -> compose new 
 email -> enter email 
@@ -2019,13 +1842,13 @@ receiver's
 email address -> get alias 
 email addresses 
 of receiver`
-- **`eMail_p20_pair_seg3`**: `enter alias 
+- **`eMail_p18_pair_seg3`**: `enter alias 
 email addresses 
 of receiver -> compose new 
 email -> enter 
 receiver's 
 email address -> send email -> open mailbox`
-- **`eMail_p20_pair_seg4`**: `enter 
+- **`eMail_p18_pair_seg4`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -2037,17 +1860,230 @@ email address -> enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p20_pair_seg5`**: `enter alias 
+- **`eMail_p18_pair_seg5`**: `enter alias 
 email addresses 
 of receiver -> open mailbox`
-- **`eMail_p20_pair_seg6`**: `send email -> compose new 
+- **`eMail_p18_pair_seg6`**: `send email -> compose new 
 email`
-- **`eMail_p20_pair_seg7`**: `enter
+- **`eMail_p18_pair_seg7`**: `enter
  email 
 subject -> enter
  email 
 subject`
-- **`eMail_p20_pair_seg8`**: `send email -> create an 
+- **`eMail_p18_pair_seg8`**: `send email -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p18_pair_seg9`**: `create an 
+addressbook 
+for a receiver`
+
+## Product 19
+
+**Selected features:** selected = {au, e, s}
+
+**Repaired FTS:** 4 states, 9 transitions
+
+![Product 19 projected FTS](eMail-product19.png)
+
+### State coverage (1 test case, 3 transitions)
+
+```
+compose new 
+email -> enter 
+receiver's 
+email address -> sign mail
+```
+
+### All-transitions coverage (3 test cases, 9 transitions total)
+
+- **`eMail_p19_trans_seg0`**: `compose new 
+email -> enter email 
+body -> enter
+ email 
+subject`
+- **`eMail_p19_trans_seg1`**: `send email`
+- **`eMail_p19_trans_seg2`**: `enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> sign mail -> send email`
+
+### All-transition-pairs coverage (4 test cases, 27 transitions total)
+
+- **`eMail_p19_pair_seg0`**: `compose new 
+email -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter
+ email 
+subject -> enter
+ email 
+subject -> enter email 
+body -> enter 
+receiver's 
+email address -> sign mail -> send email -> compose new 
+email -> enter email 
+body -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> send email`
+- **`eMail_p19_pair_seg1`**: `enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p19_pair_seg2`**: `enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p19_pair_seg3`**: `enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter email 
+body`
+
+## Product 20
+
+**Selected features:** selected = {ad, au, e, en, s}
+
+**Repaired FTS:** 7 states, 15 transitions
+
+![Product 20 projected FTS](eMail-product20.png)
+
+### State coverage (1 test case, 7 transitions)
+
+```
+create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email -> enter 
+receiver's 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key
+```
+
+### All-transitions coverage (5 test cases, 15 transitions total)
+
+- **`eMail_p20_trans_seg0`**: `create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p20_trans_seg1`**: `send email`
+- **`eMail_p20_trans_seg2`**: `get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key`
+- **`eMail_p20_trans_seg3`**: `sign mail`
+- **`eMail_p20_trans_seg4`**: `enter
+ email 
+subject -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email`
+
+### All-transition-pairs coverage (10 test cases, 46 transitions total)
+
+- **`eMail_p20_pair_seg0`**: `compose new 
+email -> enter
+ email 
+subject -> enter
+ email 
+subject -> enter email 
+body -> enter 
+receiver's 
+email address -> sign mail -> send email -> create an 
+addressbook 
+for a receiver -> enter the  
+receiver's 
+email address -> enter alias 
+email addresses 
+of receiver -> create an 
+addressbook 
+for a receiver`
+- **`eMail_p20_pair_seg1`**: `enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter email 
+body -> enter email 
+body -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver -> send email -> compose new 
+email -> enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p20_pair_seg2`**: `enter 
+receiver's 
+email address -> get alias 
+email addresses 
+of receiver`
+- **`eMail_p20_pair_seg3`**: `enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p20_pair_seg4`**: `enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p20_pair_seg5`**: `enter 
+receiver's 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key -> send email`
+- **`eMail_p20_pair_seg6`**: `enter 
+receiver's 
+email address -> get receiver's  
+public key`
+- **`eMail_p20_pair_seg7`**: `enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter email 
+body`
+- **`eMail_p20_pair_seg8`**: `enter 
+receiver's 
+email address -> enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter 
+receiver's 
+email address -> send email -> create an 
 addressbook 
 for a receiver`
 - **`eMail_p20_pair_seg9`**: `create an 
@@ -2056,9 +2092,9 @@ for a receiver`
 
 ## Product 21
 
-**Selected features:** selected = {au, e, en}
+**Selected features:** selected = {e, en, s}
 
-**Repaired FTS:** 5 states, 10 transitions
+**Repaired FTS:** 5 states, 11 transitions
 
 ![Product 21 projected FTS](eMail-product21.png)
 
@@ -2074,7 +2110,7 @@ with receiver's
 public key
 ```
 
-### All-transitions coverage (3 test cases, 10 transitions total)
+### All-transitions coverage (4 test cases, 11 transitions total)
 
 - **`eMail_p21_trans_seg0`**: `compose new 
 email -> enter email 
@@ -2082,18 +2118,19 @@ body -> enter
  email 
 subject`
 - **`eMail_p21_trans_seg1`**: `send email`
-- **`eMail_p21_trans_seg2`**: `enter
+- **`eMail_p21_trans_seg2`**: `get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key`
+- **`eMail_p21_trans_seg3`**: `enter
  email 
 subject -> enter 
 receiver's 
 email address -> enter 
 receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key -> send email`
+email address -> sign mail -> send email`
 
-### All-transition-pairs coverage (4 test cases, 28 transitions total)
+### All-transition-pairs coverage (6 test cases, 33 transitions total)
 
 - **`eMail_p21_pair_seg0`**: `compose new 
 email -> enter
@@ -2103,27 +2140,33 @@ subject -> enter
 subject -> enter email 
 body -> enter 
 receiver's 
-email address -> enter 
-receiver's 
-email address -> send email -> compose new 
+email address -> sign mail -> send email -> compose new 
 email -> enter email 
 body -> enter email 
 body -> enter
  email 
 subject -> enter 
 receiver's 
+email address -> enter 
+receiver's 
+email address -> send email -> compose new 
+email -> enter 
+receiver's 
 email address -> get receiver's  
 public key -> encrypt mail 
 with receiver's 
-public key -> send email -> compose new 
-email -> enter 
+public key -> send email`
+- **`eMail_p21_pair_seg1`**: `enter 
 receiver's 
 email address -> send email`
-- **`eMail_p21_pair_seg1`**: `enter 
+- **`eMail_p21_pair_seg2`**: `enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p21_pair_seg3`**: `enter 
 receiver's 
 email address -> get receiver's  
 public key`
-- **`eMail_p21_pair_seg2`**: `enter 
+- **`eMail_p21_pair_seg4`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -2132,7 +2175,7 @@ email address -> enter
 subject -> enter
  email 
 subject`
-- **`eMail_p21_pair_seg3`**: `enter
+- **`eMail_p21_pair_seg5`**: `enter
  email 
 subject -> enter 
 receiver's 
@@ -2143,135 +2186,11 @@ body`
 
 ## Product 22
 
-**Selected features:** selected = {ad, au, e, f}
-
-**Repaired FTS:** 8 states, 15 transitions
-
-![Product 22 projected FTS](eMail-product22.png)
-
-### State coverage (1 test case, 9 transitions)
-
-```
-open mailbox -> select email -> enter forward 
-receiver's 
-email address -> send email -> create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email -> enter 
-receiver's 
-email address
-```
-
-### All-transitions coverage (3 test cases, 15 transitions total)
-
-- **`eMail_p22_trans_seg0`**: `open mailbox -> select email -> enter forward 
-receiver's 
-email address -> send email -> create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p22_trans_seg1`**: `enter
- email 
-subject -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver`
-- **`eMail_p22_trans_seg2`**: `send email`
-
-### All-transition-pairs coverage (10 test cases, 45 transitions total)
-
-- **`eMail_p22_pair_seg0`**: `compose new 
-email -> enter
- email 
-subject -> enter
- email 
-subject -> enter email 
-body -> enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email -> create an 
-addressbook 
-for a receiver -> enter the  
-receiver's 
-email address -> enter alias 
-email addresses 
-of receiver -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p22_pair_seg1`**: `open mailbox -> select email -> enter forward 
-receiver's 
-email address -> send email -> open mailbox`
-- **`eMail_p22_pair_seg2`**: `enter 
-receiver's 
-email address -> send email -> compose new 
-email -> enter email 
-body -> enter email 
-body -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> get alias 
-email addresses 
-of receiver`
-- **`eMail_p22_pair_seg3`**: `enter alias 
-email addresses 
-of receiver -> compose new 
-email -> enter 
-receiver's 
-email address -> send email -> open mailbox`
-- **`eMail_p22_pair_seg4`**: `enter 
-receiver's 
-email address -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter 
-receiver's 
-email address -> enter
- email 
-subject -> enter email 
-body`
-- **`eMail_p22_pair_seg5`**: `enter alias 
-email addresses 
-of receiver -> open mailbox`
-- **`eMail_p22_pair_seg6`**: `send email -> compose new 
-email`
-- **`eMail_p22_pair_seg7`**: `enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p22_pair_seg8`**: `send email -> create an 
-addressbook 
-for a receiver`
-- **`eMail_p22_pair_seg9`**: `create an 
-addressbook 
-for a receiver`
-
-## Product 23
-
 **Selected features:** selected = {ad, e}
 
 **Repaired FTS:** 6 states, 12 transitions
 
-![Product 23 projected FTS](eMail-product23.png)
+![Product 22 projected FTS](eMail-product22.png)
 
 ### State coverage (1 test case, 6 transitions)
 
@@ -2292,7 +2211,7 @@ of receiver
 
 ### All-transitions coverage (3 test cases, 12 transitions total)
 
-- **`eMail_p23_trans_seg0`**: `create an 
+- **`eMail_p22_trans_seg0`**: `create an 
 addressbook 
 for a receiver -> enter the  
 receiver's 
@@ -2303,8 +2222,8 @@ email -> enter email
 body -> enter
  email 
 subject`
-- **`eMail_p23_trans_seg1`**: `send email`
-- **`eMail_p23_trans_seg2`**: `enter
+- **`eMail_p22_trans_seg1`**: `send email`
+- **`eMail_p22_trans_seg2`**: `enter
  email 
 subject -> enter 
 receiver's 
@@ -2316,7 +2235,7 @@ of receiver -> send email`
 
 ### All-transition-pairs coverage (7 test cases, 36 transitions total)
 
-- **`eMail_p23_pair_seg0`**: `compose new 
+- **`eMail_p22_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -2335,7 +2254,7 @@ email addresses
 of receiver -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p23_pair_seg1`**: `send email -> compose new 
+- **`eMail_p22_pair_seg1`**: `send email -> compose new 
 email -> enter email 
 body -> enter email 
 body -> enter
@@ -2352,20 +2271,20 @@ email address -> enter
 subject -> enter
  email 
 subject`
-- **`eMail_p23_pair_seg2`**: `enter alias 
+- **`eMail_p22_pair_seg2`**: `enter alias 
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p23_pair_seg3`**: `enter
+- **`eMail_p22_pair_seg3`**: `enter
  email 
 subject -> enter email 
 body`
-- **`eMail_p23_pair_seg4`**: `enter 
+- **`eMail_p22_pair_seg4`**: `enter 
 receiver's 
 email address -> get alias 
 email addresses 
 of receiver`
-- **`eMail_p23_pair_seg5`**: `enter 
+- **`eMail_p22_pair_seg5`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -2376,17 +2295,17 @@ receiver's
 email address -> send email -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p23_pair_seg6`**: `create an 
+- **`eMail_p22_pair_seg6`**: `create an 
 addressbook 
 for a receiver`
 
-## Product 24
+## Product 23
 
-**Selected features:** selected = {ad, e, en}
+**Selected features:** selected = {ad, e, en, s}
 
-**Repaired FTS:** 7 states, 14 transitions
+**Repaired FTS:** 7 states, 15 transitions
 
-![Product 24 projected FTS](eMail-product24.png)
+![Product 23 projected FTS](eMail-product23.png)
 
 ### State coverage (1 test case, 7 transitions)
 
@@ -2406,9 +2325,9 @@ with receiver's
 public key
 ```
 
-### All-transitions coverage (4 test cases, 14 transitions total)
+### All-transitions coverage (5 test cases, 15 transitions total)
 
-- **`eMail_p24_trans_seg0`**: `create an 
+- **`eMail_p23_trans_seg0`**: `create an 
 addressbook 
 for a receiver -> enter the  
 receiver's 
@@ -2416,12 +2335,13 @@ email address -> enter alias
 email addresses 
 of receiver -> compose new 
 email`
-- **`eMail_p24_trans_seg1`**: `send email`
-- **`eMail_p24_trans_seg2`**: `get receiver's  
+- **`eMail_p23_trans_seg1`**: `send email`
+- **`eMail_p23_trans_seg2`**: `get receiver's  
 public key -> encrypt mail 
 with receiver's 
 public key`
-- **`eMail_p24_trans_seg3`**: `enter
+- **`eMail_p23_trans_seg3`**: `sign mail`
+- **`eMail_p23_trans_seg4`**: `enter
  email 
 subject -> enter email 
 body -> enter
@@ -2434,9 +2354,9 @@ email address -> get alias
 email addresses 
 of receiver -> send email`
 
-### All-transition-pairs coverage (8 test cases, 41 transitions total)
+### All-transition-pairs coverage (10 test cases, 46 transitions total)
 
-- **`eMail_p24_pair_seg0`**: `compose new 
+- **`eMail_p23_pair_seg0`**: `compose new 
 email -> enter
  email 
 subject -> enter
@@ -2444,9 +2364,7 @@ subject -> enter
 subject -> enter email 
 body -> enter 
 receiver's 
-email address -> get alias 
-email addresses 
-of receiver -> send email -> create an 
+email address -> sign mail -> send email -> create an 
 addressbook 
 for a receiver -> enter the  
 receiver's 
@@ -2455,12 +2373,7 @@ email addresses
 of receiver -> create an 
 addressbook 
 for a receiver`
-- **`eMail_p24_pair_seg1`**: `create an 
-addressbook 
-for a receiver`
-- **`eMail_p24_pair_seg2`**: `enter 
-receiver's 
-email address -> enter 
+- **`eMail_p23_pair_seg1`**: `enter 
 receiver's 
 email address -> send email -> compose new 
 email -> enter email 
@@ -2469,35 +2382,45 @@ body -> enter
  email 
 subject -> enter 
 receiver's 
-email address -> get receiver's  
-public key -> encrypt mail 
-with receiver's 
-public key -> send email -> compose new 
+email address -> get alias 
+email addresses 
+of receiver -> send email -> compose new 
 email -> enter 
 receiver's 
-email address -> enter
- email 
-subject -> enter
- email 
-subject`
-- **`eMail_p24_pair_seg3`**: `enter alias 
-email addresses 
-of receiver -> compose new 
-email`
-- **`eMail_p24_pair_seg4`**: `enter
- email 
-subject -> enter email 
-body`
-- **`eMail_p24_pair_seg5`**: `enter 
+email address -> enter 
+receiver's 
+email address -> sign mail`
+- **`eMail_p23_pair_seg2`**: `enter 
 receiver's 
 email address -> get alias 
 email addresses 
 of receiver`
-- **`eMail_p24_pair_seg6`**: `enter 
+- **`eMail_p23_pair_seg3`**: `enter alias 
+email addresses 
+of receiver -> compose new 
+email`
+- **`eMail_p23_pair_seg4`**: `enter
+ email 
+subject -> enter
+ email 
+subject`
+- **`eMail_p23_pair_seg5`**: `enter 
+receiver's 
+email address -> get receiver's  
+public key -> encrypt mail 
+with receiver's 
+public key -> send email`
+- **`eMail_p23_pair_seg6`**: `enter 
 receiver's 
 email address -> get receiver's  
 public key`
-- **`eMail_p24_pair_seg7`**: `enter 
+- **`eMail_p23_pair_seg7`**: `enter 
+receiver's 
+email address -> enter
+ email 
+subject -> enter email 
+body`
+- **`eMail_p23_pair_seg8`**: `enter 
 receiver's 
 email address -> enter 
 receiver's 
@@ -2508,7 +2431,10 @@ receiver's
 email address -> send email -> create an 
 addressbook 
 for a receiver`
+- **`eMail_p23_pair_seg9`**: `create an 
+addressbook 
+for a receiver`
 
 ---
 
-Total products: 24.
+Total products: 23.

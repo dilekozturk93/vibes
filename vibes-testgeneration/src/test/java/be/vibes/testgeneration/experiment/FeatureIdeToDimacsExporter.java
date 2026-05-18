@@ -77,6 +77,16 @@ public final class FeatureIdeToDimacsExporter {
         addClause(idOf(root));
         // Walk the tree and emit structural clauses.
         encodeStructure(root, null);
+        // Require at least one concrete (non-abstract) non-root feature to
+        // be selected. Without this constraint, models like eMail where
+        // the root is concrete and all real features are optional admit a
+        // "trivial" product where only the root is selected. The user's
+        // prior published study (and matching configuration counts in the
+        // thesis) excludes that trivial product. For SVM and Elevator the
+        // constraint is structurally redundant (mandatory chains force at
+        // least one concrete feature regardless), but adding it
+        // universally keeps the encoder's semantics uniform across SPLs.
+        addAtLeastOneConcreteNonRoot(doc, root);
         // Cross-tree constraints.
         NodeList constraintRules = doc.getElementsByTagName("rule");
         for (int i = 0; i < constraintRules.getLength(); i++) {
@@ -84,6 +94,47 @@ public final class FeatureIdeToDimacsExporter {
             encodeConstraint(rule);
         }
         write(dimacsOut, mappingOut);
+    }
+
+    /**
+     * Emits a single clause {@code f_1 ∨ f_2 ∨ … ∨ f_k} where each
+     * {@code f_i} is a concrete (non-abstract) feature other than the
+     * root. Has the effect of ruling out the "only the root is selected"
+     * trivial product.
+     */
+    private void addAtLeastOneConcreteNonRoot(Document doc, Element root) {
+        NodeList all = doc.getElementsByTagName("*");
+        List<Integer> ids = new ArrayList<>();
+        String rootName = root.getAttribute("name");
+        for (int i = 0; i < all.getLength(); i++) {
+            Node n = all.item(i);
+            if (n.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+            Element e = (Element) n;
+            if (!isFeatureElement(e)) {
+                continue;
+            }
+            if ("true".equals(e.getAttribute("abstract"))) {
+                continue;
+            }
+            String name = e.getAttribute("name");
+            if (name.isEmpty() || name.equals(rootName)) {
+                continue;
+            }
+            Integer id = featureToId.get(name);
+            if (id != null) {
+                ids.add(id);
+            }
+        }
+        if (ids.isEmpty()) {
+            return; // nothing to constrain (model has only abstract / root features)
+        }
+        int[] clause = new int[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            clause[i] = ids.get(i);
+        }
+        addClause(clause);
     }
 
     private static Document parse(File f) throws Exception {
