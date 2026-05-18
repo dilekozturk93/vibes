@@ -1,0 +1,24 @@
+digraph G {
+rankdir=LR;
+state0[ label = "state1", style=filled, color=green ];
+state1 [ label = "state7" ];
+state1 -> state0 [ label=" send email/e " ];
+state1 -> state2 [ label=" enter
+ email 
+subject/e " ];
+state1 -> state1 [ label=" enter 
+receiver's 
+email address/e " ];
+state2 [ label = "state2" ];
+state2 -> state2 [ label=" enter email 
+body/e " ];
+state2 -> state2 [ label=" enter
+ email 
+subject/e " ];
+state2 -> state1 [ label=" enter 
+receiver's 
+email address/e " ];
+state0 -> state2 [ label=" compose new 
+email/e " ];
+}
+
