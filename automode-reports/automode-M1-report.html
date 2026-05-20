@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>automode-M1-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Automode Milestone M1 Report</h1>
+<p><strong>Date:</strong> 2026-05-13 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report) <strong>Mode:</strong> automode</p>
+<h2>Scope</h2>
+<p>Extend the M0 MXE → FTS converter to the remaining two Phase-0 SPLs (eMail and Elevator), validate cardinalities via expanded JUnit tests, and render Dot + PNG visualisations for all three MVP SPLs (SVM, eMail, Elevator). This finalises the input layer of the pipeline so that M2 (strongly-connected-components) can start working on real FTS instances rather than just toy graphs.</p>
+<h2>Files changed</h2>
+<ul>
+  <li><code>vibes-testgeneration/src/main/resources/cases/eMail/eM_ESGFx.mxe</code>:</li>
+</ul>
+<p>copied from the ESG-Fx project.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/resources/cases/Elevator/El_ESGFx.mxe</code>:</li>
+</ul>
+<p>copied from the ESG-Fx project.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/conversion/MxeToFtsConverterTest.java</code>:</li>
+</ul>
+<p>two new test methods (<code>convert_emailSpl_producesExpectedCardinalities</code>, <code>convert_elevatorSpl_producesExpectedCardinalities</code>) plus a shared <code>convertResource(String)</code> helper.</p>
+<ul>
+  <li><code>automode-reports/figures/SodaVendingMachine.{dot,png}</code>,</li>
+</ul>
+<p><code>automode-reports/figures/eMail.{dot,png}</code>, <code>automode-reports/figures/Elevator.{dot,png}</code>: Dot + Graphviz PNG for each MVP SPL.</p>
+<h2>What was implemented</h2>
+<p>The converter itself did not change — M0 already covered the algorithm. M1 only added inputs, test cases and visual artefacts. The cardinalities that come out of the converter for the three MVP SPLs are:</p>
+<table>
+  <thead><tr><th>SPL</th><th>ESG vertices (events)</th><th>ESG edges</th><th>Terminal vertices merged into INIT</th><th>FTS states</th><th>FTS transitions</th></tr></thead>
+  <tbody>
+    <tr><td>SVM</td><td>13</td><td>21</td><td>3</td><td>11</td><td>18</td></tr>
+    <tr><td>eMail</td><td>17</td><td>35</td><td>2</td><td>16</td><td>31</td></tr>
+    <tr><td>Elevator</td><td>19</td><td>80</td><td>0</td><td>20</td><td>70</td></tr>
+  </tbody>
+</table>
+<p>The math checks out in each case: <code>FTS_states = (events − terminals) + 1</code> (the <code>+ 1</code> is INIT), <code>FTS_transitions = ESG_edges − edges_to_]</code>.</p>
+<p>The Elevator model has no fully-terminal vertices: every event has at least one non-"]" successor. The 10 dropped edges all come from "mixed" vertices that can both continue and terminate. This is sensible for an elevator model where most states can both lead to further events and end the session (e.g. pressing the alarm).</p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td><code>mvn -pl vibes-testgeneration test</code> green (9 tests)</td><td>✓ — <code>Tests run: 9, Failures: 0, Errors: 0, Skipped: 0</code></td></tr>
+    <tr><td>eMail Dot renders with <code>dot -Tpng</code> (no syntax errors)</td><td>✓ — <code>eMail.png</code> ~281 kB, 92-line <code>.dot</code></td></tr>
+    <tr><td>Elevator Dot renders with <code>dot -Tpng</code></td><td>✓ — <code>Elevator.png</code> ~792 kB, 126-line <code>.dot</code></td></tr>
+    <tr><td>SVM Dot still renders identically</td><td>✓ — <code>SodaVendingMachine.png</code> ~115 kB</td></tr>
+    <tr><td>Round-trip (XML write → XML load) still idempotent for SVM (regression)</td><td>✓ — covered by the unchanged M0 test</td></tr>
+  </tbody>
+</table>
+<p>Visual spot-check: the SVM PNG shows the expected structure — <code>pay/!f</code> and <code>free/f</code> leave <code>INIT</code>, the two parallel chains converge on <code>soda/tea/cancel</code> outgoing edges (with the duplication noted in the M0 report), and <code>take/f</code>, <code>take/!f</code> and <code>close/!f</code> close the cycle back to <code>INIT</code>.</p>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong>Cardinality assertions are exact, not bounded.</strong> Tests assert the</li>
+</ul>
+<p>state and transition counts as exact integers. This is intentional: if the converter algorithm changes in a way that alters the counts, the test should fail loudly and force a deliberate update to the expected value (with a clear comment explaining the new arithmetic).</p>
+<ul>
+  <li><strong>Test inputs are bundled under <code>src/main/resources/cases/&lt;SPL&gt;/</code></strong></li>
+</ul>
+<p>rather than referenced from the sibling ESG-Fx project. This keeps <code>vibes-testgeneration</code> self-contained and reproducible; the cost is ~30 kB of MXE per SPL bundled in the jar.</p>
+<ul>
+  <li><strong>PNGs are committed under <code>automode-reports/figures/</code></strong> rather than</li>
+</ul>
+<p>inside the Maven module. They're documentation artefacts, not source inputs, and don't belong on the classpath. Future paper figures can also live here.</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>Git push credentials</strong> — same as M0: pushes still fail with</li>
+</ul>
+<p><code>Device not configured</code>. Continuing local-only.</p>
+<h2>Next milestone preview</h2>
+<p><strong>M2 (automode):</strong> implement <code>StronglyConnectedComponents</code> (Tarjan's algorithm) on <code>TransitionSystem</code> plus an SVM-product-level smoke test that reports SCC structure of each of the 12 valid SVM configurations. This is the first piece of graph algorithm infrastructure and the prerequisite for M3 (Eulerian balancing + Hierholzer).</p>
+</body></html>

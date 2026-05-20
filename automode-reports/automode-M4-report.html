@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>automode-M4-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Automode Milestone M4 Report</h1>
+<p><strong>Date:</strong> 2026-05-13 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report) <strong>Mode:</strong> automode</p>
+<h2>Scope</h2>
+<p>First end-to-end coverage criterion: all-transitions. The pipeline now takes an SPL FTS plus a product configuration, projects (preserving feature expressions), keeps the initial-state SCC, balances, runs Hierholzer, and wraps the cycle into a <code>TestCase</code>. Tested on every valid configuration of SVM.</p>
+<h2>Files changed</h2>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/product/FExpressionPreservingProjection.java</code></li>
+</ul>
+<p>— analog of VIBeS' <code>SimpleProjection</code> but emits <code>FeaturedTransitionSystem</code> with retained <code>FExpression</code>s.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/graph/InitialSccFilter.java</code></li>
+</ul>
+<p>— keeps the SCC that contains the initial state and drops everything else.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/coverage/TransitionCoverageGenerator.java</code></li>
+</ul>
+<p>— orchestrator: project → repair → balance → Hierholzer → TestCase.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/coverage/TransitionCoverageGeneratorTest.java</code></li>
+</ul>
+<p>— end-to-end SVM test: 12 valid configs from SAT, each produces a test case that covers every reachable transition.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/resources/cases/SodaVendingMachine/configs/SVM_dimacsmapping.txt</code></li>
+</ul>
+<p>— reformatted from the user's <code>ID:FeatureName</code> (colon-separated, header row) layout into VIBeS' <code>id featureName</code> (space-separated, no header). This is the format VIBeS' <code>DimacsModel.createFromTvlParserGeneratedFiles</code> expects.</p>
+<h2>What was implemented</h2>
+<h3><code>FExpressionPreservingProjection</code></h3>
+<p>For each transition in the SPL FTS, evaluate <code>fexpr.assign(product).applySimplification()</code>; if the result is true, include the transition in the projected FTS with its <strong>original</strong> feature expression retained (not the simplified <code>TRUE</code>). The original carries strictly more information (which feature choice justified the transition) and is what we want for traceability and for the uniform-data-structure property promised in the plan.</p>
+<h3><code>InitialSccFilter</code></h3>
+<p>After projection, the product-level FTS frequently fragments. Strategy: compute Tarjan SCCs of the projected FTS, find the SCC that contains the initial state, drop all other states and the transitions touching them. What survives is by construction strongly connected and rooted at the original initial state — the prerequisite for <code>EulerianBalancer</code>.</p>
+<h3><code>TransitionCoverageGenerator</code></h3>
+<p>Pure orchestration; no new algorithms. The five steps are:</p>
+<p>1. <code>project = FExpressionPreservingProjection.project(fts, config)</code> 2. <code>repaired = InitialSccFilter.keepInitialScc(project)</code> 3. <code>balanced = EulerianBalancer.balance(repaired)</code> 4. <code>cycle = HierholzerEulerCycle.compute(balanced)</code> 5. <code>testCase = new TestCase(id); testCase.enqueueAll(cycle); return testCase;</code></p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td><code>mvn -pl vibes-testgeneration test</code> green</td><td>✓ — <code>Tests run: 27, Failures: 0, Errors: 0, Skipped: 0</code></td></tr>
+    <tr><td>12 valid SVM configurations enumerated by <code>Sat4JSolverFacade</code></td><td>✓</td></tr>
+    <tr><td>For each of the 12 configs, the generated TestCase covers every transition of the repaired (initial-SCC) FTS</td><td>✓</td></tr>
+    <tr><td>Synthetic balancing actions identified via <code>EulerianBalancer.isSyntheticAction(...)</code> are filtered before coverage assertion</td><td>✓</td></tr>
+    <tr><td>First SVM config originally had 7 states across 3 SCCs (pre-repair); SCC repair brought it down to a strongly-connected sub-FTS the balancer accepts</td><td>✓</td></tr>
+  </tbody>
+</table>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong><code>InitialSccFilter</code> as a separate utility class</strong>, not folded into</li>
+</ul>
+<p><code>TransitionCoverageGenerator</code>. State-coverage (M5) and transition-pair coverage (M6) will both need it; carving it out keeps each coverage generator at the level of "compose existing utilities" rather than re-implementing the repair step.</p>
+<ul>
+  <li><strong>Dropped behaviour outside the initial SCC is silently discarded.</strong></li>
+</ul>
+<p>An explicit "lost coverage ratio" metric belongs in the experiment harness (M7), not in the generator. The plan notes this and we honour it here.</p>
+<ul>
+  <li>**Tested via cycle-set comparison rather than <code>TransitionSystemExecutor</code></li>
+</ul>
+<p>replay.** The Hierholzer post-condition guarantees a closed contiguous cycle; the existence of a path matching the cycle in the underlying FTS is implicit. Reusing the cycle's transition objects against the repaired FTS' transition set gives an equivalent, simpler assertion. A full executor-based replay belongs alongside mutation testing in M7 (where it actually matters — replaying on a mutant might fail mid-cycle and that failure is the signal we want).</p>
+<ul>
+  <li><strong>Mapping file format conversion is committed</strong>, not done at runtime.</li>
+</ul>
+<p>Future SPLs added to the module will follow the same convention: the <code>configs/&lt;SPL&gt;_dimacsmapping.txt</code> file is space-separated with no header. A small one-shot converter could be added later if it becomes a frequent operation.</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>Git push credentials</strong> — unchanged.</li>
+</ul>
+<h2>Next milestone preview</h2>
+<p><strong>M5 (automode):</strong> <code>StateCoverageGenerator</code>. A walk through the projected + SCC-repaired FTS that visits every state at least once, using Dijkstra to reroute toward the nearest uncovered state when the natural traversal exhausts uncovered neighbours. This is the analog of the ESG-Fx <code>EulerCycleGeneratorForEventCoverage</code>. State coverage produces shorter test cases than transition coverage (it doesn't need every edge) so it also pressure-tests the assumption that "shorter Euler-based tests still beat random walks" — relevant for RQ3.</p>
+</body></html>

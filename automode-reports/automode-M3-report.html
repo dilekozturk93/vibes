@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>automode-M3-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Automode Milestone M3 Report</h1>
+<p><strong>Date:</strong> 2026-05-13 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report) <strong>Mode:</strong> automode</p>
+<h2>Scope</h2>
+<p>Implement the two graph algorithms that turn a strongly-connected FTS into a deterministic test-generation seed: <code>EulerianBalancer</code> adds synthetic transitions until every state has equal in / out degree, and <code>HierholzerEulerCycle</code> extracts an Euler cycle from a balanced strongly connected FTS. Together they form the core of every coverage criterion in the pipeline (transition coverage in M4 uses them directly; state and transition-pair coverage in M5 / M6 build on top).</p>
+<h2>Files changed</h2>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/graph/EulerianBalancer.java</code></li>
+</ul>
+<p>— utility class with <code>balance(fts)</code>, <code>isSyntheticAction(...)</code>, <code>syntheticTransitions(...)</code>, and a <code>SYNTHETIC_ACTION_PREFIX = &quot;__balance__&quot;</code> constant.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/graph/HierholzerEulerCycle.java</code></li>
+</ul>
+<p>— utility class with <code>compute(fts)</code> and <code>asActionSequence(cycle)</code>.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/graph/HierholzerEulerCycleTest.java</code></li>
+</ul>
+<p>— 7 tests covering toy graphs (2-state cycle, 4-state balanced graph, unbalanced rejection, disconnected rejection, action-sequence extraction) and an end-to-end balancer + Hierholzer run on SVM.</p>
+<h2>What was implemented</h2>
+<h3>EulerianBalancer</h3>
+<p>Returns a NEW <code>FeaturedTransitionSystem</code> instance; the input is untouched. Algorithm:</p>
+<p>1. Reject inputs that are not strongly connected (the second necessary condition for an Euler cycle; balancer cannot repair this). 2. Copy every state, action, and transition into a fresh <code>FeaturedTransitionSystemFactory</code>. Original <code>FExpression</code>s are preserved verbatim. 3. Compute <code>delta(v) = out_degree(v) − in_degree(v)</code> for every state. 4. Greedy bipartite pairing: build a FIFO of "needs outgoing" slots (one per unit of in-heaviness) and a FIFO of "needs incoming" slots (one per unit of out-heaviness). Pop pairs and add a synthetic transition between them. 5. Each synthetic transition gets a unique action name <code>__balance__&lt;N&gt;</code> (so VIBeS' <code>(source, action, target)</code> deduplication does not collapse parallel synthetic edges between the same pair) and <code>FExpression.trueValue()</code>.</p>
+<p><code>isSyntheticAction(...)</code> and <code>syntheticTransitions(...)</code> let downstream code recognise and filter synthetic edges (important for coverage measurement: we don't want synthetic balancing edges inflating the coverage denominator).</p>
+<h3>HierholzerEulerCycle</h3>
+<p>Standard iterative Hierholzer. Two stacks:</p>
+<ul>
+  <li><code>vertexStack</code> — vertices being explored.</li>
+  <li><code>arrivalStack</code> — parallel to vertexStack, stores the transition used to</li>
+</ul>
+<p>arrive at each stacked vertex (null for the initial state). Uses <code>LinkedList</code> rather than <code>ArrayDeque</code> because <code>ArrayDeque</code> rejects null elements.</p>
+<p>A separate <code>usedStack</code> collects transitions in reverse traversal order; final result is built by draining it via <code>pop()</code>, which yields the correct forward order.</p>
+<p><code>verifyCycleClosure</code> is an in-method postcondition check: the first transition must start at the initial state, the last must end at it, and consecutive transitions must form a path. Any violation throws <code>IllegalArgumentException</code> so future bugs surface immediately.</p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td><code>mvn -pl vibes-testgeneration test</code> green (26 tests now)</td><td>✓ — <code>Tests run: 26, Failures: 0, Errors: 0, Skipped: 0</code></td></tr>
+    <tr><td>2-state cycle → cycle of length 2 covering both edges</td><td>✓</td></tr>
+    <tr><td>4-state cycle (two parallel 2-cycles sharing vertex <code>a</code>) → cycle of length 4 covering all 4 edges</td><td>✓</td></tr>
+    <tr><td>Unbalanced graph (single edge a→b) → <code>IllegalArgumentException</code> mentioning balance</td><td>✓</td></tr>
+    <tr><td>Balanced but disconnected (two 2-cycles) → <code>IllegalArgumentException</code> mentioning strong connectivity</td><td>✓</td></tr>
+    <tr><td><code>asActionSequence</code> extracts action names in order</td><td>✓</td></tr>
+    <tr><td><strong>End-to-end on SVM</strong>: convert MXE → balancer adds N synthetic edges → Hierholzer produces a cycle that visits every transition (including synthetics) exactly once and returns to INIT</td><td>✓</td></tr>
+    <tr><td><code>isSyntheticAction</code> correctly identifies <code>__balance__N</code>-prefixed actions</td><td>✓</td></tr>
+  </tbody>
+</table>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong>Synthetic action prefix is <code>__balance__</code></strong> (double underscore, double</li>
+</ul>
+<p>trailing). Visually distinct from any human-readable action and lexically invalid as a Java identifier, so unlikely to ever collide. Suffix is a 0-indexed counter to guarantee VIBeS' <code>(source, action, target)</code> deduplication never collapses parallel synthetic edges.</p>
+<ul>
+  <li>**Balancer keeps original <code>FExpression</code>s, sets synthetic edges to</li>
+</ul>
+<p><code>FExpression.trueValue()</code>.** Synthetic edges represent "the pipeline is rewiring graph topology for Eulerian existence", not a feature constraint, so <code>true</code> is the only sensible value.</p>
+<ul>
+  <li><strong>Balancer enforces strong-connectivity precondition at the API.</strong></li>
+</ul>
+<p>Trying to balance a non-strongly-connected FTS throws. This forces callers to think about the order of operations (project → SCC repair → balance) rather than discovering it via a silently wrong cycle.</p>
+<ul>
+  <li><strong><code>LinkedList</code> for <code>arrivalStack</code></strong>, not <code>ArrayDeque</code>. The initial</li>
+</ul>
+<p>state has no arrival transition; we use <code>null</code> as the sentinel. <code>ArrayDeque</code> rejects null elements; <code>LinkedList</code> does not. Caught by the first toy-graph test on the first run.</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>Git push credentials</strong> — unchanged from M0 / M1 / M2.</li>
+</ul>
+<h2>Next milestone preview</h2>
+<p><strong>M4 (automode):</strong> <code>FExpressionPreservingProjection</code> (analog of VIBeS' <code>SimpleProjection</code>, but emits an FTS with retained <code>FExpression</code>s) plus <code>TransitionCoverageGenerator</code> (a thin orchestrator: project → balance → Hierholzer → return <code>TestCase</code>). Smoke test enumerates all 12 SVM configurations, generates one transition-coverage test case per config, replays it with <code>TransitionSystemExecutor</code>, and asserts <code>TransitionCoverage.coverage(execution) ≈ 1.0</code>.</p>
+</body></html>

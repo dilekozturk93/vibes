@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>automode-M0-rev-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Automode Revision: M0 — Canonical MXE-to-FTS Converter</h1>
+<p><strong>Date:</strong> 2026-05-18 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report) <strong>Trigger:</strong> User reviewed first SVM PNG and pointed out two issues against Devroey's published canonical FTS: (1) <code>soda/s</code> and <code>tea/t</code> transitions duplicated because <code>free/f</code> and <code>change/!f</code> were kept as separate FTS states despite having identical outgoing behaviour, and (2) state names like <code>v40</code> (mxGraph vertex IDs) rather than the conventional sequential <code>state1, state2, …</code>.</p>
+<h2>Scope</h2>
+<p>Replace the naive 1-vertex-per-state converter with one that produces the bisimulation-minimized canonical FTS, with sequential BFS-order state naming. SVM now matches Devroey's hand-written reference exactly (9 states, 13 transitions).</p>
+<h2>What changed</h2>
+<h3><code>MxeToFtsConverter.buildFts</code> (replaced)</h3>
+<p>New pipeline:</p>
+<p>1. <strong>Terminal detection</strong> — unchanged (vertex whose outgoing edges all go to <code>]</code>). 2. <strong>Initial partition</strong> — <code>INIT_CLASS = {[</code>,<code>]</code>, all terminals}<code>; every other vertex starts in a single &quot;OTHER&quot; class. 3. **Partition refinement** (textbook Paige-Tarjan): for each class, compute each member's outgoing signature as the sorted multiset of </code>(action, simplified_fexpr, target_class)<code>. If members of one class disagree on signature, split. Iterate until stable. 4. **Sequential naming** — BFS from the INIT class assigns </code>state1, state2, …<code> in visitation order. 5. **FTS emission** — one state per class, one transition per distinct </code>(class, action, fexpr, target_class)<code> outgoing of a representative. </code>FeaturedTransitionSystemFactory.addTransition` already deduplicates identical triples within a class.</p>
+<p>The reduction is a STANDARD forward bisimulation. The resulting FTS is behaviourally equivalent to the raw one: it accepts the same set of feature-valid action sequences and exposes the same product slices under any configuration. Coverage metrics measured against the reduced FTS are therefore strictly comparable to the raw-FTS metrics, just on a smaller denominator.</p>
+<h3>State naming</h3>
+<p><code>state1</code> is always the initial state. <code>state2..stateN</code> are assigned in BFS order starting from <code>state1</code>. Outgoing-edge iteration order follows the source MXE so the naming is deterministic across runs.</p>
+<h3>Cardinality changes (post-revision)</h3>
+<table>
+  <thead><tr><th>SPL</th><th>States (old → new)</th><th>Transitions (old → new)</th></tr></thead>
+  <tbody>
+    <tr><td>SVM</td><td>11 → <strong>9</strong></td><td>18 → <strong>13</strong></td></tr>
+    <tr><td>eMail</td><td>16 → <strong>11</strong></td><td>31 → <strong>22</strong></td></tr>
+    <tr><td>Elevator</td><td>20 → <strong>14</strong></td><td>70 → <strong>42</strong></td></tr>
+  </tbody>
+</table>
+<p>SVM now matches Devroey's hand-written FTS exactly (the user supplied that as the reference). The merge pairs in SVM are <code>{change/!f, free/f}</code> (both go to <code>cancel/soda/tea</code>) and <code>{serveSoda/s, serveTea/t}</code> (both go to <code>take/f, open/!f</code>). Elevator's much bigger reduction reflects its many press/release symmetries.</p>
+<h3>Tests updated</h3>
+<p>5 assertions had to be refreshed:</p>
+<ul>
+  <li><code>MxeToFtsConverterTest.convert_svm_producesExpectedCardinalities</code>:</li>
+</ul>
+<p>11→9 states, 18→13 transitions.</p>
+<ul>
+  <li><code>MxeToFtsConverterTest.convert_svm_initialStateExists</code>: initial name</li>
+</ul>
+<p><code>&quot;INIT&quot;</code> → <code>&quot;state1&quot;</code>.</p>
+<ul>
+  <li><code>MxeToFtsConverterTest.convert_emailSpl_producesExpectedCardinalities</code>:</li>
+</ul>
+<p>16→11, 31→22; initial name update.</p>
+<ul>
+  <li><code>MxeToFtsConverterTest.convert_elevatorSpl_producesExpectedCardinalities</code>:</li>
+</ul>
+<p>20→14, 42 transitions; initial name update.</p>
+<ul>
+  <li><code>HierholzerEulerCycleTest.balancerThenHierholzer_onSvm_producesValidCycle</code>:</li>
+</ul>
+<p><code>cycle.size() &gt; 17</code> → <code>&gt; 12</code> (SVM cycle is shorter post-reduction).</p>
+<p>Tests that derive their assertions DYNAMICALLY (M4 / M5 / M6 coverage generators, mutation operator counts, M7 ExperimentRunner) needed NO changes — they read the current cardinalities from the FTS each run, so they tracked the new numbers automatically.</p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td><code>mvn -pl vibes-testgeneration test</code> green</td><td>✓ — <code>Tests run: 49, Failures: 0, Errors: 0, Skipped: 0</code></td></tr>
+    <tr><td>SVM Dot/PNG matches Devroey's canonical structure visually</td><td>✓</td></tr>
+    <tr><td>All 12 SVM configurations still reach 100% coverage under every coverage criterion</td><td>✓</td></tr>
+    <tr><td>Pair-coverage suite still covers every reachable pair after reduction</td><td>✓</td></tr>
+  </tbody>
+</table>
+<h3>Phase-0 metrics summary (post-revision)</h3>
+<table>
+  <thead><tr><th>Coverage</th><th>Mean coverage</th><th>Mean suite length</th><th>Min / Max</th><th>Mean gen time (ms)</th><th>Max gen time (ms)</th></tr></thead>
+  <tbody>
+    <tr><td>state</td><td>1.000</td><td>7.8</td><td>3 / 17</td><td>0.661</td><td>3.591</td></tr>
+    <tr><td>transition</td><td>1.000</td><td>7.2</td><td>4 / 11</td><td>0.930</td><td>3.495</td></tr>
+    <tr><td>pair</td><td>1.000</td><td>9.4</td><td>5 / 16</td><td>0.776</td><td>2.850</td></tr>
+  </tbody>
+</table>
+<p>Numbers are slightly lower than the pre-revision summary (transition 7.5→7.2, pair 9.8→9.4 mean) because the FTS denominator shrank with bisimulation reduction, NOT because coverage degraded. All cells still hit 100% coverage.</p>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong>Bisimulation reduction is the default</strong>, not an opt-in flag. The</li>
+</ul>
+<p>raw 1-vertex-per-state output was a structural defect the user rejected on inspection; no legacy use case keeps it alive. Removing the option avoids two parallel behaviours each requiring its own tests.</p>
+<ul>
+  <li><strong>Forward bisimulation only.</strong> We minimize by future behaviour</li>
+</ul>
+<p>(outgoing signature). The tradeoff: incoming behaviour (which transition arrived at a state) is forgotten. This matches the reference FTS — state 3 in Devroey's canonical SVM is reachable both via <code>change/!f</code> and <code>free/f</code>, and the canonical does NOT distinguish them.</p>
+<ul>
+  <li><strong>Sequential state naming, not event-based.</strong> Multiple ESG vertices</li>
+</ul>
+<p>can share an event (e.g. SVM has <code>take/f</code> and <code>take/!f</code> as separate vertices); event-based names would collide. Sequential <code>stateN</code> is what Devroey uses and is robust.</p>
+<ul>
+  <li>**Class identity through ESG vertex IDs internally; sequential names</li>
+</ul>
+<p>only at the FTS surface.** Keeps the partition-refinement implementation simple while presenting the canonical names to downstream code.</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>Git push credentials</strong> — unchanged from earlier milestones.</li>
+</ul>
+<h2>Files changed</h2>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/conversion/MxeToFtsConverter.java</code></li>
+</ul>
+<p>— <code>buildFts</code> replaced; helper methods <code>detectTerminalVertices</code>, <code>partitionRefine</code>, <code>signatureOf</code>, <code>assignSequentialStateNames</code> added.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/conversion/MxeToFtsConverterTest.java</code></li>
+</ul>
+<p>— cardinality + initial-state-name assertions updated for all three MVP SPLs.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/graph/HierholzerEulerCycleTest.java</code></li>
+</ul>
+<p>— SVM cycle-length lower bound updated (17 → 12).</p>
+<ul>
+  <li><code>automode-reports/figures/SodaVendingMachine.{dot,png}</code>,</li>
+</ul>
+<p><code>eMail.{dot,png}</code>, <code>Elevator.{dot,png}</code> — regenerated.</p>
+<ul>
+  <li><code>automode-reports/metrics/phase0-prelim-metrics.csv</code> — regenerated</li>
+</ul>
+<p>with new (slightly smaller) suite-size numbers.</p>
+<h2>Next</h2>
+<p>Phase 1 work resumes from here: DIMACS generation for the four SPLs that ship only <code>model.xml</code>, mutation-testing harness integration, and the random baseline. None of those are affected by this revision beyond reading the new (canonical) FTS as input.</p>
+</body></html>

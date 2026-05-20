@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>automode-M5-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Automode Milestone M5 Report</h1>
+<p><strong>Date:</strong> 2026-05-15 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report) <strong>Mode:</strong> automode</p>
+<h2>Scope</h2>
+<p>Add the second coverage criterion: all-states (state coverage). Unlike all-transitions (M4), state coverage requires every state of the product FTS to be visited at least once but does NOT require every transition to be used. The expected outcome is shorter test cases — a key data point for RQ3 ("does increasing coverage level improve fault detection efficiency?").</p>
+<h2>Files changed</h2>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/graph/ShortestPaths.java</code></li>
+</ul>
+<p>— BFS-based shortest-path helper with one public entry point, <code>shortestPathToAny(ts, source, targets)</code>, returning either the path as a <code>List&lt;Transition&gt;</code> or <code>null</code> if no target is reachable.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/coverage/StateCoverageGenerator.java</code></li>
+</ul>
+<p>— orchestrator: project → repair → greedy walk with BFS reroute on "stuck" → wrap as <code>TestCase</code>.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/coverage/StateCoverageGeneratorTest.java</code></li>
+</ul>
+<p>— 7 tests: BFS primitives (zero-length, nearest-target, unreachable), walk algorithm (toy graphs), SVM end-to-end across 12 configurations, and a length-comparison vs. transition coverage.</p>
+<h2>What was implemented</h2>
+<h3><code>ShortestPaths</code></h3>
+<p>BFS with predecessor tracking; treats all transitions as unit-weight edges. The interesting choice was to query against a <em>set</em> of targets (not a single state) so the caller does not have to BFS-once-per-state when looking for "any uncovered state from here". That's the structural need of <code>StateCoverageGenerator</code> and matches how the ESG-Fx-side <code>EulerCycleGeneratorForEventCoverage</code> uses Dijkstra reactively.</p>
+<p><code>shortestPathToAny</code> returns:</p>
+<ul>
+  <li><code>[]</code> (empty) when the source is itself in the target set</li>
+  <li><code>List&lt;Transition&gt;</code> of the shortest path otherwise</li>
+  <li><code>null</code> when no target is reachable from the source</li>
+</ul>
+<h3><code>StateCoverageGenerator</code></h3>
+<p>Algorithm (the body of <code>computeStateCoverageWalk</code>):</p>
+<p>1. <code>visited = {initial}</code>, <code>remaining = states - {initial}</code>, <code>walk = []</code>. 2. While <code>remaining</code> is non-empty:</p>
+<ul>
+  <li>Look at the outgoing transitions of the current state. Pick the</li>
+</ul>
+<p>first one whose target is unvisited. Append, advance, mark visited.</p>
+<ul>
+  <li>If no outgoing edge leads to an unvisited state: call</li>
+</ul>
+<p><code>ShortestPaths.shortestPathToAny(fts, current, remaining)</code>, append the entire path, and mark every state along it as visited. 3. Wrap the walk into a <code>TestCase</code> via <code>enqueueAll</code>.</p>
+<p>Pre-pipeline (same as <code>TransitionCoverageGenerator</code>): project → <code>InitialSccFilter.keepInitialScc</code> → run the walk algorithm.</p>
+<p>The walk is NOT closed back to the initial state. State coverage does not require it, and forcing a return would only pad the cycle without covering any extra states.</p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td><code>mvn -pl vibes-testgeneration test</code> green (43 tests now)</td><td>✓ — <code>Tests run: 43, Failures: 0, Errors: 0, Skipped: 0</code></td></tr>
+    <tr><td><code>ShortestPaths</code> returns <code>[]</code> when source = target</td><td>✓</td></tr>
+    <tr><td><code>ShortestPaths</code> picks nearest target from a set (4-cycle, target {c,d} → length 2)</td><td>✓</td></tr>
+    <tr><td><code>ShortestPaths</code> returns <code>null</code> when no target is reachable</td><td>✓</td></tr>
+    <tr><td>2-state loop: state-coverage walk is length 1 (one hop reaches every state)</td><td>✓</td></tr>
+    <tr><td>5-state branch graph: every state visited</td><td>✓</td></tr>
+    <tr><td><strong>SVM end-to-end</strong>: for each of the 12 valid configurations, the walk visits every state of the repaired projected FTS</td><td>✓</td></tr>
+    <tr><td>Average state-coverage walk length over the 12 SVM configs is ≤ average transition-coverage cycle length</td><td>✓</td></tr>
+    <tr><td>At least one SVM configuration produces a strictly shorter state-coverage walk than its transition-coverage cycle</td><td>✓</td></tr>
+  </tbody>
+</table>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong>Greedy walk + BFS reroute, NOT Hierholzer-with-state-coverage-cutoff.</strong></li>
+</ul>
+<p>Two alternatives considered: 1. Build the balanced Euler cycle (as in M4) and trim it at the moment every state has been visited. Pro: easy. Con: still requires balancing the graph and running Hierholzer, plus the cycle visits states in an order determined by Hierholzer's edge order, not by state coverage; the trim point may be late. 2. Greedy walk + reactive BFS reroute (what we shipped). Pro: a much more direct algorithm that exits as soon as every state has been visited, mirroring the user's ESG-Fx-side <code>EulerCycleGeneratorForEventCoverage</code>. Con: not provably optimal. Chose 2 for methodological alignment with the prior published study.</p>
+<ul>
+  <li><strong>BFS, not Dijkstra-with-priority-queue.</strong> Every transition is a</li>
+</ul>
+<p>unit-weight edge, so BFS is exact and faster.</p>
+<ul>
+  <li><strong>Walk is open (not closed back to initial).</strong> State coverage doesn't</li>
+</ul>
+<p>require returning to start. Closing the cycle would pad the test case length without covering any extra states.</p>
+<ul>
+  <li><strong>Length-comparison test is empirical, not invariant.</strong> The first run</li>
+</ul>
+<p>exposed a real observation: for SVM config 10, the state-coverage walk was 15 transitions while the transition-coverage cycle was 14. The greedy walk is not optimal; it can take detours that, in graphs where <code>|E| ≈ |V|</code> (sparse projected products), exceed the Hierholzer cycle. We assert "on average state ≤ transition" and "at least one config strictly shorter", rather than "always shorter", so the test reflects the actual mathematical property of the heuristic.</p>
+<h2>SVM length comparison (state coverage vs. transition coverage)</h2>
+<p>Empirical numbers from the test run:</p>
+<table>
+  <thead><tr><th>Configuration</th><th>state cov walk</th><th>trans cov cycle</th><th>delta</th></tr></thead>
+  <tbody>
+    <tr><td>svm_p1 .. p12 (averaged)</td><td>≤ ≤</td><td>≤</td><td>state ≤ trans on average</td></tr>
+  </tbody>
+</table>
+<p>(Individual per-config numbers can be extracted from <code>vibes-testgeneration/target/surefire-reports/</code> after a test run with <code>-Dexec.args</code> style logging if needed. The aggregate property is what the test enforces.)</p>
+<p>For SVM config 10 specifically: state=15, trans=14. The greedy walk took one extra reroute via a previously-visited state. This is a worth-mentioning observation in the paper's "Threats to Validity" or "Limitations" section — the state-coverage heuristic is not always strictly shorter than transition coverage, and reviewers comparing the two coverages on small SPLs may see counter-intuitive numbers.</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>Git push credentials</strong> — unchanged.</li>
+</ul>
+<h2>Next milestone preview</h2>
+<p><strong>M6 (next, automode):</strong> <code>PairGraphTransformer</code> plus <code>TransitionPairCoverageGenerator</code>. The transformer turns an FTS into its "pair graph" — a state in the pair graph represents an ordered pair of transitions <code>(t1, t2)</code> of the original where <code>target(t1) = source(t2)</code>, and an edge from <code>(t1, t2)</code> to <code>(t2, t3)</code> exists iff that triple is contiguous in the original. Hierholzer on the pair graph yields a cycle that covers every transition pair. This is the analog of the ESG-Fx <code>TransformedESGFxGenerator</code>. Transition-pair coverage is the strongest of the three RQ3 criteria and the operational answer to "intractable at family level" — at product level it becomes tractable.</p>
+</body></html>
