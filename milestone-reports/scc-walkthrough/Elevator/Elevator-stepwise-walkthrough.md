@@ -14,9 +14,9 @@ This is the bisimulation-minimized FTS produced by MxeToFtsConverter from the MX
 
 ## Step 2 — Projected FTS (after applying the configuration)
 
-**Size:** 12 states, 27 transitions
+**Size:** 8 states, 23 transitions
 
-FExpressionPreservingProjection keeps only transitions whose feature expression evaluates to true under the chosen configuration. 22 transition(s) were dropped relative to step 1. After projection the graph has 5 strongly-connected component(s); the SCC containing the initial state has 8 state(s). If that count is less than the total state count, the next step removes the unreachable / non-returnable portions.
+FExpressionPreservingProjection keeps only transitions whose feature expression evaluates to true under the chosen configuration. 26 transition(s) were dropped relative to step 1. After projection the graph has 1 strongly-connected component(s); the SCC containing the initial state has 8 state(s). If that count is less than the total state count, the next step removes the unreachable / non-returnable portions.
 
 ![Step 2](Elevator-step2-projected.png)
 
@@ -24,7 +24,7 @@ FExpressionPreservingProjection keeps only transitions whose feature expression 
 
 **Size:** 8 states, 23 transitions
 
-InitialSccFilter keeps only the SCC containing the initial state and drops every other state along with the transitions touching them. 4 state(s) and 4 transition(s) were removed. The result is strongly connected by construction and feeds the EulerianBalancer + Hierholzer pipeline in M3 and the coverage generators in M4 / M5 / M6.
+InitialSccFilter keeps only the SCC containing the initial state and drops every other state along with the transitions touching them. 0 state(s) and 0 transition(s) were removed. The result is strongly connected by construction and feeds the EulerianBalancer + Hierholzer pipeline in M3 and the coverage generators in M4 / M5 / M6.
 
 ![Step 3](Elevator-step3-repaired.png)
 

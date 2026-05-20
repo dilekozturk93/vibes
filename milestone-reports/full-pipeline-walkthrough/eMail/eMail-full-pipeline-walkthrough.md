@@ -14,9 +14,9 @@ Bisimulation-minimized FTS produced by MxeToFtsConverter. Feature expressions ar
 
 ## Step 2 — Projected FTS (after applying the configuration)
 
-**Size:** 8 states, 14 transitions
+**Size:** 7 states, 13 transitions
 
-FExpressionPreservingProjection keeps transitions whose feature expression evaluates to true under the configuration. 10 transition(s) dropped relative to step 1. Resulting graph has 2 strongly-connected component(s). If that count is 1 the next step is a no-op; otherwise it removes the parts of the graph the initial state cannot reach AND return from.
+FExpressionPreservingProjection keeps transitions whose feature expression evaluates to true under the configuration. 11 transition(s) dropped relative to step 1. Resulting graph has 1 strongly-connected component(s). If that count is 1 the next step is a no-op; otherwise it removes the parts of the graph the initial state cannot reach AND return from.
 
 ![Step 2](eMail-step2-projected.png)
 
@@ -24,7 +24,7 @@ FExpressionPreservingProjection keeps transitions whose feature expression evalu
 
 **Size:** 7 states, 13 transitions
 
-InitialSccFilter keeps only the SCC containing the initial state and drops every other state plus the transitions touching them. 1 state(s) and 1 transition(s) removed. Result is strongly connected by construction — every state can reach every other state.
+InitialSccFilter keeps only the SCC containing the initial state and drops every other state plus the transitions touching them. 0 state(s) and 0 transition(s) removed. Result is strongly connected by construction — every state can reach every other state.
 
 ![Step 3](eMail-step3-strongly-connected.png)
 

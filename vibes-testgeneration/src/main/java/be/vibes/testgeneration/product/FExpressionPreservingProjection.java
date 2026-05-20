@@ -9,7 +9,11 @@ import be.vibes.ts.Transition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -41,6 +45,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * unresolved under the given product configuration are dropped. States
  * and actions that do not appear in any kept transition are also dropped;
  * the initial state is always preserved.
+ *
+ * <p>After the structural projection, a forward-reachability filter runs
+ * a BFS from the initial state and discards any state that the test cases
+ * could not actually reach. Without it, states whose only kept outgoing is
+ * a synthetic {@code __end__} (and whose original incoming were all
+ * dropped) survive as orphan nodes — visually confusing in the per-step
+ * walkthroughs and irrelevant to test generation, since no path from the
+ * initial state could traverse them.
  */
 public final class FExpressionPreservingProjection {
 
@@ -96,6 +108,66 @@ public final class FExpressionPreservingProjection {
             }
         }
         LOG.info("Projected FTS: kept {} transitions, dropped {}", kept, dropped);
+        FeaturedTransitionSystem projected = factory.build();
+        return keepReachableFromInitial(projected);
+    }
+
+    /**
+     * Removes states unreachable from the initial state via a forward BFS.
+     * If every state is reachable the input is returned unchanged; otherwise
+     * a fresh FTS is built containing only the reachable states and the
+     * transitions whose source and target are both reachable.
+     */
+    static FeaturedTransitionSystem keepReachableFromInitial(FeaturedTransitionSystem fts) {
+        State initial = fts.getInitialState();
+        Set<State> reachable = new HashSet<>();
+        Deque<State> queue = new ArrayDeque<>();
+        queue.add(initial);
+        reachable.add(initial);
+        while (!queue.isEmpty()) {
+            State v = queue.poll();
+            Iterator<Transition> outs = fts.getOutgoing(v);
+            while (outs.hasNext()) {
+                State w = outs.next().getTarget();
+                if (reachable.add(w)) {
+                    queue.add(w);
+                }
+            }
+        }
+        int totalStates = 0;
+        Iterator<State> sIt = fts.states();
+        while (sIt.hasNext()) { sIt.next(); totalStates++; }
+        if (reachable.size() == totalStates) {
+            return fts;
+        }
+
+        FeaturedTransitionSystemFactory factory =
+                new FeaturedTransitionSystemFactory(initial.getName());
+        for (State s : reachable) {
+            factory.addState(s.getName());
+        }
+        int droppedTransitions = 0;
+        int keptTransitions = 0;
+        Iterator<Transition> tIt = fts.transitions();
+        while (tIt.hasNext()) {
+            Transition t = tIt.next();
+            if (!reachable.contains(t.getSource()) || !reachable.contains(t.getTarget())) {
+                droppedTransitions++;
+                continue;
+            }
+            FExpression fexpr = fts.getFExpression(t);
+            if (fexpr == null) {
+                fexpr = FExpression.trueValue();
+            }
+            factory.addAction(t.getAction().getName());
+            factory.addTransition(t.getSource().getName(), t.getAction().getName(),
+                    fexpr, t.getTarget().getName());
+            keptTransitions++;
+        }
+        LOG.info("Reachability filter: kept {} state(s) / {} transition(s); dropped {} unreachable "
+                        + "state(s) and {} associated transition(s)",
+                reachable.size(), keptTransitions, totalStates - reachable.size(),
+                droppedTransitions);
         return factory.build();
     }
 }

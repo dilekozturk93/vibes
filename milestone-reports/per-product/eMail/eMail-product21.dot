@@ -7,8 +7,6 @@ with receiver's
 public key/en " ];
 state3 [ label = "state8" ];
 state3 -> state0 [ label=" __end__/true " ];
-state2 [ label = "state10" ];
-state2 -> state0 [ label=" send email/e " ];
 state4 [ label = "state7" ];
 state4 -> state0 [ label=" send email/e " ];
 state4 -> state1 [ label=" get receiver's  
@@ -20,6 +18,8 @@ subject/e " ];
 state4 -> state4 [ label=" enter 
 receiver's 
 email address/e " ];
+state2 [ label = "state10" ];
+state2 -> state0 [ label=" send email/e " ];
 state5 [ label = "state2" ];
 state5 -> state4 [ label=" enter 
 receiver's 

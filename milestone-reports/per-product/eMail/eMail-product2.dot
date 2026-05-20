@@ -3,19 +3,19 @@ rankdir=LR;
 state0[ label = "state1", style=filled, color=green ];
 state1 [ label = "state8" ];
 state1 -> state0 [ label=" __end__/true " ];
-state2 [ label = "state10" ];
+state2 [ label = "state7" ];
 state2 -> state0 [ label=" send email/e " ];
-state3 [ label = "state7" ];
-state3 -> state0 [ label=" send email/e " ];
-state3 -> state2 [ label=" sign mail/s " ];
-state3 -> state4 [ label=" enter
+state2 -> state3 [ label=" sign mail/s " ];
+state2 -> state4 [ label=" enter
  email 
 subject/e " ];
-state3 -> state3 [ label=" enter 
+state2 -> state2 [ label=" enter 
 receiver's 
 email address/e " ];
+state3 [ label = "state10" ];
+state3 -> state0 [ label=" send email/e " ];
 state4 [ label = "state2" ];
-state4 -> state3 [ label=" enter 
+state4 -> state2 [ label=" enter 
 receiver's 
 email address/e " ];
 state4 -> state4 [ label=" enter email 

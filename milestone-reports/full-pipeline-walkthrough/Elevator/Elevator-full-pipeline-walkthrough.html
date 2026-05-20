@@ -18,12 +18,12 @@ img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; 
 <p>Bisimulation-minimized FTS produced by MxeToFtsConverter. Feature expressions are retained on every transition for traceability. Synthetic '__end__' transitions (back-to-INIT for mixed-terminal ESG vertices) appear here if the source ESG has any '['-only-edge vertices.</p>
 <img src="Elevator-step1-spl.png" alt="Step 1"/>
 <h2>Step 2 — Projected FTS (after applying the configuration)</h2>
-<p><strong>Size:</strong> 12 states, 26 transitions</p>
-<p>FExpressionPreservingProjection keeps transitions whose feature expression evaluates to true under the configuration. 23 transition(s) dropped relative to step 1. Resulting graph has 6 strongly-connected component(s). If that count is 1 the next step is a no-op; otherwise it removes the parts of the graph the initial state cannot reach AND return from.</p>
+<p><strong>Size:</strong> 7 states, 20 transitions</p>
+<p>FExpressionPreservingProjection keeps transitions whose feature expression evaluates to true under the configuration. 29 transition(s) dropped relative to step 1. Resulting graph has 1 strongly-connected component(s). If that count is 1 the next step is a no-op; otherwise it removes the parts of the graph the initial state cannot reach AND return from.</p>
 <img src="Elevator-step2-projected.png" alt="Step 2"/>
 <h2>Step 3 — Strongly-connected projected FTS</h2>
 <p><strong>Size:</strong> 7 states, 20 transitions</p>
-<p>InitialSccFilter keeps only the SCC containing the initial state and drops every other state plus the transitions touching them. 5 state(s) and 6 transition(s) removed. Result is strongly connected by construction — every state can reach every other state.</p>
+<p>InitialSccFilter keeps only the SCC containing the initial state and drops every other state plus the transitions touching them. 0 state(s) and 0 transition(s) removed. Result is strongly connected by construction — every state can reach every other state.</p>
 <img src="Elevator-step3-strongly-connected.png" alt="Step 3"/>
 <h2>Step 4 — Strongly-connected + balanced FTS</h2>
 <p><strong>Size:</strong> 7 states, 34 transitions</p>

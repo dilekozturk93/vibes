@@ -14,8 +14,6 @@ state3 -> state4 [ label=" enter forward
 receiver's 
 email address/f " ];
 state3 -> state0 [ label=" __end__/true " ];
-state4 [ label = "state10" ];
-state4 -> state0 [ label=" send email/e " ];
 state5 [ label = "state7" ];
 state5 -> state0 [ label=" send email/e " ];
 state5 -> state6 [ label=" enter
@@ -27,6 +25,8 @@ email address/e " ];
 state5 -> state4 [ label=" get alias 
 email addresses 
 of receiver/ad " ];
+state4 [ label = "state10" ];
+state4 -> state0 [ label=" send email/e " ];
 state6 [ label = "state2" ];
 state6 -> state5 [ label=" enter 
 receiver's 
