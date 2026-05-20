@@ -12,7 +12,7 @@ Given an SPL-level FTS plus one product configuration, the generator runs five s
 
 **Step 4 — Trace the Euler cycle.** [`HierholzerEulerCycle.compute(balanced)`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/graph/HierholzerEulerCycle.java) walks the balanced graph using Hierholzer's algorithm: DFS until a sub-cycle closes, splice in additional sub-cycles from unvisited transitions, repeat. The output is one contiguous sequence of transitions that visits every edge of the balanced graph exactly once and returns to the initial state.
 
-**Step 5 — Wrap into a TestCase.** The cycle is enqueued into `be.vibes.ts.TestCase`. Synthetic actions (`__end__`, `__balance__N`, `<action>__dup__N`) remain in the test case so the executor can use them as test-case boundary markers (everything between two synthetics is one real-SUT sub-walk); they are filtered before coverage measurement via `EulerianBalancer.isSyntheticAction(...)`.
+**Step 5 — Wrap into a TestCase, then split into trips.** The cycle is enqueued into `be.vibes.ts.TestCase`. For display the cycle is split at every visit to the initial state via [`TestCaseSplitter.splitAtInitialReturns(...)`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/product/TestCaseSplitter.java); each trip from initial back to initial is one test case in the operational sense (boot the SUT, run actions, return to reset). When rendering the action sequence, `__end__` and `__balance__N` transitions are hidden (synthetic reset markers, not real SUT events) and `<action>__dup__N` is shown as `<action>` (a real second traversal). All synthetics are still filtered from coverage measurement via `EulerianBalancer.isSyntheticAction(...)`.
 
 **Coverage claim (by construction).** Every real transition in the projected FTS appears in the balanced FTS (balancing only adds, never removes). The Hierholzer cycle visits every transition of the balanced graph exactly once. Therefore the cycle's real (non-synthetic) transitions cover **100% of the projected FTS' real transitions**. This is a structural invariant, not an empirical observation.
 
@@ -37,21 +37,13 @@ Each product below shows the projected FTS (left, synthetic `__end__` transition
 
 ![Balanced FTS — product 1](eMail-product1-balanced.png)
 
-**All-transitions test case (`eMail_p1_trans`)** — 15 step(s) total (11 real / 1 `__end__` / 3 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **11/11 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **11/11 = 100.0%** (15 raw cycle step(s): 11 real, 1 `__end__`, 3 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (3 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email`
-- **sub-walk 2**: `compose new email -> enter email body -> enter email subject`
-- **sub-walk 3**: `send email`
-- **sub-walk 4**: `enter receiver's email address -> enter email subject`
-- **sub-walk 5**: `enter receiver's email address -> sign mail -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> __end__ -> compose new email -> enter email body -> enter email subject -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> sign mail -> send email
-```
+- **test case 1**: `open mailbox -> select email`
+- **test case 2**: `compose new email -> enter email body -> enter email subject -> enter receiver's email address -> send email`
+- **test case 3**: `compose new email -> enter receiver's email address -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email`
 
 
 ### Product 2
@@ -68,21 +60,14 @@ open mailbox -> select email -> __end__ -> compose new email -> enter email body
 
 ![Balanced FTS — product 2](eMail-product2-balanced.png)
 
-**All-transitions test case (`eMail_p2_trans`)** — 18 step(s) total (14 real / 1 `__end__` / 3 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **14/14 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **14/14 = 100.0%** (18 raw cycle step(s): 14 real, 1 `__end__`, 3 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (4 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email`
-- **sub-walk 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email`
-- **sub-walk 3**: `send email`
-- **sub-walk 4**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 5**: `enter receiver's email address -> get alias email addresses of receiver -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email
-```
+- **test case 1**: `open mailbox -> select email`
+- **test case 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 3**: `compose new email -> enter receiver's email address -> send email`
+- **test case 4**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 3
@@ -99,23 +84,16 @@ open mailbox -> select email -> __end__ -> create an addressbook for a receiver 
 
 ![Balanced FTS — product 3](eMail-product3-balanced.png)
 
-**All-transitions test case (`eMail_p3_trans`)** — 25 step(s) total (18 real / 3 `__end__` / 5 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **18/18 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **18/18 = 100.0%** (25 raw cycle step(s): 18 real, 3 `__end__`, 5 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (6 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address -> get alias email addresses of receiver -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 4
@@ -132,25 +110,18 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 4](eMail-product4-balanced.png)
 
-**All-transitions test case (`eMail_p4_trans`)** — 34 step(s) total (21 real / 3 `__end__` / 11 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **21/21 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **21/21 = 100.0%** (34 raw cycle step(s): 21 real, 3 `__end__`, 11 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (8 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
-- **sub-walk 5**: `send email -> compose new email`
-- **sub-walk 6**: `get receiver's public key -> encrypt mail with receiver's public key`
-- **sub-walk 7**: `sign mail -> send email`
-- **sub-walk 8**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 9**: `enter receiver's email address -> get alias email addresses of receiver`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email -> enter receiver's email address(dup) -> get receiver's public key -> encrypt mail with receiver's public key -> send email(dup) -> compose new email(dup) -> enter receiver's email address(dup) -> sign mail -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
+- **test case 7**: `compose new email -> enter receiver's email address -> sign mail -> send email`
+- **test case 8**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 5
@@ -167,22 +138,14 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 5](eMail-product5-balanced.png)
 
-**All-transitions test case (`eMail_p5_trans`)** — 20 step(s) total (13 real / 1 `__end__` / 6 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **13/13 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **13/13 = 100.0%** (20 raw cycle step(s): 13 real, 1 `__end__`, 6 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (4 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email`
-- **sub-walk 2**: `send email`
-- **sub-walk 3**: `enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key`
-- **sub-walk 4**: `compose new email`
-- **sub-walk 5**: `enter email subject -> enter email body -> enter email subject`
-- **sub-walk 6**: `enter receiver's email address -> sign mail -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> __end__ -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email(dup) -> compose new email -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> sign mail -> send email
-```
+- **test case 1**: `open mailbox -> select email`
+- **test case 2**: `compose new email -> enter receiver's email address -> send email`
+- **test case 3**: `compose new email -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
+- **test case 4**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email`
 
 
 ### Product 6
@@ -199,23 +162,16 @@ open mailbox -> select email -> __end__ -> compose new email(dup) -> enter recei
 
 ![Balanced FTS — product 6](eMail-product6-balanced.png)
 
-**All-transitions test case (`eMail_p6_trans`)** — 27 step(s) total (17 real / 3 `__end__` / 8 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **17/17 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **17/17 = 100.0%** (27 raw cycle step(s): 17 real, 3 `__end__`, 8 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (6 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `get receiver's public key -> encrypt mail with receiver's public key -> send email`
-- **sub-walk 7**: `enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> get receiver's public key -> encrypt mail with receiver's public key -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `compose new email -> enter receiver's email address -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email`
 
 
 ### Product 7
@@ -232,26 +188,19 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 7](eMail-product7-balanced.png)
 
-**All-transitions test case (`eMail_p7_trans`)** — 36 step(s) total (20 real / 3 `__end__` / 14 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **20/20 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **20/20 = 100.0%** (36 raw cycle step(s): 20 real, 3 `__end__`, 14 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (9 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox`
-- **sub-walk 4**: `enter forward receiver's email address`
-- **sub-walk 5**: `select email`
-- **sub-walk 6**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
-- **sub-walk 7**: `send email -> compose new email`
-- **sub-walk 8**: `sign mail -> send email`
-- **sub-walk 9**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 10**: `enter receiver's email address -> get alias email addresses of receiver`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email(dup) -> enter forward receiver's email address -> send email(dup) -> open mailbox(dup) -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email -> enter receiver's email address(dup) -> send email(dup) -> compose new email(dup) -> enter receiver's email address(dup) -> sign mail -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 4**: `open mailbox -> select email`
+- **test case 5**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 6**: `compose new email -> enter receiver's email address -> send email`
+- **test case 7**: `compose new email -> enter receiver's email address -> send email`
+- **test case 8**: `compose new email -> enter receiver's email address -> sign mail -> send email`
+- **test case 9**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 8
@@ -268,23 +217,15 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 8](eMail-product8-balanced.png)
 
-**All-transitions test case (`eMail_p8_trans`)** — 22 step(s) total (12 real / 1 `__end__` / 9 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **12/12 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **12/12 = 100.0%** (22 raw cycle step(s): 12 real, 1 `__end__`, 9 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (5 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter forward receiver's email address`
-- **sub-walk 2**: `open mailbox -> select email`
-- **sub-walk 3**: `send email`
-- **sub-walk 4**: `enter receiver's email address`
-- **sub-walk 5**: `compose new email`
-- **sub-walk 6**: `enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address -> sign mail -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox(dup) -> select email(dup) -> enter forward receiver's email address -> send email(dup) -> open mailbox -> select email -> __end__ -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> send email(dup) -> compose new email -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> sign mail -> send email
-```
+- **test case 1**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 2**: `open mailbox -> select email`
+- **test case 3**: `compose new email -> enter receiver's email address -> send email`
+- **test case 4**: `compose new email -> enter receiver's email address -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email`
 
 
 ### Product 9
@@ -301,23 +242,15 @@ open mailbox(dup) -> select email(dup) -> enter forward receiver's email address
 
 ![Balanced FTS — product 9](eMail-product9-balanced.png)
 
-**All-transitions test case (`eMail_p9_trans`)** — 21 step(s) total (13 real / 3 `__end__` / 6 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **13/13 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **13/13 = 100.0%** (21 raw cycle step(s): 13 real, 3 `__end__`, 6 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (5 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `compose new email -> enter receiver's email address -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> send email`
 
 
 ### Product 10
@@ -334,24 +267,16 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 10](eMail-product10-balanced.png)
 
-**All-transitions test case (`eMail_p10_trans`)** — 25 step(s) total (15 real / 1 `__end__` / 9 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **15/15 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **15/15 = 100.0%** (25 raw cycle step(s): 15 real, 1 `__end__`, 9 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (6 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter forward receiver's email address`
-- **sub-walk 2**: `open mailbox -> select email`
-- **sub-walk 3**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
-- **sub-walk 4**: `send email`
-- **sub-walk 5**: `enter receiver's email address`
-- **sub-walk 6**: `compose new email`
-- **sub-walk 7**: `enter email subject -> enter email body -> enter email subject`
-- **sub-walk 8**: `enter receiver's email address -> get alias email addresses of receiver -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox(dup) -> select email(dup) -> enter forward receiver's email address -> send email(dup) -> open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> send email(dup) -> compose new email -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email
-```
+- **test case 1**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 2**: `open mailbox -> select email`
+- **test case 3**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 4**: `compose new email -> enter receiver's email address -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 11
@@ -368,22 +293,18 @@ open mailbox(dup) -> select email(dup) -> enter forward receiver's email address
 
 ![Balanced FTS — product 11](eMail-product11-balanced.png)
 
-**All-transitions test case (`eMail_p11_trans`)** — 32 step(s) total (19 real / 3 `__end__` / 11 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **19/19 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **19/19 = 100.0%** (32 raw cycle step(s): 19 real, 3 `__end__`, 11 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (8 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
-- **sub-walk 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> enter forward receiver's email address -> send email -> open mailbox(dup) -> select email(dup) -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email -> enter receiver's email address(dup) -> send email(dup) -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 4**: `open mailbox -> select email`
+- **test case 5**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 6**: `compose new email -> enter receiver's email address -> send email`
+- **test case 7**: `compose new email -> enter receiver's email address -> send email`
+- **test case 8**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 12
@@ -400,23 +321,15 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 12](eMail-product12-balanced.png)
 
-**All-transitions test case (`eMail_p12_trans`)** — 23 step(s) total (16 real / 1 `__end__` / 6 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **16/16 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **16/16 = 100.0%** (23 raw cycle step(s): 16 real, 1 `__end__`, 6 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (5 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email`
-- **sub-walk 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
-- **sub-walk 3**: `send email`
-- **sub-walk 4**: `enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key`
-- **sub-walk 5**: `compose new email`
-- **sub-walk 6**: `enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address -> get alias email addresses of receiver -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email(dup) -> compose new email -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email
-```
+- **test case 1**: `open mailbox -> select email`
+- **test case 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 3**: `compose new email -> enter receiver's email address -> send email`
+- **test case 4**: `compose new email -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 13
@@ -433,23 +346,15 @@ open mailbox -> select email -> __end__ -> create an addressbook for a receiver 
 
 ![Balanced FTS — product 13](eMail-product13-balanced.png)
 
-**All-transitions test case (`eMail_p13_trans`)** — 22 step(s) total (15 real / 1 `__end__` / 6 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **15/15 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **15/15 = 100.0%** (22 raw cycle step(s): 15 real, 1 `__end__`, 6 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (5 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email`
-- **sub-walk 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
-- **sub-walk 3**: `send email`
-- **sub-walk 4**: `enter receiver's email address -> sign mail`
-- **sub-walk 5**: `compose new email`
-- **sub-walk 6**: `enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address -> get alias email addresses of receiver -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> sign mail -> send email(dup) -> compose new email -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email
-```
+- **test case 1**: `open mailbox -> select email`
+- **test case 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 3**: `compose new email -> enter receiver's email address -> send email`
+- **test case 4**: `compose new email -> enter receiver's email address -> sign mail -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 14
@@ -466,22 +371,17 @@ open mailbox -> select email -> __end__ -> create an addressbook for a receiver 
 
 ![Balanced FTS — product 14](eMail-product14-balanced.png)
 
-**All-transitions test case (`eMail_p14_trans`)** — 29 step(s) total (16 real / 3 `__end__` / 11 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **16/16 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **16/16 = 100.0%** (29 raw cycle step(s): 16 real, 3 `__end__`, 11 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (7 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
-- **sub-walk 4**: `compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> enter forward receiver's email address -> send email -> open mailbox(dup) -> select email(dup) -> __end__ -> compose new email -> enter receiver's email address(dup) -> send email(dup) -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 4**: `open mailbox -> select email`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> send email`
+- **test case 7**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email`
 
 
 ### Product 15
@@ -498,21 +398,13 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 15](eMail-product15-balanced.png)
 
-**All-transitions test case (`eMail_p15_trans`)** — 16 step(s) total (12 real / 1 `__end__` / 3 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **12/12 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **12/12 = 100.0%** (16 raw cycle step(s): 12 real, 1 `__end__`, 3 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (3 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email`
-- **sub-walk 2**: `compose new email`
-- **sub-walk 3**: `send email`
-- **sub-walk 4**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 5**: `enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> __end__ -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email
-```
+- **test case 1**: `open mailbox -> select email`
+- **test case 2**: `compose new email -> enter receiver's email address -> send email`
+- **test case 3**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
 
 
 ### Product 16
@@ -529,23 +421,16 @@ open mailbox -> select email -> __end__ -> compose new email -> enter receiver's
 
 ![Balanced FTS — product 16](eMail-product16-balanced.png)
 
-**All-transitions test case (`eMail_p16_trans`)** — 25 step(s) total (15 real / 3 `__end__` / 8 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **15/15 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **15/15 = 100.0%** (25 raw cycle step(s): 15 real, 3 `__end__`, 8 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (6 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
-- **sub-walk 4**: `compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> enter forward receiver's email address -> send email -> open mailbox(dup) -> select email(dup) -> __end__ -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 4**: `open mailbox -> select email`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> send email`
 
 
 ### Product 17
@@ -562,22 +447,17 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 17](eMail-product17-balanced.png)
 
-**All-transitions test case (`eMail_p17_trans`)** — 29 step(s) total (16 real / 1 `__end__` / 12 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **16/16 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **16/16 = 100.0%** (29 raw cycle step(s): 16 real, 1 `__end__`, 12 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (7 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email -> enter forward receiver's email address`
-- **sub-walk 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
-- **sub-walk 3**: `send email -> compose new email`
-- **sub-walk 4**: `enter receiver's email address -> sign mail`
-- **sub-walk 5**: `enter email subject -> enter email body -> enter email subject`
-- **sub-walk 6**: `enter receiver's email address -> get alias email addresses of receiver -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> enter forward receiver's email address -> send email(dup) -> open mailbox(dup) -> select email(dup) -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email -> enter receiver's email address(dup) -> send email(dup) -> compose new email(dup) -> enter receiver's email address -> sign mail -> send email(dup) -> compose new email(dup) -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email
-```
+- **test case 1**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 2**: `open mailbox -> select email`
+- **test case 3**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 4**: `compose new email -> enter receiver's email address -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> sign mail -> send email`
+- **test case 7**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 18
@@ -594,23 +474,17 @@ open mailbox -> select email -> enter forward receiver's email address -> send e
 
 ![Balanced FTS — product 18](eMail-product18-balanced.png)
 
-**All-transitions test case (`eMail_p18_trans`)** — 30 step(s) total (20 real / 3 `__end__` / 8 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **20/20 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **20/20 = 100.0%** (30 raw cycle step(s): 20 real, 3 `__end__`, 8 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (7 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `get receiver's public key -> encrypt mail with receiver's public key -> send email`
-- **sub-walk 7**: `enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> get receiver's public key -> encrypt mail with receiver's public key -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
+- **test case 7**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 19
@@ -627,23 +501,15 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 19](eMail-product19-balanced.png)
 
-**All-transitions test case (`eMail_p19_trans`)** — 23 step(s) total (16 real / 3 `__end__` / 5 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **16/16 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **16/16 = 100.0%** (23 raw cycle step(s): 16 real, 3 `__end__`, 5 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (5 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `compose new email -> enter receiver's email address -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
 
 
 ### Product 20
@@ -660,21 +526,14 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 20](eMail-product20-balanced.png)
 
-**All-transitions test case (`eMail_p20_trans`)** — 18 step(s) total (11 real / 1 `__end__` / 6 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **11/11 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **11/11 = 100.0%** (18 raw cycle step(s): 11 real, 1 `__end__`, 6 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (4 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
-- **sub-walk 2**: `compose new email -> enter email body -> enter email subject`
-- **sub-walk 3**: `send email`
-- **sub-walk 4**: `enter receiver's email address -> enter email subject`
-- **sub-walk 5**: `enter receiver's email address`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> enter forward receiver's email address -> send email -> open mailbox(dup) -> select email(dup) -> __end__ -> compose new email -> enter email body -> enter email subject -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> send email(dup)
-```
+- **test case 1**: `open mailbox -> select email -> enter forward receiver's email address -> send email`
+- **test case 2**: `open mailbox -> select email`
+- **test case 3**: `compose new email -> enter email body -> enter email subject -> enter receiver's email address -> send email`
+- **test case 4**: `compose new email -> enter receiver's email address -> enter email subject -> enter receiver's email address -> enter receiver's email address -> send email`
 
 
 ### Product 21
@@ -691,23 +550,16 @@ open mailbox -> select email -> enter forward receiver's email address -> send e
 
 ![Balanced FTS — product 21](eMail-product21-balanced.png)
 
-**All-transitions test case (`eMail_p21_trans`)** — 27 step(s) total (17 real / 1 `__end__` / 9 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **17/17 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **17/17 = 100.0%** (27 raw cycle step(s): 17 real, 1 `__end__`, 9 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (6 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `open mailbox -> select email`
-- **sub-walk 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
-- **sub-walk 3**: `send email -> compose new email`
-- **sub-walk 4**: `get receiver's public key -> encrypt mail with receiver's public key`
-- **sub-walk 5**: `enter receiver's email address -> sign mail`
-- **sub-walk 6**: `enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address -> get alias email addresses of receiver -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email(dup) -> enter receiver's email address(dup) -> send email -> compose new email -> enter receiver's email address(dup) -> get receiver's public key -> encrypt mail with receiver's public key -> send email(dup) -> compose new email(dup) -> enter receiver's email address -> sign mail -> send email(dup) -> compose new email(dup) -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> get alias email addresses of receiver -> send email
-```
+- **test case 1**: `open mailbox -> select email`
+- **test case 2**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 3**: `compose new email -> enter receiver's email address -> send email`
+- **test case 4**: `compose new email -> enter receiver's email address -> get receiver's public key -> encrypt mail with receiver's public key -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> sign mail -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 22
@@ -724,23 +576,17 @@ open mailbox -> select email -> __end__ -> create an addressbook for a receiver 
 
 ![Balanced FTS — product 22](eMail-product22-balanced.png)
 
-**All-transitions test case (`eMail_p22_trans`)** — 29 step(s) total (19 real / 3 `__end__` / 8 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **19/19 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **19/19 = 100.0%** (29 raw cycle step(s): 19 real, 3 `__end__`, 8 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (7 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `sign mail -> send email`
-- **sub-walk 7**: `enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> sign mail -> send email -> compose new email(dup) -> enter receiver's email address(dup) -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email(dup)
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `create an addressbook for a receiver -> enter the receiver's email address -> enter alias email addresses of receiver`
+- **test case 5**: `compose new email -> enter receiver's email address -> send email`
+- **test case 6**: `compose new email -> enter receiver's email address -> sign mail -> send email`
+- **test case 7**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> get alias email addresses of receiver -> send email`
 
 
 ### Product 23
@@ -757,23 +603,15 @@ enter email autoresponse date interval -> enter autoresponse email body -> enter
 
 ![Balanced FTS — product 23](eMail-product23-balanced.png)
 
-**All-transitions test case (`eMail_p23_trans`)** — 22 step(s) total (15 real / 3 `__end__` / 5 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **15/15 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **15/15 = 100.0%** (22 raw cycle step(s): 15 real, 3 `__end__`, 5 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (5 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
-- **sub-walk 2**: `enter autoresponse email body`
-- **sub-walk 3**: `open mailbox -> select email`
-- **sub-walk 4**: `compose new email`
-- **sub-walk 5**: `send email`
-- **sub-walk 6**: `enter receiver's email address -> enter email subject -> enter email body -> enter email subject`
-- **sub-walk 7**: `enter receiver's email address -> sign mail -> send email`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval -> __end__ -> enter autoresponse email body -> enter email autoresponse date interval(dup) -> __end__(dup) -> open mailbox -> select email -> __end__ -> compose new email -> enter receiver's email address(dup) -> send email -> compose new email(dup) -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address(dup) -> enter receiver's email address -> sign mail -> send email
-```
+- **test case 1**: `enter email autoresponse date interval -> enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 2**: `enter autoresponse email body -> enter email autoresponse date interval`
+- **test case 3**: `open mailbox -> select email`
+- **test case 4**: `compose new email -> enter receiver's email address -> send email`
+- **test case 5**: `compose new email -> enter receiver's email address -> enter email subject -> enter email body -> enter email subject -> enter receiver's email address -> enter receiver's email address -> sign mail -> send email`
 
 ---
 

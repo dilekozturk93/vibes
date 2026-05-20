@@ -12,6 +12,8 @@ import be.vibes.testgeneration.coverage.TransitionPairCoverageGenerator;
 import be.vibes.testgeneration.graph.EulerianBalancer;
 import be.vibes.testgeneration.graph.InitialSccFilter;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
+import be.vibes.testgeneration.product.TestCaseSplitter;
+import be.vibes.ts.State;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.TestCase;
 import be.vibes.ts.Transition;
@@ -123,11 +125,19 @@ public final class PerProductReportGenerator {
                     + "report shows the projected + SCC-repaired product-level FTS plus "
                     + "the test suites generated for state, all-transitions, and "
                     + "all-transition-pairs coverage.";
-            md.write(intro + "\n\nAction sequences are written as `a -> b -> c -> ...`. "
-                    + "Synthetic balancing actions (prefix `__balance__`) are not present "
-                    + "in the final test cases.\n\n");
-            html.write("<p>" + escapeHtml(intro) + " Action sequences are written as "
-                    + "<code>a -&gt; b -&gt; c -&gt; ...</code>.</p>\n");
+            md.write(intro + "\n\nEach generator produces a closed Euler cycle on the "
+                    + "product-level FTS; the cycle is split at every return to the initial "
+                    + "state via `TestCaseSplitter.splitAtInitialReturns(...)`, and each "
+                    + "trip-from-initial-back-to-initial is shown as one test case. "
+                    + "`__end__` and `__balance__N` transitions are hidden from the displayed "
+                    + "sequence (synthetic reset markers); `<action>__dup__N` suffixes are "
+                    + "stripped (a doubled traversal IS a real test step the tester performs "
+                    + "a second time).\n\n");
+            html.write("<p>" + escapeHtml(intro) + " Each generator produces a closed Euler "
+                    + "cycle on the product-level FTS; the cycle is split at every return to "
+                    + "the initial state. <code>__end__</code> and <code>__balance__N</code> "
+                    + "are hidden from the displayed sequence; <code>__dup__N</code> suffixes "
+                    + "are stripped (the doubled action is still a real step).</p>\n");
             String featuresLabel = "Features actually labelling transitions in the SPL FTS";
             String featuresValue = ftsFeatures.isEmpty()
                     ? "(none)"
@@ -255,62 +265,84 @@ public final class PerProductReportGenerator {
         html.write("<img src=\"" + escapeHtml(pngName)
                 + "\" alt=\"Product " + productIndex + " projected FTS\"/>\n");
 
+        State initial = repaired.getInitialState();
+
         // State coverage
         TestCase stateTc = StateCoverageGenerator.generate(fts, config,
                 spec.name + "_p" + productIndex + "_state");
-        String stateSeq = actionSequence(stateTc);
-        md.write("### State coverage (1 test case, "
-                + countTestCaseLength(stateTc) + " transitions)\n\n");
-        md.write("```\n" + stateSeq + "\n```\n\n");
-        html.write("<h3>State coverage (1 test case, "
-                + countTestCaseLength(stateTc) + " transitions)</h3>\n");
-        html.write("<pre>" + escapeHtml(stateSeq) + "</pre>\n");
+        List<List<String>> stateTrips = trips(stateTc, initial);
+        md.write("### State coverage (" + stateTrips.size() + " test case"
+                + (stateTrips.size() == 1 ? "" : "s") + ")\n\n");
+        html.write("<h3>State coverage (" + stateTrips.size() + " test case"
+                + (stateTrips.size() == 1 ? "" : "s") + ")</h3>\n<ul>\n");
+        for (int i = 0; i < stateTrips.size(); i++) {
+            String seq = String.join(" -> ", stateTrips.get(i));
+            md.write("- **test case " + (i + 1) + "**: `" + seq + "`\n");
+            html.write("<li><strong>test case " + (i + 1) + "</strong>: <code>"
+                    + escapeHtml(seq) + "</code></li>\n");
+        }
+        md.write("\n");
+        html.write("</ul>\n");
 
         // Transition coverage
         TestCase transitionTc = TransitionCoverageGenerator.generate(fts, config,
                 spec.name + "_p" + productIndex + "_trans");
-        List<List<String>> transitionSegments = splitAtSynthetics(transitionTc);
-        int totalTrans = 0;
-        for (List<String> seg : transitionSegments) {
-            totalTrans += seg.size();
-        }
-        md.write("### All-transitions coverage ("
-                + transitionSegments.size() + " test cases, "
-                + totalTrans + " transitions total)\n\n");
-        html.write("<h3>All-transitions coverage ("
-                + transitionSegments.size() + " test cases, "
-                + totalTrans + " transitions total)</h3>\n<ul>\n");
-        for (int i = 0; i < transitionSegments.size(); i++) {
-            String id = spec.name + "_p" + productIndex + "_trans_seg" + i;
-            String seq = transitionSegments.get(i).isEmpty()
-                    ? "(empty)"
-                    : String.join(" -> ", transitionSegments.get(i));
-            md.write("- **`" + id + "`**: `" + seq + "`\n");
-            html.write("<li><code>" + escapeHtml(id) + "</code>: <code>"
+        List<List<String>> transitionTrips = trips(transitionTc, initial);
+        md.write("### All-transitions coverage (" + transitionTrips.size() + " test case"
+                + (transitionTrips.size() == 1 ? "" : "s") + ")\n\n");
+        html.write("<h3>All-transitions coverage (" + transitionTrips.size() + " test case"
+                + (transitionTrips.size() == 1 ? "" : "s") + ")</h3>\n<ul>\n");
+        for (int i = 0; i < transitionTrips.size(); i++) {
+            String seq = String.join(" -> ", transitionTrips.get(i));
+            md.write("- **test case " + (i + 1) + "**: `" + seq + "`\n");
+            html.write("<li><strong>test case " + (i + 1) + "</strong>: <code>"
                     + escapeHtml(seq) + "</code></li>\n");
         }
         md.write("\n");
         html.write("</ul>\n");
 
-        // Pair coverage (suite)
+        // Pair coverage — generator already returns multiple TestCases; we
+        // re-split each at initial returns to apply the same operational
+        // semantics across all three criteria.
         List<TestCase> pairSuite = TransitionPairCoverageGenerator.generate(fts, config,
                 spec.name + "_p" + productIndex + "_pair");
-        int totalPair = 0;
-        for (TestCase tc : pairSuite) {
-            totalPair += countTestCaseLength(tc);
+        List<List<String>> pairTrips = new ArrayList<>();
+        for (TestCase pairTc : pairSuite) {
+            pairTrips.addAll(trips(pairTc, initial));
         }
-        md.write("### All-transition-pairs coverage ("
-                + pairSuite.size() + " test cases, " + totalPair + " transitions total)\n\n");
-        html.write("<h3>All-transition-pairs coverage ("
-                + pairSuite.size() + " test cases, " + totalPair + " transitions total)</h3>\n<ul>\n");
-        for (TestCase tc : pairSuite) {
-            String seq = actionSequence(tc);
-            md.write("- **`" + tc.getId() + "`**: `" + seq + "`\n");
-            html.write("<li><code>" + escapeHtml(tc.getId()) + "</code>: <code>"
+        md.write("### All-transition-pairs coverage (" + pairTrips.size() + " test case"
+                + (pairTrips.size() == 1 ? "" : "s") + ")\n\n");
+        html.write("<h3>All-transition-pairs coverage (" + pairTrips.size() + " test case"
+                + (pairTrips.size() == 1 ? "" : "s") + ")</h3>\n<ul>\n");
+        for (int i = 0; i < pairTrips.size(); i++) {
+            String seq = String.join(" -> ", pairTrips.get(i));
+            md.write("- **test case " + (i + 1) + "**: `" + seq + "`\n");
+            html.write("<li><strong>test case " + (i + 1) + "</strong>: <code>"
                     + escapeHtml(seq) + "</code></li>\n");
         }
         md.write("\n");
         html.write("</ul>\n");
+    }
+
+    /**
+     * Splits the test case at every visit to the initial state and renders
+     * each trip with __end__ / __balance__N hidden and __dup__N stripped.
+     * Empty trips (only hidden synthetics) are omitted. Action names are
+     * whitespace-normalized to recover from MXE soft-wrap newlines.
+     */
+    private static List<List<String>> trips(TestCase tc, State initial) {
+        List<List<String>> out = new ArrayList<>();
+        for (List<Transition> trip : TestCaseSplitter.splitAtInitialReturns(tc, initial)) {
+            List<String> actions = TestCaseSplitter.renderTripActions(trip);
+            List<String> normalized = new ArrayList<>(actions.size());
+            for (String a : actions) {
+                normalized.add(a.replaceAll("\\s+", " ").trim());
+            }
+            if (!normalized.isEmpty()) {
+                out.add(normalized);
+            }
+        }
+        return out;
     }
 
     private static String formatFeatures(Configuration config, Set<String> ftsFeatures) {

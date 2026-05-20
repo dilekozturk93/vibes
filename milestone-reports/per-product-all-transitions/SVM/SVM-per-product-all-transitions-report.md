@@ -12,7 +12,7 @@ Given an SPL-level FTS plus one product configuration, the generator runs five s
 
 **Step 4 — Trace the Euler cycle.** [`HierholzerEulerCycle.compute(balanced)`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/graph/HierholzerEulerCycle.java) walks the balanced graph using Hierholzer's algorithm: DFS until a sub-cycle closes, splice in additional sub-cycles from unvisited transitions, repeat. The output is one contiguous sequence of transitions that visits every edge of the balanced graph exactly once and returns to the initial state.
 
-**Step 5 — Wrap into a TestCase.** The cycle is enqueued into `be.vibes.ts.TestCase`. Synthetic actions (`__end__`, `__balance__N`, `<action>__dup__N`) remain in the test case so the executor can use them as test-case boundary markers (everything between two synthetics is one real-SUT sub-walk); they are filtered before coverage measurement via `EulerianBalancer.isSyntheticAction(...)`.
+**Step 5 — Wrap into a TestCase, then split into trips.** The cycle is enqueued into `be.vibes.ts.TestCase`. For display the cycle is split at every visit to the initial state via [`TestCaseSplitter.splitAtInitialReturns(...)`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/product/TestCaseSplitter.java); each trip from initial back to initial is one test case in the operational sense (boot the SUT, run actions, return to reset). When rendering the action sequence, `__end__` and `__balance__N` transitions are hidden (synthetic reset markers, not real SUT events) and `<action>__dup__N` is shown as `<action>` (a real second traversal). All synthetics are still filtered from coverage measurement via `EulerianBalancer.isSyntheticAction(...)`.
 
 **Coverage claim (by construction).** Every real transition in the projected FTS appears in the balanced FTS (balancing only adds, never removes). The Hierholzer cycle visits every transition of the balanced graph exactly once. Therefore the cycle's real (non-synthetic) transitions cover **100% of the projected FTS' real transitions**. This is a structural invariant, not an empirical observation.
 
@@ -37,17 +37,12 @@ Each product below shows the projected FTS (left, synthetic `__end__` transition
 
 ![Balanced FTS — product 1](SVM-product1-balanced.png)
 
-**All-transitions test case (`SVM_p1_trans`)** — 7 step(s) total (6 real / 0 `__end__` / 1 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **6/6 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **6/6 = 100.0%** (7 raw cycle step(s): 6 real, 0 `__end__`, 1 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (2 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `cancel -> return -> free -> tea -> serveTea -> take`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-free(dup) -> cancel -> return -> free -> tea -> serveTea -> take
-```
+- **test case 1**: `free -> cancel -> return`
+- **test case 2**: `free -> tea -> serveTea -> take`
 
 
 ### Product 2
@@ -64,19 +59,12 @@ free(dup) -> cancel -> return -> free -> tea -> serveTea -> take
 
 ![Balanced FTS — product 2](SVM-product2-balanced.png)
 
-**All-transitions test case (`SVM_p2_trans`)** — 14 step(s) total (9 real / 0 `__end__` / 5 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **9/9 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **9/9 = 100.0%** (14 raw cycle step(s): 9 real, 0 `__end__`, 5 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (2 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `pay`
-- **sub-walk 2**: `tea -> serveTea -> open -> take -> close`
-- **sub-walk 3**: `change -> soda -> serveSoda`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-pay -> change(dup) -> tea -> serveTea -> open -> take -> close -> pay(dup) -> change -> soda -> serveSoda -> open(dup) -> take(dup) -> close(dup)
-```
+- **test case 1**: `pay -> change -> tea -> serveTea -> open -> take -> close`
+- **test case 2**: `pay -> change -> soda -> serveSoda -> open -> take -> close`
 
 
 ### Product 3
@@ -93,17 +81,11 @@ pay -> change(dup) -> tea -> serveTea -> open -> take -> close -> pay(dup) -> ch
 
 ![Balanced FTS — product 3](SVM-product3-balanced.png)
 
-**All-transitions test case (`SVM_p3_trans`)** — 7 step(s) total (7 real / 0 `__end__` / 0 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **7/7 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **7/7 = 100.0%** (7 raw cycle step(s): 7 real, 0 `__end__`, 0 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (1 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `pay -> change -> soda -> serveSoda -> open -> take -> close`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-pay -> change -> soda -> serveSoda -> open -> take -> close
-```
+- **test case 1**: `pay -> change -> soda -> serveSoda -> open -> take -> close`
 
 
 ### Product 4
@@ -120,17 +102,11 @@ pay -> change -> soda -> serveSoda -> open -> take -> close
 
 ![Balanced FTS — product 4](SVM-product4-balanced.png)
 
-**All-transitions test case (`SVM_p4_trans`)** — 7 step(s) total (7 real / 0 `__end__` / 0 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **7/7 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **7/7 = 100.0%** (7 raw cycle step(s): 7 real, 0 `__end__`, 0 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (1 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `pay -> change -> tea -> serveTea -> open -> take -> close`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-pay -> change -> tea -> serveTea -> open -> take -> close
-```
+- **test case 1**: `pay -> change -> tea -> serveTea -> open -> take -> close`
 
 
 ### Product 5
@@ -147,18 +123,12 @@ pay -> change -> tea -> serveTea -> open -> take -> close
 
 ![Balanced FTS — product 5](SVM-product5-balanced.png)
 
-**All-transitions test case (`SVM_p5_trans`)** — 8 step(s) total (6 real / 0 `__end__` / 2 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **6/6 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **6/6 = 100.0%** (8 raw cycle step(s): 6 real, 0 `__end__`, 2 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (2 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `free -> tea -> serveTea -> take`
-- **sub-walk 2**: `soda -> serveSoda`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-free -> tea -> serveTea -> take -> free(dup) -> soda -> serveSoda -> take(dup)
-```
+- **test case 1**: `free -> tea -> serveTea -> take`
+- **test case 2**: `free -> soda -> serveSoda -> take`
 
 
 ### Product 6
@@ -175,17 +145,12 @@ free -> tea -> serveTea -> take -> free(dup) -> soda -> serveSoda -> take(dup)
 
 ![Balanced FTS — product 6](SVM-product6-balanced.png)
 
-**All-transitions test case (`SVM_p6_trans`)** — 7 step(s) total (6 real / 0 `__end__` / 1 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **6/6 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **6/6 = 100.0%** (7 raw cycle step(s): 6 real, 0 `__end__`, 1 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (2 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `cancel -> return -> free -> soda -> serveSoda -> take`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-free(dup) -> cancel -> return -> free -> soda -> serveSoda -> take
-```
+- **test case 1**: `free -> cancel -> return`
+- **test case 2**: `free -> soda -> serveSoda -> take`
 
 
 ### Product 7
@@ -202,18 +167,12 @@ free(dup) -> cancel -> return -> free -> soda -> serveSoda -> take
 
 ![Balanced FTS — product 7](SVM-product7-balanced.png)
 
-**All-transitions test case (`SVM_p7_trans`)** — 11 step(s) total (9 real / 0 `__end__` / 2 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **9/9 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **9/9 = 100.0%** (11 raw cycle step(s): 9 real, 0 `__end__`, 2 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (2 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `change -> cancel -> return -> pay`
-- **sub-walk 2**: `soda -> serveSoda -> open -> take -> close`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-pay(dup) -> change -> cancel -> return -> pay -> change(dup) -> soda -> serveSoda -> open -> take -> close
-```
+- **test case 1**: `pay -> change -> cancel -> return`
+- **test case 2**: `pay -> change -> soda -> serveSoda -> open -> take -> close`
 
 
 ### Product 8
@@ -230,17 +189,11 @@ pay(dup) -> change -> cancel -> return -> pay -> change(dup) -> soda -> serveSod
 
 ![Balanced FTS — product 8](SVM-product8-balanced.png)
 
-**All-transitions test case (`SVM_p8_trans`)** — 4 step(s) total (4 real / 0 `__end__` / 0 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **4/4 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **4/4 = 100.0%** (4 raw cycle step(s): 4 real, 0 `__end__`, 0 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (1 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `free -> tea -> serveTea -> take`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-free -> tea -> serveTea -> take
-```
+- **test case 1**: `free -> tea -> serveTea -> take`
 
 
 ### Product 9
@@ -257,19 +210,13 @@ free -> tea -> serveTea -> take
 
 ![Balanced FTS — product 9](SVM-product9-balanced.png)
 
-**All-transitions test case (`SVM_p9_trans`)** — 11 step(s) total (8 real / 0 `__end__` / 3 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **8/8 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **8/8 = 100.0%** (11 raw cycle step(s): 8 real, 0 `__end__`, 3 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (3 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `free -> cancel -> return`
-- **sub-walk 2**: `tea -> serveTea -> take`
-- **sub-walk 3**: `soda -> serveSoda`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-free -> cancel -> return -> free(dup) -> tea -> serveTea -> take -> free(dup) -> soda -> serveSoda -> take(dup)
-```
+- **test case 1**: `free -> cancel -> return`
+- **test case 2**: `free -> tea -> serveTea -> take`
+- **test case 3**: `free -> soda -> serveSoda -> take`
 
 
 ### Product 10
@@ -286,19 +233,13 @@ free -> cancel -> return -> free(dup) -> tea -> serveTea -> take -> free(dup) ->
 
 ![Balanced FTS — product 10](SVM-product10-balanced.png)
 
-**All-transitions test case (`SVM_p10_trans`)** — 18 step(s) total (11 real / 0 `__end__` / 7 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **11/11 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **11/11 = 100.0%** (18 raw cycle step(s): 11 real, 0 `__end__`, 7 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (3 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `cancel -> return -> pay`
-- **sub-walk 2**: `tea -> serveTea -> open -> take -> close`
-- **sub-walk 3**: `change -> soda -> serveSoda`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-pay(dup) -> change(dup) -> cancel -> return -> pay -> change(dup) -> tea -> serveTea -> open -> take -> close -> pay(dup) -> change -> soda -> serveSoda -> open(dup) -> take(dup) -> close(dup)
-```
+- **test case 1**: `pay -> change -> cancel -> return`
+- **test case 2**: `pay -> change -> tea -> serveTea -> open -> take -> close`
+- **test case 3**: `pay -> change -> soda -> serveSoda -> open -> take -> close`
 
 
 ### Product 11
@@ -315,18 +256,12 @@ pay(dup) -> change(dup) -> cancel -> return -> pay -> change(dup) -> tea -> serv
 
 ![Balanced FTS — product 11](SVM-product11-balanced.png)
 
-**All-transitions test case (`SVM_p11_trans`)** — 11 step(s) total (9 real / 0 `__end__` / 2 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **9/9 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **9/9 = 100.0%** (11 raw cycle step(s): 9 real, 0 `__end__`, 2 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (2 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `change -> cancel -> return -> pay`
-- **sub-walk 2**: `tea -> serveTea -> open -> take -> close`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-pay(dup) -> change -> cancel -> return -> pay -> change(dup) -> tea -> serveTea -> open -> take -> close
-```
+- **test case 1**: `pay -> change -> cancel -> return`
+- **test case 2**: `pay -> change -> tea -> serveTea -> open -> take -> close`
 
 
 ### Product 12
@@ -343,17 +278,11 @@ pay(dup) -> change -> cancel -> return -> pay -> change(dup) -> tea -> serveTea 
 
 ![Balanced FTS — product 12](SVM-product12-balanced.png)
 
-**All-transitions test case (`SVM_p12_trans`)** — 4 step(s) total (4 real / 0 `__end__` / 0 `__dup__` / 0 `__balance__`). Real-transition coverage on the repaired FTS: **4/4 = 100.0%**.
+**All-transitions coverage on the repaired FTS:** **4/4 = 100.0%** (4 raw cycle step(s): 4 real, 0 `__end__`, 0 `__dup__`, 0 `__balance__`).
 
-Sub-walks between synthetic boundaries:
+**Generated test cases** (1 trip(s) from initial back to initial, hidden synthetics removed):
 
-- **sub-walk 1**: `free -> soda -> serveSoda -> take`
-
-Full cycle (synthetic actions shown verbatim):
-
-```
-free -> soda -> serveSoda -> take
-```
+- **test case 1**: `free -> soda -> serveSoda -> take`
 
 ---
 

@@ -11,6 +11,7 @@ import be.vibes.testgeneration.graph.EulerianBalancer;
 import be.vibes.testgeneration.graph.HierholzerEulerCycle;
 import be.vibes.testgeneration.graph.InitialSccFilter;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
+import be.vibes.testgeneration.product.TestCaseSplitter;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.State;
 import be.vibes.ts.TestCase;
@@ -184,11 +185,17 @@ public final class PerProductAllTransitionsReportGenerator {
                 + "sub-cycles from unvisited transitions, repeat. The output is one contiguous "
                 + "sequence of transitions that visits every edge of the balanced graph exactly "
                 + "once and returns to the initial state.\n\n");
-        md.write("**Step 5 — Wrap into a TestCase.** The cycle is enqueued into "
-                + "`be.vibes.ts.TestCase`. Synthetic actions (`__end__`, `__balance__N`, "
-                + "`<action>__dup__N`) remain in the test case so the executor can use them "
-                + "as test-case boundary markers (everything between two synthetics is one "
-                + "real-SUT sub-walk); they are filtered before coverage measurement via "
+        md.write("**Step 5 — Wrap into a TestCase, then split into trips.** The cycle is "
+                + "enqueued into `be.vibes.ts.TestCase`. For display the cycle is split at "
+                + "every visit to the initial state via "
+                + "[`TestCaseSplitter.splitAtInitialReturns(...)`]"
+                + "(../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/product/"
+                + "TestCaseSplitter.java); each trip from initial back to initial is one "
+                + "test case in the operational sense (boot the SUT, run actions, return to "
+                + "reset). When rendering the action sequence, `__end__` and `__balance__N` "
+                + "transitions are hidden (synthetic reset markers, not real SUT events) and "
+                + "`<action>__dup__N` is shown as `<action>` (a real second traversal). All "
+                + "synthetics are still filtered from coverage measurement via "
                 + "`EulerianBalancer.isSyntheticAction(...)`.\n\n");
         md.write("**Coverage claim (by construction).** Every real transition in the projected "
                 + "FTS appears in the balanced FTS (balancing only adds, never removes). "
@@ -219,10 +226,13 @@ public final class PerProductAllTransitionsReportGenerator {
                 + "<code>HierholzerEulerCycle.compute</code> walks the balanced graph with "
                 + "Hierholzer's algorithm, returning one contiguous transition sequence that "
                 + "visits every edge of the balanced graph exactly once.</li>\n");
-        html.write("<li><strong>Wrap into a TestCase.</strong> The cycle is enqueued; "
-                + "synthetic actions remain as test-case boundary markers and are filtered "
-                + "from coverage measurement via "
-                + "<code>EulerianBalancer.isSyntheticAction</code>.</li>\n");
+        html.write("<li><strong>Wrap into a TestCase, then split into trips.</strong> "
+                + "The cycle is enqueued; <code>TestCaseSplitter.splitAtInitialReturns</code> "
+                + "then splits at every visit to the initial state — each trip from initial "
+                + "back to initial is one operational test case. <code>__end__</code> and "
+                + "<code>__balance__N</code> are hidden from the displayed sequence "
+                + "(synthetic reset markers); <code>__dup__N</code> suffixes are stripped "
+                + "(the action under the suffix is the real action to be re-traversed).</li>\n");
         html.write("</ol>\n");
         html.write("<p><strong>Coverage claim (by construction).</strong> Balancing only adds "
                 + "edges, Hierholzer visits every edge of the balanced graph exactly once, "
@@ -312,24 +322,31 @@ public final class PerProductAllTransitionsReportGenerator {
         }
 
         if (tc != null) {
-            List<List<String>> segments = splitAtSynthetics(tc);
-            md.write("**All-transitions test case (`" + tc.getId() + "`)** — "
-                    + countTestCaseLength(tc) + " step(s) total ("
-                    + realInTc + " real / "
-                    + endInTc + " `__end__` / "
-                    + dupInTc + " `__dup__` / "
-                    + fbInTc + " `__balance__`). Real-transition coverage on the "
-                    + "repaired FTS: **" + hits + "/" + allKeys.size() + " = "
-                    + String.format("%.1f", pct * 100.0) + "%**.\n\n");
-            md.write("Sub-walks between synthetic boundaries:\n\n");
-            for (int i = 0; i < segments.size(); i++) {
-                String seq = segments.get(i).isEmpty()
-                        ? "(empty)"
-                        : String.join(" -> ", segments.get(i));
-                md.write("- **sub-walk " + (i + 1) + "**: `" + seq + "`\n");
+            List<List<Transition>> trips =
+                    TestCaseSplitter.splitAtInitialReturns(tc, repaired.getInitialState());
+            List<List<String>> renderedTrips = new ArrayList<>();
+            for (List<Transition> trip : trips) {
+                List<String> actions = TestCaseSplitter.renderTripActions(trip);
+                for (int i = 0; i < actions.size(); i++) {
+                    actions.set(i, normalize(actions.get(i)));
+                }
+                if (!actions.isEmpty()) {
+                    renderedTrips.add(actions);
+                }
             }
-            md.write("\nFull cycle (synthetic actions shown verbatim):\n\n");
-            md.write("```\n" + fullSequenceWithLabels(tc) + "\n```\n\n");
+            md.write("**All-transitions coverage on the repaired FTS:** **"
+                    + hits + "/" + allKeys.size() + " = "
+                    + String.format("%.1f", pct * 100.0) + "%** ("
+                    + countTestCaseLength(tc) + " raw cycle step(s): "
+                    + realInTc + " real, " + endInTc + " `__end__`, "
+                    + dupInTc + " `__dup__`, " + fbInTc + " `__balance__`).\n\n");
+            md.write("**Generated test cases** (" + renderedTrips.size()
+                    + " trip(s) from initial back to initial, hidden synthetics removed):\n\n");
+            for (int i = 0; i < renderedTrips.size(); i++) {
+                String seq = String.join(" -> ", renderedTrips.get(i));
+                md.write("- **test case " + (i + 1) + "**: `" + seq + "`\n");
+            }
+            md.write("\n");
         } else {
             md.write("**All-transitions test case:** could not generate: `"
                     + genError + "`.\n\n");
@@ -365,27 +382,33 @@ public final class PerProductAllTransitionsReportGenerator {
         }
 
         if (tc != null) {
-            List<List<String>> segments = splitAtSynthetics(tc);
-            html.write("<p><strong>All-transitions test case (<code>"
-                    + escapeHtml(tc.getId()) + "</code>)</strong> — "
-                    + countTestCaseLength(tc) + " step(s) total ("
-                    + realInTc + " real / " + endInTc + " <code>__end__</code> / "
-                    + dupInTc + " <code>__dup__</code> / "
-                    + fbInTc + " <code>__balance__</code>). "
-                    + "Real-transition coverage on the repaired FTS: <strong>"
-                    + hits + "/" + allKeys.size() + " = "
-                    + String.format("%.1f", pct * 100.0) + "%</strong>.</p>\n");
-            html.write("<p>Sub-walks between synthetic boundaries:</p>\n<ul>\n");
-            for (int i = 0; i < segments.size(); i++) {
-                String seq = segments.get(i).isEmpty()
-                        ? "(empty)"
-                        : String.join(" &rarr; ", segments.get(i));
-                html.write("<li><strong>sub-walk " + (i + 1) + "</strong>: <code>"
+            List<List<Transition>> trips =
+                    TestCaseSplitter.splitAtInitialReturns(tc, repaired.getInitialState());
+            List<List<String>> renderedTrips = new ArrayList<>();
+            for (List<Transition> trip : trips) {
+                List<String> actions = TestCaseSplitter.renderTripActions(trip);
+                for (int i = 0; i < actions.size(); i++) {
+                    actions.set(i, normalize(actions.get(i)));
+                }
+                if (!actions.isEmpty()) {
+                    renderedTrips.add(actions);
+                }
+            }
+            html.write("<p><strong>All-transitions coverage on the repaired FTS:</strong> "
+                    + "<strong>" + hits + "/" + allKeys.size() + " = "
+                    + String.format("%.1f", pct * 100.0) + "%</strong> ("
+                    + countTestCaseLength(tc) + " raw cycle step(s): "
+                    + realInTc + " real, " + endInTc + " <code>__end__</code>, "
+                    + dupInTc + " <code>__dup__</code>, "
+                    + fbInTc + " <code>__balance__</code>).</p>\n");
+            html.write("<p><strong>Generated test cases</strong> (" + renderedTrips.size()
+                    + " trip(s) from initial back to initial, hidden synthetics removed):</p>\n<ul>\n");
+            for (int i = 0; i < renderedTrips.size(); i++) {
+                String seq = String.join(" &rarr; ", renderedTrips.get(i));
+                html.write("<li><strong>test case " + (i + 1) + "</strong>: <code>"
                         + escapeHtml(seq) + "</code></li>\n");
             }
             html.write("</ul>\n");
-            html.write("<p>Full cycle (synthetic actions shown verbatim):</p>\n");
-            html.write("<pre>" + escapeHtml(fullSequenceWithLabels(tc)) + "</pre>\n");
         } else {
             html.write("<p><strong>All-transitions test case:</strong> could not generate: "
                     + "<code>" + escapeHtml(String.valueOf(genError)) + "</code></p>\n");
