@@ -111,21 +111,37 @@ public final class PerProductAllStatesReportGenerator {
             md.write("---\n\n## Products\n\n");
             html.write("<hr/>\n<h2>Products</h2>\n");
             md.write("Each product below shows the repaired FTS with the state-coverage "
-                    + "walk overlaid: **darkblue bold** transitions are picked by the greedy "
-                    + "phase (target was unvisited at the time of selection); **red dashed** "
-                    + "transitions are picked by the BFS-reroute phase (the walk was stuck at "
-                    + "a state with no unvisited neighbour, and BFS rerouted to the nearest "
-                    + "unvisited state); **grey** transitions are not in the walk. Test cases "
-                    + "below are obtained by splitting the walk at every visit to the initial "
-                    + "state — `__end__` and `__balance__N` are hidden, `__dup__N` is "
-                    + "stripped (the latter two never appear in a state-coverage walk since "
-                    + "no balancing is performed).\n\n");
+                    + "walk overlaid. **Legend:**\n\n"
+                    + "- **darkblue solid bold** — real transition picked by the **greedy** "
+                    + "phase (target was unvisited at selection time);\n"
+                    + "- **darkorange solid bold** — real transition picked as part of a "
+                    + "**BFS-reroute** shortest path (the greedy phase was stuck at a state "
+                    + "with no unvisited neighbour);\n"
+                    + "- **red dashed bold** — synthetic transition (`__end__`) that the walk "
+                    + "happens to traverse; same convention as in the all-transitions report;\n"
+                    + "- **light grey** — real transition not in the walk; **faint dashed red** "
+                    + "— synthetic transition not in the walk. All transitions shown are "
+                    + "present in the projected FTS exactly as drawn — none are synthesized "
+                    + "for this report; the colour only encodes which phase of the algorithm "
+                    + "picked them.\n\n"
+                    + "Test cases below are obtained by splitting the walk at every visit to "
+                    + "the initial state — `__end__` and `__balance__N` are hidden from the "
+                    + "displayed action sequence, `__dup__N` is stripped (the latter two never "
+                    + "appear in a state-coverage walk since no balancing is performed).\n\n");
             html.write("<p>Each product below shows the repaired FTS with the state-coverage "
-                    + "walk overlaid: <strong>darkblue bold</strong> transitions are picked by "
-                    + "the greedy phase; <strong>red dashed</strong> transitions are picked by "
-                    + "the BFS-reroute phase; <strong>grey</strong> transitions are not in the "
-                    + "walk. Test cases below are obtained by splitting the walk at every "
-                    + "visit to the initial state.</p>\n");
+                    + "walk overlaid. <strong>Legend:</strong></p>\n<ul>\n"
+                    + "<li><strong>darkblue solid bold</strong> — real transition picked by "
+                    + "the <strong>greedy</strong> phase;</li>\n"
+                    + "<li><strong>darkorange solid bold</strong> — real transition picked as "
+                    + "part of a <strong>BFS-reroute</strong> shortest path;</li>\n"
+                    + "<li><strong>red dashed bold</strong> — synthetic transition "
+                    + "(<code>__end__</code>) traversed by the walk;</li>\n"
+                    + "<li><strong>light grey</strong> — real transition not in the walk; "
+                    + "<strong>faint dashed red</strong> — synthetic not in the walk.</li>\n"
+                    + "</ul>\n"
+                    + "<p>All transitions shown are present in the projected FTS exactly as "
+                    + "drawn — none are synthesized for this report; the colour only encodes "
+                    + "which phase of the algorithm picked them.</p>\n");
 
             int productIndex = 0;
             Iterator<Configuration> configs = solver.getSolutions();
@@ -466,11 +482,25 @@ public final class PerProductAllStatesReportGenerator {
             String src = stateNameToDotId.get(t.getSource().getName());
             String tgt = stateNameToDotId.get(t.getTarget().getName());
             String key = transitionKey(t);
+            boolean synthetic = EulerianBalancer.isSyntheticAction(t.getAction());
             String style;
-            if (greedyKeys.contains(key)) {
+            if (synthetic && (greedyKeys.contains(key) || rerouteKeys.contains(key))) {
+                // Synthetic edge that the walk did traverse — keep the dashed-red
+                // convention used in the all-transitions report so the visual
+                // language stays consistent across reports.
+                style = ", style=dashed, color=red, penwidth=2";
+            } else if (greedyKeys.contains(key)) {
                 style = ", style=bold, color=darkblue, penwidth=2";
             } else if (rerouteKeys.contains(key)) {
-                style = ", style=dashed, color=red, penwidth=2";
+                // Real transition used as part of a BFS reroute path —
+                // distinct color, NOT dashed (the transition is genuinely
+                // in the projected FTS; dashing it would falsely suggest
+                // it was synthesized).
+                style = ", style=bold, color=darkorange, penwidth=2";
+            } else if (synthetic) {
+                // Synthetic edge present in the FTS but not in the walk —
+                // still flag with dashed-red but at lower weight.
+                style = ", style=dashed, color=\"#cc8888\"";
             } else {
                 style = ", color=\"#bbbbbb\", fontcolor=\"#888888\"";
             }

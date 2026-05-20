@@ -14,7 +14,7 @@ state3 -> state1 [ label=" press intercom/Intercom ", style=bold, color=darkblue
 state7 -> state3 [ label=" press cabin roof/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state7 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state6 -> state2 [ label=" enter PIN/PinPad ", style=bold, color=darkblue, penwidth=2 ];
-state3 -> state4 [ label=" press door open/ManualDoorControl ", style=dashed, color=red, penwidth=2 ];
+state3 -> state4 [ label=" press door open/ManualDoorControl ", style=bold, color=darkorange, penwidth=2 ];
 state3 -> state5 [ label=" press door close/ManualDoorControl ", color="#bbbbbb", fontcolor="#888888" ];
 state5 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ];
 state6 -> state3 [ label=" press cabin lobby/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
@@ -23,17 +23,17 @@ state2 -> state3 [ label=" press cabin lobby/ControlButtons ", style=bold, color
 state2 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state1 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ];
 state8 -> state2 [ label=" enter PIN/PinPad ", color="#bbbbbb", fontcolor="#888888" ];
-state0 -> state8 [ label=" press hall up/ControlButtons ", style=dashed, color=red, penwidth=2 ];
+state0 -> state8 [ label=" press hall up/ControlButtons ", style=bold, color=darkorange, penwidth=2 ];
 state4 -> state5 [ label=" press door close/ManualDoorControl ", style=bold, color=darkblue, penwidth=2 ];
 state6 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state2 -> state3 [ label=" press cabin roof/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
-state4 -> state0 [ label=" __end__/true ", color="#bbbbbb", fontcolor="#888888" ];
-state8 -> state3 [ label=" press cabin lobby/ControlButtons ", style=dashed, color=red, penwidth=2 ];
+state4 -> state0 [ label=" __end__/true ", style=dashed, color="#cc8888" ];
+state8 -> state3 [ label=" press cabin lobby/ControlButtons ", style=bold, color=darkorange, penwidth=2 ];
 state7 -> state2 [ label=" enter PIN/PinPad ", color="#bbbbbb", fontcolor="#888888" ];
 state8 -> state3 [ label=" press cabin roof/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state5 -> state4 [ label=" press door open/ManualDoorControl ", color="#bbbbbb", fontcolor="#888888" ];
 state0 -> state8 [ label=" press hall down/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
-state0 -> state7 [ label=" press hall LobbyUp/ControlButtons ", style=dashed, color=red, penwidth=2 ];
-state3 -> state0 [ label=" __end__/true ", color="#bbbbbb", fontcolor="#888888" ];
+state0 -> state7 [ label=" press hall LobbyUp/ControlButtons ", style=bold, color=darkorange, penwidth=2 ];
+state3 -> state0 [ label=" __end__/true ", style=dashed, color="#cc8888" ];
 }
 

@@ -19,10 +19,10 @@ state5 -> state3 [ label=" press cabin lobby/ControlButtons ", color="#bbbbbb", 
 state7 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state2 -> state3 [ label=" press cabin lobby/ControlButtons ", style=bold, color=darkblue, penwidth=2 ];
 state2 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
-state2 -> state4 [ label=" press cabin executive floor/ExecutiveFloor ", style=dashed, color=red, penwidth=2 ];
+state2 -> state4 [ label=" press cabin executive floor/ExecutiveFloor ", style=bold, color=darkorange, penwidth=2 ];
 state1 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ];
-state7 -> state2 [ label=" enter PIN/PinPad ", style=dashed, color=red, penwidth=2 ];
-state0 -> state7 [ label=" press hall up/ControlButtons ", style=dashed, color=red, penwidth=2 ];
+state7 -> state2 [ label=" enter PIN/PinPad ", style=bold, color=darkorange, penwidth=2 ];
+state0 -> state7 [ label=" press hall up/ControlButtons ", style=bold, color=darkorange, penwidth=2 ];
 state5 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state2 -> state3 [ label=" press cabin roof/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state7 -> state3 [ label=" press cabin lobby/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
@@ -31,7 +31,7 @@ state6 -> state2 [ label=" enter PIN/PinPad ", color="#bbbbbb", fontcolor="#8888
 state4 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ];
 state7 -> state3 [ label=" press cabin roof/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state0 -> state7 [ label=" press hall down/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
-state0 -> state6 [ label=" press hall LobbyUp/ControlButtons ", style=dashed, color=red, penwidth=2 ];
-state3 -> state0 [ label=" __end__/true ", color="#bbbbbb", fontcolor="#888888" ];
+state0 -> state6 [ label=" press hall LobbyUp/ControlButtons ", style=bold, color=darkorange, penwidth=2 ];
+state3 -> state0 [ label=" __end__/true ", style=dashed, color="#cc8888" ];
 }
 

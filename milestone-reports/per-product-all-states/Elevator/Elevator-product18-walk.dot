@@ -15,7 +15,7 @@ state1 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ]
 state0 -> state5 [ label=" press hall RoofDown/ControlButtons ", style=bold, color=darkblue, penwidth=2 ];
 state4 -> state1 [ label=" press alarm button/Alarm ", color="#bbbbbb", fontcolor="#888888" ];
 state5 -> state2 [ label=" tap mobile key/MobileKey ", color="#bbbbbb", fontcolor="#888888" ];
-state0 -> state7 [ label=" press hall up/ControlButtons ", style=dashed, color=red, penwidth=2 ];
+state0 -> state7 [ label=" press hall up/ControlButtons ", style=bold, color=darkorange, penwidth=2 ];
 state6 -> state3 [ label=" press cabin roof/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state5 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state3 -> state1 [ label=" press alarm button/Alarm ", style=bold, color=darkblue, penwidth=2 ];
@@ -28,8 +28,8 @@ state7 -> state3 [ label=" press cabin roof/ControlButtons ", color="#bbbbbb", f
 state6 -> state2 [ label=" tap mobile key/MobileKey ", color="#bbbbbb", fontcolor="#888888" ];
 state0 -> state7 [ label=" press hall down/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
 state5 -> state3 [ label=" press cabin lobby/ControlButtons ", style=bold, color=darkblue, penwidth=2 ];
-state0 -> state6 [ label=" press hall LobbyUp/ControlButtons ", style=dashed, color=red, penwidth=2 ];
+state0 -> state6 [ label=" press hall LobbyUp/ControlButtons ", style=bold, color=darkorange, penwidth=2 ];
 state7 -> state3 [ label=" press cabin [1-N] floor/ControlButtons ", color="#bbbbbb", fontcolor="#888888" ];
-state3 -> state0 [ label=" __end__/true ", color="#bbbbbb", fontcolor="#888888" ];
+state3 -> state0 [ label=" __end__/true ", style=dashed, color="#cc8888" ];
 }
 

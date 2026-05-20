@@ -24,7 +24,14 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Coverage claim:</strong> step 5 terminates iff every state is visited; strong connectivity guarantees termination. State coverage is therefore <strong>100% on the repaired FTS</strong> by construction. The walk is typically shorter than an all-transitions Euler cycle (lower-bound <code>|V|-1</code> vs <code>|E|</code>) but exercises fewer edges — the fundamental RQ3 trade-off.</p>
 <hr/>
 <h2>Products</h2>
-<p>Each product below shows the repaired FTS with the state-coverage walk overlaid: <strong>darkblue bold</strong> transitions are picked by the greedy phase; <strong>red dashed</strong> transitions are picked by the BFS-reroute phase; <strong>grey</strong> transitions are not in the walk. Test cases below are obtained by splitting the walk at every visit to the initial state.</p>
+<p>Each product below shows the repaired FTS with the state-coverage walk overlaid. <strong>Legend:</strong></p>
+<ul>
+<li><strong>darkblue solid bold</strong> — real transition picked by the <strong>greedy</strong> phase;</li>
+<li><strong>darkorange solid bold</strong> — real transition picked as part of a <strong>BFS-reroute</strong> shortest path;</li>
+<li><strong>red dashed bold</strong> — synthetic transition (<code>__end__</code>) traversed by the walk;</li>
+<li><strong>light grey</strong> — real transition not in the walk; <strong>faint dashed red</strong> — synthetic not in the walk.</li>
+</ul>
+<p>All transitions shown are present in the projected FTS exactly as drawn — none are synthesized for this report; the colour only encodes which phase of the algorithm picked them.</p>
 <h3>Product 1</h3>
 <p><strong>Selected features:</strong> selected = {c, f, t}</p>
 <p><strong>Repaired FTS:</strong> 5 states, 6 transitions (6 real / 0 <code>__end__</code>).</p>

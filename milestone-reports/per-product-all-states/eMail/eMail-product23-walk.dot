@@ -15,15 +15,15 @@ state1 -> state6 [ label=" enter email autoresponse date interval/au ", color="#
 state3 -> state4 [ label=" sign mail/s ", style=bold, color=darkblue, penwidth=2 ];
 state5 -> state3 [ label=" enter receiver's email address/e ", style=bold, color=darkblue, penwidth=2 ];
 state3 -> state5 [ label=" enter email subject/e ", color="#bbbbbb", fontcolor="#888888" ];
-state0 -> state6 [ label=" enter email autoresponse date interval/au ", style=dashed, color=red, penwidth=2 ];
+state0 -> state6 [ label=" enter email autoresponse date interval/au ", style=bold, color=darkorange, penwidth=2 ];
 state0 -> state1 [ label=" enter autoresponse email body/au ", color="#bbbbbb", fontcolor="#888888" ];
-state6 -> state0 [ label=" __end__/true ", color="#bbbbbb", fontcolor="#888888" ];
+state6 -> state0 [ label=" __end__/true ", style=dashed, color="#cc8888" ];
 state2 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ];
-state0 -> state7 [ label=" open mailbox/e ", style=dashed, color=red, penwidth=2 ];
+state0 -> state7 [ label=" open mailbox/e ", style=bold, color=darkorange, penwidth=2 ];
 state0 -> state5 [ label=" compose new email/e ", style=bold, color=darkblue, penwidth=2 ];
 state5 -> state5 [ label=" enter email body/e ", color="#bbbbbb", fontcolor="#888888" ];
 state5 -> state5 [ label=" enter email subject/e ", color="#bbbbbb", fontcolor="#888888" ];
-state4 -> state0 [ label=" send email/e ", style=dashed, color=red, penwidth=2 ];
+state4 -> state0 [ label=" send email/e ", style=bold, color=darkorange, penwidth=2 ];
 state3 -> state3 [ label=" enter receiver's email address/e ", color="#bbbbbb", fontcolor="#888888" ];
 }
 

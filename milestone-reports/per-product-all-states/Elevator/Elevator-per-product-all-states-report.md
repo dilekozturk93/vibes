@@ -24,7 +24,14 @@ Given an SPL-level FTS plus one product configuration, [`StateCoverageGenerator.
 
 ## Products
 
-Each product below shows the repaired FTS with the state-coverage walk overlaid: **darkblue bold** transitions are picked by the greedy phase (target was unvisited at the time of selection); **red dashed** transitions are picked by the BFS-reroute phase (the walk was stuck at a state with no unvisited neighbour, and BFS rerouted to the nearest unvisited state); **grey** transitions are not in the walk. Test cases below are obtained by splitting the walk at every visit to the initial state — `__end__` and `__balance__N` are hidden, `__dup__N` is stripped (the latter two never appear in a state-coverage walk since no balancing is performed).
+Each product below shows the repaired FTS with the state-coverage walk overlaid. **Legend:**
+
+- **darkblue solid bold** — real transition picked by the **greedy** phase (target was unvisited at selection time);
+- **darkorange solid bold** — real transition picked as part of a **BFS-reroute** shortest path (the greedy phase was stuck at a state with no unvisited neighbour);
+- **red dashed bold** — synthetic transition (`__end__`) that the walk happens to traverse; same convention as in the all-transitions report;
+- **light grey** — real transition not in the walk; **faint dashed red** — synthetic transition not in the walk. All transitions shown are present in the projected FTS exactly as drawn — none are synthesized for this report; the colour only encodes which phase of the algorithm picked them.
+
+Test cases below are obtained by splitting the walk at every visit to the initial state — `__end__` and `__balance__N` are hidden from the displayed action sequence, `__dup__N` is stripped (the latter two never appear in a state-coverage walk since no balancing is performed).
 
 
 ### Product 1
