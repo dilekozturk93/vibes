@@ -1,0 +1,101 @@
+digraph G {
+rankdir=LR;
+state0[ label = "INIT", style=filled, color=green ];
+state1 [ label = "p_state4_press cabin 
+[1-N] floor_state5" ];
+state2 [ label = "p_state2_enter PIN_state6" ];
+state3 [ label = "p_state12___end___state1" ];
+state4 [ label = "p_state3_press cabin lobby_state5" ];
+state5 [ label = "p_state1_press hall 
+RoofDown_state2" ];
+state6 [ label = "p_state5___end___state1" ];
+state7 [ label = "p_state1_press hall down_state3" ];
+state8 [ label = "p_state4_press cabin roof_state5" ];
+state9 [ label = "p_state6_press cabin 
+executive floor_state12" ];
+state10 [ label = "p_state4_enter PIN_state6" ];
+state11 [ label = "p_state9___end___state1" ];
+state12 [ label = "p_state2_press cabin 
+[1-N] floor_state5" ];
+state13 [ label = "p_state6_press cabin 
+[1-N] floor_state5" ];
+state14 [ label = "p_state1_press hall up_state3" ];
+state15 [ label = "p_state6_press cabin roof_state5" ];
+state16 [ label = "p_state1_press hall 
+LobbyUp_state4" ];
+state17 [ label = "p_state5_press intercom_state9" ];
+state18 [ label = "p_state3_press cabin roof_state5" ];
+state19 [ label = "p_state6_press cabin lobby_state5" ];
+state20 [ label = "p_state12_press intercom_state9" ];
+state21 [ label = "p_state3_press cabin 
+[1-N] floor_state5" ];
+state22 [ label = "p_state3_enter PIN_state6" ];
+state23 [ label = "p_state2_press cabin lobby_state5" ];
+state9 -> state3 [ label=" __end__/true ", style=dashed, color=red ];
+state7 -> state4 [ label=" press cabin lobby/true " ];
+state14 -> state4 [ label=" press cabin lobby/true " ];
+state15 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state6 -> state7 [ label=" press hall down/true " ];
+state13 -> state17 [ label=" press intercom/true " ];
+state8 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state10 -> state13 [ label=" press cabin  [1-N] floor/true " ];
+state2 -> state19 [ label=" press cabin lobby/true " ];
+state7 -> state18 [ label=" press cabin roof/true " ];
+state23 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state14 -> state18 [ label=" press cabin roof/true " ];
+state21 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state10 -> state9 [ label=" press cabin  executive floor/true " ];
+state14 -> state22 [ label=" enter PIN/true " ];
+state7 -> state22 [ label=" enter PIN/true " ];
+state3 -> state5 [ label=" press hall  RoofDown/true " ];
+state22 -> state13 [ label=" press cabin  [1-N] floor/true " ];
+state5 -> state23 [ label=" press cabin lobby/true " ];
+state4 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state19 -> state17 [ label=" press intercom/true " ];
+state19 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state14 -> state21 [ label=" press cabin  [1-N] floor/true " ];
+state18 -> state17 [ label=" press intercom/true " ];
+state18 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state1 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state6 -> state5 [ label=" press hall  RoofDown/true " ];
+state0 -> state5 [ label=" press hall  RoofDown/true " ];
+state1 -> state17 [ label=" press intercom/true " ];
+state0 -> state7 [ label=" press hall down/true " ];
+state16 -> state8 [ label=" press cabin roof/true " ];
+state23 -> state17 [ label=" press intercom/true " ];
+state2 -> state13 [ label=" press cabin  [1-N] floor/true " ];
+state22 -> state15 [ label=" press cabin roof/true " ];
+state4 -> state17 [ label=" press intercom/true " ];
+state0 -> state14 [ label=" press hall up/true " ];
+state9 -> state20 [ label=" press intercom/true " ];
+state15 -> state17 [ label=" press intercom/true " ];
+state11 -> state5 [ label=" press hall  RoofDown/true " ];
+state8 -> state17 [ label=" press intercom/true " ];
+state0 -> state16 [ label=" press hall  LobbyUp/true " ];
+state16 -> state1 [ label=" press cabin  [1-N] floor/true " ];
+state2 -> state9 [ label=" press cabin  executive floor/true " ];
+state21 -> state17 [ label=" press intercom/true " ];
+state5 -> state2 [ label=" enter PIN/true " ];
+state5 -> state12 [ label=" press cabin  [1-N] floor/true " ];
+state3 -> state16 [ label=" press hall  LobbyUp/true " ];
+state22 -> state19 [ label=" press cabin lobby/true " ];
+state3 -> state14 [ label=" press hall up/true " ];
+state12 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state2 -> state15 [ label=" press cabin roof/true " ];
+state16 -> state10 [ label=" enter PIN/true " ];
+state22 -> state9 [ label=" press cabin  executive floor/true " ];
+state11 -> state14 [ label=" press hall up/true " ];
+state6 -> state16 [ label=" press hall  LobbyUp/true " ];
+state3 -> state7 [ label=" press hall down/true " ];
+state11 -> state7 [ label=" press hall down/true " ];
+state12 -> state17 [ label=" press intercom/true " ];
+state7 -> state21 [ label=" press cabin  [1-N] floor/true " ];
+state13 -> state6 [ label=" __end__/true ", style=dashed, color=red ];
+state17 -> state11 [ label=" __end__/true ", style=dashed, color=red ];
+state20 -> state11 [ label=" __end__/true ", style=dashed, color=red ];
+state6 -> state14 [ label=" press hall up/true " ];
+state10 -> state15 [ label=" press cabin roof/true " ];
+state10 -> state19 [ label=" press cabin lobby/true " ];
+state11 -> state16 [ label=" press hall  LobbyUp/true " ];
+}
+

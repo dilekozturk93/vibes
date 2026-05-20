@@ -1,0 +1,164 @@
+digraph G {
+rankdir=LR;
+state0[ label = "INIT", style=filled, color=green ];
+state1 [ label = "p_state4_press cabin 
+[1-N] floor_state5" ];
+state2 [ label = "p_state12___end___state1" ];
+state3 [ label = "p_state3_press cabin lobby_state5" ];
+state4 [ label = "p_state1_press hall 
+RoofDown_state2" ];
+state5 [ label = "p_state5___end___state1" ];
+state6 [ label = "p_state5_press alarm
+button_state9" ];
+state7 [ label = "p_state3_tap mobile
+key_state6" ];
+state8 [ label = "p_state1_press hall down_state3" ];
+state9 [ label = "p_state4_press cabin roof_state5" ];
+state10 [ label = "p_state6_press cabin 
+executive floor_state12" ];
+state11 [ label = "p_state9___end___state1" ];
+state12 [ label = "p_state2_press cabin 
+[1-N] floor_state5" ];
+state13 [ label = "p_state12_press alarm
+button_state9" ];
+state14 [ label = "p_state6_press cabin 
+[1-N] floor_state5" ];
+state15 [ label = "p_state2_tap mobile
+key_state6" ];
+state16 [ label = "p_state1_press hall up_state3" ];
+state17 [ label = "p_state6_press cabin roof_state5" ];
+state18 [ label = "p_state1_press hall 
+LobbyUp_state4" ];
+state19 [ label = "p_state3_press cabin roof_state5" ];
+state20 [ label = "p_state6_press cabin lobby_state5" ];
+state21 [ label = "p_state4_tap mobile
+key_state6" ];
+state22 [ label = "p_state3_press cabin 
+[1-N] floor_state5" ];
+state23 [ label = "p_state2_press cabin lobby_state5" ];
+state8 -> state3 [ label=" press cabin lobby/true " ];
+state15 -> state10 [ label=" press cabin  executive floor (×2)/true ", style=dashed, color=red ];
+state7 -> state14 [ label=" press cabin  [1-N] floor/true " ];
+state4 -> state12 [ label=" press cabin  [1-N] floor (×2)/true ", style=dashed, color=red ];
+state5 -> state8 [ label=" press hall down/true " ];
+state9 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state22 -> state6 [ label=" press alarm button/true " ];
+state12 -> state6 [ label=" press alarm button (×2)/true ", style=dashed, color=red ];
+state9 -> state6 [ label=" press alarm button/true " ];
+state16 -> state19 [ label=" press cabin roof/true " ];
+state22 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state10 -> state13 [ label=" press alarm button/true " ];
+state4 -> state23 [ label=" press cabin lobby/true " ];
+state5 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state6 -> state0 [ label=" __balance__3/true ", style=dashed, color=red ];
+state6 -> state11 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state10 -> state2 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state4 -> state12 [ label=" press cabin  [1-N] floor (×2)/true ", style=dashed, color=red ];
+state4 -> state15 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state1 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state21 -> state14 [ label=" press cabin  [1-N] floor/true " ];
+state11 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state6 -> state11 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state14 -> state5 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state18 -> state21 [ label=" tap mobile key/true " ];
+state5 -> state18 [ label=" press hall  LobbyUp (×2)/true ", style=dashed, color=red ];
+state18 -> state9 [ label=" press cabin roof (×2)/true ", style=dashed, color=red ];
+state4 -> state12 [ label=" press cabin  [1-N] floor (×2)/true ", style=dashed, color=red ];
+state0 -> state16 [ label=" press hall up/true " ];
+state5 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state16 -> state7 [ label=" tap mobile key/true " ];
+state4 -> state15 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state4 -> state15 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state11 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state0 -> state18 [ label=" press hall  LobbyUp/true " ];
+state7 -> state20 [ label=" press cabin lobby/true " ];
+state18 -> state1 [ label=" press cabin  [1-N] floor/true " ];
+state18 -> state21 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state4 -> state12 [ label=" press cabin  [1-N] floor/true " ];
+state2 -> state18 [ label=" press hall  LobbyUp/true " ];
+state15 -> state10 [ label=" press cabin  executive floor (×2)/true ", style=dashed, color=red ];
+state2 -> state16 [ label=" press hall up/true " ];
+state21 -> state20 [ label=" press cabin lobby/true " ];
+state21 -> state10 [ label=" press cabin  executive floor/true " ];
+state2 -> state18 [ label=" press hall  LobbyUp (×2)/true ", style=dashed, color=red ];
+state11 -> state16 [ label=" press hall up (×2)/true ", style=dashed, color=red ];
+state11 -> state8 [ label=" press hall down/true " ];
+state20 -> state5 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state14 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state5 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state10 -> state2 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state4 -> state15 [ label=" tap mobile key/true " ];
+state8 -> state7 [ label=" tap mobile key/true " ];
+state20 -> state6 [ label=" press alarm button/true " ];
+state10 -> state2 [ label=" __end__/true ", style=dashed, color=red ];
+state16 -> state3 [ label=" press cabin lobby/true " ];
+state6 -> state11 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state17 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state18 -> state1 [ label=" press cabin  [1-N] floor (×2)/true ", style=dashed, color=red ];
+state5 -> state18 [ label=" press hall  LobbyUp (×2)/true ", style=dashed, color=red ];
+state23 -> state6 [ label=" press alarm button/true " ];
+state8 -> state19 [ label=" press cabin roof/true " ];
+state4 -> state23 [ label=" press cabin lobby (×2)/true ", style=dashed, color=red ];
+state6 -> state11 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state5 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state4 -> state15 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state15 -> state17 [ label=" press cabin roof/true " ];
+state23 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state3 -> state6 [ label=" press alarm button/true " ];
+state6 -> state0 [ label=" __balance__0/true ", style=dashed, color=red ];
+state15 -> state20 [ label=" press cabin lobby/true " ];
+state7 -> state17 [ label=" press cabin roof/true " ];
+state10 -> state2 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state17 -> state6 [ label=" press alarm button/true " ];
+state4 -> state15 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state18 -> state21 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state6 -> state11 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state2 -> state4 [ label=" press hall  RoofDown/true " ];
+state3 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state12 -> state6 [ label=" press alarm button/true " ];
+state12 -> state5 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state7 -> state10 [ label=" press cabin  executive floor/true " ];
+state20 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state16 -> state22 [ label=" press cabin  [1-N] floor/true " ];
+state19 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state17 -> state5 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state5 -> state4 [ label=" press hall  RoofDown/true " ];
+state12 -> state6 [ label=" press alarm button (×2)/true ", style=dashed, color=red ];
+state0 -> state4 [ label=" press hall  RoofDown/true " ];
+state0 -> state8 [ label=" press hall down/true " ];
+state18 -> state9 [ label=" press cabin roof/true " ];
+state14 -> state6 [ label=" press alarm button/true " ];
+state6 -> state0 [ label=" __balance__2/true ", style=dashed, color=red ];
+state15 -> state10 [ label=" press cabin  executive floor (×2)/true ", style=dashed, color=red ];
+state1 -> state6 [ label=" press alarm button/true " ];
+state5 -> state16 [ label=" press hall up (×2)/true ", style=dashed, color=red ];
+state21 -> state17 [ label=" press cabin roof/true " ];
+state11 -> state18 [ label=" press hall  LobbyUp (×2)/true ", style=dashed, color=red ];
+state5 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state11 -> state4 [ label=" press hall  RoofDown/true " ];
+state15 -> state14 [ label=" press cabin  [1-N] floor/true " ];
+state16 -> state7 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state10 -> state2 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state5 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state6 -> state11 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state6 -> state11 [ label=" __end__/true ", style=dashed, color=red ];
+state12 -> state5 [ label=" __end__/true ", style=dashed, color=red ];
+state4 -> state15 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state5 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+state11 -> state16 [ label=" press hall up/true " ];
+state5 -> state18 [ label=" press hall  LobbyUp/true " ];
+state2 -> state8 [ label=" press hall down/true " ];
+state16 -> state7 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state13 -> state11 [ label=" __end__/true ", style=dashed, color=red ];
+state18 -> state21 [ label=" tap mobile key (×2)/true ", style=dashed, color=red ];
+state8 -> state22 [ label=" press cabin  [1-N] floor/true " ];
+state5 -> state16 [ label=" press hall up/true " ];
+state6 -> state11 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
+state15 -> state10 [ label=" press cabin  executive floor/true " ];
+state19 -> state6 [ label=" press alarm button/true " ];
+state4 -> state12 [ label=" press cabin  [1-N] floor (×2)/true ", style=dashed, color=red ];
+state11 -> state18 [ label=" press hall  LobbyUp/true " ];
+state6 -> state0 [ label=" __balance__1/true ", style=dashed, color=red ];
+state11 -> state4 [ label=" press hall  RoofDown (×2)/true ", style=dashed, color=red ];
+}
+

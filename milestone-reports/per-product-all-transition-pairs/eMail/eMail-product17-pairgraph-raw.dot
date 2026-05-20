@@ -1,0 +1,87 @@
+digraph G {
+rankdir=LR;
+state0[ label = "INIT", style=filled, color=green ];
+state1 [ label = "p_state8___end___state1" ];
+state2 [ label = "p_state8_enter forward 
+receiver's 
+email address_state10" ];
+state3 [ label = "p_state2_enter 
+receiver's 
+email address_state7" ];
+state4 [ label = "p_state3_select email_state8" ];
+state5 [ label = "p_state2_enter
+ email 
+subject_state2" ];
+state6 [ label = "p_state9_enter alias 
+email addresses 
+of receiver_state1" ];
+state7 [ label = "p_state7_send email_state1" ];
+state8 [ label = "p_state2_enter email 
+body_state2" ];
+state9 [ label = "p_state10_send email_state1" ];
+state10 [ label = "p_state1_open mailbox_state3" ];
+state11 [ label = "p_state1_create an 
+addressbook 
+for a receiver_state6" ];
+state12 [ label = "p_state6_enter the  
+receiver's 
+email address_state9" ];
+state13 [ label = "p_state7_enter
+ email 
+subject_state2" ];
+state14 [ label = "p_state1_compose new 
+email_state2" ];
+state15 [ label = "p_state7_sign mail_state10" ];
+state16 [ label = "p_state7_get alias 
+email addresses 
+of receiver_state10" ];
+state17 [ label = "p_state7_enter 
+receiver's 
+email address_state7" ];
+state5 -> state5 [ label=" enter  email  subject/true " ];
+state9 -> state11 [ label=" create an  addressbook  for a receiver/true " ];
+state4 -> state1 [ label=" __end__/true ", style=dashed, color=red ];
+state1 -> state10 [ label=" open mailbox/true " ];
+state5 -> state8 [ label=" enter email  body/true " ];
+state4 -> state2 [ label=" enter forward  receiver's  email address/true " ];
+state17 -> state7 [ label=" send email/true " ];
+state3 -> state15 [ label=" sign mail/true " ];
+state13 -> state5 [ label=" enter  email  subject/true " ];
+state1 -> state14 [ label=" compose new  email/true " ];
+state8 -> state3 [ label=" enter  receiver's  email address/true " ];
+state16 -> state9 [ label=" send email/true " ];
+state7 -> state14 [ label=" compose new  email/true " ];
+state6 -> state11 [ label=" create an  addressbook  for a receiver/true " ];
+state2 -> state9 [ label=" send email/true " ];
+state14 -> state5 [ label=" enter  email  subject/true " ];
+state17 -> state15 [ label=" sign mail/true " ];
+state8 -> state8 [ label=" enter email  body/true " ];
+state17 -> state16 [ label=" get alias  email addresses  of receiver/true " ];
+state6 -> state14 [ label=" compose new  email/true " ];
+state8 -> state5 [ label=" enter  email  subject/true " ];
+state0 -> state14 [ label=" compose new  email/true " ];
+state7 -> state11 [ label=" create an  addressbook  for a receiver/true " ];
+state14 -> state8 [ label=" enter email  body/true " ];
+state9 -> state10 [ label=" open mailbox/true " ];
+state1 -> state11 [ label=" create an  addressbook  for a receiver/true " ];
+state10 -> state4 [ label=" select email/true " ];
+state9 -> state14 [ label=" compose new  email/true " ];
+state17 -> state17 [ label=" enter  receiver's  email address/true " ];
+state15 -> state9 [ label=" send email/true " ];
+state3 -> state16 [ label=" get alias  email addresses  of receiver/true " ];
+state0 -> state10 [ label=" open mailbox/true " ];
+state3 -> state17 [ label=" enter  receiver's  email address/true " ];
+state14 -> state3 [ label=" enter  receiver's  email address/true " ];
+state11 -> state12 [ label=" enter the   receiver's  email address/true " ];
+state5 -> state3 [ label=" enter  receiver's  email address/true " ];
+state12 -> state6 [ label=" enter alias  email addresses  of receiver/true " ];
+state3 -> state7 [ label=" send email/true " ];
+state0 -> state11 [ label=" create an  addressbook  for a receiver/true " ];
+state7 -> state10 [ label=" open mailbox/true " ];
+state3 -> state13 [ label=" enter  email  subject/true " ];
+state13 -> state3 [ label=" enter  receiver's  email address/true " ];
+state17 -> state13 [ label=" enter  email  subject/true " ];
+state13 -> state8 [ label=" enter email  body/true " ];
+state6 -> state10 [ label=" open mailbox/true " ];
+}
+

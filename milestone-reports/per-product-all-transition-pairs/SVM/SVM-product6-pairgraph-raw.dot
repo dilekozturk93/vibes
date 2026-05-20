@@ -1,0 +1,19 @@
+digraph G {
+rankdir=LR;
+state0[ label = "INIT", style=filled, color=green ];
+state1 [ label = "p_state3_cancel_state6" ];
+state2 [ label = "p_state6_return_state1" ];
+state3 [ label = "p_state1_free_state3" ];
+state4 [ label = "p_state4_serveSoda_state7" ];
+state5 [ label = "p_state3_soda_state4" ];
+state6 [ label = "p_state7_take_state1" ];
+state1 -> state2 [ label=" return/true " ];
+state3 -> state1 [ label=" cancel/true " ];
+state4 -> state6 [ label=" take/true " ];
+state2 -> state3 [ label=" free/true " ];
+state6 -> state3 [ label=" free/true " ];
+state0 -> state3 [ label=" free/true " ];
+state5 -> state4 [ label=" serveSoda/true " ];
+state3 -> state5 [ label=" soda/true " ];
+}
+
