@@ -404,9 +404,13 @@ public final class PerProductAllTransitionsReportGenerator {
             html.write("<p><strong>Generated test cases</strong> (" + renderedTrips.size()
                     + " trip(s) from initial back to initial, hidden synthetics removed):</p>\n<ul>\n");
             for (int i = 0; i < renderedTrips.size(); i++) {
-                String seq = String.join(" &rarr; ", renderedTrips.get(i));
+                List<String> escaped = new ArrayList<>(renderedTrips.get(i).size());
+                for (String a : renderedTrips.get(i)) {
+                    escaped.add(escapeHtml(a));
+                }
+                String seq = String.join(" &rarr; ", escaped);
                 html.write("<li><strong>test case " + (i + 1) + "</strong>: <code>"
-                        + escapeHtml(seq) + "</code></li>\n");
+                        + seq + "</code></li>\n");
             }
             html.write("</ul>\n");
         } else {
