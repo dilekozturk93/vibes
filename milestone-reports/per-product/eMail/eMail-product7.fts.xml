@@ -2,7 +2,7 @@
 email addresses 
 of receiver" fexpression="ad"></transition></state><state id="state6"><transition target="state9" action="enter the  
 receiver's 
-email address" fexpression="ad"></transition></state><state id="state10"><transition target="state1" action="send email" fexpression="e"></transition></state><state id="state7"><transition target="state1" action="send email" fexpression="e"></transition><transition target="state10" action="sign mail" fexpression="s"></transition><transition target="state10" action="get alias 
+email address" fexpression="ad"></transition></state><state id="state8"><transition target="state1" action="__end__"></transition></state><state id="state10"><transition target="state1" action="send email" fexpression="e"></transition></state><state id="state7"><transition target="state1" action="send email" fexpression="e"></transition><transition target="state10" action="sign mail" fexpression="s"></transition><transition target="state10" action="get alias 
 email addresses 
 of receiver" fexpression="ad"></transition><transition target="state2" action="enter
  email 
@@ -13,7 +13,7 @@ receiver's
 email address" fexpression="e"></transition><transition target="state2" action="enter email 
 body" fexpression="e"></transition><transition target="state2" action="enter
  email 
-subject" fexpression="e"></transition></state><state id="state1"><transition target="state6" action="create an 
+subject" fexpression="e"></transition></state><state id="state1"><transition target="state3" action="open mailbox" fexpression="e"></transition><transition target="state6" action="create an 
 addressbook 
 for a receiver" fexpression="ad"></transition><transition target="state2" action="compose new 
-email" fexpression="e"></transition></state></states></ts>
+email" fexpression="e"></transition></state><state id="state3"><transition target="state8" action="select email" fexpression="e"></transition></state></states></ts>

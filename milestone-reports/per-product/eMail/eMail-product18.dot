@@ -13,13 +13,14 @@ state3 [ label = "state8" ];
 state3 -> state4 [ label=" enter forward 
 receiver's 
 email address/f " ];
+state3 -> state0 [ label=" __end__/true " ];
 state4 [ label = "state10" ];
 state4 -> state0 [ label=" send email/e " ];
 state5 [ label = "state7" ];
+state5 -> state0 [ label=" send email/e " ];
 state5 -> state6 [ label=" enter
  email 
 subject/e " ];
-state5 -> state0 [ label=" send email/e " ];
 state5 -> state5 [ label=" enter 
 receiver's 
 email address/e " ];
@@ -35,12 +36,12 @@ body/e " ];
 state6 -> state6 [ label=" enter
  email 
 subject/e " ];
-state0 -> state6 [ label=" compose new 
-email/e " ];
 state0 -> state7 [ label=" open mailbox/e " ];
 state0 -> state2 [ label=" create an 
 addressbook 
 for a receiver/ad " ];
+state0 -> state6 [ label=" compose new 
+email/e " ];
 state7 [ label = "state3" ];
 state7 -> state3 [ label=" select email/e " ];
 }

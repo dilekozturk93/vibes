@@ -6,7 +6,7 @@ email address" fexpression="ad"></transition></state><state id="state5"><transit
 autoresponse 
 date interval" fexpression="au"></transition></state><state id="state8"><transition target="state10" action="enter forward 
 receiver's 
-email address" fexpression="f"></transition></state><state id="state11"><transition target="state10" action="encrypt mail 
+email address" fexpression="f"></transition><transition target="state1" action="__end__"></transition></state><state id="state11"><transition target="state10" action="encrypt mail 
 with receiver's 
 public key" fexpression="en"></transition></state><state id="state7"><transition target="state2" action="enter
  email 
@@ -29,4 +29,4 @@ email body" fexpression="au"></transition><transition target="state6" action="cr
 addressbook 
 for a receiver" fexpression="ad"></transition></state><state id="state4"><transition target="state5" action="enter 
 autoresponse 
-email body" fexpression="au"></transition></state><state id="state3"><transition target="state8" action="select email" fexpression="e"></transition></state></states></ts>
+email body" fexpression="au"></transition><transition target="state1" action="__end__"></transition></state><state id="state3"><transition target="state8" action="select email" fexpression="e"></transition></state></states></ts>

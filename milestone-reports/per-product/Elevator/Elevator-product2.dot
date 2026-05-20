@@ -1,5 +1,58 @@
 digraph G {
 rankdir=LR;
 state0[ label = "state1", style=filled, color=green ];
+state1 [ label = "state9" ];
+state1 -> state2 [ label=" press&hold 
+door open/FirefighterService " ];
+state1 -> state3 [ label=" press&hold 
+door close/FirefighterService " ];
+state1 -> state0 [ label=" __end__/true " ];
+state4 [ label = "state13" ];
+state4 -> state0 [ label=" __end__/true " ];
+state4 -> state2 [ label=" press&hold 
+door open/FirefighterService " ];
+state5 [ label = "state5" ];
+state5 -> state1 [ label=" press alarm
+button/Alarm " ];
+state5 -> state6 [ label=" press door open/ManualDoorControl " ];
+state5 -> state7 [ label=" press door close/ManualDoorControl " ];
+state5 -> state2 [ label=" press&hold 
+door open/FirefighterService " ];
+state5 -> state3 [ label=" press&hold 
+door close/FirefighterService " ];
+state5 -> state0 [ label=" __end__/true " ];
+state3 [ label = "state11" ];
+state3 -> state8 [ label=" release door close/FirefighterService " ];
+state6 [ label = "state8" ];
+state6 -> state7 [ label=" press door close/ManualDoorControl " ];
+state6 -> state0 [ label=" __end__/true " ];
+state7 [ label = "state7" ];
+state7 -> state0 [ label=" __end__/true " ];
+state7 -> state6 [ label=" press door open/ManualDoorControl " ];
+state2 [ label = "state10" ];
+state2 -> state4 [ label=" release door open/FirefighterService " ];
+state9 [ label = "state2" ];
+state9 -> state5 [ label=" press cabin lobby/ControlButtons " ];
+state9 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state0 -> state9 [ label=" press hall 
+RoofDown/ControlButtons " ];
+state0 -> state10 [ label=" press hall up/ControlButtons " ];
+state0 -> state10 [ label=" press hall down/ControlButtons " ];
+state0 -> state11 [ label=" press hall 
+LobbyUp/ControlButtons " ];
+state11 [ label = "state4" ];
+state11 -> state5 [ label=" press cabin roof/ControlButtons " ];
+state11 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state10 [ label = "state3" ];
+state10 -> state5 [ label=" press cabin lobby/ControlButtons " ];
+state10 -> state5 [ label=" press cabin roof/ControlButtons " ];
+state10 -> state5 [ label=" press cabin 
+[1-N] floor/ControlButtons " ];
+state8 [ label = "state14" ];
+state8 -> state0 [ label=" __end__/true " ];
+state8 -> state3 [ label=" press&hold 
+door close/FirefighterService " ];
 }
 

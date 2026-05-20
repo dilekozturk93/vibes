@@ -1,27 +1,47 @@
 digraph G {
 rankdir=LR;
 state0[ label = "state1", style=filled, color=green ];
-state1 [ label = "state10" ];
-state1 -> state0 [ label=" send email/e " ];
-state2 [ label = "state7" ];
-state2 -> state0 [ label=" send email/e " ];
-state2 -> state1 [ label=" sign mail/s " ];
-state2 -> state3 [ label=" enter
+state1 [ label = "state5" ];
+state1 -> state2 [ label=" enter email 
+autoresponse 
+date interval/au " ];
+state3 [ label = "state8" ];
+state3 -> state0 [ label=" __end__/true " ];
+state4 [ label = "state7" ];
+state4 -> state5 [ label=" enter
  email 
 subject/e " ];
-state2 -> state2 [ label=" enter 
+state4 -> state0 [ label=" send email/e " ];
+state4 -> state4 [ label=" enter 
 receiver's 
 email address/e " ];
-state3 [ label = "state2" ];
-state3 -> state2 [ label=" enter 
+state4 -> state6 [ label=" sign mail/s " ];
+state6 [ label = "state10" ];
+state6 -> state0 [ label=" send email/e " ];
+state5 [ label = "state2" ];
+state5 -> state4 [ label=" enter 
 receiver's 
 email address/e " ];
-state3 -> state3 [ label=" enter email 
+state5 -> state5 [ label=" enter email 
 body/e " ];
-state3 -> state3 [ label=" enter
+state5 -> state5 [ label=" enter
  email 
 subject/e " ];
-state0 -> state3 [ label=" compose new 
+state0 -> state5 [ label=" compose new 
 email/e " ];
+state0 -> state7 [ label=" open mailbox/e " ];
+state0 -> state2 [ label=" enter email 
+autoresponse 
+date interval/au " ];
+state0 -> state1 [ label=" enter 
+autoresponse 
+email body/au " ];
+state2 [ label = "state4" ];
+state2 -> state1 [ label=" enter 
+autoresponse 
+email body/au " ];
+state2 -> state0 [ label=" __end__/true " ];
+state7 [ label = "state3" ];
+state7 -> state3 [ label=" select email/e " ];
 }
 

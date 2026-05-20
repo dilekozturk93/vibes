@@ -193,8 +193,27 @@ public class MxeToFtsConverter {
             }
         }
 
+        // Compute "has end-edge" per non-init vertex: does the vertex have
+        // at least one outgoing edge targeting "]"? Mixed-terminal vertices
+        // (those with both ]-edges and non-]-edges) get a synthetic
+        // back-to-INIT transition with action "__end__" further below;
+        // including the flag in the bisimulation signature prevents two
+        // vertices with identical non-]-outgoing but different end-edge
+        // status from being merged into the same class.
+        Map<String, Boolean> hasEndEdge = new HashMap<>();
+        for (String vid : nonInitIds) {
+            boolean has = false;
+            for (EsgEdge e : outgoing.getOrDefault(vid, Collections.emptyList())) {
+                if (endId != null && e.target.equals(endId)) {
+                    has = true;
+                    break;
+                }
+            }
+            hasEndEdge.put(vid, has);
+        }
+
         Map<String, Integer> classOf = partitionRefine(nonInitIds, outgoing, byId,
-                initMembers, endId);
+                initMembers, endId, hasEndEdge);
 
         // Pick one canonical representative per class (any member works since
         // they are bisimulation-equivalent; we pick the first encountered).
@@ -216,6 +235,7 @@ public class MxeToFtsConverter {
             factory.addState(stateName);
         }
         int transitionCount = 0;
+        int syntheticEndCount = 0;
         for (Map.Entry<Integer, String> entry : classRepresentative.entrySet()) {
             int srcClass = entry.getKey();
             String srcName = classToStateName.get(srcClass);
@@ -234,12 +254,35 @@ public class MxeToFtsConverter {
                 factory.addTransition(srcName, label.action, label.fexpr, targetName);
                 transitionCount++;
             }
+            // Synthetic "__end__" transition for any non-init class whose
+            // representative has at least one ]-edge in the original ESG.
+            // This is the back-to-INIT analogue of the user's ESG-Fx-side
+            // "]-->[" rewiring: it makes the FTS strongly connected even
+            // when the ESG-vertex has BOTH ]-edges and non-]-edges (mixed
+            // terminal). Without this, Elevator's FTS — every event of
+            // which is mixed-terminal — would be heavily fragmented at the
+            // SPL level and impossible to project meaningfully.
+            if (srcClass != INIT_CLASS
+                    && Boolean.TRUE.equals(hasEndEdge.get(entry.getValue()))) {
+                factory.addAction(END_ACTION);
+                factory.addTransition(srcName, END_ACTION,
+                        FExpression.trueValue(), initialStateName);
+                syntheticEndCount++;
+            }
         }
-        LOG.info("Built FTS: {} states (classes), {} transitions (post-dedup may be smaller)",
-                classToStateName.size(), transitionCount);
+        LOG.info("Built FTS: {} states (classes), {} transitions ({} synthetic __end__)",
+                classToStateName.size(), transitionCount, syntheticEndCount);
 
         return factory.build();
     }
+
+    /**
+     * Synthetic action name attached to back-to-INIT transitions added for
+     * mixed-terminal ESG vertices. Coverage measurement and downstream
+     * filters can recognise these via
+     * {@link be.vibes.testgeneration.graph.EulerianBalancer#isSyntheticAction}.
+     */
+    public static final String END_ACTION = "__end__";
 
     private static final int INIT_CLASS = 0;
 
@@ -269,13 +312,15 @@ public class MxeToFtsConverter {
     /**
      * Partition-refinement bisimulation: starts with all non-INIT vertices in
      * one class, refines by outgoing-edge signature
-     * {@code sorted [(action, fexpr, target_class)]} until stable.
+     * {@code sorted [(action, fexpr, target_class)]} (plus a "has-end-edge"
+     * marker) until stable.
      */
     private Map<String, Integer> partitionRefine(List<String> nonInitIds,
                                                  Map<String, List<EsgEdge>> outgoing,
                                                  Map<String, EsgVertex> byId,
                                                  Set<String> initMembers,
-                                                 String endId) {
+                                                 String endId,
+                                                 Map<String, Boolean> hasEndEdge) {
         Map<String, Integer> classOf = new HashMap<>();
         int firstNonInitClass = INIT_CLASS + 1;
         for (String vid : nonInitIds) {
@@ -298,7 +343,8 @@ public class MxeToFtsConverter {
                 }
                 Map<String, List<String>> bySignature = new LinkedHashMap<>();
                 for (String vid : members) {
-                    String sig = signatureOf(vid, outgoing, byId, classOf, initMembers, endId);
+                    String sig = signatureOf(vid, outgoing, byId, classOf, initMembers, endId,
+                            hasEndEdge);
                     bySignature.computeIfAbsent(sig, k -> new ArrayList<>()).add(vid);
                 }
                 if (bySignature.size() > 1) {
@@ -330,7 +376,8 @@ public class MxeToFtsConverter {
      */
     private String signatureOf(String vid, Map<String, List<EsgEdge>> outgoing,
                                Map<String, EsgVertex> byId, Map<String, Integer> classOf,
-                               Set<String> initMembers, String endId) {
+                               Set<String> initMembers, String endId,
+                               Map<String, Boolean> hasEndEdge) {
         List<String> parts = new ArrayList<>();
         for (EsgEdge e : outgoing.getOrDefault(vid, Collections.emptyList())) {
             if (e.target.equals(endId)) {
@@ -346,6 +393,12 @@ public class MxeToFtsConverter {
                     + ":" + tgtClass);
         }
         Collections.sort(parts);
+        // Include the has-end-edge bit so vertices with otherwise identical
+        // outgoing don't get merged into the same class if one can end the
+        // test and the other can't.
+        if (Boolean.TRUE.equals(hasEndEdge.get(vid))) {
+            parts.add("__END__");
+        }
         return String.join("|", parts);
     }
 

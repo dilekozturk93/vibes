@@ -60,12 +60,27 @@ public final class EulerianBalancer {
     }
 
     /**
-     * Returns whether the given action name is a synthetic balancing action
-     * introduced by this class. Downstream code (e.g. coverage measurement)
-     * uses this to exclude synthetic transitions from metric counts.
+     * Returns whether the given action name is a synthetic action that
+     * should be excluded from coverage measurement. Two flavours of
+     * synthetic action exist in the pipeline:
+     *
+     * <ul>
+     *   <li>{@value #SYNTHETIC_ACTION_PREFIX}N — added by this class
+     *       to balance in-degree and out-degree for Hierholzer;</li>
+     *   <li>{@code __end__} — added by
+     *       {@link be.vibes.testgeneration.conversion.MxeToFtsConverter}
+     *       as the FTS counterpart of the ESG-Fx-side {@code "]" -> "["}
+     *       back-edge (a "test ends here" marker on mixed-terminal
+     *       vertices). It restores strong connectivity at the SPL level.</li>
+     * </ul>
+     *
+     * Both prefixes start with a double underscore, so the check is a
+     * single prefix test.
      */
     public static boolean isSyntheticAction(String actionName) {
-        return actionName != null && actionName.startsWith(SYNTHETIC_ACTION_PREFIX);
+        return actionName != null
+                && (actionName.startsWith(SYNTHETIC_ACTION_PREFIX)
+                        || actionName.startsWith("__end__"));
     }
 
     /**

@@ -122,8 +122,12 @@ public class MxeToFtsConverterTest {
         // initial state (state1), and equivalent event vertices share a
         // single FTS state. SVM has 9, eMail 11, Elevator 14 states
         // post-minimization.
+        // After the mixed-terminal __end__ fix: 11 states unchanged, but
+        // 2 synthetic __end__ transitions are added (one per mixed-terminal
+        // class that has at least one ]-edge in the original ESG), bringing
+        // the transition count from 22 to 24.
         assertEquals("eMail FTS state count", 11, countStates(fts));
-        assertEquals("eMail FTS transition count", 22, countTransitions(fts));
+        assertEquals("eMail FTS transition count", 24, countTransitions(fts));
         assertEquals("state1", fts.getInitialState().getName());
         assertThat("eMail INIT outgoing transition count",
                 countOutgoing(fts, fts.getInitialState()), greaterThan(0));
@@ -135,8 +139,13 @@ public class MxeToFtsConverterTest {
         // Elevator's raw ESG has 19 event vertices but heavy structural
         // duplication (many press/release pairs with identical successor
         // sets); bisimulation reduction collapses these aggressively.
+        // After the mixed-terminal __end__ fix: 14 states unchanged, but
+        // 7 synthetic __end__ transitions are added (one per mixed-terminal
+        // class with a ]-edge — fewer than the 10 raw ]-edges in the ESG
+        // because the corresponding ESG vertices collapse into 7 classes
+        // under bisimulation). Transition count rises from 42 to 49.
         assertEquals("Elevator FTS state count", 14, countStates(fts));
-        assertEquals("Elevator FTS transition count", 42, countTransitions(fts));
+        assertEquals("Elevator FTS transition count", 49, countTransitions(fts));
         assertEquals("state1", fts.getInitialState().getName());
         assertThat("Elevator INIT outgoing transition count",
                 countOutgoing(fts, fts.getInitialState()), greaterThan(0));

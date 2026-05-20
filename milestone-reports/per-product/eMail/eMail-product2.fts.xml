@@ -1,11 +1,11 @@
-<?xml version="1.0"?><ts><start>state1</start><states><state id="state10"><transition target="state1" action="send email" fexpression="e"></transition></state><state id="state7"><transition target="state1" action="send email" fexpression="e"></transition><transition target="state10" action="sign mail" fexpression="s"></transition><transition target="state2" action="enter
+<?xml version="1.0"?><ts><start>state1</start><states><state id="state8"><transition target="state1" action="__end__"></transition></state><state id="state10"><transition target="state1" action="send email" fexpression="e"></transition></state><state id="state7"><transition target="state1" action="send email" fexpression="e"></transition><transition target="state10" action="sign mail" fexpression="s"></transition><transition target="state2" action="enter
  email 
 subject" fexpression="e"></transition><transition target="state7" action="enter 
 receiver's 
-email address" fexpression="e"></transition></state><state id="state2"><transition target="state2" action="enter email 
+email address" fexpression="e"></transition></state><state id="state2"><transition target="state7" action="enter 
+receiver's 
+email address" fexpression="e"></transition><transition target="state2" action="enter email 
 body" fexpression="e"></transition><transition target="state2" action="enter
  email 
-subject" fexpression="e"></transition><transition target="state7" action="enter 
-receiver's 
-email address" fexpression="e"></transition></state><state id="state1"><transition target="state2" action="compose new 
-email" fexpression="e"></transition></state></states></ts>
+subject" fexpression="e"></transition></state><state id="state1"><transition target="state3" action="open mailbox" fexpression="e"></transition><transition target="state2" action="compose new 
+email" fexpression="e"></transition></state><state id="state3"><transition target="state8" action="select email" fexpression="e"></transition></state></states></ts>

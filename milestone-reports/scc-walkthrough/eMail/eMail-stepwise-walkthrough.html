@@ -14,15 +14,15 @@ img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; 
 <p>Stepwise rendering of the M2 SCC repair pipeline on one hand-picked product of eMail. Each step shows the FTS as a PNG and a one-paragraph summary of what changed. Synthetic balancing edges (introduced later by EulerianBalancer in M3) are not present here.</p>
 <p><strong>Chosen configuration:</strong> selected = {au, e, f, s}</p>
 <h2>Step 1 — SPL-level FTS (initial input to the pipeline)</h2>
-<p><strong>Size:</strong> 11 states, 22 transitions</p>
+<p><strong>Size:</strong> 11 states, 24 transitions</p>
 <p>This is the bisimulation-minimized FTS produced by MxeToFtsConverter from the MXE ESG-Fx model. Every transition still carries its feature expression for traceability. The same FTS is the input for every product.</p>
 <img src="eMail-step1-spl.png" alt="Step 1"/>
 <h2>Step 2 — Projected FTS (after applying the configuration)</h2>
-<p><strong>Size:</strong> 8 states, 16 transitions</p>
-<p>FExpressionPreservingProjection keeps only transitions whose feature expression evaluates to true under the chosen configuration. 6 transition(s) were dropped relative to step 1. After projection the graph has 2 strongly-connected component(s); the SCC containing the initial state has 6 state(s). If that count is less than the total state count, the next step removes the unreachable / non-returnable portions.</p>
+<p><strong>Size:</strong> 8 states, 18 transitions</p>
+<p>FExpressionPreservingProjection keeps only transitions whose feature expression evaluates to true under the chosen configuration. 6 transition(s) were dropped relative to step 1. After projection the graph has 1 strongly-connected component(s); the SCC containing the initial state has 8 state(s). If that count is less than the total state count, the next step removes the unreachable / non-returnable portions.</p>
 <img src="eMail-step2-projected.png" alt="Step 2"/>
 <h2>Step 3 — Repaired FTS (initial-state SCC only)</h2>
-<p><strong>Size:</strong> 6 states, 12 transitions</p>
-<p>InitialSccFilter keeps only the SCC containing the initial state and drops every other state along with the transitions touching them. 2 state(s) and 4 transition(s) were removed. The result is strongly connected by construction and feeds the EulerianBalancer + Hierholzer pipeline in M3 and the coverage generators in M4 / M5 / M6.</p>
+<p><strong>Size:</strong> 8 states, 18 transitions</p>
+<p>InitialSccFilter keeps only the SCC containing the initial state and drops every other state along with the transitions touching them. 0 state(s) and 0 transition(s) were removed. The result is strongly connected by construction and feeds the EulerianBalancer + Hierholzer pipeline in M3 and the coverage generators in M4 / M5 / M6.</p>
 <img src="eMail-step3-repaired.png" alt="Step 3"/>
 </body></html>

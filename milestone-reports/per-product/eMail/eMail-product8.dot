@@ -1,33 +1,53 @@
 digraph G {
 rankdir=LR;
 state0[ label = "state1", style=filled, color=green ];
-state1 [ label = "state11" ];
-state1 -> state2 [ label=" encrypt mail 
+state1 [ label = "state5" ];
+state1 -> state2 [ label=" enter email 
+autoresponse 
+date interval/au " ];
+state3 [ label = "state8" ];
+state3 -> state0 [ label=" __end__/true " ];
+state4 [ label = "state11" ];
+state4 -> state5 [ label=" encrypt mail 
 with receiver's 
 public key/en " ];
-state3 [ label = "state7" ];
-state3 -> state0 [ label=" send email/e " ];
-state3 -> state1 [ label=" get receiver's  
+state5 [ label = "state10" ];
+state5 -> state0 [ label=" send email/e " ];
+state6 [ label = "state7" ];
+state6 -> state7 [ label=" enter
+ email 
+subject/e " ];
+state6 -> state0 [ label=" send email/e " ];
+state6 -> state6 [ label=" enter 
+receiver's 
+email address/e " ];
+state6 -> state5 [ label=" sign mail/s " ];
+state6 -> state4 [ label=" get receiver's  
 public key/en " ];
-state3 -> state2 [ label=" sign mail/s " ];
-state3 -> state4 [ label=" enter
- email 
-subject/e " ];
-state3 -> state3 [ label=" enter 
+state7 [ label = "state2" ];
+state7 -> state6 [ label=" enter 
 receiver's 
 email address/e " ];
-state2 [ label = "state10" ];
-state2 -> state0 [ label=" send email/e " ];
-state4 [ label = "state2" ];
-state4 -> state3 [ label=" enter 
-receiver's 
-email address/e " ];
-state4 -> state4 [ label=" enter email 
+state7 -> state7 [ label=" enter email 
 body/e " ];
-state4 -> state4 [ label=" enter
+state7 -> state7 [ label=" enter
  email 
 subject/e " ];
-state0 -> state4 [ label=" compose new 
+state0 -> state7 [ label=" compose new 
 email/e " ];
+state0 -> state8 [ label=" open mailbox/e " ];
+state0 -> state2 [ label=" enter email 
+autoresponse 
+date interval/au " ];
+state0 -> state1 [ label=" enter 
+autoresponse 
+email body/au " ];
+state2 [ label = "state4" ];
+state2 -> state1 [ label=" enter 
+autoresponse 
+email body/au " ];
+state2 -> state0 [ label=" __end__/true " ];
+state8 [ label = "state3" ];
+state8 -> state3 [ label=" select email/e " ];
 }
 
