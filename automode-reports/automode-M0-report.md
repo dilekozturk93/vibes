@@ -1,5 +1,14 @@
 # Automode Milestone M0 Report
 
+> ⚠ **Superseded by [M0-rev](automode-M0-rev-report.html).** The converter
+> described below is the initial naive 1-vertex-per-state implementation
+> with `v<mxGraphId>`-style state names. After user review on
+> 2026-05-18, that converter was replaced with a bisimulation-minimized
+> version that produces sequential `state1, state2, ...` names matching
+> Devroey's canonical FTS. This document is kept as a historical record
+> of the first iteration; the current converter behaviour is described
+> in [automode-M0-rev-report](automode-M0-rev-report.html).
+
 **Date:** 2026-05-13
 **Branch:** `feat/product-test-generation`
 **Commit:** (set in the commit that lands this report)

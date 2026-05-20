@@ -23,6 +23,7 @@ ul { padding-left: 1.6em; }
 </style>
 </head><body>
 <h1>Automode Milestone M0 Report</h1>
+<p>> ⚠ <strong>Superseded by <a href="automode-M0-rev-report.html">M0-rev</a>.</strong> The converter > described below is the initial naive 1-vertex-per-state implementation > with <code>v&lt;mxGraphId&gt;</code>-style state names. After user review on > 2026-05-18, that converter was replaced with a bisimulation-minimized > version that produces sequential <code>state1, state2, ...</code> names matching > Devroey's canonical FTS. This document is kept as a historical record > of the first iteration; the current converter behaviour is described > in <a href="automode-M0-rev-report.html">automode-M0-rev-report</a>.</p>
 <p><strong>Date:</strong> 2026-05-13 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report) <strong>Mode:</strong> manual (M0 was always planned as the manual bootstrap; M1 onward is automode)</p>
 <h2>Scope</h2>
 <p>Stand up the <code>vibes-testgeneration</code> Maven module, verify the surrounding VIBeS infrastructure that downstream milestones rely on, copy the SVM ESG-Fx / DIMACS inputs into the module's resources, implement the MXE → FTS converter, and gate it with smoke + structural tests on SVM. This is the foundation for M1 (eMail + Elevator conversion) and M2+ (graph algorithms + coverage generators).</p>
