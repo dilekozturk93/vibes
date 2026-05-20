@@ -12,6 +12,7 @@ import be.vibes.testgeneration.coverage.TransitionPairCoverageGenerator;
 import be.vibes.testgeneration.graph.EulerianBalancer;
 import be.vibes.testgeneration.graph.InitialSccFilter;
 import be.vibes.testgeneration.mutation.ActionExchange;
+import be.vibes.testgeneration.mutation.FaultDetector;
 import be.vibes.testgeneration.mutation.MutationOperator;
 import be.vibes.testgeneration.mutation.TransitionMissing;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
@@ -280,12 +281,12 @@ public final class PerProductMutationReportGenerator {
         List<TestCase> stateSuite = Collections.singletonList(stateTc);
         List<TestCase> transSuite = Collections.singletonList(transTc);
 
-        KillResult tmState = scoreSuite(tmMutants, stateSuite);
-        KillResult tmTrans = scoreSuite(tmMutants, transSuite);
-        KillResult tmPair = scoreSuite(tmMutants, pairSuite);
-        KillResult aexState = scoreSuite(aexMutants, stateSuite);
-        KillResult aexTrans = scoreSuite(aexMutants, transSuite);
-        KillResult aexPair = scoreSuite(aexMutants, pairSuite);
+        FaultDetector.KillResult tmState = FaultDetector.scoreSuite(stateSuite, tmMutants);
+        FaultDetector.KillResult tmTrans = FaultDetector.scoreSuite(transSuite, tmMutants);
+        FaultDetector.KillResult tmPair = FaultDetector.scoreSuite(pairSuite, tmMutants);
+        FaultDetector.KillResult aexState = FaultDetector.scoreSuite(stateSuite, aexMutants);
+        FaultDetector.KillResult aexTrans = FaultDetector.scoreSuite(transSuite, aexMutants);
+        FaultDetector.KillResult aexPair = FaultDetector.scoreSuite(pairSuite, aexMutants);
 
         md.write("\n### Product " + productIndex + "\n\n");
         md.write("**Selected features:** " + featuresLine + "\n\n");
@@ -296,22 +297,22 @@ public final class PerProductMutationReportGenerator {
         md.write("| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |\n");
         md.write("|---|---|---|---|---|\n");
         md.write("| TransitionMissing | " + tmMutants.size() + " | "
-                + formatScore(tmState.killed, tmMutants.size()) + " | "
-                + formatScore(tmTrans.killed, tmMutants.size()) + " | "
-                + formatScore(tmPair.killed, tmMutants.size()) + " |\n");
+                + formatScore(tmState.getKilled(), tmMutants.size()) + " | "
+                + formatScore(tmTrans.getKilled(), tmMutants.size()) + " | "
+                + formatScore(tmPair.getKilled(), tmMutants.size()) + " |\n");
         md.write("| ActionExchange | " + aexMutants.size() + " | "
-                + formatScore(aexState.killed, aexMutants.size()) + " | "
-                + formatScore(aexTrans.killed, aexMutants.size()) + " | "
-                + formatScore(aexPair.killed, aexMutants.size()) + " |\n");
+                + formatScore(aexState.getKilled(), aexMutants.size()) + " | "
+                + formatScore(aexTrans.getKilled(), aexMutants.size()) + " | "
+                + formatScore(aexPair.getKilled(), aexMutants.size()) + " |\n");
 
         // Surviving mutants (escaped detection by any criterion) — these are
         // the interesting ones for paper analysis.
-        appendSurvivors(md, "TransitionMissing — survived state coverage", tmState.survivors);
-        appendSurvivors(md, "TransitionMissing — survived transition coverage", tmTrans.survivors);
-        appendSurvivors(md, "TransitionMissing — survived pair coverage", tmPair.survivors);
-        appendSurvivors(md, "ActionExchange — survived state coverage", aexState.survivors);
-        appendSurvivors(md, "ActionExchange — survived transition coverage", aexTrans.survivors);
-        appendSurvivors(md, "ActionExchange — survived pair coverage", aexPair.survivors);
+        appendSurvivors(md, "TransitionMissing — survived state coverage", tmState.getSurvivors());
+        appendSurvivors(md, "TransitionMissing — survived transition coverage", tmTrans.getSurvivors());
+        appendSurvivors(md, "TransitionMissing — survived pair coverage", tmPair.getSurvivors());
+        appendSurvivors(md, "ActionExchange — survived state coverage", aexState.getSurvivors());
+        appendSurvivors(md, "ActionExchange — survived transition coverage", aexTrans.getSurvivors());
+        appendSurvivors(md, "ActionExchange — survived pair coverage", aexPair.getSurvivors());
 
         // HTML
         html.write("<h3>Product " + productIndex + "</h3>\n");
@@ -325,30 +326,30 @@ public final class PerProductMutationReportGenerator {
         html.write("<tr><th>Operator</th><th>Real mutants</th>"
                 + "<th>State-cov</th><th>Transition-cov</th><th>Pair-cov</th></tr>\n");
         html.write("<tr><td>TransitionMissing</td><td>" + tmMutants.size() + "</td><td>"
-                + formatScore(tmState.killed, tmMutants.size()) + "</td><td>"
-                + formatScore(tmTrans.killed, tmMutants.size()) + "</td><td>"
-                + formatScore(tmPair.killed, tmMutants.size()) + "</td></tr>\n");
+                + formatScore(tmState.getKilled(), tmMutants.size()) + "</td><td>"
+                + formatScore(tmTrans.getKilled(), tmMutants.size()) + "</td><td>"
+                + formatScore(tmPair.getKilled(), tmMutants.size()) + "</td></tr>\n");
         html.write("<tr><td>ActionExchange</td><td>" + aexMutants.size() + "</td><td>"
-                + formatScore(aexState.killed, aexMutants.size()) + "</td><td>"
-                + formatScore(aexTrans.killed, aexMutants.size()) + "</td><td>"
-                + formatScore(aexPair.killed, aexMutants.size()) + "</td></tr>\n");
+                + formatScore(aexState.getKilled(), aexMutants.size()) + "</td><td>"
+                + formatScore(aexTrans.getKilled(), aexMutants.size()) + "</td><td>"
+                + formatScore(aexPair.getKilled(), aexMutants.size()) + "</td></tr>\n");
         html.write("</table>\n");
-        appendSurvivorsHtml(html, "TransitionMissing — survived state coverage", tmState.survivors);
-        appendSurvivorsHtml(html, "TransitionMissing — survived transition coverage", tmTrans.survivors);
-        appendSurvivorsHtml(html, "TransitionMissing — survived pair coverage", tmPair.survivors);
-        appendSurvivorsHtml(html, "ActionExchange — survived state coverage", aexState.survivors);
-        appendSurvivorsHtml(html, "ActionExchange — survived transition coverage", aexTrans.survivors);
-        appendSurvivorsHtml(html, "ActionExchange — survived pair coverage", aexPair.survivors);
+        appendSurvivorsHtml(html, "TransitionMissing — survived state coverage", tmState.getSurvivors());
+        appendSurvivorsHtml(html, "TransitionMissing — survived transition coverage", tmTrans.getSurvivors());
+        appendSurvivorsHtml(html, "TransitionMissing — survived pair coverage", tmPair.getSurvivors());
+        appendSurvivorsHtml(html, "ActionExchange — survived state coverage", aexState.getSurvivors());
+        appendSurvivorsHtml(html, "ActionExchange — survived transition coverage", aexTrans.getSurvivors());
+        appendSurvivorsHtml(html, "ActionExchange — survived pair coverage", aexPair.getSurvivors());
 
         ProductScores ps = new ProductScores();
         ps.tmTotal = tmMutants.size();
-        ps.tmKilledState = tmState.killed;
-        ps.tmKilledTrans = tmTrans.killed;
-        ps.tmKilledPair = tmPair.killed;
+        ps.tmKilledState = tmState.getKilled();
+        ps.tmKilledTrans = tmTrans.getKilled();
+        ps.tmKilledPair = tmPair.getKilled();
         ps.aexTotal = aexMutants.size();
-        ps.aexKilledState = aexState.killed;
-        ps.aexKilledTrans = aexTrans.killed;
-        ps.aexKilledPair = aexPair.killed;
+        ps.aexKilledState = aexState.getKilled();
+        ps.aexKilledTrans = aexTrans.getKilled();
+        ps.aexKilledPair = aexPair.getKilled();
         return ps;
     }
 
@@ -404,67 +405,6 @@ public final class PerProductMutationReportGenerator {
                 || key.contains(EulerianBalancer.DUPLICATE_ACTION_INFIX);
     }
 
-    /**
-     * For each mutant, replays every TestCase in the suite. The mutant is
-     * killed iff at least one TestCase's non-synthetic transitions are not
-     * all present in the mutant (i.e. some {@code (source, action, target)}
-     * triple of the suite is absent from the mutant). Returns the
-     * {@code killed} count and the list of survivor keys.
-     */
-    private static KillResult scoreSuite(Map<String, FeaturedTransitionSystem> mutants,
-                                         List<TestCase> suite) {
-        // Pre-compute the set of (source, action, target) triples exercised
-        // by the suite. This makes the per-mutant check O(1) per triple in
-        // the mutant's transition set, rather than O(|suite|) for each
-        // mutant transition.
-        Set<String> suiteTriples = new HashSet<>();
-        for (TestCase tc : suite) {
-            for (Transition t : tc) {
-                if (EulerianBalancer.isSyntheticAction(t.getAction())) {
-                    continue;
-                }
-                suiteTriples.add(tripleKey(t.getSource().getName(),
-                        t.getAction().getName(), t.getTarget().getName()));
-            }
-        }
-
-        int killed = 0;
-        List<String> survivors = new ArrayList<>();
-        for (Map.Entry<String, FeaturedTransitionSystem> e : mutants.entrySet()) {
-            if (isKilled(e.getValue(), suiteTriples)) {
-                killed++;
-            } else {
-                survivors.add(e.getKey());
-            }
-        }
-        return new KillResult(killed, survivors);
-    }
-
-    /**
-     * Returns true iff some triple exercised by the suite is NOT a transition
-     * of the mutant. Equivalent to "the suite's execution on the mutant would
-     * fail (refused transition)" for both TransitionMissing and ActionExchange.
-     */
-    private static boolean isKilled(FeaturedTransitionSystem mutant, Set<String> suiteTriples) {
-        Set<String> mutantTriples = new HashSet<>();
-        Iterator<Transition> it = mutant.transitions();
-        while (it.hasNext()) {
-            Transition t = it.next();
-            mutantTriples.add(tripleKey(t.getSource().getName(),
-                    t.getAction().getName(), t.getTarget().getName()));
-        }
-        for (String triple : suiteTriples) {
-            if (!mutantTriples.contains(triple)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static String tripleKey(String src, String action, String tgt) {
-        return src + "|" + action + "|" + tgt;
-    }
-
     private static String formatScore(int killed, int total) {
         if (total == 0) {
             return "n/a";
@@ -476,15 +416,6 @@ public final class PerProductMutationReportGenerator {
     private static final class ProductScores {
         int tmTotal, tmKilledState, tmKilledTrans, tmKilledPair;
         int aexTotal, aexKilledState, aexKilledTrans, aexKilledPair;
-    }
-
-    private static final class KillResult {
-        final int killed;
-        final List<String> survivors;
-        KillResult(int killed, List<String> survivors) {
-            this.killed = killed;
-            this.survivors = survivors;
-        }
     }
 
     // ---------- Helpers (shared with other generators) ----------
