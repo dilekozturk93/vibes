@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>Per-Product All-States — eMail</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 1080px; margin: 2em auto; padding: 0 1em; line-height: 1.55; color: #222; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { margin-top: 1.6em; color: #555; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95em; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+</style>
+</head><body>
+<h1>Per-Product All-States Coverage — eMail</h1>
+<h2>How the all-states test case is built</h2>
+<ol>
+<li><strong>Project onto the product.</strong> <code>FExpressionPreservingProjection.project</code> keeps every transition whose feature expression evaluates true under the configuration; a forward BFS then drops states unreachable from the initial.</li>
+<li><strong>Repair strong connectivity.</strong> <code>InitialSccFilter.keepInitialScc</code> isolates the SCC containing the initial state.</li>
+<li><strong>Greedy walk.</strong> Starting at the initial state, repeatedly pick any outgoing transition whose target has not yet been visited.</li>
+<li><strong>BFS reroute when stuck.</strong> If every outgoing of the current state goes to a visited state, <code>ShortestPaths.shortestPathToAny</code> runs a BFS from the current state to the nearest state still uncovered, and the resulting path is appended to the walk. Intermediate states along the path are also marked visited.</li>
+<li><strong>Repeat until covered, then wrap.</strong> Steps 3 and 4 alternate until every state is in the visited set; the transition list is enqueued into <code>TestCase</code>, then <code>TestCaseSplitter.splitAtInitialReturns</code> splits the walk at every visit to the initial state for display.</li>
+</ol>
+<p><strong>Coverage claim:</strong> step 5 terminates iff every state is visited; strong connectivity guarantees termination. State coverage is therefore <strong>100% on the repaired FTS</strong> by construction. The walk is typically shorter than an all-transitions Euler cycle (lower-bound <code>|V|-1</code> vs <code>|E|</code>) but exercises fewer edges — the fundamental RQ3 trade-off.</p>
+<hr/>
+<h2>Products</h2>
+<p>Each product below shows the repaired FTS with the state-coverage walk overlaid: <strong>darkblue bold</strong> transitions are picked by the greedy phase; <strong>red dashed</strong> transitions are picked by the BFS-reroute phase; <strong>grey</strong> transitions are not in the walk. Test cases below are obtained by splitting the walk at every visit to the initial state.</p>
+<h3>Product 1</h3>
+<p><strong>Selected features:</strong> selected = {e, s}</p>
+<p><strong>Repaired FTS:</strong> 6 states, 12 transitions (11 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 4 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>6/6 = 100.0%</strong>.</p>
+<img src="eMail-product1-walk.png" alt="Walk overlay — product 1"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail</code></li>
+</ul>
+<h3>Product 2</h3>
+<p><strong>Selected features:</strong> selected = {ad, e}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 15 transitions (14 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="eMail-product2-walk.png" alt="Walk overlay — product 2"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 2</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+</ul>
+<h3>Product 3</h3>
+<p><strong>Selected features:</strong> selected = {ad, au, e}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 13 transition step(s) — 6 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="eMail-product3-walk.png" alt="Walk overlay — product 3"/>
+<p><strong>Generated test cases</strong> (4 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+</ul>
+<h3>Product 4</h3>
+<p><strong>Selected features:</strong> selected = {ad, au, e, en, s}</p>
+<p><strong>Repaired FTS:</strong> 11 states, 23 transitions (21 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 17 transition step(s) — 6 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>11/11 = 100.0%</strong>.</p>
+<img src="eMail-product4-walk.png" alt="Walk overlay — product 4"/>
+<p><strong>Generated test cases</strong> (5 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
+</ul>
+<h3>Product 5</h3>
+<p><strong>Selected features:</strong> selected = {e, en, s}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 14 transitions (13 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 7 transition step(s) — 5 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="eMail-product5-walk.png" alt="Walk overlay — product 5"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
+</ul>
+<h3>Product 6</h3>
+<p><strong>Selected features:</strong> selected = {au, e, en, s}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 19 transitions (17 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 14 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="eMail-product6-walk.png" alt="Walk overlay — product 6"/>
+<p><strong>Generated test cases</strong> (4 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
+</ul>
+<h3>Product 7</h3>
+<p><strong>Selected features:</strong> selected = {ad, au, e, f, s}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 22 transitions (20 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 13 transition step(s) — 6 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="eMail-product7-walk.png" alt="Walk overlay — product 7"/>
+<p><strong>Generated test cases</strong> (4 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+</ul>
+<h3>Product 8</h3>
+<p><strong>Selected features:</strong> selected = {e, f, s}</p>
+<p><strong>Repaired FTS:</strong> 6 states, 13 transitions (12 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 4 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>6/6 = 100.0%</strong>.</p>
+<img src="eMail-product8-walk.png" alt="Walk overlay — product 8"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+</ul>
+<h3>Product 9</h3>
+<p><strong>Selected features:</strong> selected = {au, e}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 15 transitions (13 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="eMail-product9-walk.png" alt="Walk overlay — product 9"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+</ul>
+<h3>Product 10</h3>
+<p><strong>Selected features:</strong> selected = {ad, e, f}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 16 transitions (15 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="eMail-product10-walk.png" alt="Walk overlay — product 10"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+</ul>
+<h3>Product 11</h3>
+<p><strong>Selected features:</strong> selected = {ad, au, e, f}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 13 transition step(s) — 6 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="eMail-product11-walk.png" alt="Walk overlay — product 11"/>
+<p><strong>Generated test cases</strong> (4 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+</ul>
+<h3>Product 12</h3>
+<p><strong>Selected features:</strong> selected = {ad, e, en}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 17 transitions (16 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 6 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="eMail-product12-walk.png" alt="Walk overlay — product 12"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 2</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
+</ul>
+<h3>Product 13</h3>
+<p><strong>Selected features:</strong> selected = {ad, e, s}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 16 transitions (15 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="eMail-product13-walk.png" alt="Walk overlay — product 13"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 2</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail</code></li>
+</ul>
+<h3>Product 14</h3>
+<p><strong>Selected features:</strong> selected = {au, e, f, s}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 18 transitions (16 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="eMail-product14-walk.png" alt="Walk overlay — product 14"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+</ul>
+<h3>Product 15</h3>
+<p><strong>Selected features:</strong> selected = {e, en}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 13 transitions (12 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 7 transition step(s) — 5 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="eMail-product15-walk.png" alt="Walk overlay — product 15"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
+</ul>
+<h3>Product 16</h3>
+<p><strong>Selected features:</strong> selected = {au, e, f}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 17 transitions (15 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="eMail-product16-walk.png" alt="Walk overlay — product 16"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+</ul>
+<h3>Product 17</h3>
+<p><strong>Selected features:</strong> selected = {ad, e, f, s}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 17 transitions (16 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="eMail-product17-walk.png" alt="Walk overlay — product 17"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+</ul>
+<h3>Product 18</h3>
+<p><strong>Selected features:</strong> selected = {ad, au, e, en}</p>
+<p><strong>Repaired FTS:</strong> 11 states, 22 transitions (20 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 17 transition step(s) — 6 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>11/11 = 100.0%</strong>.</p>
+<img src="eMail-product18-walk.png" alt="Walk overlay — product 18"/>
+<p><strong>Generated test cases</strong> (5 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
+</ul>
+<h3>Product 19</h3>
+<p><strong>Selected features:</strong> selected = {au, e, en}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 18 transitions (16 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 6 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="eMail-product19-walk.png" alt="Walk overlay — product 19"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+</ul>
+<h3>Product 20</h3>
+<p><strong>Selected features:</strong> selected = {e, f}</p>
+<p><strong>Repaired FTS:</strong> 6 states, 12 transitions (11 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 4 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>6/6 = 100.0%</strong>.</p>
+<img src="eMail-product20-walk.png" alt="Walk overlay — product 20"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+</ul>
+<h3>Product 21</h3>
+<p><strong>Selected features:</strong> selected = {ad, e, en, s}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 18 transitions (17 real / 1 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 6 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="eMail-product21-walk.png" alt="Walk overlay — product 21"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 2</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
+</ul>
+<h3>Product 22</h3>
+<p><strong>Selected features:</strong> selected = {ad, au, e, s}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 13 transition step(s) — 6 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="eMail-product22-walk.png" alt="Walk overlay — product 22"/>
+<p><strong>Generated test cases</strong> (4 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+</ul>
+<h3>Product 23</h3>
+<p><strong>Selected features:</strong> selected = {au, e, s}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 17 transitions (15 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="eMail-product23-walk.png" alt="Walk overlay — product 23"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+</ul>
+<hr/>
+<p>Total products: 23.</p>
+</body></html>

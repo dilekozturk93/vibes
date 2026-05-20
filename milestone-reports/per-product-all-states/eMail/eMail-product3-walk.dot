@@ -1,0 +1,34 @@
+digraph G {
+rankdir=LR;
+state0[ label = "state1", style=filled, color=green ];
+state1 [ label = "state9" ];
+state2 [ label = "state6" ];
+state3 [ label = "state5" ];
+state4 [ label = "state8" ];
+state5 [ label = "state7" ];
+state6 [ label = "state10" ];
+state7 [ label = "state2" ];
+state8 [ label = "state4" ];
+state9 [ label = "state3" ];
+state5 -> state0 [ label=" send email/e ", color="#bbbbbb", fontcolor="#888888" ];
+state8 -> state3 [ label=" enter autoresponse email body/au ", style=bold, color=darkblue, penwidth=2 ];
+state1 -> state0 [ label=" enter alias email addresses of receiver/ad ", color="#bbbbbb", fontcolor="#888888" ];
+state9 -> state4 [ label=" select email/e ", style=bold, color=darkblue, penwidth=2 ];
+state3 -> state8 [ label=" enter email autoresponse date interval/au ", style=dashed, color=red, penwidth=2 ];
+state7 -> state5 [ label=" enter receiver's email address/e ", style=bold, color=darkblue, penwidth=2 ];
+state5 -> state7 [ label=" enter email subject/e ", color="#bbbbbb", fontcolor="#888888" ];
+state0 -> state8 [ label=" enter email autoresponse date interval/au ", style=dashed, color=red, penwidth=2 ];
+state0 -> state3 [ label=" enter autoresponse email body/au ", color="#bbbbbb", fontcolor="#888888" ];
+state8 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ];
+state4 -> state0 [ label=" __end__/true ", style=dashed, color=red, penwidth=2 ];
+state0 -> state9 [ label=" open mailbox/e ", style=dashed, color=red, penwidth=2 ];
+state0 -> state2 [ label=" create an addressbook for a receiver/ad ", style=dashed, color=red, penwidth=2 ];
+state0 -> state7 [ label=" compose new email/e ", style=bold, color=darkblue, penwidth=2 ];
+state7 -> state7 [ label=" enter email body/e ", color="#bbbbbb", fontcolor="#888888" ];
+state7 -> state7 [ label=" enter email subject/e ", color="#bbbbbb", fontcolor="#888888" ];
+state6 -> state0 [ label=" send email/e ", style=dashed, color=red, penwidth=2 ];
+state2 -> state1 [ label=" enter the receiver's email address/ad ", style=bold, color=darkblue, penwidth=2 ];
+state5 -> state5 [ label=" enter receiver's email address/e ", color="#bbbbbb", fontcolor="#888888" ];
+state5 -> state6 [ label=" get alias email addresses of receiver/ad ", style=bold, color=darkblue, penwidth=2 ];
+}
+

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>Per-Product All-States — Elevator</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 1080px; margin: 2em auto; padding: 0 1em; line-height: 1.55; color: #222; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { margin-top: 1.6em; color: #555; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95em; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+</style>
+</head><body>
+<h1>Per-Product All-States Coverage — Elevator</h1>
+<h2>How the all-states test case is built</h2>
+<ol>
+<li><strong>Project onto the product.</strong> <code>FExpressionPreservingProjection.project</code> keeps every transition whose feature expression evaluates true under the configuration; a forward BFS then drops states unreachable from the initial.</li>
+<li><strong>Repair strong connectivity.</strong> <code>InitialSccFilter.keepInitialScc</code> isolates the SCC containing the initial state.</li>
+<li><strong>Greedy walk.</strong> Starting at the initial state, repeatedly pick any outgoing transition whose target has not yet been visited.</li>
+<li><strong>BFS reroute when stuck.</strong> If every outgoing of the current state goes to a visited state, <code>ShortestPaths.shortestPathToAny</code> runs a BFS from the current state to the nearest state still uncovered, and the resulting path is appended to the walk. Intermediate states along the path are also marked visited.</li>
+<li><strong>Repeat until covered, then wrap.</strong> Steps 3 and 4 alternate until every state is in the visited set; the transition list is enqueued into <code>TestCase</code>, then <code>TestCaseSplitter.splitAtInitialReturns</code> splits the walk at every visit to the initial state for display.</li>
+</ol>
+<p><strong>Coverage claim:</strong> step 5 terminates iff every state is visited; strong connectivity guarantees termination. State coverage is therefore <strong>100% on the repaired FTS</strong> by construction. The walk is typically shorter than an all-transitions Euler cycle (lower-bound <code>|V|-1</code> vs <code>|E|</code>) but exercises fewer edges — the fundamental RQ3 trade-off.</p>
+<hr/>
+<h2>Products</h2>
+<p>Each product below shows the repaired FTS with the state-coverage walk overlaid: <strong>darkblue bold</strong> transitions are picked by the greedy phase; <strong>red dashed</strong> transitions are picked by the BFS-reroute phase; <strong>grey</strong> transitions are not in the walk. Test cases below are obtained by splitting the walk at every visit to the initial state.</p>
+<h3>Product 1</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 4 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product1-walk.png" alt="Walk overlay — product 1"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; enter PIN &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 2</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product2-walk.png" alt="Walk overlay — product 2"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 3</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product3-walk.png" alt="Walk overlay — product 3"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 4</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product4-walk.png" alt="Walk overlay — product 4"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 5</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 12 transition step(s) — 6 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product5-walk.png" alt="Walk overlay — product 5"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button &rarr; press&amp;hold door open &rarr; release door open</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press&amp;hold door close &rarr; release door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 6</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, Intercom, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product6-walk.png" alt="Walk overlay — product 6"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 7</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product7-walk.png" alt="Walk overlay — product 7"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 8</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 13 transition step(s) — 5 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product8-walk.png" alt="Walk overlay — product 8"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp &rarr; enter PIN &rarr; press cabin executive floor</code></li>
+</ul>
+<h3>Product 9</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 13 transition step(s) — 5 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product9-walk.png" alt="Walk overlay — product 9"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp &rarr; enter PIN &rarr; press cabin executive floor</code></li>
+</ul>
+<h3>Product 10</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, FirefighterService, Intercom}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 12 transition step(s) — 6 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product10-walk.png" alt="Walk overlay — product 10"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom &rarr; press&amp;hold door open &rarr; release door open</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press&amp;hold door close &rarr; release door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 11</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, Intercom, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 12 states, 31 transitions (25 real / 6 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 15 transition step(s) — 7 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>12/12 = 100.0%</strong>.</p>
+<img src="Elevator-product11-walk.png" alt="Walk overlay — product 11"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom &rarr; press&amp;hold door open &rarr; release door open</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp &rarr; press cabin roof &rarr; press&amp;hold door close &rarr; release door close</code></li>
+</ul>
+<h3>Product 12</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 4 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product12-walk.png" alt="Walk overlay — product 12"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; enter PIN &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 13</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 15 transition step(s) — 7 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>12/12 = 100.0%</strong>.</p>
+<img src="Elevator-product13-walk.png" alt="Walk overlay — product 13"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button &rarr; press&amp;hold door open &rarr; release door open</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp &rarr; press cabin roof &rarr; press&amp;hold door close &rarr; release door close</code></li>
+</ul>
+<h3>Product 14</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product14-walk.png" alt="Walk overlay — product 14"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 15</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, FirefighterService, Intercom, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 15 transition step(s) — 7 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>12/12 = 100.0%</strong>.</p>
+<img src="Elevator-product15-walk.png" alt="Walk overlay — product 15"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom &rarr; press&amp;hold door open &rarr; release door open</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp &rarr; press cabin roof &rarr; press&amp;hold door close &rarr; release door close</code></li>
+</ul>
+<h3>Product 16</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product16-walk.png" alt="Walk overlay — product 16"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 17</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, Intercom}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product17-walk.png" alt="Walk overlay — product 17"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 18</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product18-walk.png" alt="Walk overlay — product 18"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 19</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ManualDoorControl, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product19-walk.png" alt="Walk overlay — product 19"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 20</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 7 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product20-walk.png" alt="Walk overlay — product 20"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin executive floor &rarr; press door close &rarr; press door open</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 21</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, Intercom}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product21-walk.png" alt="Walk overlay — product 21"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 22</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 4 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product22-walk.png" alt="Walk overlay — product 22"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; enter PIN &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 23</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 7 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product23-walk.png" alt="Walk overlay — product 23"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin executive floor &rarr; press door close &rarr; press door open</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 24</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 7 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product24-walk.png" alt="Walk overlay — product 24"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin executive floor &rarr; press door close &rarr; press door open</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 25</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, Intercom, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product25-walk.png" alt="Walk overlay — product 25"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 26</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 7 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product26-walk.png" alt="Walk overlay — product 26"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin executive floor &rarr; press door close &rarr; press door open</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 27</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product27-walk.png" alt="Walk overlay — product 27"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 28</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, Intercom}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 25 transitions (21 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 12 transition step(s) — 6 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product28-walk.png" alt="Walk overlay — product 28"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom &rarr; press&amp;hold door open &rarr; release door open</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press&amp;hold door close &rarr; release door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 29</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product29-walk.png" alt="Walk overlay — product 29"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 30</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product30-walk.png" alt="Walk overlay — product 30"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 31</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product31-walk.png" alt="Walk overlay — product 31"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 32</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product32-walk.png" alt="Walk overlay — product 32"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 33</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 7 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product33-walk.png" alt="Walk overlay — product 33"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin executive floor &rarr; press door close &rarr; press door open</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 34</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, ManualDoorControl}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 7 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product34-walk.png" alt="Walk overlay — product 34"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; read card &rarr; press cabin executive floor &rarr; press door close &rarr; press door open</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 35</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product35-walk.png" alt="Walk overlay — product 35"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 36</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product36-walk.png" alt="Walk overlay — product 36"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 37</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, MobileKey}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 5 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="Elevator-product37-walk.png" alt="Walk overlay — product 37"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; tap mobile key &rarr; press cabin executive floor</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 38</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product38-walk.png" alt="Walk overlay — product 38"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 39</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 9 transition step(s) — 4 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="Elevator-product39-walk.png" alt="Walk overlay — product 39"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 40</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ManualDoorControl, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product40-walk.png" alt="Walk overlay — product 40"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press alarm button</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<h3>Product 41</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 13 transition step(s) — 5 unique greedy edge(s), 4 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>10/10 = 100.0%</strong>.</p>
+<img src="Elevator-product41-walk.png" alt="Walk overlay — product 41"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp &rarr; enter PIN &rarr; press cabin executive floor</code></li>
+</ul>
+<h3>Product 42</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 11 transition step(s) — 5 unique greedy edge(s), 3 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="Elevator-product42-walk.png" alt="Walk overlay — product 42"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>press hall RoofDown &rarr; enter PIN &rarr; press cabin lobby &rarr; press intercom</code></li>
+<li><strong>test case 2</strong>: <code>press hall up &rarr; press cabin lobby &rarr; press door open &rarr; press door close</code></li>
+<li><strong>test case 3</strong>: <code>press hall LobbyUp</code></li>
+</ul>
+<hr/>
+<p>Total products: 42.</p>
+</body></html>

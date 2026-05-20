@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>Per-Product All-States — SVM</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 1080px; margin: 2em auto; padding: 0 1em; line-height: 1.55; color: #222; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { margin-top: 1.6em; color: #555; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95em; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+</style>
+</head><body>
+<h1>Per-Product All-States Coverage — SVM</h1>
+<h2>How the all-states test case is built</h2>
+<ol>
+<li><strong>Project onto the product.</strong> <code>FExpressionPreservingProjection.project</code> keeps every transition whose feature expression evaluates true under the configuration; a forward BFS then drops states unreachable from the initial.</li>
+<li><strong>Repair strong connectivity.</strong> <code>InitialSccFilter.keepInitialScc</code> isolates the SCC containing the initial state.</li>
+<li><strong>Greedy walk.</strong> Starting at the initial state, repeatedly pick any outgoing transition whose target has not yet been visited.</li>
+<li><strong>BFS reroute when stuck.</strong> If every outgoing of the current state goes to a visited state, <code>ShortestPaths.shortestPathToAny</code> runs a BFS from the current state to the nearest state still uncovered, and the resulting path is appended to the walk. Intermediate states along the path are also marked visited.</li>
+<li><strong>Repeat until covered, then wrap.</strong> Steps 3 and 4 alternate until every state is in the visited set; the transition list is enqueued into <code>TestCase</code>, then <code>TestCaseSplitter.splitAtInitialReturns</code> splits the walk at every visit to the initial state for display.</li>
+</ol>
+<p><strong>Coverage claim:</strong> step 5 terminates iff every state is visited; strong connectivity guarantees termination. State coverage is therefore <strong>100% on the repaired FTS</strong> by construction. The walk is typically shorter than an all-transitions Euler cycle (lower-bound <code>|V|-1</code> vs <code>|E|</code>) but exercises fewer edges — the fundamental RQ3 trade-off.</p>
+<hr/>
+<h2>Products</h2>
+<p>Each product below shows the repaired FTS with the state-coverage walk overlaid: <strong>darkblue bold</strong> transitions are picked by the greedy phase; <strong>red dashed</strong> transitions are picked by the BFS-reroute phase; <strong>grey</strong> transitions are not in the walk. Test cases below are obtained by splitting the walk at every visit to the initial state.</p>
+<h3>Product 1</h3>
+<p><strong>Selected features:</strong> selected = {c, f, t}</p>
+<p><strong>Repaired FTS:</strong> 5 states, 6 transitions (6 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 3 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>5/5 = 100.0%</strong>.</p>
+<img src="SVM-product1-walk.png" alt="Walk overlay — product 1"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>free &rarr; tea &rarr; serveTea &rarr; take</code></li>
+<li><strong>test case 2</strong>: <code>free &rarr; cancel</code></li>
+</ul>
+<h3>Product 2</h3>
+<p><strong>Selected features:</strong> selected = {s, t}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 9 transitions (9 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 6 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="SVM-product2-walk.png" alt="Walk overlay — product 2"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>pay &rarr; change &rarr; soda &rarr; serveSoda &rarr; open &rarr; take &rarr; close</code></li>
+<li><strong>test case 2</strong>: <code>pay &rarr; change &rarr; tea</code></li>
+</ul>
+<h3>Product 3</h3>
+<p><strong>Selected features:</strong> selected = {s}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 7 transitions (7 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 6 unique greedy edge(s), 0 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="SVM-product3-walk.png" alt="Walk overlay — product 3"/>
+<p><strong>Generated test cases</strong> (1 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>pay &rarr; change &rarr; soda &rarr; serveSoda &rarr; open &rarr; take</code></li>
+</ul>
+<h3>Product 4</h3>
+<p><strong>Selected features:</strong> selected = {t}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 7 transitions (7 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 6 unique greedy edge(s), 0 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>7/7 = 100.0%</strong>.</p>
+<img src="SVM-product4-walk.png" alt="Walk overlay — product 4"/>
+<p><strong>Generated test cases</strong> (1 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>pay &rarr; change &rarr; tea &rarr; serveTea &rarr; open &rarr; take</code></li>
+</ul>
+<h3>Product 5</h3>
+<p><strong>Selected features:</strong> selected = {f, s, t}</p>
+<p><strong>Repaired FTS:</strong> 5 states, 6 transitions (6 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 3 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>5/5 = 100.0%</strong>.</p>
+<img src="SVM-product5-walk.png" alt="Walk overlay — product 5"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>free &rarr; soda &rarr; serveSoda &rarr; take</code></li>
+<li><strong>test case 2</strong>: <code>free &rarr; tea</code></li>
+</ul>
+<h3>Product 6</h3>
+<p><strong>Selected features:</strong> selected = {c, f, s}</p>
+<p><strong>Repaired FTS:</strong> 5 states, 6 transitions (6 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 6 transition step(s) — 3 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>5/5 = 100.0%</strong>.</p>
+<img src="SVM-product6-walk.png" alt="Walk overlay — product 6"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>free &rarr; soda &rarr; serveSoda &rarr; take</code></li>
+<li><strong>test case 2</strong>: <code>free &rarr; cancel</code></li>
+</ul>
+<h3>Product 7</h3>
+<p><strong>Selected features:</strong> selected = {c, s}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 9 transitions (9 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 6 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="SVM-product7-walk.png" alt="Walk overlay — product 7"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>pay &rarr; change &rarr; soda &rarr; serveSoda &rarr; open &rarr; take &rarr; close</code></li>
+<li><strong>test case 2</strong>: <code>pay &rarr; change &rarr; cancel</code></li>
+</ul>
+<h3>Product 8</h3>
+<p><strong>Selected features:</strong> selected = {f, t}</p>
+<p><strong>Repaired FTS:</strong> 4 states, 4 transitions (4 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 3 transition step(s) — 3 unique greedy edge(s), 0 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>4/4 = 100.0%</strong>.</p>
+<img src="SVM-product8-walk.png" alt="Walk overlay — product 8"/>
+<p><strong>Generated test cases</strong> (1 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>free &rarr; tea &rarr; serveTea</code></li>
+</ul>
+<h3>Product 9</h3>
+<p><strong>Selected features:</strong> selected = {c, f, s, t}</p>
+<p><strong>Repaired FTS:</strong> 6 states, 8 transitions (8 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 3 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>6/6 = 100.0%</strong>.</p>
+<img src="SVM-product9-walk.png" alt="Walk overlay — product 9"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>free &rarr; soda &rarr; serveSoda &rarr; take</code></li>
+<li><strong>test case 2</strong>: <code>free &rarr; tea &rarr; serveTea &rarr; take</code></li>
+<li><strong>test case 3</strong>: <code>free &rarr; cancel</code></li>
+</ul>
+<h3>Product 10</h3>
+<p><strong>Selected features:</strong> selected = {c, s, t}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 11 transitions (11 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 17 transition step(s) — 6 unique greedy edge(s), 2 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>9/9 = 100.0%</strong>.</p>
+<img src="SVM-product10-walk.png" alt="Walk overlay — product 10"/>
+<p><strong>Generated test cases</strong> (3 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>pay &rarr; change &rarr; soda &rarr; serveSoda &rarr; open &rarr; take &rarr; close</code></li>
+<li><strong>test case 2</strong>: <code>pay &rarr; change &rarr; tea &rarr; serveTea &rarr; open &rarr; take &rarr; close</code></li>
+<li><strong>test case 3</strong>: <code>pay &rarr; change &rarr; cancel</code></li>
+</ul>
+<h3>Product 11</h3>
+<p><strong>Selected features:</strong> selected = {c, t}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 9 transitions (9 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 10 transition step(s) — 6 unique greedy edge(s), 1 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>8/8 = 100.0%</strong>.</p>
+<img src="SVM-product11-walk.png" alt="Walk overlay — product 11"/>
+<p><strong>Generated test cases</strong> (2 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>pay &rarr; change &rarr; tea &rarr; serveTea &rarr; open &rarr; take &rarr; close</code></li>
+<li><strong>test case 2</strong>: <code>pay &rarr; change &rarr; cancel</code></li>
+</ul>
+<h3>Product 12</h3>
+<p><strong>Selected features:</strong> selected = {f, s}</p>
+<p><strong>Repaired FTS:</strong> 4 states, 4 transitions (4 real / 0 <code>__end__</code>).</p>
+<p><strong>State-coverage walk:</strong> 3 transition step(s) — 3 unique greedy edge(s), 0 BFS-reroute segment(s). State coverage on the repaired FTS: <strong>4/4 = 100.0%</strong>.</p>
+<img src="SVM-product12-walk.png" alt="Walk overlay — product 12"/>
+<p><strong>Generated test cases</strong> (1 trip(s) from initial back to initial, hidden synthetics removed):</p>
+<ul>
+<li><strong>test case 1</strong>: <code>free &rarr; soda &rarr; serveSoda</code></li>
+</ul>
+<hr/>
+<p>Total products: 12.</p>
+</body></html>
