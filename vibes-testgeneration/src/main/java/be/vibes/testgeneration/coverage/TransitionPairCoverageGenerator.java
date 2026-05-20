@@ -132,10 +132,49 @@ public final class TransitionPairCoverageGenerator {
             testCases.add(tc);
             totalTransitions += translated.size();
         }
+        // Dedupe at the action-sequence level: two TestCases whose translated
+        // action sequences are identical exercise the same action-pair set
+        // even if they correspond to different transition-level pairs (e.g.
+        // 'send_email from state2->state1' vs 'send_email from state3->state1'
+        // — same action label, different state path). Under action-pair
+        // coverage (the standard in the user's prior ESG-Fx work and the
+        // semantically meaningful criterion for SUT testing), only one of
+        // them is needed; the others are operationally redundant.
+        // Transition-level uniqueness is preserved in the underlying FTS;
+        // this dedup only drops surplus copies from the suite.
+        List<TestCase> dedupedCases = dedupeByActionSequence(testCases);
         LOG.info("Generated pair-coverage suite for '{}': {} pair-graph edges -> "
-                        + "{} test cases, {} total transitions",
-                testCaseBaseId, pairCycle.size(), testCases.size(), totalTransitions);
-        return testCases;
+                        + "{} test cases ({} after action-sequence dedup), {} total transitions",
+                testCaseBaseId, pairCycle.size(), testCases.size(),
+                dedupedCases.size(), totalTransitions);
+        return dedupedCases;
+    }
+
+    /**
+     * Drops TestCases whose action-name sequences duplicate an earlier
+     * TestCase's. Preserves the first-occurrence ordering. Synthetic actions
+     * (already-stripped __dup__ suffixes etc.) are normalised before comparing.
+     */
+    private static List<TestCase> dedupeByActionSequence(List<TestCase> raw) {
+        List<TestCase> out = new ArrayList<>(raw.size());
+        java.util.Set<String> seenKeys = new java.util.HashSet<>();
+        for (TestCase tc : raw) {
+            StringBuilder key = new StringBuilder();
+            for (Transition t : tc) {
+                if (EulerianBalancer.isSyntheticAction(t.getAction())) {
+                    continue;
+                }
+                String name = t.getAction().getName();
+                if (name.contains(EulerianBalancer.DUPLICATE_ACTION_INFIX)) {
+                    name = EulerianBalancer.stripDuplicateSuffix(name);
+                }
+                key.append(name).append("");
+            }
+            if (seenKeys.add(key.toString())) {
+                out.add(tc);
+            }
+        }
+        return out;
     }
 
     /**

@@ -3,110 +3,80 @@ rankdir=LR;
 state0[ label = "INIT", style=filled, color=green ];
 state1 [ label = "p_state4_press cabin 
 [1-N] floor_state5" ];
-state2 [ label = "p_state3_press cabin lobby_state5" ];
-state3 [ label = "p_state1_press hall down_state3" ];
-state4 [ label = "p_state4_press cabin roof_state5" ];
-state5 [ label = "p_state10_release door open_state13" ];
-state6 [ label = "p_state13_press&hold 
-door open_state10" ];
-state7 [ label = "p_state1_press hall 
-LobbyUp_state4" ];
-state8 [ label = "p_state3_press cabin roof_state5" ];
-state9 [ label = "p_state3_press cabin 
-[1-N] floor_state5" ];
-state10 [ label = "p_state9_press&hold 
+state2 [ label = "p_state14_press&hold 
 door close_state11" ];
-state11 [ label = "p_state5_press&hold 
-door open_state10" ];
-state12 [ label = "p_state2_press cabin lobby_state5" ];
-state13 [ label = "p_state5_press&hold 
-door close_state11" ];
-state14 [ label = "p_state14_press&hold 
-door close_state11" ];
-state15 [ label = "p_state1_press hall 
+state3 [ label = "p_state3_press cabin lobby_state5" ];
+state4 [ label = "p_state1_press hall 
 RoofDown_state2" ];
-state16 [ label = "p_state5___end___state1" ];
-state17 [ label = "p_state13___end___state1" ];
-state18 [ label = "p_state5_press alarm
+state5 [ label = "p_state5_press alarm
 button_state9" ];
-state19 [ label = "p_state9___end___state1" ];
-state20 [ label = "p_state2_press cabin 
-[1-N] floor_state5" ];
-state21 [ label = "p_state9_press&hold 
+state6 [ label = "p_state1_press hall down_state3" ];
+state7 [ label = "p_state4_press cabin roof_state5" ];
+state8 [ label = "p_state10_release door open_state13" ];
+state9 [ label = "p_state13_press&hold 
 door open_state10" ];
-state22 [ label = "p_state1_press hall up_state3" ];
-state23 [ label = "p_state14___end___state1" ];
-state24 [ label = "p_state11_release door close_state14" ];
-state18 -> state10 [ label=" press&hold  door close/true " ];
-state2 -> state13 [ label=" press&hold  door close/true " ];
-state3 -> state2 [ label=" press cabin lobby/true " ];
-state22 -> state2 [ label=" press cabin lobby/true " ];
-state9 -> state13 [ label=" press&hold  door close/true " ];
-state16 -> state3 [ label=" press hall down/true " ];
-state4 -> state16 [ label=" __end__/true ", style=dashed, color=red ];
-state5 -> state6 [ label=" press&hold  door open/true " ];
-state20 -> state11 [ label=" press&hold  door open/true " ];
-state12 -> state18 [ label=" press alarm button/true " ];
-state17 -> state22 [ label=" press hall up/true " ];
-state3 -> state8 [ label=" press cabin roof/true " ];
-state17 -> state3 [ label=" press hall down/true " ];
-state12 -> state13 [ label=" press&hold  door close/true " ];
-state9 -> state18 [ label=" press alarm button/true " ];
-state23 -> state7 [ label=" press hall  LobbyUp/true " ];
-state12 -> state16 [ label=" __end__/true ", style=dashed, color=red ];
-state17 -> state7 [ label=" press hall  LobbyUp/true " ];
-state2 -> state18 [ label=" press alarm button/true " ];
-state18 -> state21 [ label=" press&hold  door open/true " ];
-state24 -> state23 [ label=" __end__/true ", style=dashed, color=red ];
-state4 -> state18 [ label=" press alarm button/true " ];
-state1 -> state11 [ label=" press&hold  door open/true " ];
-state22 -> state8 [ label=" press cabin roof/true " ];
-state9 -> state16 [ label=" __end__/true ", style=dashed, color=red ];
-state4 -> state13 [ label=" press&hold  door close/true " ];
-state4 -> state11 [ label=" press&hold  door open/true " ];
-state23 -> state15 [ label=" press hall  RoofDown/true " ];
-state8 -> state11 [ label=" press&hold  door open/true " ];
-state15 -> state12 [ label=" press cabin lobby/true " ];
-state12 -> state11 [ label=" press&hold  door open/true " ];
-state2 -> state16 [ label=" __end__/true ", style=dashed, color=red ];
-state20 -> state18 [ label=" press alarm button/true " ];
-state22 -> state9 [ label=" press cabin  [1-N] floor/true " ];
-state8 -> state16 [ label=" __end__/true ", style=dashed, color=red ];
-state1 -> state16 [ label=" __end__/true ", style=dashed, color=red ];
-state16 -> state15 [ label=" press hall  RoofDown/true " ];
-state0 -> state15 [ label=" press hall  RoofDown/true " ];
-state8 -> state13 [ label=" press&hold  door close/true " ];
-state0 -> state3 [ label=" press hall down/true " ];
-state7 -> state4 [ label=" press cabin roof/true " ];
-state10 -> state24 [ label=" release door close/true " ];
-state1 -> state13 [ label=" press&hold  door close/true " ];
-state1 -> state18 [ label=" press alarm button/true " ];
-state0 -> state22 [ label=" press hall up/true " ];
-state20 -> state13 [ label=" press&hold  door close/true " ];
-state19 -> state15 [ label=" press hall  RoofDown/true " ];
-state0 -> state7 [ label=" press hall  LobbyUp/true " ];
-state5 -> state17 [ label=" __end__/true ", style=dashed, color=red ];
-state6 -> state5 [ label=" release door open/true " ];
-state7 -> state1 [ label=" press cabin  [1-N] floor/true " ];
-state24 -> state14 [ label=" press&hold  door close/true " ];
-state15 -> state20 [ label=" press cabin  [1-N] floor/true " ];
-state18 -> state19 [ label=" __end__/true ", style=dashed, color=red ];
-state20 -> state16 [ label=" __end__/true ", style=dashed, color=red ];
-state21 -> state5 [ label=" release door open/true " ];
-state23 -> state3 [ label=" press hall down/true " ];
-state19 -> state22 [ label=" press hall up/true " ];
-state16 -> state7 [ label=" press hall  LobbyUp/true " ];
-state23 -> state22 [ label=" press hall up/true " ];
-state14 -> state24 [ label=" release door close/true " ];
-state2 -> state11 [ label=" press&hold  door open/true " ];
-state11 -> state5 [ label=" release door open/true " ];
-state19 -> state3 [ label=" press hall down/true " ];
-state3 -> state9 [ label=" press cabin  [1-N] floor/true " ];
-state16 -> state22 [ label=" press hall up/true " ];
-state13 -> state24 [ label=" release door close/true " ];
-state9 -> state11 [ label=" press&hold  door open/true " ];
-state8 -> state18 [ label=" press alarm button/true " ];
-state19 -> state7 [ label=" press hall  LobbyUp/true " ];
-state17 -> state15 [ label=" press hall  RoofDown/true " ];
+state10 [ label = "p_state2_press cabin 
+[1-N] floor_state5" ];
+state11 [ label = "p_state9_press&hold 
+door open_state10" ];
+state12 [ label = "p_state1_press hall up_state3" ];
+state13 [ label = "p_state1_press hall 
+LobbyUp_state4" ];
+state14 [ label = "p_state3_press cabin roof_state5" ];
+state15 [ label = "p_state11_release door close_state14" ];
+state16 [ label = "p_state3_press cabin 
+[1-N] floor_state5" ];
+state17 [ label = "p_state9_press&hold 
+door close_state11" ];
+state18 [ label = "p_state5_press&hold 
+door open_state10" ];
+state19 [ label = "p_state2_press cabin lobby_state5" ];
+state20 [ label = "p_state5_press&hold 
+door close_state11" ];
+state0 -> state6 [ label=" press hall down/true " ];
+state5 -> state17 [ label=" press&hold  door close/true " ];
+state3 -> state20 [ label=" press&hold  door close/true " ];
+state6 -> state3 [ label=" press cabin lobby/true " ];
+state13 -> state7 [ label=" press cabin roof/true " ];
+state17 -> state15 [ label=" release door close/true " ];
+state12 -> state3 [ label=" press cabin lobby/true " ];
+state16 -> state20 [ label=" press&hold  door close/true " ];
+state1 -> state20 [ label=" press&hold  door close/true " ];
+state1 -> state5 [ label=" press alarm button/true " ];
+state0 -> state12 [ label=" press hall up/true " ];
+state8 -> state9 [ label=" press&hold  door open/true " ];
+state10 -> state18 [ label=" press&hold  door open/true " ];
+state10 -> state20 [ label=" press&hold  door close/true " ];
+state19 -> state5 [ label=" press alarm button/true " ];
+state6 -> state14 [ label=" press cabin roof/true " ];
+state19 -> state20 [ label=" press&hold  door close/true " ];
+state16 -> state5 [ label=" press alarm button/true " ];
+state0 -> state13 [ label=" press hall  LobbyUp/true " ];
+state9 -> state8 [ label=" release door open/true " ];
+state3 -> state5 [ label=" press alarm button/true " ];
+state13 -> state1 [ label=" press cabin  [1-N] floor/true " ];
+state5 -> state11 [ label=" press&hold  door open/true " ];
+state15 -> state2 [ label=" press&hold  door close/true " ];
+state7 -> state5 [ label=" press alarm button/true " ];
+state1 -> state18 [ label=" press&hold  door open/true " ];
+state12 -> state14 [ label=" press cabin roof/true " ];
+state4 -> state10 [ label=" press cabin  [1-N] floor/true " ];
+state7 -> state20 [ label=" press&hold  door close/true " ];
+state7 -> state18 [ label=" press&hold  door open/true " ];
+state14 -> state18 [ label=" press&hold  door open/true " ];
+state11 -> state8 [ label=" release door open/true " ];
+state4 -> state19 [ label=" press cabin lobby/true " ];
+state19 -> state18 [ label=" press&hold  door open/true " ];
+state10 -> state5 [ label=" press alarm button/true " ];
+state2 -> state15 [ label=" release door close/true " ];
+state3 -> state18 [ label=" press&hold  door open/true " ];
+state18 -> state8 [ label=" release door open/true " ];
+state6 -> state16 [ label=" press cabin  [1-N] floor/true " ];
+state20 -> state15 [ label=" release door close/true " ];
+state12 -> state16 [ label=" press cabin  [1-N] floor/true " ];
+state16 -> state18 [ label=" press&hold  door open/true " ];
+state14 -> state5 [ label=" press alarm button/true " ];
+state0 -> state4 [ label=" press hall  RoofDown/true " ];
+state14 -> state20 [ label=" press&hold  door close/true " ];
 }
 

@@ -51,7 +51,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 1](SVM-product1-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (8 real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 3 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 8 raw real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `free -> tea -> serveTea -> take`
 - **test case 2**: `free -> cancel -> return`
@@ -74,7 +74,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 2](SVM-product2-pairgraph-balanced.png)
 
-**Generated test suite** — 2 test case(s) total (12 real step(s); pair-graph cycle has 13 edge(s) total, 2 synthetic dropped at translation).
+**Generated test suite** — 3 unique test case(s) after action-sequence dedup (2 pair-graph segment(s), 12 raw real step(s); pair-graph cycle has 13 edge(s) total, 2 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `pay -> change -> tea -> serveTea -> open -> take -> close`
 - **test case 2**: `pay`
@@ -97,7 +97,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 3](SVM-product3-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (8 real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 2 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 8 raw real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `pay -> change -> soda -> serveSoda -> open -> take -> close`
 - **test case 2**: `pay`
@@ -119,7 +119,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 4](SVM-product4-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (8 real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 2 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 8 raw real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `pay -> change -> tea -> serveTea -> open -> take -> close`
 - **test case 2**: `pay`
@@ -141,7 +141,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 5](SVM-product5-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (8 real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 2 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 8 raw real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `free -> tea -> serveTea -> take`
 - **test case 2**: `free -> soda -> serveSoda -> take`
@@ -163,7 +163,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 6](SVM-product6-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (8 real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 3 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 8 raw real step(s); pair-graph cycle has 9 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `free -> cancel -> return`
 - **test case 2**: `free -> soda -> serveSoda -> take`
@@ -186,12 +186,11 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 7](SVM-product7-pairgraph-balanced.png)
 
-**Generated test suite** — 2 test case(s) total (12 real step(s); pair-graph cycle has 13 edge(s) total, 2 synthetic dropped at translation).
+**Generated test suite** — 3 unique test case(s) after action-sequence dedup (2 pair-graph segment(s), 12 raw real step(s); pair-graph cycle has 13 edge(s) total, 2 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `pay -> change -> soda -> serveSoda -> open -> take -> close`
 - **test case 2**: `pay`
 - **test case 3**: `change -> cancel -> return`
-- **test case 4**: `pay`
 
 
 ### Product 8
@@ -210,7 +209,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 8](SVM-product8-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (5 real step(s); pair-graph cycle has 6 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 2 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 5 raw real step(s); pair-graph cycle has 6 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `free -> tea -> serveTea -> take`
 - **test case 2**: `free`
@@ -232,7 +231,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 9](SVM-product9-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (11 real step(s); pair-graph cycle has 12 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 3 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 11 raw real step(s); pair-graph cycle has 12 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `free -> tea -> serveTea -> take`
 - **test case 2**: `free -> cancel -> return`
@@ -255,13 +254,12 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 10](SVM-product10-pairgraph-balanced.png)
 
-**Generated test suite** — 3 test case(s) total (16 real step(s); pair-graph cycle has 17 edge(s) total, 3 synthetic dropped at translation).
+**Generated test suite** — 4 unique test case(s) after action-sequence dedup (3 pair-graph segment(s), 16 raw real step(s); pair-graph cycle has 17 edge(s) total, 3 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `pay -> change -> tea -> serveTea -> open -> take -> close`
 - **test case 2**: `pay`
 - **test case 3**: `change -> cancel -> return`
-- **test case 4**: `pay`
-- **test case 5**: `change -> soda -> serveSoda -> open`
+- **test case 4**: `change -> soda -> serveSoda -> open`
 
 
 ### Product 11
@@ -280,12 +278,11 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 11](SVM-product11-pairgraph-balanced.png)
 
-**Generated test suite** — 2 test case(s) total (12 real step(s); pair-graph cycle has 13 edge(s) total, 2 synthetic dropped at translation).
+**Generated test suite** — 3 unique test case(s) after action-sequence dedup (2 pair-graph segment(s), 12 raw real step(s); pair-graph cycle has 13 edge(s) total, 2 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `pay -> change -> tea -> serveTea -> open -> take -> close`
 - **test case 2**: `pay`
 - **test case 3**: `change -> cancel -> return`
-- **test case 4**: `pay`
 
 
 ### Product 12
@@ -304,7 +301,7 @@ Three FTS images per product: (a) the repaired original FTS — source of the pa
 
 ![Pair graph (balanced) — product 12](SVM-product12-pairgraph-balanced.png)
 
-**Generated test suite** — 1 test case(s) total (5 real step(s); pair-graph cycle has 6 edge(s) total, 1 synthetic dropped at translation).
+**Generated test suite** — 2 unique test case(s) after action-sequence dedup (1 pair-graph segment(s), 5 raw real step(s); pair-graph cycle has 6 edge(s) total, 1 synthetic dropped at translation). Operationally-identical trips (same action sequence, possibly different transition-level pairs) are listed once.
 
 - **test case 1**: `free -> soda -> serveSoda -> take`
 - **test case 2**: `free`

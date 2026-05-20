@@ -32,887 +32,339 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <h3>Product 1</h3>
 <p><strong>Selected features:</strong> selected = {e, s}</p>
 <p><strong>Repaired FTS:</strong> 6 states, 12 transitions (11 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 13 nodes (incl. INIT), 31 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 13 nodes, 46 edges (15 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 12 nodes (incl. INIT), 28 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 12 nodes, 39 edges (11 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product1-repaired.png" alt="Repaired FTS — product 1"/>
 <img src="eMail-product1-pairgraph-raw.png" alt="Pair graph (raw) — product 1"/>
 <img src="eMail-product1-pairgraph-balanced.png" alt="Pair graph (balanced) — product 1"/>
-<p><strong>Generated test suite</strong> — 10 test case(s) total (38 real step(s); pair-graph cycle has 46 edge(s) total, 15 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 12 unique test case(s) after action-sequence dedup (9 pair-graph segment(s), 35 raw real step(s); pair-graph cycle has 39 edge(s) total, 11 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
 <li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
-<li><strong>test case 2</strong>: <code>send email</code></li>
+<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
 <li><strong>test case 3</strong>: <code>open mailbox &rarr; select email</code></li>
 <li><strong>test case 4</strong>: <code>open mailbox</code></li>
-<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 6</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 5</strong>: <code>send email</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
 <li><strong>test case 7</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 8</strong>: <code>compose new email</code></li>
+<li><strong>test case 8</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
 <li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
 <li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
 <li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
 <li><strong>test case 12</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 13</strong>: <code>open mailbox</code></li>
-<li><strong>test case 14</strong>: <code>open mailbox</code></li>
 </ul>
 <h3>Product 2</h3>
 <p><strong>Selected features:</strong> selected = {ad, e}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 15 transitions (14 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 16 nodes (incl. INIT), 40 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 16 nodes, 72 edges (32 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 15 nodes (incl. INIT), 36 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 15 nodes, 56 edges (20 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product2-repaired.png" alt="Repaired FTS — product 2"/>
 <img src="eMail-product2-pairgraph-raw.png" alt="Pair graph (raw) — product 2"/>
 <img src="eMail-product2-pairgraph-balanced.png" alt="Pair graph (balanced) — product 2"/>
-<p><strong>Generated test suite</strong> — 21 test case(s) total (57 real step(s); pair-graph cycle has 72 edge(s) total, 32 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 15 unique test case(s) after action-sequence dedup (15 pair-graph segment(s), 48 raw real step(s); pair-graph cycle has 56 edge(s) total, 20 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
 <li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
 <li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
 <li><strong>test case 3</strong>: <code>send email</code></li>
 <li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
 <li><strong>test case 5</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 6</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 7</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 8</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 9</strong>: <code>send email</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
+<li><strong>test case 7</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 8</strong>: <code>compose new email</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
 <li><strong>test case 10</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 11</strong>: <code>open mailbox</code></li>
-<li><strong>test case 12</strong>: <code>compose new email</code></li>
-<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 14</strong>: <code>compose new email</code></li>
-<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 16</strong>: <code>compose new email</code></li>
-<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 18</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 19</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 20</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 21</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 22</strong>: <code>send email</code></li>
-<li><strong>test case 23</strong>: <code>open mailbox</code></li>
-<li><strong>test case 24</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 25</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 26</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 27</strong>: <code>open mailbox</code></li>
-<li><strong>test case 28</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 29</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 30</strong>: <code>open mailbox</code></li>
+<li><strong>test case 11</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 13</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 14</strong>: <code>open mailbox</code></li>
+<li><strong>test case 15</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
 </ul>
 <h3>Product 3</h3>
 <p><strong>Selected features:</strong> selected = {ad, au, e}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 21 nodes (incl. INIT), 61 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 21 nodes, 148 edges (87 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 19 nodes (incl. INIT), 48 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 19 nodes, 71 edges (23 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product3-repaired.png" alt="Repaired FTS — product 3"/>
 <img src="eMail-product3-pairgraph-raw.png" alt="Pair graph (raw) — product 3"/>
 <img src="eMail-product3-pairgraph-balanced.png" alt="Pair graph (balanced) — product 3"/>
-<p><strong>Generated test suite</strong> — 35 test case(s) total (88 real step(s); pair-graph cycle has 148 edge(s) total, 87 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 18 unique test case(s) after action-sequence dedup (20 pair-graph segment(s), 63 raw real step(s); pair-graph cycle has 71 edge(s) total, 23 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 3</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 4</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 5</strong>: <code>send email</code></li>
-<li><strong>test case 6</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+<li><strong>test case 3</strong>: <code>send email</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 5</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
 <li><strong>test case 7</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 8</strong>: <code>open mailbox</code></li>
-<li><strong>test case 9</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 10</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 11</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 12</strong>: <code>send email</code></li>
-<li><strong>test case 13</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 14</strong>: <code>send email</code></li>
-<li><strong>test case 15</strong>: <code>open mailbox</code></li>
-<li><strong>test case 16</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 17</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 18</strong>: <code>get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 19</strong>: <code>compose new email</code></li>
-<li><strong>test case 20</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 21</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 22</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 23</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 24</strong>: <code>send email</code></li>
-<li><strong>test case 25</strong>: <code>compose new email</code></li>
-<li><strong>test case 26</strong>: <code>send email</code></li>
-<li><strong>test case 27</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 28</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 29</strong>: <code>open mailbox</code></li>
-<li><strong>test case 30</strong>: <code>compose new email</code></li>
-<li><strong>test case 31</strong>: <code>send email</code></li>
-<li><strong>test case 32</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 33</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 34</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 35</strong>: <code>enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 36</strong>: <code>compose new email</code></li>
-<li><strong>test case 37</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 38</strong>: <code>open mailbox</code></li>
-<li><strong>test case 39</strong>: <code>open mailbox</code></li>
-<li><strong>test case 40</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 41</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 42</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 43</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 44</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 45</strong>: <code>compose new email</code></li>
-<li><strong>test case 46</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 47</strong>: <code>send email</code></li>
-<li><strong>test case 48</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 49</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 50</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 9</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 10</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 11</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 12</strong>: <code>open mailbox</code></li>
+<li><strong>test case 13</strong>: <code>compose new email</code></li>
+<li><strong>test case 14</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 15</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 17</strong>: <code>enter email subject &rarr; enter email body</code></li>
+<li><strong>test case 18</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
 </ul>
 <h3>Product 4</h3>
 <p><strong>Selected features:</strong> selected = {ad, au, e, en, s}</p>
 <p><strong>Repaired FTS:</strong> 11 states, 23 transitions (21 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 24 nodes (incl. INIT), 68 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 24 nodes, 162 edges (94 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 22 nodes (incl. INIT), 55 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 22 nodes, 93 edges (38 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product4-repaired.png" alt="Repaired FTS — product 4"/>
 <img src="eMail-product4-pairgraph-raw.png" alt="Pair graph (raw) — product 4"/>
 <img src="eMail-product4-pairgraph-balanced.png" alt="Pair graph (balanced) — product 4"/>
-<p><strong>Generated test suite</strong> — 39 test case(s) total (99 real step(s); pair-graph cycle has 162 edge(s) total, 94 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 22 unique test case(s) after action-sequence dedup (23 pair-graph segment(s), 71 raw real step(s); pair-graph cycle has 93 edge(s) total, 38 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 3</strong>: <code>open mailbox</code></li>
-<li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 7</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 8</strong>: <code>open mailbox</code></li>
-<li><strong>test case 9</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 10</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 11</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 12</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 13</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 14</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 15</strong>: <code>compose new email</code></li>
-<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 17</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 18</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 19</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 20</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 21</strong>: <code>send email</code></li>
-<li><strong>test case 22</strong>: <code>compose new email</code></li>
-<li><strong>test case 23</strong>: <code>send email</code></li>
-<li><strong>test case 24</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 25</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 26</strong>: <code>open mailbox</code></li>
-<li><strong>test case 27</strong>: <code>send email</code></li>
-<li><strong>test case 28</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 29</strong>: <code>send email</code></li>
-<li><strong>test case 30</strong>: <code>open mailbox</code></li>
-<li><strong>test case 31</strong>: <code>compose new email</code></li>
-<li><strong>test case 32</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 33</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 34</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 35</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 36</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 37</strong>: <code>send email</code></li>
-<li><strong>test case 38</strong>: <code>open mailbox</code></li>
-<li><strong>test case 39</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 40</strong>: <code>compose new email</code></li>
-<li><strong>test case 41</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 42</strong>: <code>open mailbox</code></li>
-<li><strong>test case 43</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 44</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 45</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 46</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 47</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 48</strong>: <code>send email</code></li>
-<li><strong>test case 49</strong>: <code>compose new email</code></li>
-<li><strong>test case 50</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 51</strong>: <code>send email</code></li>
-<li><strong>test case 52</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 53</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 54</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 3</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 4</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 7</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 9</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 10</strong>: <code>send email</code></li>
+<li><strong>test case 11</strong>: <code>compose new email</code></li>
+<li><strong>test case 12</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 13</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 14</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 16</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 17</strong>: <code>open mailbox</code></li>
+<li><strong>test case 18</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
+<li><strong>test case 19</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 20</strong>: <code>enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+<li><strong>test case 21</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 22</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
 </ul>
 <h3>Product 5</h3>
 <p><strong>Selected features:</strong> selected = {e, en, s}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 14 transitions (13 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 15 nodes (incl. INIT), 35 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 15 nodes, 59 edges (24 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 14 nodes (incl. INIT), 32 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 14 nodes, 48 edges (16 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product5-repaired.png" alt="Repaired FTS — product 5"/>
 <img src="eMail-product5-pairgraph-raw.png" alt="Pair graph (raw) — product 5"/>
 <img src="eMail-product5-pairgraph-balanced.png" alt="Pair graph (balanced) — product 5"/>
-<p><strong>Generated test suite</strong> — 15 test case(s) total (47 real step(s); pair-graph cycle has 59 edge(s) total, 24 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 12 unique test case(s) after action-sequence dedup (9 pair-graph segment(s), 39 raw real step(s); pair-graph cycle has 48 edge(s) total, 16 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
 <li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
 <li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
 <li><strong>test case 3</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 4</strong>: <code>open mailbox</code></li>
+<li><strong>test case 4</strong>: <code>enter receiver's email address &rarr; send email</code></li>
 <li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 7</strong>: <code>compose new email</code></li>
-<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 9</strong>: <code>send email</code></li>
-<li><strong>test case 10</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 14</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 15</strong>: <code>open mailbox</code></li>
-<li><strong>test case 16</strong>: <code>compose new email</code></li>
-<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 18</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 19</strong>: <code>open mailbox</code></li>
+<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 7</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 8</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 11</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 12</strong>: <code>open mailbox</code></li>
 </ul>
 <h3>Product 6</h3>
 <p><strong>Selected features:</strong> selected = {au, e, en, s}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 19 transitions (17 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 20 nodes (incl. INIT), 53 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 20 nodes, 110 edges (57 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 18 nodes (incl. INIT), 42 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 18 nodes, 57 edges (15 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product6-repaired.png" alt="Repaired FTS — product 6"/>
 <img src="eMail-product6-pairgraph-raw.png" alt="Pair graph (raw) — product 6"/>
 <img src="eMail-product6-pairgraph-balanced.png" alt="Pair graph (balanced) — product 6"/>
-<p><strong>Generated test suite</strong> — 28 test case(s) total (74 real step(s); pair-graph cycle has 110 edge(s) total, 57 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 16 unique test case(s) after action-sequence dedup (13 pair-graph segment(s), 50 raw real step(s); pair-graph cycle has 57 edge(s) total, 15 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 3</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 4</strong>: <code>open mailbox</code></li>
-<li><strong>test case 5</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 7</strong>: <code>send email</code></li>
-<li><strong>test case 8</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 9</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 10</strong>: <code>open mailbox</code></li>
-<li><strong>test case 11</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 13</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 14</strong>: <code>send email</code></li>
-<li><strong>test case 15</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 16</strong>: <code>send email</code></li>
-<li><strong>test case 17</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 18</strong>: <code>compose new email</code></li>
-<li><strong>test case 19</strong>: <code>send email</code></li>
-<li><strong>test case 20</strong>: <code>open mailbox</code></li>
-<li><strong>test case 21</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 22</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 23</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 24</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 25</strong>: <code>compose new email</code></li>
-<li><strong>test case 26</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
-<li><strong>test case 27</strong>: <code>send email</code></li>
-<li><strong>test case 28</strong>: <code>compose new email</code></li>
-<li><strong>test case 29</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 30</strong>: <code>compose new email</code></li>
-<li><strong>test case 31</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 32</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 33</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 34</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 35</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
-<li><strong>test case 36</strong>: <code>open mailbox</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 4</strong>: <code>send email</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject</code></li>
+<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 7</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 8</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 9</strong>: <code>open mailbox</code></li>
+<li><strong>test case 10</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
+<li><strong>test case 12</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 13</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 14</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body</code></li>
 </ul>
 <h3>Product 7</h3>
 <p><strong>Selected features:</strong> selected = {ad, au, e, f, s}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 22 transitions (20 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 23 nodes (incl. INIT), 66 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 23 nodes, 161 edges (95 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 21 nodes (incl. INIT), 53 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 21 nodes, 93 edges (40 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product7-repaired.png" alt="Repaired FTS — product 7"/>
 <img src="eMail-product7-pairgraph-raw.png" alt="Pair graph (raw) — product 7"/>
 <img src="eMail-product7-pairgraph-balanced.png" alt="Pair graph (balanced) — product 7"/>
-<p><strong>Generated test suite</strong> — 38 test case(s) total (96 real step(s); pair-graph cycle has 161 edge(s) total, 95 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 20 unique test case(s) after action-sequence dedup (19 pair-graph segment(s), 66 raw real step(s); pair-graph cycle has 93 edge(s) total, 40 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 3</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
 <li><strong>test case 4</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 5</strong>: <code>send email</code></li>
-<li><strong>test case 6</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 7</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 9</strong>: <code>open mailbox</code></li>
-<li><strong>test case 10</strong>: <code>select email &rarr; enter forward receiver's email address</code></li>
-<li><strong>test case 11</strong>: <code>open mailbox</code></li>
-<li><strong>test case 12</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 13</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 14</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 15</strong>: <code>send email</code></li>
-<li><strong>test case 16</strong>: <code>compose new email</code></li>
-<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 18</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 19</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 20</strong>: <code>open mailbox</code></li>
-<li><strong>test case 21</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 22</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 23</strong>: <code>send email</code></li>
-<li><strong>test case 24</strong>: <code>compose new email</code></li>
-<li><strong>test case 25</strong>: <code>send email</code></li>
-<li><strong>test case 26</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 27</strong>: <code>send email</code></li>
-<li><strong>test case 28</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 29</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 30</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 31</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 32</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 33</strong>: <code>open mailbox</code></li>
-<li><strong>test case 34</strong>: <code>compose new email</code></li>
-<li><strong>test case 35</strong>: <code>send email</code></li>
-<li><strong>test case 36</strong>: <code>open mailbox</code></li>
-<li><strong>test case 37</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 38</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 39</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 40</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 41</strong>: <code>compose new email</code></li>
-<li><strong>test case 42</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 43</strong>: <code>open mailbox</code></li>
-<li><strong>test case 44</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 45</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 46</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 47</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 48</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 49</strong>: <code>compose new email</code></li>
-<li><strong>test case 50</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 51</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 52</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 53</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 5</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+<li><strong>test case 7</strong>: <code>send email</code></li>
+<li><strong>test case 8</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 10</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 12</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 13</strong>: <code>open mailbox</code></li>
+<li><strong>test case 14</strong>: <code>compose new email</code></li>
+<li><strong>test case 15</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
+<li><strong>test case 18</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 19</strong>: <code>enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 20</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
 </ul>
 <h3>Product 8</h3>
 <p><strong>Selected features:</strong> selected = {e, f, s}</p>
 <p><strong>Repaired FTS:</strong> 6 states, 13 transitions (12 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 14 nodes (incl. INIT), 33 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 14 nodes, 49 edges (16 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 13 nodes (incl. INIT), 30 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 13 nodes, 40 edges (10 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product8-repaired.png" alt="Repaired FTS — product 8"/>
 <img src="eMail-product8-pairgraph-raw.png" alt="Pair graph (raw) — product 8"/>
 <img src="eMail-product8-pairgraph-balanced.png" alt="Pair graph (balanced) — product 8"/>
-<p><strong>Generated test suite</strong> — 13 test case(s) total (43 real step(s); pair-graph cycle has 49 edge(s) total, 16 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 11 unique test case(s) after action-sequence dedup (8 pair-graph segment(s), 36 raw real step(s); pair-graph cycle has 40 edge(s) total, 10 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
 <li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
 <li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 3</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 4</strong>: <code>open mailbox</code></li>
-<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 7</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 9</strong>: <code>send email</code></li>
-<li><strong>test case 10</strong>: <code>compose new email</code></li>
-<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 13</strong>: <code>open mailbox</code></li>
-<li><strong>test case 14</strong>: <code>select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
-<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 16</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 17</strong>: <code>open mailbox</code></li>
+<li><strong>test case 3</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 4</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
+<li><strong>test case 5</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 7</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 10</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 11</strong>: <code>open mailbox</code></li>
 </ul>
 <h3>Product 9</h3>
 <p><strong>Selected features:</strong> selected = {au, e}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 15 transitions (13 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 16 nodes (incl. INIT), 42 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 16 nodes, 76 edges (34 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 14 nodes (incl. INIT), 31 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 14 nodes, 41 edges (10 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product9-repaired.png" alt="Repaired FTS — product 9"/>
 <img src="eMail-product9-pairgraph-raw.png" alt="Pair graph (raw) — product 9"/>
 <img src="eMail-product9-pairgraph-balanced.png" alt="Pair graph (balanced) — product 9"/>
-<p><strong>Generated test suite</strong> — 19 test case(s) total (54 real step(s); pair-graph cycle has 76 edge(s) total, 34 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 13 unique test case(s) after action-sequence dedup (10 pair-graph segment(s), 37 raw real step(s); pair-graph cycle has 41 edge(s) total, 10 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 3</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 4</strong>: <code>open mailbox</code></li>
-<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 7</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 8</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 9</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject</code></li>
-<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 11</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 12</strong>: <code>send email</code></li>
-<li><strong>test case 13</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 14</strong>: <code>compose new email</code></li>
-<li><strong>test case 15</strong>: <code>send email</code></li>
-<li><strong>test case 16</strong>: <code>open mailbox</code></li>
-<li><strong>test case 17</strong>: <code>open mailbox</code></li>
-<li><strong>test case 18</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 19</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 20</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 21</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
-<li><strong>test case 22</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 23</strong>: <code>enter email subject &rarr; enter email body</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
+<li><strong>test case 3</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 4</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 5</strong>: <code>enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 7</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 8</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 9</strong>: <code>send email</code></li>
+<li><strong>test case 10</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body</code></li>
+<li><strong>test case 11</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 12</strong>: <code>open mailbox</code></li>
+<li><strong>test case 13</strong>: <code>enter autoresponse email body</code></li>
 </ul>
 <h3>Product 10</h3>
 <p><strong>Selected features:</strong> selected = {ad, e, f}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 16 transitions (15 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 17 nodes (incl. INIT), 42 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 17 nodes, 76 edges (34 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 16 nodes (incl. INIT), 38 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 16 nodes, 69 edges (31 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product10-repaired.png" alt="Repaired FTS — product 10"/>
 <img src="eMail-product10-pairgraph-raw.png" alt="Pair graph (raw) — product 10"/>
 <img src="eMail-product10-pairgraph-balanced.png" alt="Pair graph (balanced) — product 10"/>
-<p><strong>Generated test suite</strong> — 23 test case(s) total (61 real step(s); pair-graph cycle has 76 edge(s) total, 34 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 17 unique test case(s) after action-sequence dedup (18 pair-graph segment(s), 53 raw real step(s); pair-graph cycle has 69 edge(s) total, 31 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
 <li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
 <li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
 <li><strong>test case 3</strong>: <code>send email</code></li>
 <li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
 <li><strong>test case 5</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 6</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 7</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 8</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 10</strong>: <code>compose new email</code></li>
-<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 12</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 13</strong>: <code>open mailbox</code></li>
-<li><strong>test case 14</strong>: <code>compose new email</code></li>
-<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 17</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 18</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 19</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 20</strong>: <code>send email</code></li>
-<li><strong>test case 21</strong>: <code>open mailbox</code></li>
-<li><strong>test case 22</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 23</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
-<li><strong>test case 24</strong>: <code>select email &rarr; enter forward receiver's email address</code></li>
-<li><strong>test case 25</strong>: <code>send email</code></li>
-<li><strong>test case 26</strong>: <code>compose new email</code></li>
-<li><strong>test case 27</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 28</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 29</strong>: <code>open mailbox</code></li>
-<li><strong>test case 30</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 31</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 32</strong>: <code>open mailbox</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
+<li><strong>test case 7</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 8</strong>: <code>compose new email</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 10</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 11</strong>: <code>open mailbox</code></li>
+<li><strong>test case 12</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 13</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address</code></li>
+<li><strong>test case 14</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 17</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
 </ul>
 <h3>Product 11</h3>
 <p><strong>Selected features:</strong> selected = {ad, au, e, f}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 22 nodes (incl. INIT), 63 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 22 nodes, 152 edges (89 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 20 nodes (incl. INIT), 50 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 20 nodes, 87 edges (37 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product11-repaired.png" alt="Repaired FTS — product 11"/>
 <img src="eMail-product11-pairgraph-raw.png" alt="Pair graph (raw) — product 11"/>
 <img src="eMail-product11-pairgraph-balanced.png" alt="Pair graph (balanced) — product 11"/>
-<p><strong>Generated test suite</strong> — 35 test case(s) total (90 real step(s); pair-graph cycle has 152 edge(s) total, 89 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 21 unique test case(s) after action-sequence dedup (20 pair-graph segment(s), 63 raw real step(s); pair-graph cycle has 87 edge(s) total, 37 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
-<li><strong>test case 3</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 4</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address</code></li>
-<li><strong>test case 5</strong>: <code>send email</code></li>
-<li><strong>test case 6</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 7</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 8</strong>: <code>open mailbox</code></li>
-<li><strong>test case 9</strong>: <code>send email</code></li>
-<li><strong>test case 10</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 11</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+<li><strong>test case 4</strong>: <code>send email</code></li>
+<li><strong>test case 5</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 6</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 7</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 8</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 9</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 11</strong>: <code>compose new email</code></li>
 <li><strong>test case 12</strong>: <code>open mailbox</code></li>
-<li><strong>test case 13</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 14</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 15</strong>: <code>compose new email</code></li>
-<li><strong>test case 16</strong>: <code>send email</code></li>
-<li><strong>test case 17</strong>: <code>compose new email</code></li>
-<li><strong>test case 18</strong>: <code>send email</code></li>
-<li><strong>test case 19</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 20</strong>: <code>send email</code></li>
-<li><strong>test case 21</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 22</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 23</strong>: <code>open mailbox</code></li>
-<li><strong>test case 24</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 25</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 26</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 27</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 28</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 29</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 30</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 31</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 32</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 33</strong>: <code>open mailbox</code></li>
-<li><strong>test case 34</strong>: <code>compose new email</code></li>
-<li><strong>test case 35</strong>: <code>enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 36</strong>: <code>compose new email</code></li>
-<li><strong>test case 37</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 38</strong>: <code>open mailbox</code></li>
-<li><strong>test case 39</strong>: <code>open mailbox</code></li>
-<li><strong>test case 40</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 41</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 42</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 43</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 44</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 45</strong>: <code>compose new email</code></li>
-<li><strong>test case 46</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 47</strong>: <code>send email</code></li>
-<li><strong>test case 48</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 49</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 50</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 13</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 14</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 16</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 17</strong>: <code>select email &rarr; enter forward receiver's email address</code></li>
+<li><strong>test case 18</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
+<li><strong>test case 19</strong>: <code>enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 20</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 21</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
 </ul>
 <h3>Product 12</h3>
 <p><strong>Selected features:</strong> selected = {ad, e, en}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 17 transitions (16 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 18 nodes (incl. INIT), 44 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 18 nodes, 76 edges (32 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 17 nodes (incl. INIT), 40 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 17 nodes, 69 edges (29 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product12-repaired.png" alt="Repaired FTS — product 12"/>
 <img src="eMail-product12-pairgraph-raw.png" alt="Pair graph (raw) — product 12"/>
 <img src="eMail-product12-pairgraph-balanced.png" alt="Pair graph (balanced) — product 12"/>
-<p><strong>Generated test suite</strong> — 22 test case(s) total (62 real step(s); pair-graph cycle has 76 edge(s) total, 32 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 18 unique test case(s) after action-sequence dedup (21 pair-graph segment(s), 58 raw real step(s); pair-graph cycle has 69 edge(s) total, 29 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
 <li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
 <li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
 <li><strong>test case 3</strong>: <code>send email</code></li>
 <li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
 <li><strong>test case 5</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 6</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 7</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 9</strong>: <code>compose new email</code></li>
-<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
-<li><strong>test case 12</strong>: <code>send email</code></li>
-<li><strong>test case 13</strong>: <code>open mailbox</code></li>
-<li><strong>test case 14</strong>: <code>open mailbox</code></li>
-<li><strong>test case 15</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 17</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 18</strong>: <code>compose new email</code></li>
-<li><strong>test case 19</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 20</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 21</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 22</strong>: <code>compose new email</code></li>
-<li><strong>test case 23</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 24</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 25</strong>: <code>send email</code></li>
-<li><strong>test case 26</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 27</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 28</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 29</strong>: <code>open mailbox</code></li>
-<li><strong>test case 30</strong>: <code>open mailbox</code></li>
-<li><strong>test case 31</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
+<li><strong>test case 7</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 8</strong>: <code>compose new email</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 11</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 12</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 13</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 14</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+<li><strong>test case 15</strong>: <code>open mailbox</code></li>
+<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 18</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
 </ul>
 <h3>Product 13</h3>
 <p><strong>Selected features:</strong> selected = {ad, e, s}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 16 transitions (15 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 17 nodes (incl. INIT), 43 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 17 nodes, 77 edges (34 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 16 nodes (incl. INIT), 39 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 16 nodes, 68 edges (29 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product13-repaired.png" alt="Repaired FTS — product 13"/>
 <img src="eMail-product13-pairgraph-raw.png" alt="Pair graph (raw) — product 13"/>
 <img src="eMail-product13-pairgraph-balanced.png" alt="Pair graph (balanced) — product 13"/>
-<p><strong>Generated test suite</strong> — 20 test case(s) total (59 real step(s); pair-graph cycle has 77 edge(s) total, 34 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
-<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 3</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 4</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 5</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 6</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 7</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 8</strong>: <code>send email</code></li>
-<li><strong>test case 9</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 10</strong>: <code>open mailbox</code></li>
-<li><strong>test case 11</strong>: <code>compose new email</code></li>
-<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 13</strong>: <code>compose new email</code></li>
-<li><strong>test case 14</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 15</strong>: <code>send email</code></li>
-<li><strong>test case 16</strong>: <code>compose new email</code></li>
-<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 18</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 19</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 20</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 21</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 22</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 23</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 24</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 25</strong>: <code>send email</code></li>
-<li><strong>test case 26</strong>: <code>open mailbox</code></li>
-<li><strong>test case 27</strong>: <code>open mailbox</code></li>
-<li><strong>test case 28</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 29</strong>: <code>open mailbox</code></li>
-</ul>
-<h3>Product 14</h3>
-<p><strong>Selected features:</strong> selected = {au, e, f, s}</p>
-<p><strong>Repaired FTS:</strong> 8 states, 18 transitions (16 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 19 nodes (incl. INIT), 51 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 19 nodes, 110 edges (59 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product14-repaired.png" alt="Repaired FTS — product 14"/>
-<img src="eMail-product14-pairgraph-raw.png" alt="Pair graph (raw) — product 14"/>
-<img src="eMail-product14-pairgraph-balanced.png" alt="Pair graph (balanced) — product 14"/>
-<p><strong>Generated test suite</strong> — 25 test case(s) total (69 real step(s); pair-graph cycle has 110 edge(s) total, 59 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
-<li><strong>test case 3</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 4</strong>: <code>select email &rarr; enter forward receiver's email address</code></li>
-<li><strong>test case 5</strong>: <code>send email</code></li>
-<li><strong>test case 6</strong>: <code>open mailbox</code></li>
-<li><strong>test case 7</strong>: <code>send email</code></li>
-<li><strong>test case 8</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 10</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 11</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 12</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 13</strong>: <code>open mailbox</code></li>
-<li><strong>test case 14</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 15</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 16</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 17</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 18</strong>: <code>send email</code></li>
-<li><strong>test case 19</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 20</strong>: <code>send email</code></li>
-<li><strong>test case 21</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 22</strong>: <code>compose new email</code></li>
-<li><strong>test case 23</strong>: <code>send email</code></li>
-<li><strong>test case 24</strong>: <code>open mailbox</code></li>
-<li><strong>test case 25</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 26</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 27</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 28</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
-<li><strong>test case 29</strong>: <code>compose new email</code></li>
-<li><strong>test case 30</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 31</strong>: <code>open mailbox</code></li>
-<li><strong>test case 32</strong>: <code>compose new email</code></li>
-<li><strong>test case 33</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-</ul>
-<h3>Product 15</h3>
-<p><strong>Selected features:</strong> selected = {e, en}</p>
-<p><strong>Repaired FTS:</strong> 7 states, 13 transitions (12 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 14 nodes (incl. INIT), 32 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 14 nodes, 49 edges (17 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product15-repaired.png" alt="Repaired FTS — product 15"/>
-<img src="eMail-product15-pairgraph-raw.png" alt="Pair graph (raw) — product 15"/>
-<img src="eMail-product15-pairgraph-balanced.png" alt="Pair graph (balanced) — product 15"/>
-<p><strong>Generated test suite</strong> — 11 test case(s) total (40 real step(s); pair-graph cycle has 49 edge(s) total, 17 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
-<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 4</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 5</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 6</strong>: <code>open mailbox</code></li>
-<li><strong>test case 7</strong>: <code>compose new email</code></li>
-<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 9</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 10</strong>: <code>send email</code></li>
-<li><strong>test case 11</strong>: <code>compose new email</code></li>
-<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 13</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 14</strong>: <code>open mailbox</code></li>
-<li><strong>test case 15</strong>: <code>open mailbox</code></li>
-</ul>
-<h3>Product 16</h3>
-<p><strong>Selected features:</strong> selected = {au, e, f}</p>
-<p><strong>Repaired FTS:</strong> 8 states, 17 transitions (15 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 18 nodes (incl. INIT), 48 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 18 nodes, 107 edges (59 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product16-repaired.png" alt="Repaired FTS — product 16"/>
-<img src="eMail-product16-pairgraph-raw.png" alt="Pair graph (raw) — product 16"/>
-<img src="eMail-product16-pairgraph-balanced.png" alt="Pair graph (balanced) — product 16"/>
-<p><strong>Generated test suite</strong> — 26 test case(s) total (67 real step(s); pair-graph cycle has 107 edge(s) total, 59 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 3</strong>: <code>open mailbox</code></li>
-<li><strong>test case 4</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 5</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 6</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 7</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 8</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 9</strong>: <code>compose new email</code></li>
-<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 11</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 12</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 13</strong>: <code>open mailbox</code></li>
-<li><strong>test case 14</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
-<li><strong>test case 15</strong>: <code>open mailbox</code></li>
-<li><strong>test case 16</strong>: <code>send email</code></li>
-<li><strong>test case 17</strong>: <code>compose new email</code></li>
-<li><strong>test case 18</strong>: <code>send email</code></li>
-<li><strong>test case 19</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 20</strong>: <code>send email</code></li>
-<li><strong>test case 21</strong>: <code>open mailbox</code></li>
-<li><strong>test case 22</strong>: <code>select email &rarr; enter forward receiver's email address</code></li>
-<li><strong>test case 23</strong>: <code>send email</code></li>
-<li><strong>test case 24</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 25</strong>: <code>send email</code></li>
-<li><strong>test case 26</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 27</strong>: <code>compose new email</code></li>
-<li><strong>test case 28</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 29</strong>: <code>enter email subject &rarr; enter email body</code></li>
-<li><strong>test case 30</strong>: <code>open mailbox</code></li>
-<li><strong>test case 31</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 32</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 33</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 34</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
-</ul>
-<h3>Product 17</h3>
-<p><strong>Selected features:</strong> selected = {ad, e, f, s}</p>
-<p><strong>Repaired FTS:</strong> 8 states, 17 transitions (16 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 18 nodes (incl. INIT), 45 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 18 nodes, 81 edges (36 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product17-repaired.png" alt="Repaired FTS — product 17"/>
-<img src="eMail-product17-pairgraph-raw.png" alt="Pair graph (raw) — product 17"/>
-<img src="eMail-product17-pairgraph-balanced.png" alt="Pair graph (balanced) — product 17"/>
-<p><strong>Generated test suite</strong> — 20 test case(s) total (61 real step(s); pair-graph cycle has 81 edge(s) total, 36 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
-<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 3</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 4</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 5</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 6</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 7</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 8</strong>: <code>send email</code></li>
-<li><strong>test case 9</strong>: <code>open mailbox</code></li>
-<li><strong>test case 10</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 11</strong>: <code>compose new email</code></li>
-<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 13</strong>: <code>compose new email</code></li>
-<li><strong>test case 14</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 15</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 17</strong>: <code>compose new email</code></li>
-<li><strong>test case 18</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 19</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 20</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 21</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 22</strong>: <code>select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
-<li><strong>test case 23</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 24</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 25</strong>: <code>send email</code></li>
-<li><strong>test case 26</strong>: <code>open mailbox</code></li>
-<li><strong>test case 27</strong>: <code>open mailbox</code></li>
-<li><strong>test case 28</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 29</strong>: <code>open mailbox</code></li>
-</ul>
-<h3>Product 18</h3>
-<p><strong>Selected features:</strong> selected = {ad, au, e, en}</p>
-<p><strong>Repaired FTS:</strong> 11 states, 22 transitions (20 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 23 nodes (incl. INIT), 65 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 23 nodes, 157 edges (92 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product18-repaired.png" alt="Repaired FTS — product 18"/>
-<img src="eMail-product18-pairgraph-raw.png" alt="Pair graph (raw) — product 18"/>
-<img src="eMail-product18-pairgraph-balanced.png" alt="Pair graph (balanced) — product 18"/>
-<p><strong>Generated test suite</strong> — 39 test case(s) total (96 real step(s); pair-graph cycle has 157 edge(s) total, 92 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 3</strong>: <code>open mailbox</code></li>
-<li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 7</strong>: <code>send email</code></li>
-<li><strong>test case 8</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 9</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 10</strong>: <code>open mailbox</code></li>
-<li><strong>test case 11</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 12</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 13</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 14</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 15</strong>: <code>send email</code></li>
-<li><strong>test case 16</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 18</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 19</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 20</strong>: <code>send email</code></li>
-<li><strong>test case 21</strong>: <code>compose new email</code></li>
-<li><strong>test case 22</strong>: <code>send email</code></li>
-<li><strong>test case 23</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 24</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 25</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 26</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 27</strong>: <code>open mailbox</code></li>
-<li><strong>test case 28</strong>: <code>compose new email</code></li>
-<li><strong>test case 29</strong>: <code>send email</code></li>
-<li><strong>test case 30</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 31</strong>: <code>send email</code></li>
-<li><strong>test case 32</strong>: <code>open mailbox</code></li>
-<li><strong>test case 33</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 34</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 35</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 36</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 37</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
-<li><strong>test case 38</strong>: <code>send email</code></li>
-<li><strong>test case 39</strong>: <code>open mailbox</code></li>
-<li><strong>test case 40</strong>: <code>compose new email</code></li>
-<li><strong>test case 41</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 42</strong>: <code>open mailbox</code></li>
-<li><strong>test case 43</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 44</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 45</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 46</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 47</strong>: <code>compose new email</code></li>
-<li><strong>test case 48</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 49</strong>: <code>compose new email</code></li>
-<li><strong>test case 50</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 51</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 52</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 53</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 54</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
-</ul>
-<h3>Product 19</h3>
-<p><strong>Selected features:</strong> selected = {au, e, en}</p>
-<p><strong>Repaired FTS:</strong> 9 states, 18 transitions (16 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 19 nodes (incl. INIT), 50 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 19 nodes, 109 edges (59 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product19-repaired.png" alt="Repaired FTS — product 19"/>
-<img src="eMail-product19-pairgraph-raw.png" alt="Pair graph (raw) — product 19"/>
-<img src="eMail-product19-pairgraph-balanced.png" alt="Pair graph (balanced) — product 19"/>
-<p><strong>Generated test suite</strong> — 30 test case(s) total (73 real step(s); pair-graph cycle has 109 edge(s) total, 59 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox</code></li>
-<li><strong>test case 3</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 4</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 5</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 7</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 8</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 9</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 10</strong>: <code>send email</code></li>
-<li><strong>test case 11</strong>: <code>compose new email</code></li>
-<li><strong>test case 12</strong>: <code>send email</code></li>
-<li><strong>test case 13</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 14</strong>: <code>send email</code></li>
-<li><strong>test case 15</strong>: <code>open mailbox</code></li>
-<li><strong>test case 16</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 17</strong>: <code>compose new email</code></li>
-<li><strong>test case 18</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 19</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 20</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 21</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 22</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
-<li><strong>test case 23</strong>: <code>send email</code></li>
-<li><strong>test case 24</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 25</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 26</strong>: <code>compose new email</code></li>
-<li><strong>test case 27</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 28</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 29</strong>: <code>open mailbox</code></li>
-<li><strong>test case 30</strong>: <code>compose new email</code></li>
-<li><strong>test case 31</strong>: <code>send email</code></li>
-<li><strong>test case 32</strong>: <code>compose new email</code></li>
-<li><strong>test case 33</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 34</strong>: <code>send email</code></li>
-<li><strong>test case 35</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 36</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 37</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
-<li><strong>test case 38</strong>: <code>open mailbox</code></li>
-</ul>
-<h3>Product 20</h3>
-<p><strong>Selected features:</strong> selected = {e, f}</p>
-<p><strong>Repaired FTS:</strong> 6 states, 12 transitions (11 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 13 nodes (incl. INIT), 30 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 13 nodes, 47 edges (17 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product20-repaired.png" alt="Repaired FTS — product 20"/>
-<img src="eMail-product20-pairgraph-raw.png" alt="Pair graph (raw) — product 20"/>
-<img src="eMail-product20-pairgraph-balanced.png" alt="Pair graph (balanced) — product 20"/>
-<p><strong>Generated test suite</strong> — 10 test case(s) total (37 real step(s); pair-graph cycle has 47 edge(s) total, 17 synthetic dropped at translation).</p>
-<ul>
-<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
-<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 4</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 5</strong>: <code>open mailbox</code></li>
-<li><strong>test case 6</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 7</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
-<li><strong>test case 8</strong>: <code>select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
-<li><strong>test case 9</strong>: <code>open mailbox</code></li>
-<li><strong>test case 10</strong>: <code>send email</code></li>
-<li><strong>test case 11</strong>: <code>compose new email</code></li>
-<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 13</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 14</strong>: <code>open mailbox</code></li>
-</ul>
-<h3>Product 21</h3>
-<p><strong>Selected features:</strong> selected = {ad, e, en, s}</p>
-<p><strong>Repaired FTS:</strong> 9 states, 18 transitions (17 real / 1 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 19 nodes (incl. INIT), 47 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 19 nodes, 88 edges (41 synthetic <code>__balance__N</code> added).</p>
-<img src="eMail-product21-repaired.png" alt="Repaired FTS — product 21"/>
-<img src="eMail-product21-pairgraph-raw.png" alt="Pair graph (raw) — product 21"/>
-<img src="eMail-product21-pairgraph-balanced.png" alt="Pair graph (balanced) — product 21"/>
-<p><strong>Generated test suite</strong> — 25 test case(s) total (68 real step(s); pair-graph cycle has 88 edge(s) total, 41 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 18 unique test case(s) after action-sequence dedup (19 pair-graph segment(s), 55 raw real step(s); pair-graph cycle has 68 edge(s) total, 29 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
 <li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
 <li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
@@ -920,144 +372,285 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
 <li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
 <li><strong>test case 6</strong>: <code>send email</code></li>
-<li><strong>test case 7</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 7</strong>: <code>compose new email</code></li>
 <li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 9</strong>: <code>compose new email</code></li>
+<li><strong>test case 9</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
 <li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 11</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 12</strong>: <code>compose new email</code></li>
-<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 14</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 11</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 14</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 16</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 17</strong>: <code>open mailbox</code></li>
+<li><strong>test case 18</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+</ul>
+<h3>Product 14</h3>
+<p><strong>Selected features:</strong> selected = {au, e, f, s}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 18 transitions (16 real / 2 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 17 nodes (incl. INIT), 40 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 17 nodes, 61 edges (21 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product14-repaired.png" alt="Repaired FTS — product 14"/>
+<img src="eMail-product14-pairgraph-raw.png" alt="Pair graph (raw) — product 14"/>
+<img src="eMail-product14-pairgraph-balanced.png" alt="Pair graph (balanced) — product 14"/>
+<p><strong>Generated test suite</strong> — 16 unique test case(s) after action-sequence dedup (14 pair-graph segment(s), 50 raw real step(s); pair-graph cycle has 61 edge(s) total, 21 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 4</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 6</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 7</strong>: <code>enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 8</strong>: <code>open mailbox</code></li>
+<li><strong>test case 9</strong>: <code>select email &rarr; enter forward receiver's email address</code></li>
+<li><strong>test case 10</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 11</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 13</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 14</strong>: <code>send email</code></li>
+<li><strong>test case 15</strong>: <code>compose new email</code></li>
+<li><strong>test case 16</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body</code></li>
+</ul>
+<h3>Product 15</h3>
+<p><strong>Selected features:</strong> selected = {e, en}</p>
+<p><strong>Repaired FTS:</strong> 7 states, 13 transitions (12 real / 1 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 13 nodes (incl. INIT), 29 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 13 nodes, 41 edges (12 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product15-repaired.png" alt="Repaired FTS — product 15"/>
+<img src="eMail-product15-pairgraph-raw.png" alt="Pair graph (raw) — product 15"/>
+<img src="eMail-product15-pairgraph-balanced.png" alt="Pair graph (balanced) — product 15"/>
+<p><strong>Generated test suite</strong> — 12 unique test case(s) after action-sequence dedup (10 pair-graph segment(s), 37 raw real step(s); pair-graph cycle has 41 edge(s) total, 12 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
+<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
+<li><strong>test case 4</strong>: <code>send email</code></li>
+<li><strong>test case 5</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 6</strong>: <code>open mailbox</code></li>
+<li><strong>test case 7</strong>: <code>compose new email</code></li>
+<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 10</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 11</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 12</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+</ul>
+<h3>Product 16</h3>
+<p><strong>Selected features:</strong> selected = {au, e, f}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 17 transitions (15 real / 2 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 16 nodes (incl. INIT), 37 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 16 nodes, 62 edges (25 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product16-repaired.png" alt="Repaired FTS — product 16"/>
+<img src="eMail-product16-pairgraph-raw.png" alt="Pair graph (raw) — product 16"/>
+<img src="eMail-product16-pairgraph-balanced.png" alt="Pair graph (balanced) — product 16"/>
+<p><strong>Generated test suite</strong> — 15 unique test case(s) after action-sequence dedup (14 pair-graph segment(s), 47 raw real step(s); pair-graph cycle has 62 edge(s) total, 25 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 5</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 6</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 7</strong>: <code>enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 8</strong>: <code>open mailbox</code></li>
+<li><strong>test case 9</strong>: <code>send email</code></li>
+<li><strong>test case 10</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject</code></li>
+<li><strong>test case 11</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 12</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 13</strong>: <code>compose new email</code></li>
+<li><strong>test case 14</strong>: <code>select email &rarr; enter forward receiver's email address</code></li>
+<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body</code></li>
+</ul>
+<h3>Product 17</h3>
+<p><strong>Selected features:</strong> selected = {ad, e, f, s}</p>
+<p><strong>Repaired FTS:</strong> 8 states, 17 transitions (16 real / 1 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 17 nodes (incl. INIT), 41 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 17 nodes, 69 edges (28 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product17-repaired.png" alt="Repaired FTS — product 17"/>
+<img src="eMail-product17-pairgraph-raw.png" alt="Pair graph (raw) — product 17"/>
+<img src="eMail-product17-pairgraph-balanced.png" alt="Pair graph (balanced) — product 17"/>
+<p><strong>Generated test suite</strong> — 18 unique test case(s) after action-sequence dedup (18 pair-graph segment(s), 56 raw real step(s); pair-graph cycle has 69 edge(s) total, 28 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
+<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+<li><strong>test case 6</strong>: <code>send email</code></li>
+<li><strong>test case 7</strong>: <code>compose new email</code></li>
+<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 9</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 11</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 14</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+<li><strong>test case 15</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 16</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 17</strong>: <code>open mailbox</code></li>
+<li><strong>test case 18</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+</ul>
+<h3>Product 18</h3>
+<p><strong>Selected features:</strong> selected = {ad, au, e, en}</p>
+<p><strong>Repaired FTS:</strong> 11 states, 22 transitions (20 real / 2 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 21 nodes (incl. INIT), 52 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 21 nodes, 83 edges (31 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product18-repaired.png" alt="Repaired FTS — product 18"/>
+<img src="eMail-product18-pairgraph-raw.png" alt="Pair graph (raw) — product 18"/>
+<img src="eMail-product18-pairgraph-balanced.png" alt="Pair graph (balanced) — product 18"/>
+<p><strong>Generated test suite</strong> — 22 unique test case(s) after action-sequence dedup (23 pair-graph segment(s), 69 raw real step(s); pair-graph cycle has 83 edge(s) total, 31 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+<li><strong>test case 4</strong>: <code>send email</code></li>
+<li><strong>test case 5</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 7</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 8</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 9</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 10</strong>: <code>compose new email</code></li>
+<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
+<li><strong>test case 12</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 13</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 14</strong>: <code>enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
 <li><strong>test case 15</strong>: <code>open mailbox</code></li>
-<li><strong>test case 16</strong>: <code>compose new email</code></li>
-<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
-<li><strong>test case 18</strong>: <code>send email</code></li>
-<li><strong>test case 19</strong>: <code>compose new email</code></li>
-<li><strong>test case 20</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 21</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
-<li><strong>test case 22</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
-<li><strong>test case 23</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 24</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 25</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 26</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 27</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 28</strong>: <code>send email</code></li>
-<li><strong>test case 29</strong>: <code>open mailbox</code></li>
-<li><strong>test case 30</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 31</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 32</strong>: <code>open mailbox</code></li>
-<li><strong>test case 33</strong>: <code>open mailbox</code></li>
-<li><strong>test case 34</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 16</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+<li><strong>test case 17</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 18</strong>: <code>enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 19</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 20</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 21</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 22</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+</ul>
+<h3>Product 19</h3>
+<p><strong>Selected features:</strong> selected = {au, e, en}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 18 transitions (16 real / 2 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 17 nodes (incl. INIT), 39 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 17 nodes, 52 edges (13 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product19-repaired.png" alt="Repaired FTS — product 19"/>
+<img src="eMail-product19-pairgraph-raw.png" alt="Pair graph (raw) — product 19"/>
+<img src="eMail-product19-pairgraph-balanced.png" alt="Pair graph (balanced) — product 19"/>
+<p><strong>Generated test suite</strong> — 14 unique test case(s) after action-sequence dedup (13 pair-graph segment(s), 48 raw real step(s); pair-graph cycle has 52 edge(s) total, 13 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 4</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key</code></li>
+<li><strong>test case 5</strong>: <code>send email</code></li>
+<li><strong>test case 6</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 7</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject</code></li>
+<li><strong>test case 8</strong>: <code>open mailbox</code></li>
+<li><strong>test case 9</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 11</strong>: <code>encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 12</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 14</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body</code></li>
+</ul>
+<h3>Product 20</h3>
+<p><strong>Selected features:</strong> selected = {e, f}</p>
+<p><strong>Repaired FTS:</strong> 6 states, 12 transitions (11 real / 1 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 12 nodes (incl. INIT), 27 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 12 nodes, 36 edges (9 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product20-repaired.png" alt="Repaired FTS — product 20"/>
+<img src="eMail-product20-pairgraph-raw.png" alt="Pair graph (raw) — product 20"/>
+<img src="eMail-product20-pairgraph-balanced.png" alt="Pair graph (balanced) — product 20"/>
+<p><strong>Generated test suite</strong> — 8 unique test case(s) after action-sequence dedup (6 pair-graph segment(s), 31 raw real step(s); pair-graph cycle has 36 edge(s) total, 9 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
+<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 4</strong>: <code>open mailbox &rarr; select email &rarr; enter forward receiver's email address &rarr; send email</code></li>
+<li><strong>test case 5</strong>: <code>open mailbox</code></li>
+<li><strong>test case 6</strong>: <code>send email</code></li>
+<li><strong>test case 7</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 8</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+</ul>
+<h3>Product 21</h3>
+<p><strong>Selected features:</strong> selected = {ad, e, en, s}</p>
+<p><strong>Repaired FTS:</strong> 9 states, 18 transitions (17 real / 1 <code>__end__</code>).</p>
+<p><strong>Pair graph (raw):</strong> 18 nodes (incl. INIT), 43 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 18 nodes, 75 edges (32 synthetic <code>__balance__N</code> added).</p>
+<img src="eMail-product21-repaired.png" alt="Repaired FTS — product 21"/>
+<img src="eMail-product21-pairgraph-raw.png" alt="Pair graph (raw) — product 21"/>
+<img src="eMail-product21-pairgraph-balanced.png" alt="Pair graph (balanced) — product 21"/>
+<p><strong>Generated test suite</strong> — 19 unique test case(s) after action-sequence dedup (19 pair-graph segment(s), 59 raw real step(s); pair-graph cycle has 75 edge(s) total, 32 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
+<ul>
+<li><strong>test case 1</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body</code></li>
+<li><strong>test case 2</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
+<li><strong>test case 6</strong>: <code>send email</code></li>
+<li><strong>test case 7</strong>: <code>compose new email</code></li>
+<li><strong>test case 8</strong>: <code>enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 9</strong>: <code>compose new email &rarr; enter receiver's email address</code></li>
+<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 11</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; get receiver's public key &rarr; encrypt mail with receiver's public key &rarr; send email</code></li>
+<li><strong>test case 14</strong>: <code>enter receiver's email address &rarr; get receiver's public key</code></li>
+<li><strong>test case 15</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 16</strong>: <code>open mailbox</code></li>
+<li><strong>test case 17</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 18</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 19</strong>: <code>enter email subject &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address</code></li>
 </ul>
 <h3>Product 22</h3>
 <p><strong>Selected features:</strong> selected = {ad, au, e, s}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 22 nodes (incl. INIT), 64 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 22 nodes, 157 edges (93 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 20 nodes (incl. INIT), 51 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 20 nodes, 78 edges (27 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product22-repaired.png" alt="Repaired FTS — product 22"/>
 <img src="eMail-product22-pairgraph-raw.png" alt="Pair graph (raw) — product 22"/>
 <img src="eMail-product22-pairgraph-balanced.png" alt="Pair graph (balanced) — product 22"/>
-<p><strong>Generated test suite</strong> — 38 test case(s) total (94 real step(s); pair-graph cycle has 157 edge(s) total, 93 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 20 unique test case(s) after action-sequence dedup (21 pair-graph segment(s), 66 raw real step(s); pair-graph cycle has 78 edge(s) total, 27 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 3</strong>: <code>open mailbox</code></li>
-<li><strong>test case 4</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 6</strong>: <code>enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
-<li><strong>test case 7</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 8</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 9</strong>: <code>open mailbox</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 3</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 4</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
+<li><strong>test case 6</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 7</strong>: <code>enter alias email addresses of receiver</code></li>
+<li><strong>test case 8</strong>: <code>compose new email</code></li>
+<li><strong>test case 9</strong>: <code>enter receiver's email address &rarr; send email</code></li>
 <li><strong>test case 10</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 11</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 12</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address</code></li>
+<li><strong>test case 11</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 12</strong>: <code>open mailbox &rarr; select email</code></li>
 <li><strong>test case 13</strong>: <code>send email</code></li>
-<li><strong>test case 14</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 15</strong>: <code>send email</code></li>
-<li><strong>test case 16</strong>: <code>open mailbox</code></li>
-<li><strong>test case 17</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 18</strong>: <code>create an addressbook for a receiver</code></li>
+<li><strong>test case 14</strong>: <code>open mailbox</code></li>
+<li><strong>test case 15</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
+<li><strong>test case 16</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
+<li><strong>test case 17</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
+<li><strong>test case 18</strong>: <code>enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
 <li><strong>test case 19</strong>: <code>enter receiver's email address &rarr; get alias email addresses of receiver</code></li>
-<li><strong>test case 20</strong>: <code>send email</code></li>
-<li><strong>test case 21</strong>: <code>compose new email</code></li>
-<li><strong>test case 22</strong>: <code>enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 23</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 24</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 25</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 26</strong>: <code>send email</code></li>
-<li><strong>test case 27</strong>: <code>compose new email</code></li>
-<li><strong>test case 28</strong>: <code>send email</code></li>
-<li><strong>test case 29</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 30</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 31</strong>: <code>open mailbox</code></li>
-<li><strong>test case 32</strong>: <code>compose new email</code></li>
-<li><strong>test case 33</strong>: <code>send email</code></li>
-<li><strong>test case 34</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 35</strong>: <code>send email</code></li>
-<li><strong>test case 36</strong>: <code>open mailbox</code></li>
-<li><strong>test case 37</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 38</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 39</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 40</strong>: <code>compose new email</code></li>
-<li><strong>test case 41</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 42</strong>: <code>compose new email</code></li>
-<li><strong>test case 43</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 44</strong>: <code>open mailbox</code></li>
-<li><strong>test case 45</strong>: <code>create an addressbook for a receiver</code></li>
-<li><strong>test case 46</strong>: <code>enter the receiver's email address &rarr; enter alias email addresses of receiver</code></li>
-<li><strong>test case 47</strong>: <code>create an addressbook for a receiver &rarr; enter the receiver's email address</code></li>
-<li><strong>test case 48</strong>: <code>enter alias email addresses of receiver</code></li>
-<li><strong>test case 49</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 50</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; get alias email addresses of receiver &rarr; send email</code></li>
-<li><strong>test case 51</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 52</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 53</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 20</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email subject</code></li>
 </ul>
 <h3>Product 23</h3>
 <p><strong>Selected features:</strong> selected = {au, e, s}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 17 transitions (15 real / 2 <code>__end__</code>).</p>
-<p><strong>Pair graph (raw):</strong> 18 nodes (incl. INIT), 49 edges.</p>
-<p><strong>Pair graph (balanced):</strong> 18 nodes, 110 edges (61 synthetic <code>__balance__N</code> added).</p>
+<p><strong>Pair graph (raw):</strong> 16 nodes (incl. INIT), 38 edges.</p>
+<p><strong>Pair graph (balanced):</strong> 16 nodes, 50 edges (12 synthetic <code>__balance__N</code> added).</p>
 <img src="eMail-product23-repaired.png" alt="Repaired FTS — product 23"/>
 <img src="eMail-product23-pairgraph-raw.png" alt="Pair graph (raw) — product 23"/>
 <img src="eMail-product23-pairgraph-balanced.png" alt="Pair graph (balanced) — product 23"/>
-<p><strong>Generated test suite</strong> — 27 test case(s) total (69 real step(s); pair-graph cycle has 110 edge(s) total, 61 synthetic dropped at translation).</p>
+<p><strong>Generated test suite</strong> — 13 unique test case(s) after action-sequence dedup (12 pair-graph segment(s), 46 raw real step(s); pair-graph cycle has 50 edge(s) total, 12 synthetic dropped at translation). Operationally-identical trips are listed once.</p>
 <ul>
-<li><strong>test case 1</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 2</strong>: <code>open mailbox</code></li>
-<li><strong>test case 3</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 4</strong>: <code>open mailbox &rarr; select email</code></li>
-<li><strong>test case 5</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 6</strong>: <code>compose new email &rarr; enter email body &rarr; enter email subject &rarr; enter email subject</code></li>
-<li><strong>test case 7</strong>: <code>sign mail &rarr; send email</code></li>
-<li><strong>test case 8</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 9</strong>: <code>compose new email &rarr; enter email subject &rarr; enter receiver's email address</code></li>
-<li><strong>test case 10</strong>: <code>send email</code></li>
-<li><strong>test case 11</strong>: <code>open mailbox</code></li>
-<li><strong>test case 12</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 13</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 14</strong>: <code>send email</code></li>
-<li><strong>test case 15</strong>: <code>compose new email</code></li>
-<li><strong>test case 16</strong>: <code>send email</code></li>
-<li><strong>test case 17</strong>: <code>enter email autoresponse date interval</code></li>
-<li><strong>test case 18</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; send email</code></li>
-<li><strong>test case 19</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 20</strong>: <code>compose new email</code></li>
-<li><strong>test case 21</strong>: <code>send email</code></li>
-<li><strong>test case 22</strong>: <code>compose new email</code></li>
-<li><strong>test case 23</strong>: <code>send email</code></li>
-<li><strong>test case 24</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
-<li><strong>test case 25</strong>: <code>send email</code></li>
-<li><strong>test case 26</strong>: <code>open mailbox</code></li>
-<li><strong>test case 27</strong>: <code>enter receiver's email address &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address</code></li>
-<li><strong>test case 28</strong>: <code>enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter email body</code></li>
-<li><strong>test case 29</strong>: <code>enter autoresponse email body</code></li>
-<li><strong>test case 30</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
-<li><strong>test case 31</strong>: <code>compose new email</code></li>
-<li><strong>test case 32</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
-<li><strong>test case 33</strong>: <code>open mailbox</code></li>
-<li><strong>test case 34</strong>: <code>compose new email</code></li>
-<li><strong>test case 35</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 1</strong>: <code>enter email autoresponse date interval &rarr; enter autoresponse email body &rarr; enter email autoresponse date interval &rarr; enter autoresponse email body</code></li>
+<li><strong>test case 2</strong>: <code>compose new email &rarr; enter email subject &rarr; enter email subject &rarr; enter email body &rarr; enter receiver's email address &rarr; sign mail &rarr; send email</code></li>
+<li><strong>test case 3</strong>: <code>open mailbox &rarr; select email</code></li>
+<li><strong>test case 4</strong>: <code>send email</code></li>
+<li><strong>test case 5</strong>: <code>compose new email &rarr; enter email body &rarr; enter email body &rarr; enter email subject &rarr; enter receiver's email address &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 6</strong>: <code>enter email autoresponse date interval</code></li>
+<li><strong>test case 7</strong>: <code>enter email subject &rarr; enter email subject</code></li>
+<li><strong>test case 8</strong>: <code>open mailbox</code></li>
+<li><strong>test case 9</strong>: <code>enter autoresponse email body &rarr; enter email autoresponse date interval</code></li>
+<li><strong>test case 10</strong>: <code>enter receiver's email address &rarr; sign mail</code></li>
+<li><strong>test case 11</strong>: <code>enter autoresponse email body</code></li>
+<li><strong>test case 12</strong>: <code>enter receiver's email address &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter receiver's email address &rarr; send email</code></li>
+<li><strong>test case 13</strong>: <code>compose new email &rarr; enter receiver's email address &rarr; enter email subject &rarr; enter email body</code></li>
 </ul>
 <hr/>
 <p>Total products: 23.</p>

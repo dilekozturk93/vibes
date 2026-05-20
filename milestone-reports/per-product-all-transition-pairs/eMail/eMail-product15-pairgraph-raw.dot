@@ -1,63 +1,59 @@
 digraph G {
 rankdir=LR;
 state0[ label = "INIT", style=filled, color=green ];
-state1 [ label = "p_state8___end___state1" ];
-state2 [ label = "p_state2_enter 
+state1 [ label = "p_state2_enter 
 receiver's 
 email address_state7" ];
-state3 [ label = "p_state3_select email_state8" ];
-state4 [ label = "p_state2_enter
+state2 [ label = "p_state3_select email_state8" ];
+state3 [ label = "p_state2_enter
  email 
 subject_state2" ];
-state5 [ label = "p_state7_get receiver's  
+state4 [ label = "p_state7_get receiver's  
 public key_state11" ];
-state6 [ label = "p_state7_send email_state1" ];
-state7 [ label = "p_state2_enter email 
+state5 [ label = "p_state7_send email_state1" ];
+state6 [ label = "p_state2_enter email 
 body_state2" ];
-state8 [ label = "p_state10_send email_state1" ];
-state9 [ label = "p_state11_encrypt mail 
+state7 [ label = "p_state10_send email_state1" ];
+state8 [ label = "p_state11_encrypt mail 
 with receiver's 
 public key_state10" ];
-state10 [ label = "p_state1_open mailbox_state3" ];
-state11 [ label = "p_state7_enter
+state9 [ label = "p_state1_open mailbox_state3" ];
+state10 [ label = "p_state7_enter
  email 
 subject_state2" ];
-state12 [ label = "p_state1_compose new 
+state11 [ label = "p_state1_compose new 
 email_state2" ];
-state13 [ label = "p_state7_enter 
+state12 [ label = "p_state7_enter 
 receiver's 
 email address_state7" ];
-state4 -> state4 [ label=" enter  email  subject/true " ];
-state3 -> state1 [ label=" __end__/true ", style=dashed, color=red ];
-state1 -> state10 [ label=" open mailbox/true " ];
-state4 -> state7 [ label=" enter email  body/true " ];
-state13 -> state6 [ label=" send email/true " ];
-state11 -> state4 [ label=" enter  email  subject/true " ];
-state1 -> state12 [ label=" compose new  email/true " ];
-state7 -> state2 [ label=" enter  receiver's  email address/true " ];
-state6 -> state12 [ label=" compose new  email/true " ];
-state5 -> state9 [ label=" encrypt mail  with receiver's  public key/true " ];
-state12 -> state4 [ label=" enter  email  subject/true " ];
-state7 -> state7 [ label=" enter email  body/true " ];
-state7 -> state4 [ label=" enter  email  subject/true " ];
-state0 -> state12 [ label=" compose new  email/true " ];
-state12 -> state7 [ label=" enter email  body/true " ];
-state8 -> state10 [ label=" open mailbox/true " ];
-state13 -> state5 [ label=" get receiver's   public key/true " ];
-state10 -> state3 [ label=" select email/true " ];
-state8 -> state12 [ label=" compose new  email/true " ];
-state13 -> state13 [ label=" enter  receiver's  email address/true " ];
-state9 -> state8 [ label=" send email/true " ];
-state0 -> state10 [ label=" open mailbox/true " ];
-state2 -> state13 [ label=" enter  receiver's  email address/true " ];
-state2 -> state5 [ label=" get receiver's   public key/true " ];
-state12 -> state2 [ label=" enter  receiver's  email address/true " ];
-state4 -> state2 [ label=" enter  receiver's  email address/true " ];
-state2 -> state6 [ label=" send email/true " ];
-state6 -> state10 [ label=" open mailbox/true " ];
-state2 -> state11 [ label=" enter  email  subject/true " ];
-state11 -> state2 [ label=" enter  receiver's  email address/true " ];
-state13 -> state11 [ label=" enter  email  subject/true " ];
-state11 -> state7 [ label=" enter email  body/true " ];
+state3 -> state3 [ label=" enter  email  subject/true " ];
+state3 -> state6 [ label=" enter email  body/true " ];
+state12 -> state5 [ label=" send email/true " ];
+state10 -> state3 [ label=" enter  email  subject/true " ];
+state6 -> state1 [ label=" enter  receiver's  email address/true " ];
+state5 -> state11 [ label=" compose new  email/true " ];
+state4 -> state8 [ label=" encrypt mail  with receiver's  public key/true " ];
+state11 -> state3 [ label=" enter  email  subject/true " ];
+state6 -> state6 [ label=" enter email  body/true " ];
+state6 -> state3 [ label=" enter  email  subject/true " ];
+state0 -> state11 [ label=" compose new  email/true " ];
+state11 -> state6 [ label=" enter email  body/true " ];
+state7 -> state9 [ label=" open mailbox/true " ];
+state12 -> state4 [ label=" get receiver's   public key/true " ];
+state9 -> state2 [ label=" select email/true " ];
+state7 -> state11 [ label=" compose new  email/true " ];
+state12 -> state12 [ label=" enter  receiver's  email address/true " ];
+state8 -> state7 [ label=" send email/true " ];
+state0 -> state9 [ label=" open mailbox/true " ];
+state1 -> state12 [ label=" enter  receiver's  email address/true " ];
+state1 -> state4 [ label=" get receiver's   public key/true " ];
+state11 -> state1 [ label=" enter  receiver's  email address/true " ];
+state3 -> state1 [ label=" enter  receiver's  email address/true " ];
+state1 -> state5 [ label=" send email/true " ];
+state5 -> state9 [ label=" open mailbox/true " ];
+state1 -> state10 [ label=" enter  email  subject/true " ];
+state10 -> state1 [ label=" enter  receiver's  email address/true " ];
+state12 -> state10 [ label=" enter  email  subject/true " ];
+state10 -> state6 [ label=" enter email  body/true " ];
 }
 

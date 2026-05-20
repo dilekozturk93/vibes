@@ -1,110 +1,93 @@
 digraph G {
 rankdir=LR;
 state0[ label = "INIT", style=filled, color=green ];
-state1 [ label = "p_state8___end___state1" ];
-state2 [ label = "p_state2_enter 
+state1 [ label = "p_state2_enter 
 receiver's 
 email address_state7" ];
-state3 [ label = "p_state3_select email_state8" ];
-state4 [ label = "p_state2_enter
+state2 [ label = "p_state3_select email_state8" ];
+state3 [ label = "p_state2_enter
  email 
 subject_state2" ];
-state5 [ label = "p_state9_enter alias 
+state4 [ label = "p_state9_enter alias 
 email addresses 
 of receiver_state1" ];
-state6 [ label = "p_state7_send email_state1" ];
-state7 [ label = "p_state2_enter email 
+state5 [ label = "p_state7_send email_state1" ];
+state6 [ label = "p_state2_enter email 
 body_state2" ];
-state8 [ label = "p_state10_send email_state1" ];
-state9 [ label = "p_state1_open mailbox_state3" ];
-state10 [ label = "p_state1_create an 
+state7 [ label = "p_state10_send email_state1" ];
+state8 [ label = "p_state1_open mailbox_state3" ];
+state9 [ label = "p_state1_create an 
 addressbook 
 for a receiver_state6" ];
-state11 [ label = "p_state6_enter the  
+state10 [ label = "p_state6_enter the  
 receiver's 
 email address_state9" ];
-state12 [ label = "p_state7_enter
+state11 [ label = "p_state7_enter
  email 
 subject_state2" ];
-state13 [ label = "p_state1_compose new 
+state12 [ label = "p_state1_compose new 
 email_state2" ];
-state14 [ label = "p_state7_get alias 
+state13 [ label = "p_state7_get alias 
 email addresses 
 of receiver_state10" ];
-state15 [ label = "p_state7_enter 
+state14 [ label = "p_state7_enter 
 receiver's 
 email address_state7" ];
-state4 -> state4 [ label=" enter  email  subject/true " ];
-state7 -> state2 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state3 -> state1 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
-state1 -> state9 [ label=" open mailbox/true " ];
-state2 -> state6 [ label=" send email (×2)/true ", style=dashed, color=red ];
-state13 -> state2 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state11 -> state5 [ label=" enter alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
-state9 -> state0 [ label=" __balance__0/true ", style=dashed, color=red ];
-state11 -> state5 [ label=" enter alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
-state6 -> state13 [ label=" compose new  email/true " ];
-state10 -> state11 [ label=" enter the   receiver's  email address (×2)/true ", style=dashed, color=red ];
-state5 -> state13 [ label=" compose new  email/true " ];
-state10 -> state11 [ label=" enter the   receiver's  email address (×2)/true ", style=dashed, color=red ];
-state5 -> state13 [ label=" compose new  email (×2)/true ", style=dashed, color=red ];
-state7 -> state4 [ label=" enter  email  subject/true " ];
-state6 -> state10 [ label=" create an  addressbook  for a receiver/true " ];
-state4 -> state2 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state6 -> state9 [ label=" open mailbox (×2)/true ", style=dashed, color=red ];
-state13 -> state7 [ label=" enter email  body/true " ];
-state1 -> state10 [ label=" create an  addressbook  for a receiver/true " ];
-state15 -> state15 [ label=" enter  receiver's  email address/true " ];
-state2 -> state14 [ label=" get alias  email addresses  of receiver/true " ];
-state9 -> state0 [ label=" __balance__1/true ", style=dashed, color=red ];
-state10 -> state11 [ label=" enter the   receiver's  email address (×2)/true ", style=dashed, color=red ];
-state2 -> state15 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state5 -> state13 [ label=" compose new  email (×2)/true ", style=dashed, color=red ];
-state10 -> state11 [ label=" enter the   receiver's  email address/true " ];
-state4 -> state2 [ label=" enter  receiver's  email address/true " ];
-state2 -> state6 [ label=" send email/true " ];
-state14 -> state8 [ label=" send email (×2)/true ", style=dashed, color=red ];
-state2 -> state12 [ label=" enter  email  subject/true " ];
-state9 -> state3 [ label=" select email (×2)/true ", style=dashed, color=red ];
-state11 -> state5 [ label=" enter alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
-state12 -> state7 [ label=" enter email  body/true " ];
-state13 -> state2 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state5 -> state9 [ label=" open mailbox/true " ];
-state14 -> state8 [ label=" send email (×2)/true ", style=dashed, color=red ];
-state8 -> state10 [ label=" create an  addressbook  for a receiver/true " ];
-state3 -> state1 [ label=" __end__/true ", style=dashed, color=red ];
-state4 -> state7 [ label=" enter email  body/true " ];
-state15 -> state6 [ label=" send email/true " ];
-state13 -> state2 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state12 -> state4 [ label=" enter  email  subject/true " ];
-state1 -> state13 [ label=" compose new  email/true " ];
-state7 -> state2 [ label=" enter  receiver's  email address/true " ];
-state14 -> state8 [ label=" send email/true " ];
-state5 -> state10 [ label=" create an  addressbook  for a receiver/true " ];
-state13 -> state4 [ label=" enter  email  subject/true " ];
-state7 -> state7 [ label=" enter email  body/true " ];
-state15 -> state14 [ label=" get alias  email addresses  of receiver/true " ];
-state2 -> state15 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state0 -> state13 [ label=" compose new  email/true " ];
-state2 -> state12 [ label=" enter  email  subject (×2)/true ", style=dashed, color=red ];
-state9 -> state0 [ label=" __balance__2/true ", style=dashed, color=red ];
-state8 -> state9 [ label=" open mailbox/true " ];
-state9 -> state3 [ label=" select email/true " ];
-state8 -> state13 [ label=" compose new  email/true " ];
-state10 -> state11 [ label=" enter the   receiver's  email address (×2)/true ", style=dashed, color=red ];
-state0 -> state9 [ label=" open mailbox/true " ];
-state2 -> state6 [ label=" send email (×2)/true ", style=dashed, color=red ];
-state2 -> state15 [ label=" enter  receiver's  email address/true " ];
-state13 -> state2 [ label=" enter  receiver's  email address/true " ];
-state9 -> state3 [ label=" select email (×2)/true ", style=dashed, color=red ];
-state11 -> state5 [ label=" enter alias  email addresses  of receiver/true " ];
-state0 -> state10 [ label=" create an  addressbook  for a receiver/true " ];
-state6 -> state9 [ label=" open mailbox/true " ];
-state3 -> state1 [ label=" __end__ (×2)/true ", style=dashed, color=red ];
-state13 -> state2 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
-state2 -> state14 [ label=" get alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
-state12 -> state2 [ label=" enter  receiver's  email address/true " ];
-state15 -> state12 [ label=" enter  email  subject/true " ];
-state11 -> state5 [ label=" enter alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
+state3 -> state3 [ label=" enter  email  subject/true " ];
+state10 -> state4 [ label=" enter alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
+state8 -> state0 [ label=" __balance__0/true ", style=dashed, color=red ];
+state5 -> state12 [ label=" compose new  email/true " ];
+state4 -> state12 [ label=" compose new  email/true " ];
+state9 -> state10 [ label=" enter the   receiver's  email address (×2)/true ", style=dashed, color=red ];
+state6 -> state3 [ label=" enter  email  subject/true " ];
+state5 -> state9 [ label=" create an  addressbook  for a receiver/true " ];
+state12 -> state6 [ label=" enter email  body/true " ];
+state14 -> state14 [ label=" enter  receiver's  email address/true " ];
+state1 -> state13 [ label=" get alias  email addresses  of receiver/true " ];
+state8 -> state0 [ label=" __balance__1/true ", style=dashed, color=red ];
+state1 -> state5 [ label=" send email (×2)/true ", style=dashed, color=red ];
+state1 -> state14 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
+state9 -> state10 [ label=" enter the   receiver's  email address/true " ];
+state3 -> state1 [ label=" enter  receiver's  email address/true " ];
+state1 -> state5 [ label=" send email/true " ];
+state1 -> state11 [ label=" enter  email  subject/true " ];
+state11 -> state6 [ label=" enter email  body/true " ];
+state12 -> state1 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
+state4 -> state8 [ label=" open mailbox/true " ];
+state7 -> state9 [ label=" create an  addressbook  for a receiver/true " ];
+state9 -> state10 [ label=" enter the   receiver's  email address (×2)/true ", style=dashed, color=red ];
+state3 -> state6 [ label=" enter email  body/true " ];
+state3 -> state1 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
+state14 -> state5 [ label=" send email/true " ];
+state13 -> state7 [ label=" send email (×2)/true ", style=dashed, color=red ];
+state11 -> state3 [ label=" enter  email  subject/true " ];
+state6 -> state1 [ label=" enter  receiver's  email address/true " ];
+state13 -> state7 [ label=" send email/true " ];
+state2 -> state7 [ label=" __balance__3/true ", style=dashed, color=red ];
+state4 -> state9 [ label=" create an  addressbook  for a receiver/true " ];
+state12 -> state3 [ label=" enter  email  subject/true " ];
+state6 -> state6 [ label=" enter email  body/true " ];
+state14 -> state13 [ label=" get alias  email addresses  of receiver/true " ];
+state1 -> state14 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
+state4 -> state12 [ label=" compose new  email (×2)/true ", style=dashed, color=red ];
+state6 -> state1 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
+state10 -> state4 [ label=" enter alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
+state0 -> state12 [ label=" compose new  email/true " ];
+state10 -> state4 [ label=" enter alias  email addresses  of receiver (×2)/true ", style=dashed, color=red ];
+state1 -> state11 [ label=" enter  email  subject (×2)/true ", style=dashed, color=red ];
+state8 -> state0 [ label=" __balance__2/true ", style=dashed, color=red ];
+state7 -> state8 [ label=" open mailbox/true " ];
+state8 -> state2 [ label=" select email/true " ];
+state7 -> state12 [ label=" compose new  email/true " ];
+state0 -> state8 [ label=" open mailbox/true " ];
+state1 -> state14 [ label=" enter  receiver's  email address/true " ];
+state12 -> state1 [ label=" enter  receiver's  email address (×2)/true ", style=dashed, color=red ];
+state12 -> state1 [ label=" enter  receiver's  email address/true " ];
+state10 -> state4 [ label=" enter alias  email addresses  of receiver/true " ];
+state0 -> state9 [ label=" create an  addressbook  for a receiver/true " ];
+state5 -> state8 [ label=" open mailbox/true " ];
+state9 -> state10 [ label=" enter the   receiver's  email address (×2)/true ", style=dashed, color=red ];
+state11 -> state1 [ label=" enter  receiver's  email address/true " ];
+state14 -> state11 [ label=" enter  email  subject/true " ];
 }
 

@@ -1,6 +1,7 @@
 package be.vibes.testgeneration.coverage;
 
 import be.vibes.fexpression.FExpression;
+import be.vibes.testgeneration.graph.EulerianBalancer;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.FeaturedTransitionSystemFactory;
 import be.vibes.ts.State;
@@ -29,15 +30,35 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <ul>
  *   <li>A distinguished state {@code INIT} represents "no transition
  *       executed yet" — the starting point of any test case.</li>
- *   <li>For each transition {@code t} of the original FTS, the pair
- *       graph has a state named {@code "p_<source>_<action>_<target>"}.</li>
- *   <li>For each original transition {@code t} whose source is the
- *       original initial state, the pair graph has an edge
+ *   <li>For each NON-SYNTHETIC transition {@code t} of the original FTS,
+ *       the pair graph has a state named {@code "p_<source>_<action>_<target>"}.
+ *       Synthetic transitions ({@code __end__}, {@code __balance__N},
+ *       {@code __dup__N}) are SKIPPED at this stage — see the rationale
+ *       below.</li>
+ *   <li>For each non-synthetic original transition {@code t} whose source
+ *       is the original initial state, the pair graph has an edge
  *       {@code INIT -> p(t)} labelled with {@code action(t)}.</li>
- *   <li>For each ordered pair of original transitions {@code (t1, t2)}
- *       with {@code target(t1) == source(t2)}, the pair graph has an
- *       edge {@code p(t1) -> p(t2)} labelled with {@code action(t2)}.</li>
+ *   <li>For each ordered pair of non-synthetic original transitions
+ *       {@code (t1, t2)} with {@code target(t1) == source(t2)}, the pair
+ *       graph has an edge {@code p(t1) -> p(t2)} labelled with
+ *       {@code action(t2)}.</li>
  * </ul>
+ *
+ * <p><strong>Why synthetic transitions are excluded from pair-graph
+ * construction.</strong> The coverage metric
+ * ({@link be.vibes.testgeneration.experiment.MetricsCollector
+ * #pairCoveragePercentageOfSuite}) drops synthetic actions from each
+ * test case's walk before forming consecutive pairs. Pairs involving an
+ * {@code __end__} (e.g. {@code (real, __end__)} or
+ * {@code (__end__, real)}) are therefore worth zero in the denominator,
+ * yet the un-filtered pair-graph construction would generate pair-graph
+ * edges for them. Translating those edges back produces TestCases like
+ * {@code [__end__, real]} that contribute nothing to pair coverage but
+ * still cost a test case slot and a setup/teardown — visible in early
+ * reports as repeated single-action test cases like "open mailbox" alone,
+ * each coming from a {@code p(__end___from_X) -> p(open_mailbox)} edge.
+ * Skipping synthetic transitions at construction time aligns the graph
+ * with the metric.</p>
  *
  * <p>A Hierholzer Euler cycle on the (balanced, SCC-repaired) pair graph
  * visits every pair-graph edge exactly once. By construction, the
@@ -90,14 +111,17 @@ public final class PairGraphTransformer {
 
         FeaturedTransitionSystemFactory factory = new FeaturedTransitionSystemFactory(INIT_NAME);
 
-        // Index original transitions by source state to make the
-        // pair-edge enumeration O(|T| + sum_s out_degree(s)) rather than
-        // O(|T|^2).
+        // Index NON-SYNTHETIC original transitions by source state. Synthetic
+        // transitions (__end__ et al.) are filtered out at construction time
+        // — see the class JavaDoc for the rationale.
         Map<State, java.util.List<Transition>> outgoingBySource = new HashMap<>();
         Iterator<Transition> tIt = original.transitions();
         java.util.List<Transition> allOriginalTransitions = new java.util.ArrayList<>();
         while (tIt.hasNext()) {
             Transition t = tIt.next();
+            if (EulerianBalancer.isSyntheticAction(t.getAction())) {
+                continue;
+            }
             allOriginalTransitions.add(t);
             outgoingBySource.computeIfAbsent(t.getSource(),
                     k -> new java.util.ArrayList<>()).add(t);

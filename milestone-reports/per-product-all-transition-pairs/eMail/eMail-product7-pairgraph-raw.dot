@@ -1,121 +1,106 @@
 digraph G {
 rankdir=LR;
 state0[ label = "INIT", style=filled, color=green ];
-state1 [ label = "p_state8___end___state1" ];
-state2 [ label = "p_state5_enter email 
+state1 [ label = "p_state5_enter email 
 autoresponse 
 date interval_state4" ];
-state3 [ label = "p_state8_enter forward 
+state2 [ label = "p_state8_enter forward 
 receiver's 
 email address_state10" ];
-state4 [ label = "p_state2_enter 
+state3 [ label = "p_state2_enter 
 receiver's 
 email address_state7" ];
-state5 [ label = "p_state3_select email_state8" ];
-state6 [ label = "p_state2_enter
+state4 [ label = "p_state3_select email_state8" ];
+state5 [ label = "p_state2_enter
  email 
 subject_state2" ];
-state7 [ label = "p_state9_enter alias 
+state6 [ label = "p_state9_enter alias 
 email addresses 
 of receiver_state1" ];
-state8 [ label = "p_state4_enter 
+state7 [ label = "p_state4_enter 
 autoresponse 
 email body_state5" ];
-state9 [ label = "p_state7_send email_state1" ];
-state10 [ label = "p_state2_enter email 
+state8 [ label = "p_state7_send email_state1" ];
+state9 [ label = "p_state2_enter email 
 body_state2" ];
-state11 [ label = "p_state10_send email_state1" ];
-state12 [ label = "p_state4___end___state1" ];
-state13 [ label = "p_state1_open mailbox_state3" ];
-state14 [ label = "p_state1_create an 
+state10 [ label = "p_state10_send email_state1" ];
+state11 [ label = "p_state1_open mailbox_state3" ];
+state12 [ label = "p_state1_create an 
 addressbook 
 for a receiver_state6" ];
-state15 [ label = "p_state1_enter 
+state13 [ label = "p_state1_enter 
 autoresponse 
 email body_state5" ];
-state16 [ label = "p_state6_enter the  
+state14 [ label = "p_state6_enter the  
 receiver's 
 email address_state9" ];
-state17 [ label = "p_state7_enter
+state15 [ label = "p_state7_enter
  email 
 subject_state2" ];
-state18 [ label = "p_state1_compose new 
+state16 [ label = "p_state1_compose new 
 email_state2" ];
-state19 [ label = "p_state7_sign mail_state10" ];
-state20 [ label = "p_state1_enter email 
+state17 [ label = "p_state7_sign mail_state10" ];
+state18 [ label = "p_state1_enter email 
 autoresponse 
 date interval_state4" ];
-state21 [ label = "p_state7_get alias 
+state19 [ label = "p_state7_get alias 
 email addresses 
 of receiver_state10" ];
-state22 [ label = "p_state7_enter 
+state20 [ label = "p_state7_enter 
 receiver's 
 email address_state7" ];
-state6 -> state6 [ label=" enter  email  subject/true " ];
-state20 -> state12 [ label=" __end__/true ", style=dashed, color=red ];
-state1 -> state13 [ label=" open mailbox/true " ];
-state5 -> state3 [ label=" enter forward  receiver's  email address/true " ];
-state9 -> state15 [ label=" enter  autoresponse  email body/true " ];
-state12 -> state13 [ label=" open mailbox/true " ];
-state0 -> state20 [ label=" enter email  autoresponse  date interval/true " ];
-state4 -> state19 [ label=" sign mail/true " ];
-state9 -> state18 [ label=" compose new  email/true " ];
-state8 -> state2 [ label=" enter email  autoresponse  date interval/true " ];
-state22 -> state19 [ label=" sign mail/true " ];
-state7 -> state18 [ label=" compose new  email/true " ];
-state2 -> state12 [ label=" __end__/true ", style=dashed, color=red ];
-state10 -> state6 [ label=" enter  email  subject/true " ];
-state9 -> state14 [ label=" create an  addressbook  for a receiver/true " ];
-state18 -> state10 [ label=" enter email  body/true " ];
-state1 -> state14 [ label=" create an  addressbook  for a receiver/true " ];
-state22 -> state22 [ label=" enter  receiver's  email address/true " ];
-state4 -> state21 [ label=" get alias  email addresses  of receiver/true " ];
-state11 -> state15 [ label=" enter  autoresponse  email body/true " ];
-state15 -> state2 [ label=" enter email  autoresponse  date interval/true " ];
-state12 -> state20 [ label=" enter email  autoresponse  date interval/true " ];
-state14 -> state16 [ label=" enter the   receiver's  email address/true " ];
-state6 -> state4 [ label=" enter  receiver's  email address/true " ];
-state4 -> state9 [ label=" send email/true " ];
-state0 -> state15 [ label=" enter  autoresponse  email body/true " ];
-state12 -> state14 [ label=" create an  addressbook  for a receiver/true " ];
-state1 -> state20 [ label=" enter email  autoresponse  date interval/true " ];
-state4 -> state17 [ label=" enter  email  subject/true " ];
-state7 -> state20 [ label=" enter email  autoresponse  date interval/true " ];
-state17 -> state10 [ label=" enter email  body/true " ];
-state7 -> state13 [ label=" open mailbox/true " ];
-state1 -> state15 [ label=" enter  autoresponse  email body/true " ];
-state11 -> state14 [ label=" create an  addressbook  for a receiver/true " ];
-state5 -> state1 [ label=" __end__/true ", style=dashed, color=red ];
-state9 -> state20 [ label=" enter email  autoresponse  date interval/true " ];
-state6 -> state10 [ label=" enter email  body/true " ];
-state22 -> state9 [ label=" send email/true " ];
-state17 -> state6 [ label=" enter  email  subject/true " ];
-state1 -> state18 [ label=" compose new  email/true " ];
-state10 -> state4 [ label=" enter  receiver's  email address/true " ];
-state21 -> state11 [ label=" send email/true " ];
-state7 -> state14 [ label=" create an  addressbook  for a receiver/true " ];
-state3 -> state11 [ label=" send email/true " ];
-state18 -> state6 [ label=" enter  email  subject/true " ];
-state10 -> state10 [ label=" enter email  body/true " ];
-state22 -> state21 [ label=" get alias  email addresses  of receiver/true " ];
-state0 -> state18 [ label=" compose new  email/true " ];
-state12 -> state18 [ label=" compose new  email/true " ];
-state20 -> state8 [ label=" enter  autoresponse  email body/true " ];
-state11 -> state13 [ label=" open mailbox/true " ];
-state13 -> state5 [ label=" select email/true " ];
-state11 -> state18 [ label=" compose new  email/true " ];
-state19 -> state11 [ label=" send email/true " ];
-state0 -> state13 [ label=" open mailbox/true " ];
-state4 -> state22 [ label=" enter  receiver's  email address/true " ];
-state18 -> state4 [ label=" enter  receiver's  email address/true " ];
-state16 -> state7 [ label=" enter alias  email addresses  of receiver/true " ];
-state11 -> state20 [ label=" enter email  autoresponse  date interval/true " ];
-state0 -> state14 [ label=" create an  addressbook  for a receiver/true " ];
-state9 -> state13 [ label=" open mailbox/true " ];
-state12 -> state15 [ label=" enter  autoresponse  email body/true " ];
-state17 -> state4 [ label=" enter  receiver's  email address/true " ];
-state22 -> state17 [ label=" enter  email  subject/true " ];
-state7 -> state15 [ label=" enter  autoresponse  email body/true " ];
-state2 -> state8 [ label=" enter  autoresponse  email body/true " ];
+state5 -> state5 [ label=" enter  email  subject/true " ];
+state4 -> state2 [ label=" enter forward  receiver's  email address/true " ];
+state8 -> state13 [ label=" enter  autoresponse  email body/true " ];
+state0 -> state18 [ label=" enter email  autoresponse  date interval/true " ];
+state3 -> state17 [ label=" sign mail/true " ];
+state8 -> state16 [ label=" compose new  email/true " ];
+state7 -> state1 [ label=" enter email  autoresponse  date interval/true " ];
+state20 -> state17 [ label=" sign mail/true " ];
+state6 -> state16 [ label=" compose new  email/true " ];
+state9 -> state5 [ label=" enter  email  subject/true " ];
+state8 -> state12 [ label=" create an  addressbook  for a receiver/true " ];
+state16 -> state9 [ label=" enter email  body/true " ];
+state20 -> state20 [ label=" enter  receiver's  email address/true " ];
+state3 -> state19 [ label=" get alias  email addresses  of receiver/true " ];
+state10 -> state13 [ label=" enter  autoresponse  email body/true " ];
+state13 -> state1 [ label=" enter email  autoresponse  date interval/true " ];
+state12 -> state14 [ label=" enter the   receiver's  email address/true " ];
+state5 -> state3 [ label=" enter  receiver's  email address/true " ];
+state3 -> state8 [ label=" send email/true " ];
+state0 -> state13 [ label=" enter  autoresponse  email body/true " ];
+state3 -> state15 [ label=" enter  email  subject/true " ];
+state6 -> state18 [ label=" enter email  autoresponse  date interval/true " ];
+state15 -> state9 [ label=" enter email  body/true " ];
+state6 -> state11 [ label=" open mailbox/true " ];
+state10 -> state12 [ label=" create an  addressbook  for a receiver/true " ];
+state8 -> state18 [ label=" enter email  autoresponse  date interval/true " ];
+state5 -> state9 [ label=" enter email  body/true " ];
+state20 -> state8 [ label=" send email/true " ];
+state15 -> state5 [ label=" enter  email  subject/true " ];
+state9 -> state3 [ label=" enter  receiver's  email address/true " ];
+state19 -> state10 [ label=" send email/true " ];
+state6 -> state12 [ label=" create an  addressbook  for a receiver/true " ];
+state2 -> state10 [ label=" send email/true " ];
+state16 -> state5 [ label=" enter  email  subject/true " ];
+state9 -> state9 [ label=" enter email  body/true " ];
+state20 -> state19 [ label=" get alias  email addresses  of receiver/true " ];
+state0 -> state16 [ label=" compose new  email/true " ];
+state18 -> state7 [ label=" enter  autoresponse  email body/true " ];
+state10 -> state11 [ label=" open mailbox/true " ];
+state11 -> state4 [ label=" select email/true " ];
+state10 -> state16 [ label=" compose new  email/true " ];
+state17 -> state10 [ label=" send email/true " ];
+state0 -> state11 [ label=" open mailbox/true " ];
+state3 -> state20 [ label=" enter  receiver's  email address/true " ];
+state16 -> state3 [ label=" enter  receiver's  email address/true " ];
+state14 -> state6 [ label=" enter alias  email addresses  of receiver/true " ];
+state10 -> state18 [ label=" enter email  autoresponse  date interval/true " ];
+state0 -> state12 [ label=" create an  addressbook  for a receiver/true " ];
+state8 -> state11 [ label=" open mailbox/true " ];
+state15 -> state3 [ label=" enter  receiver's  email address/true " ];
+state20 -> state15 [ label=" enter  email  subject/true " ];
+state6 -> state13 [ label=" enter  autoresponse  email body/true " ];
+state1 -> state7 [ label=" enter  autoresponse  email body/true " ];
 }
 

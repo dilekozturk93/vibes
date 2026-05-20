@@ -305,6 +305,34 @@ public final class PerProductAllTransitionPairsReportGenerator {
         int totalRealSteps = 0;
         for (TestCase tc : suite) totalRealSteps += countTestCaseLength(tc);
 
+        // Trip-split every TestCase and dedupe at the displayed-action-sequence
+        // level: two trips that render identically cover the same action-pair
+        // set even if their underlying TestCases were structurally different
+        // (e.g. two trips that both display as "open mailbox" alone, coming
+        // from different points in the Hierholzer cycle). The action-pair
+        // criterion is what the user's prior ESG-Fx work measures and what is
+        // operationally meaningful for SUT testing; the strict transition-pair
+        // criterion would keep them, but the displayed test cases would still
+        // look identical and confuse readers.
+        List<List<String>> displayedTrips = new ArrayList<>();
+        java.util.Set<String> seenTrips = new java.util.HashSet<>();
+        for (TestCase tc : suite) {
+            for (List<Transition> trip :
+                    TestCaseSplitter.splitAtInitialReturns(tc, repaired.getInitialState())) {
+                List<String> actions = TestCaseSplitter.renderTripActions(trip);
+                if (actions.isEmpty()) {
+                    continue;
+                }
+                List<String> normalized = new ArrayList<>(actions.size());
+                for (String a : actions) normalized.add(normalize(a));
+                String key = String.join("|||", normalized);
+                if (seenTrips.add(key)) {
+                    displayedTrips.add(normalized);
+                }
+            }
+        }
+        int displayedCases = displayedTrips.size();
+
         md.write("\n### Product " + productIndex + "\n\n");
         md.write("**Selected features:** " + featuresLine + "\n\n");
         md.write("**Repaired FTS:** " + countStates(repaired) + " states, "
@@ -334,36 +362,17 @@ public final class PerProductAllTransitionPairsReportGenerator {
         }
 
         if (suite != null && !suite.isEmpty()) {
-            md.write("**Generated test suite** — " + suiteSize
-                    + " test case(s) total (" + totalRealSteps
-                    + " real step(s); pair-graph cycle has " + balancedEdges
+            md.write("**Generated test suite** — " + displayedCases
+                    + " unique test case(s) after action-sequence dedup ("
+                    + suiteSize + " pair-graph segment(s), " + totalRealSteps
+                    + " raw real step(s); pair-graph cycle has " + balancedEdges
                     + " edge(s) total, " + syntheticAdded
-                    + " synthetic dropped at translation).\n\n");
-            int caseIndex = 0;
-            for (TestCase tc : suite) {
-                List<List<Transition>> trips =
-                        TestCaseSplitter.splitAtInitialReturns(tc, repaired.getInitialState());
-                List<List<String>> renderedTrips = new ArrayList<>();
-                for (List<Transition> trip : trips) {
-                    List<String> actions = TestCaseSplitter.renderTripActions(trip);
-                    List<String> normalized = new ArrayList<>(actions.size());
-                    for (String a : actions) normalized.add(normalize(a));
-                    if (!normalized.isEmpty()) renderedTrips.add(normalized);
-                }
-                if (renderedTrips.isEmpty()) {
-                    continue;
-                }
-                if (renderedTrips.size() == 1) {
-                    caseIndex++;
-                    String seq = String.join(" -> ", renderedTrips.get(0));
-                    md.write("- **test case " + caseIndex + "**: `" + seq + "`\n");
-                } else {
-                    for (List<String> t : renderedTrips) {
-                        caseIndex++;
-                        String seq = String.join(" -> ", t);
-                        md.write("- **test case " + caseIndex + "**: `" + seq + "`\n");
-                    }
-                }
+                    + " synthetic dropped at translation). Operationally-identical "
+                    + "trips (same action sequence, possibly different transition-level "
+                    + "pairs) are listed once.\n\n");
+            for (int i = 0; i < displayedTrips.size(); i++) {
+                String seq = String.join(" -> ", displayedTrips.get(i));
+                md.write("- **test case " + (i + 1) + "**: `" + seq + "`\n");
             }
             md.write("\n");
         } else {
@@ -398,29 +407,18 @@ public final class PerProductAllTransitionPairsReportGenerator {
                     + "\" alt=\"Pair graph (balanced) — product " + productIndex + "\"/>\n");
         }
         if (suite != null && !suite.isEmpty()) {
-            html.write("<p><strong>Generated test suite</strong> — " + suiteSize
-                    + " test case(s) total (" + totalRealSteps + " real step(s); pair-graph "
-                    + "cycle has " + balancedEdges + " edge(s) total, " + syntheticAdded
-                    + " synthetic dropped at translation).</p>\n<ul>\n");
-            int caseIndex = 0;
-            for (TestCase tc : suite) {
-                List<List<Transition>> trips =
-                        TestCaseSplitter.splitAtInitialReturns(tc, repaired.getInitialState());
-                List<List<String>> renderedTrips = new ArrayList<>();
-                for (List<Transition> trip : trips) {
-                    List<String> actions = TestCaseSplitter.renderTripActions(trip);
-                    List<String> normalized = new ArrayList<>(actions.size());
-                    for (String a : actions) normalized.add(normalize(a));
-                    if (!normalized.isEmpty()) renderedTrips.add(normalized);
-                }
-                for (List<String> t : renderedTrips) {
-                    caseIndex++;
-                    List<String> escaped = new ArrayList<>(t.size());
-                    for (String a : t) escaped.add(escapeHtml(a));
-                    String seq = String.join(" &rarr; ", escaped);
-                    html.write("<li><strong>test case " + caseIndex + "</strong>: <code>"
-                            + seq + "</code></li>\n");
-                }
+            html.write("<p><strong>Generated test suite</strong> — " + displayedCases
+                    + " unique test case(s) after action-sequence dedup ("
+                    + suiteSize + " pair-graph segment(s), " + totalRealSteps
+                    + " raw real step(s); pair-graph cycle has " + balancedEdges
+                    + " edge(s) total, " + syntheticAdded + " synthetic dropped at "
+                    + "translation). Operationally-identical trips are listed once.</p>\n<ul>\n");
+            for (int i = 0; i < displayedTrips.size(); i++) {
+                List<String> escaped = new ArrayList<>(displayedTrips.get(i).size());
+                for (String a : displayedTrips.get(i)) escaped.add(escapeHtml(a));
+                String seq = String.join(" &rarr; ", escaped);
+                html.write("<li><strong>test case " + (i + 1) + "</strong>: <code>"
+                        + seq + "</code></li>\n");
             }
             html.write("</ul>\n");
         } else {
