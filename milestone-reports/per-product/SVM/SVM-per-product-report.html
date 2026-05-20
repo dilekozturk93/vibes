@@ -24,10 +24,9 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <img src="SVM-product1.png" alt="Product 1 projected FTS"/>
 <h3>State coverage (1 test case, 6 transitions)</h3>
 <pre>free -&gt; tea -&gt; serveTea -&gt; take -&gt; free -&gt; cancel</pre>
-<h3>All-transitions coverage (2 test cases, 6 transitions total)</h3>
+<h3>All-transitions coverage (1 test cases, 6 transitions total)</h3>
 <ul>
-<li><code>SVM_p1_trans_seg0</code>: <code>free -&gt; cancel -&gt; return</code></li>
-<li><code>SVM_p1_trans_seg1</code>: <code>tea -&gt; serveTea -&gt; take</code></li>
+<li><code>SVM_p1_trans_seg0</code>: <code>cancel -&gt; return -&gt; free -&gt; tea -&gt; serveTea -&gt; take</code></li>
 </ul>
 <h3>All-transition-pairs coverage (1 test cases, 8 transitions total)</h3>
 <ul>
@@ -39,10 +38,11 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <img src="SVM-product2.png" alt="Product 2 projected FTS"/>
 <h3>State coverage (1 test case, 10 transitions)</h3>
 <pre>pay -&gt; change -&gt; soda -&gt; serveSoda -&gt; open -&gt; take -&gt; close -&gt; pay -&gt; change -&gt; tea</pre>
-<h3>All-transitions coverage (2 test cases, 9 transitions total)</h3>
+<h3>All-transitions coverage (3 test cases, 9 transitions total)</h3>
 <ul>
-<li><code>SVM_p2_trans_seg0</code>: <code>pay -&gt; change -&gt; tea -&gt; serveTea</code></li>
-<li><code>SVM_p2_trans_seg1</code>: <code>soda -&gt; serveSoda -&gt; open -&gt; take -&gt; close</code></li>
+<li><code>SVM_p2_trans_seg0</code>: <code>pay</code></li>
+<li><code>SVM_p2_trans_seg1</code>: <code>tea -&gt; serveTea -&gt; open -&gt; take -&gt; close</code></li>
+<li><code>SVM_p2_trans_seg2</code>: <code>change -&gt; soda -&gt; serveSoda</code></li>
 </ul>
 <h3>All-transition-pairs coverage (2 test cases, 12 transitions total)</h3>
 <ul>
@@ -85,8 +85,8 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <pre>free -&gt; soda -&gt; serveSoda -&gt; take -&gt; free -&gt; tea</pre>
 <h3>All-transitions coverage (2 test cases, 6 transitions total)</h3>
 <ul>
-<li><code>SVM_p5_trans_seg0</code>: <code>free -&gt; tea -&gt; serveTea</code></li>
-<li><code>SVM_p5_trans_seg1</code>: <code>soda -&gt; serveSoda -&gt; take</code></li>
+<li><code>SVM_p5_trans_seg0</code>: <code>free -&gt; tea -&gt; serveTea -&gt; take</code></li>
+<li><code>SVM_p5_trans_seg1</code>: <code>soda -&gt; serveSoda</code></li>
 </ul>
 <h3>All-transition-pairs coverage (1 test cases, 8 transitions total)</h3>
 <ul>
@@ -98,10 +98,9 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <img src="SVM-product6.png" alt="Product 6 projected FTS"/>
 <h3>State coverage (1 test case, 6 transitions)</h3>
 <pre>free -&gt; soda -&gt; serveSoda -&gt; take -&gt; free -&gt; cancel</pre>
-<h3>All-transitions coverage (2 test cases, 6 transitions total)</h3>
+<h3>All-transitions coverage (1 test cases, 6 transitions total)</h3>
 <ul>
-<li><code>SVM_p6_trans_seg0</code>: <code>free -&gt; cancel -&gt; return</code></li>
-<li><code>SVM_p6_trans_seg1</code>: <code>soda -&gt; serveSoda -&gt; take</code></li>
+<li><code>SVM_p6_trans_seg0</code>: <code>cancel -&gt; return -&gt; free -&gt; soda -&gt; serveSoda -&gt; take</code></li>
 </ul>
 <h3>All-transition-pairs coverage (1 test cases, 8 transitions total)</h3>
 <ul>
@@ -115,7 +114,7 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <pre>pay -&gt; change -&gt; soda -&gt; serveSoda -&gt; open -&gt; take -&gt; close -&gt; pay -&gt; change -&gt; cancel</pre>
 <h3>All-transitions coverage (2 test cases, 9 transitions total)</h3>
 <ul>
-<li><code>SVM_p7_trans_seg0</code>: <code>pay -&gt; change -&gt; cancel -&gt; return</code></li>
+<li><code>SVM_p7_trans_seg0</code>: <code>change -&gt; cancel -&gt; return -&gt; pay</code></li>
 <li><code>SVM_p7_trans_seg1</code>: <code>soda -&gt; serveSoda -&gt; open -&gt; take -&gt; close</code></li>
 </ul>
 <h3>All-transition-pairs coverage (2 test cases, 12 transitions total)</h3>
@@ -143,10 +142,11 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <img src="SVM-product9.png" alt="Product 9 projected FTS"/>
 <h3>State coverage (1 test case, 10 transitions)</h3>
 <pre>free -&gt; soda -&gt; serveSoda -&gt; take -&gt; free -&gt; tea -&gt; serveTea -&gt; take -&gt; free -&gt; cancel</pre>
-<h3>All-transitions coverage (2 test cases, 8 transitions total)</h3>
+<h3>All-transitions coverage (3 test cases, 8 transitions total)</h3>
 <ul>
-<li><code>SVM_p9_trans_seg0</code>: <code>cancel -&gt; return -&gt; free -&gt; tea -&gt; serveTea</code></li>
-<li><code>SVM_p9_trans_seg1</code>: <code>soda -&gt; serveSoda -&gt; take</code></li>
+<li><code>SVM_p9_trans_seg0</code>: <code>free -&gt; cancel -&gt; return</code></li>
+<li><code>SVM_p9_trans_seg1</code>: <code>tea -&gt; serveTea -&gt; take</code></li>
+<li><code>SVM_p9_trans_seg2</code>: <code>soda -&gt; serveSoda</code></li>
 </ul>
 <h3>All-transition-pairs coverage (1 test cases, 11 transitions total)</h3>
 <ul>
@@ -160,9 +160,9 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <pre>pay -&gt; change -&gt; soda -&gt; serveSoda -&gt; open -&gt; take -&gt; close -&gt; pay -&gt; change -&gt; tea -&gt; serveTea -&gt; open -&gt; take -&gt; close -&gt; pay -&gt; change -&gt; cancel</pre>
 <h3>All-transitions coverage (3 test cases, 11 transitions total)</h3>
 <ul>
-<li><code>SVM_p10_trans_seg0</code>: <code>pay -&gt; change -&gt; cancel -&gt; return</code></li>
-<li><code>SVM_p10_trans_seg1</code>: <code>tea -&gt; serveTea</code></li>
-<li><code>SVM_p10_trans_seg2</code>: <code>soda -&gt; serveSoda -&gt; open -&gt; take -&gt; close</code></li>
+<li><code>SVM_p10_trans_seg0</code>: <code>cancel -&gt; return -&gt; pay</code></li>
+<li><code>SVM_p10_trans_seg1</code>: <code>tea -&gt; serveTea -&gt; open -&gt; take -&gt; close</code></li>
+<li><code>SVM_p10_trans_seg2</code>: <code>change -&gt; soda -&gt; serveSoda</code></li>
 </ul>
 <h3>All-transition-pairs coverage (3 test cases, 16 transitions total)</h3>
 <ul>
@@ -178,7 +178,7 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
 <pre>pay -&gt; change -&gt; tea -&gt; serveTea -&gt; open -&gt; take -&gt; close -&gt; pay -&gt; change -&gt; cancel</pre>
 <h3>All-transitions coverage (2 test cases, 9 transitions total)</h3>
 <ul>
-<li><code>SVM_p11_trans_seg0</code>: <code>pay -&gt; change -&gt; cancel -&gt; return</code></li>
+<li><code>SVM_p11_trans_seg0</code>: <code>change -&gt; cancel -&gt; return -&gt; pay</code></li>
 <li><code>SVM_p11_trans_seg1</code>: <code>tea -&gt; serveTea -&gt; open -&gt; take -&gt; close</code></li>
 </ul>
 <h3>All-transition-pairs coverage (2 test cases, 12 transitions total)</h3>

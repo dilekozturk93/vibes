@@ -30,9 +30,9 @@ InitialSccFilter keeps only the SCC containing the initial state and drops every
 
 ## Step 4 — Strongly-connected + balanced FTS
 
-**Size:** 8 states, 10 transitions
+**Size:** 8 states, 11 transitions
 
-EulerianBalancer adds 1 synthetic '__balance__N' transitions so every state has in-degree = out-degree, the second precondition for Hierholzer's Euler-cycle algorithm. 9 real transition(s) preserved, 1 synthetic balancing transition(s) inserted; 8 total state(s).
+EulerianBalancer applies a directed Chinese Postman strategy: for each pair of imbalanced states it finds a shortest path of real transitions and doubles each transition along it (action label is suffixed with '__dup__N'). The cycle thus stays contiguous and every traversal is a real action. 2 doubled transition(s) inserted (dashed-red in the image); 0 direct synthetic fallback edge(s) when no real path existed; 9 original transition(s) preserved; 8 total state(s). The doubled edges are filtered from coverage measurement (their action carries the '__dup__' marker), but they DO appear in the test case as another occurrence of the underlying real action — a property useful for mutation detection.
 
 ![Step 4](SVM-step4-balanced.png)
 

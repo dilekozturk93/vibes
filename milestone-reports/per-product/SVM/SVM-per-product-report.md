@@ -22,10 +22,9 @@ Action sequences are written as `a -> b -> c -> ...`. Synthetic balancing action
 free -> tea -> serveTea -> take -> free -> cancel
 ```
 
-### All-transitions coverage (2 test cases, 6 transitions total)
+### All-transitions coverage (1 test cases, 6 transitions total)
 
-- **`SVM_p1_trans_seg0`**: `free -> cancel -> return`
-- **`SVM_p1_trans_seg1`**: `tea -> serveTea -> take`
+- **`SVM_p1_trans_seg0`**: `cancel -> return -> free -> tea -> serveTea -> take`
 
 ### All-transition-pairs coverage (1 test cases, 8 transitions total)
 
@@ -45,10 +44,11 @@ free -> tea -> serveTea -> take -> free -> cancel
 pay -> change -> soda -> serveSoda -> open -> take -> close -> pay -> change -> tea
 ```
 
-### All-transitions coverage (2 test cases, 9 transitions total)
+### All-transitions coverage (3 test cases, 9 transitions total)
 
-- **`SVM_p2_trans_seg0`**: `pay -> change -> tea -> serveTea`
-- **`SVM_p2_trans_seg1`**: `soda -> serveSoda -> open -> take -> close`
+- **`SVM_p2_trans_seg0`**: `pay`
+- **`SVM_p2_trans_seg1`**: `tea -> serveTea -> open -> take -> close`
+- **`SVM_p2_trans_seg2`**: `change -> soda -> serveSoda`
 
 ### All-transition-pairs coverage (2 test cases, 12 transitions total)
 
@@ -115,8 +115,8 @@ free -> soda -> serveSoda -> take -> free -> tea
 
 ### All-transitions coverage (2 test cases, 6 transitions total)
 
-- **`SVM_p5_trans_seg0`**: `free -> tea -> serveTea`
-- **`SVM_p5_trans_seg1`**: `soda -> serveSoda -> take`
+- **`SVM_p5_trans_seg0`**: `free -> tea -> serveTea -> take`
+- **`SVM_p5_trans_seg1`**: `soda -> serveSoda`
 
 ### All-transition-pairs coverage (1 test cases, 8 transitions total)
 
@@ -136,10 +136,9 @@ free -> soda -> serveSoda -> take -> free -> tea
 free -> soda -> serveSoda -> take -> free -> cancel
 ```
 
-### All-transitions coverage (2 test cases, 6 transitions total)
+### All-transitions coverage (1 test cases, 6 transitions total)
 
-- **`SVM_p6_trans_seg0`**: `free -> cancel -> return`
-- **`SVM_p6_trans_seg1`**: `soda -> serveSoda -> take`
+- **`SVM_p6_trans_seg0`**: `cancel -> return -> free -> soda -> serveSoda -> take`
 
 ### All-transition-pairs coverage (1 test cases, 8 transitions total)
 
@@ -161,7 +160,7 @@ pay -> change -> soda -> serveSoda -> open -> take -> close -> pay -> change -> 
 
 ### All-transitions coverage (2 test cases, 9 transitions total)
 
-- **`SVM_p7_trans_seg0`**: `pay -> change -> cancel -> return`
+- **`SVM_p7_trans_seg0`**: `change -> cancel -> return -> pay`
 - **`SVM_p7_trans_seg1`**: `soda -> serveSoda -> open -> take -> close`
 
 ### All-transition-pairs coverage (2 test cases, 12 transitions total)
@@ -205,10 +204,11 @@ free -> tea -> serveTea
 free -> soda -> serveSoda -> take -> free -> tea -> serveTea -> take -> free -> cancel
 ```
 
-### All-transitions coverage (2 test cases, 8 transitions total)
+### All-transitions coverage (3 test cases, 8 transitions total)
 
-- **`SVM_p9_trans_seg0`**: `cancel -> return -> free -> tea -> serveTea`
-- **`SVM_p9_trans_seg1`**: `soda -> serveSoda -> take`
+- **`SVM_p9_trans_seg0`**: `free -> cancel -> return`
+- **`SVM_p9_trans_seg1`**: `tea -> serveTea -> take`
+- **`SVM_p9_trans_seg2`**: `soda -> serveSoda`
 
 ### All-transition-pairs coverage (1 test cases, 11 transitions total)
 
@@ -230,9 +230,9 @@ pay -> change -> soda -> serveSoda -> open -> take -> close -> pay -> change -> 
 
 ### All-transitions coverage (3 test cases, 11 transitions total)
 
-- **`SVM_p10_trans_seg0`**: `pay -> change -> cancel -> return`
-- **`SVM_p10_trans_seg1`**: `tea -> serveTea`
-- **`SVM_p10_trans_seg2`**: `soda -> serveSoda -> open -> take -> close`
+- **`SVM_p10_trans_seg0`**: `cancel -> return -> pay`
+- **`SVM_p10_trans_seg1`**: `tea -> serveTea -> open -> take -> close`
+- **`SVM_p10_trans_seg2`**: `change -> soda -> serveSoda`
 
 ### All-transition-pairs coverage (3 test cases, 16 transitions total)
 
@@ -256,7 +256,7 @@ pay -> change -> tea -> serveTea -> open -> take -> close -> pay -> change -> ca
 
 ### All-transitions coverage (2 test cases, 9 transitions total)
 
-- **`SVM_p11_trans_seg0`**: `pay -> change -> cancel -> return`
+- **`SVM_p11_trans_seg0`**: `change -> cancel -> return -> pay`
 - **`SVM_p11_trans_seg1`**: `tea -> serveTea -> open -> take -> close`
 
 ### All-transition-pairs coverage (2 test cases, 12 transitions total)

@@ -114,11 +114,22 @@ public final class FullPipelineWalkthroughGenerator {
             balanceError = ex;
         }
 
-        Path png1 = renderDotPng(fts, outDir, spec.name + "-step1-spl");
-        Path png2 = renderDotPng(projected, outDir, spec.name + "-step2-projected");
-        Path png3 = renderDotPng(repaired, outDir, spec.name + "-step3-strongly-connected");
+        // Compute "newly added in step 3" highlight set: transitions
+        // present in `repaired` but absent from `projected` (matched on
+        // (source, action, target)). With the current algorithm
+        // InitialSccFilter only removes; the set is therefore empty in
+        // practice but the renderer supports it for forward-compatibility.
+        Set<Transition> newInStep3 = diffTransitions(projected, repaired);
+
+        Path png1 = renderStyled(fts, outDir, spec.name + "-step1-spl",
+                java.util.Collections.emptySet(), false);
+        Path png2 = renderStyled(projected, outDir, spec.name + "-step2-projected",
+                java.util.Collections.emptySet(), false);
+        Path png3 = renderStyled(repaired, outDir, spec.name + "-step3-strongly-connected",
+                newInStep3, false);
         Path png4 = balanced != null
-                ? renderDotPng(balanced, outDir, spec.name + "-step4-balanced")
+                ? renderStyled(balanced, outDir, spec.name + "-step4-balanced",
+                        java.util.Collections.emptySet(), true)
                 : null;
 
         List<Set<State>> sccs = StronglyConnectedComponents.compute(projected);
@@ -176,15 +187,22 @@ public final class FullPipelineWalkthroughGenerator {
             if (balanced != null) {
                 int balancedStates = countStates(balanced);
                 int balancedTrans = countTransitions(balanced);
-                int syntheticBalancing = countSyntheticBalancing(balanced);
-                int realTrans = balancedTrans - syntheticBalancing;
+                int duplicated = countDuplicates(balanced);
+                int fallback = countFallbackSynthetics(balanced);
+                int realTrans = balancedTrans - duplicated - fallback;
                 writeStep(md, html, 4, "Strongly-connected + balanced FTS", balanced,
-                        "EulerianBalancer adds " + syntheticBalancing + " synthetic '__balance__N' "
-                        + "transitions so every state has in-degree = out-degree, the second "
-                        + "precondition for Hierholzer's Euler-cycle algorithm. " + realTrans
-                        + " real transition(s) preserved, " + syntheticBalancing
-                        + " synthetic balancing transition(s) inserted; " + balancedStates
-                        + " total state(s).",
+                        "EulerianBalancer applies a directed Chinese Postman strategy: for "
+                        + "each pair of imbalanced states it finds a shortest path of real "
+                        + "transitions and doubles each transition along it (action label "
+                        + "is suffixed with '__dup__N'). The cycle thus stays contiguous and "
+                        + "every traversal is a real action. " + duplicated + " doubled "
+                        + "transition(s) inserted (dashed-red in the image); " + fallback
+                        + " direct synthetic fallback edge(s) when no real path existed; "
+                        + realTrans + " original transition(s) preserved; " + balancedStates
+                        + " total state(s). The doubled edges are filtered from coverage "
+                        + "measurement (their action carries the '__dup__' marker), but they "
+                        + "DO appear in the test case as another occurrence of the underlying "
+                        + "real action — a property useful for mutation detection.",
                         png4);
             } else {
                 md.write("## Step 4 — Strongly-connected + balanced FTS (skipped)\n\n");
@@ -205,16 +223,70 @@ public final class FullPipelineWalkthroughGenerator {
         return StronglyConnectedComponents.compute(fts).size();
     }
 
-    private static int countSyntheticBalancing(FeaturedTransitionSystem fts) {
+    private static int countDuplicates(FeaturedTransitionSystem fts) {
         int n = 0;
         Iterator<Transition> it = fts.transitions();
         while (it.hasNext()) {
-            Transition t = it.next();
-            if (t.getAction().getName().startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)) {
-                n++;
-            }
+            if (it.next().getAction().getName()
+                    .contains(EulerianBalancer.DUPLICATE_ACTION_INFIX)) n++;
         }
         return n;
+    }
+
+    private static int countFallbackSynthetics(FeaturedTransitionSystem fts) {
+        int n = 0;
+        Iterator<Transition> it = fts.transitions();
+        while (it.hasNext()) {
+            if (it.next().getAction().getName()
+                    .startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)) n++;
+        }
+        return n;
+    }
+
+    /**
+     * Returns the set of {@link Transition} objects in {@code after} whose
+     * structural identity (source name, action name, target name) is NOT
+     * present in {@code before}. With the current pipeline this is empty
+     * for the projected -> SCC-repaired step (which only removes), but the
+     * walkthrough supports it for forward-compatibility.
+     */
+    private static Set<Transition> diffTransitions(FeaturedTransitionSystem before,
+                                                   FeaturedTransitionSystem after) {
+        java.util.Set<String> beforeKeys = new java.util.HashSet<>();
+        Iterator<Transition> bIt = before.transitions();
+        while (bIt.hasNext()) {
+            Transition t = bIt.next();
+            beforeKeys.add(t.getSource().getName() + "|" + t.getAction().getName()
+                    + "|" + t.getTarget().getName());
+        }
+        Set<Transition> added = new java.util.HashSet<>();
+        Iterator<Transition> aIt = after.transitions();
+        while (aIt.hasNext()) {
+            Transition t = aIt.next();
+            String key = t.getSource().getName() + "|" + t.getAction().getName()
+                    + "|" + t.getTarget().getName();
+            if (!beforeKeys.contains(key)) added.add(t);
+        }
+        return added;
+    }
+
+    /**
+     * Custom-rendered Dot+PNG using {@link StyledDotRenderer}, optionally
+     * with a bold-highlight set or auto-dashed synthetics.
+     */
+    private static Path renderStyled(FeaturedTransitionSystem fts, Path outDir,
+                                     String basename,
+                                     Set<Transition> boldSet,
+                                     boolean autoDashSynthetics) throws Exception {
+        Path dot = outDir.resolve(basename + ".dot");
+        Path png = outDir.resolve(basename + ".png");
+        try (PrintStream out = new PrintStream(dot.toFile())) {
+            out.println(StyledDotRenderer.render(fts, boldSet, autoDashSynthetics));
+        }
+        Process p = new ProcessBuilder("dot", "-Tpng", dot.toString(), "-o", png.toString())
+                .inheritIO().start();
+        p.waitFor();
+        return png;
     }
 
     private static void writeStep(BufferedWriter md, BufferedWriter html,

@@ -2,38 +2,26 @@ digraph G {
 rankdir=LR;
 state0[ label = "state1", style=filled, color=green ];
 state1 [ label = "state11" ];
-state1 -> state2 [ label=" encrypt mail 
-with receiver's 
-public key/en " ];
-state3 [ label = "state8" ];
-state3 -> state0 [ label=" __end__/true " ];
-state2 [ label = "state10" ];
-state2 -> state0 [ label=" send email/e " ];
+state2 [ label = "state8" ];
+state3 [ label = "state10" ];
 state4 [ label = "state7" ];
-state4 -> state0 [ label=" send email/e " ];
-state4 -> state1 [ label=" get receiver's  
-public key/en " ];
-state4 -> state5 [ label=" enter
- email 
-subject/e " ];
-state4 -> state4 [ label=" enter 
-receiver's 
-email address/e " ];
 state5 [ label = "state2" ];
-state5 -> state4 [ label=" __balance__1/true " ];
-state5 -> state4 [ label=" enter 
-receiver's 
-email address/e " ];
-state5 -> state5 [ label=" enter email 
-body/e " ];
-state5 -> state5 [ label=" enter
- email 
-subject/e " ];
-state0 -> state6 [ label=" open mailbox/e " ];
-state0 -> state5 [ label=" compose new 
-email/e " ];
-state0 -> state4 [ label=" __balance__0/true " ];
 state6 [ label = "state3" ];
-state6 -> state3 [ label=" select email/e " ];
+state4 -> state0 [ label=" send email/e " ];
+state4 -> state1 [ label=" get receiver's   public key/en " ];
+state1 -> state3 [ label=" encrypt mail  with receiver's  public key/en " ];
+state6 -> state2 [ label=" select email/e " ];
+state5 -> state4 [ label=" enter  receiver's  email address/e " ];
+state4 -> state5 [ label=" enter  email  subject/e " ];
+state0 -> state5 [ label=" compose new  email (×2)/e ", style=dashed, color=red ];
+state5 -> state4 [ label=" enter  receiver's  email address (×2)/e ", style=dashed, color=red ];
+state2 -> state0 [ label=" __end__/true ", style=dashed, color=red ];
+state0 -> state6 [ label=" open mailbox/e " ];
+state0 -> state5 [ label=" compose new  email/e " ];
+state5 -> state5 [ label=" enter email  body/e " ];
+state5 -> state5 [ label=" enter  email  subject/e " ];
+state5 -> state4 [ label=" enter  receiver's  email address (×2)/e ", style=dashed, color=red ];
+state3 -> state0 [ label=" send email/e " ];
+state4 -> state4 [ label=" enter  receiver's  email address/e " ];
 }
 

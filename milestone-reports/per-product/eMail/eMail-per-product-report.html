@@ -29,24 +29,27 @@ email address -&gt; send email -&gt; compose new
 email -&gt; enter 
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (2 test cases, 11 transitions total)</h3>
+<h3>All-transitions coverage (5 test cases, 11 transitions total)</h3>
 <ul>
 <li><code>eMail_p1_trans_seg0</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
 receiver's 
-email address -&gt; send email -&gt; compose new 
+email address -&gt; send email</code></li>
+<li><code>eMail_p1_trans_seg1</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; send email</code></li>
-<li><code>eMail_p1_trans_seg1</code>: <code>enter 
+subject</code></li>
+<li><code>eMail_p1_trans_seg2</code>: <code>send email</code></li>
+<li><code>eMail_p1_trans_seg3</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
 subject</code></li>
+<li><code>eMail_p1_trans_seg4</code>: <code>enter 
+receiver's 
+email address</code></li>
 </ul>
-<h3>All-transition-pairs coverage (8 test cases, 35 transitions total)</h3>
+<h3>All-transition-pairs coverage (10 test cases, 37 transitions total)</h3>
 <ul>
 <li><code>eMail_p1_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -54,46 +57,52 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
+body</code></li>
+<li><code>eMail_p1_pair_seg1</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; compose new 
+email -&gt; enter email 
 body -&gt; enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter email 
-body -&gt; enter email 
-body -&gt; enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p1_pair_seg1</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p1_pair_seg2</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter
  email 
 subject</code></li>
-<li><code>eMail_p1_pair_seg3</code>: <code>enter 
+<li><code>eMail_p1_pair_seg2</code>: <code>enter 
 receiver's 
-email address -&gt; enter 
+email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p1_pair_seg3</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p1_pair_seg4</code>: <code>__end__ -&gt; compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p1_pair_seg5</code>: <code>select email -&gt; enter forward 
+receiver's 
+email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p1_pair_seg6</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p1_pair_seg7</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
 email address</code></li>
-<li><code>eMail_p1_pair_seg4</code>: <code>select email -&gt; enter forward 
-receiver's 
-email address -&gt; send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p1_pair_seg5</code>: <code>enter
+<li><code>eMail_p1_pair_seg8</code>: <code>enter
  email 
 subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p1_pair_seg6</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p1_pair_seg7</code>: <code>open mailbox</code></li>
+body -&gt; enter email 
+body -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p1_pair_seg9</code>: <code>open mailbox</code></li>
 </ul>
 <h2>Product 2</h2>
 <p><strong>Selected features:</strong> selected = {e, s}</p>
@@ -104,7 +113,7 @@ body</code></li>
 email -&gt; enter 
 receiver's 
 email address -&gt; sign mail</pre>
-<h3>All-transitions coverage (4 test cases, 11 transitions total)</h3>
+<h3>All-transitions coverage (5 test cases, 11 transitions total)</h3>
 <ul>
 <li><code>eMail_p2_trans_seg0</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p2_trans_seg1</code>: <code>compose new 
@@ -113,15 +122,16 @@ body -&gt; enter
  email 
 subject</code></li>
 <li><code>eMail_p2_trans_seg2</code>: <code>send email</code></li>
-<li><code>eMail_p2_trans_seg3</code>: <code>enter
- email 
-subject -&gt; enter 
+<li><code>eMail_p2_trans_seg3</code>: <code>enter 
 receiver's 
-email address -&gt; enter 
+email address -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p2_trans_seg4</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (8 test cases, 36 transitions total)</h3>
+<h3>All-transition-pairs coverage (10 test cases, 38 transitions total)</h3>
 <ul>
 <li><code>eMail_p2_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -129,46 +139,52 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
+body</code></li>
+<li><code>eMail_p2_pair_seg1</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p2_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p2_pair_seg3</code>: <code>__end__ -&gt; compose new 
+email -&gt; enter email 
 body -&gt; enter 
 receiver's 
-email address -&gt; sign mail -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p2_pair_seg1</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p2_pair_seg2</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter email 
-body -&gt; enter email 
-body -&gt; enter
- email 
-subject -&gt; enter 
+email address -&gt; sign mail -&gt; send email -&gt; compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p2_pair_seg4</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p2_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p2_pair_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter
  email 
 subject</code></li>
-<li><code>eMail_p2_pair_seg3</code>: <code>enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p2_pair_seg4</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
+<li><code>eMail_p2_pair_seg7</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p2_pair_seg8</code>: <code>enter
+ email 
 subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p2_pair_seg5</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p2_pair_seg6</code>: <code>enter
+body -&gt; enter email 
+body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
 email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p2_pair_seg7</code>: <code>open mailbox</code></li>
+<li><code>eMail_p2_pair_seg9</code>: <code>open mailbox</code></li>
 </ul>
 <h2>Product 3</h2>
 <p><strong>Selected features:</strong> selected = {au, e}</p>
@@ -185,7 +201,7 @@ date interval -&gt; __end__ -&gt; open mailbox -&gt; select email -&gt; __end__ 
 email -&gt; enter 
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (4 test cases, 13 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 13 transitions total)</h3>
 <ul>
 <li><code>eMail_p3_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -197,11 +213,11 @@ date interval</code></li>
 <li><code>eMail_p3_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p3_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p3_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p3_trans_seg3</code>: <code>compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; enter 
+email</code></li>
+<li><code>eMail_p3_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p3_trans_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
@@ -209,19 +225,23 @@ subject -&gt; enter email
 body -&gt; enter
  email 
 subject</code></li>
+<li><code>eMail_p3_trans_seg6</code>: <code>enter 
+receiver's 
+email address</code></li>
 </ul>
-<h3>All-transition-pairs coverage (16 test cases, 51 transitions total)</h3>
+<h3>All-transition-pairs coverage (19 test cases, 54 transitions total)</h3>
 <ul>
 <li><code>eMail_p3_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p3_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p3_pair_seg2</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p3_pair_seg1</code>: <code>__end__ -&gt; enter 
 autoresponse 
 email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p3_pair_seg3</code>: <code>__end__ -&gt; compose new 
+<li><code>eMail_p3_pair_seg2</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p3_pair_seg3</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p3_pair_seg4</code>: <code>__end__ -&gt; compose new 
 email -&gt; enter
  email 
 subject -&gt; enter
@@ -229,32 +249,24 @@ subject -&gt; enter
 subject -&gt; enter email 
 body -&gt; enter 
 receiver's 
-email address -&gt; enter 
+email address</code></li>
+<li><code>eMail_p3_pair_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; enter email 
 autoresponse 
-date interval -&gt; enter 
+date interval</code></li>
+<li><code>eMail_p3_pair_seg6</code>: <code>__end__ -&gt; enter email 
 autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p3_pair_seg4</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p3_pair_seg5</code>: <code>compose new 
+date interval</code></li>
+<li><code>eMail_p3_pair_seg7</code>: <code>__end__ -&gt; compose new 
 email -&gt; enter email 
 body -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
+subject</code></li>
+<li><code>eMail_p3_pair_seg8</code>: <code>enter 
 receiver's 
-email address -&gt; send email -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p3_pair_seg6</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p3_pair_seg7</code>: <code>enter 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
@@ -262,32 +274,48 @@ email address -&gt; enter
  email 
 subject -&gt; enter
  email 
-subject</code></li>
-<li><code>eMail_p3_pair_seg8</code>: <code>__end__ -&gt; enter email 
+subject -&gt; enter 
+receiver's 
+email address -&gt; send email -&gt; enter 
 autoresponse 
-date interval</code></li>
-<li><code>eMail_p3_pair_seg9</code>: <code>__end__ -&gt; compose new 
+email body</code></li>
+<li><code>eMail_p3_pair_seg9</code>: <code>send email -&gt; compose new 
 email -&gt; enter 
 receiver's 
 email address</code></li>
-<li><code>eMail_p3_pair_seg10</code>: <code>send email -&gt; compose new 
+<li><code>eMail_p3_pair_seg10</code>: <code>compose new 
 email</code></li>
-<li><code>eMail_p3_pair_seg11</code>: <code>enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body</code></li>
+<li><code>eMail_p3_pair_seg11</code>: <code>send email -&gt; open mailbox</code></li>
 <li><code>eMail_p3_pair_seg12</code>: <code>open mailbox</code></li>
 <li><code>eMail_p3_pair_seg13</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p3_pair_seg14</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p3_pair_seg14</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p3_pair_seg15</code>: <code>__end__ -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p3_pair_seg15</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p3_pair_seg16</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p3_pair_seg17</code>: <code>enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p3_pair_seg18</code>: <code>enter
+ email 
+subject -&gt; enter email 
+body</code></li>
 </ul>
 <h2>Product 4</h2>
 <p><strong>Selected features:</strong> selected = {au, e, f}</p>
@@ -304,7 +332,7 @@ autoresponse
 date interval -&gt; enter 
 autoresponse 
 email body</pre>
-<h3>All-transitions coverage (3 test cases, 15 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 15 transitions total)</h3>
 <ul>
 <li><code>eMail_p4_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -316,12 +344,13 @@ date interval</code></li>
 <li><code>eMail_p4_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p4_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p4_trans_seg2</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
 receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; enter 
+email address -&gt; send email</code></li>
+<li><code>eMail_p4_trans_seg3</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p4_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p4_trans_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
@@ -329,19 +358,20 @@ subject -&gt; enter email
 body -&gt; enter
  email 
 subject</code></li>
+<li><code>eMail_p4_trans_seg6</code>: <code>enter 
+receiver's 
+email address</code></li>
 </ul>
-<h3>All-transition-pairs coverage (20 test cases, 61 transitions total)</h3>
+<h3>All-transition-pairs coverage (26 test cases, 67 transitions total)</h3>
 <ul>
 <li><code>eMail_p4_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p4_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p4_pair_seg2</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p4_pair_seg1</code>: <code>__end__ -&gt; enter 
 autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p4_pair_seg3</code>: <code>__end__ -&gt; compose new 
+email body</code></li>
+<li><code>eMail_p4_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p4_pair_seg3</code>: <code>compose new 
 email -&gt; enter
  email 
 subject -&gt; enter
@@ -349,76 +379,93 @@ subject -&gt; enter
 subject -&gt; enter email 
 body -&gt; enter 
 receiver's 
-email address -&gt; enter 
+email address</code></li>
+<li><code>eMail_p4_pair_seg4</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; enter email 
 autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p4_pair_seg4</code>: <code>compose new 
+date interval</code></li>
+<li><code>eMail_p4_pair_seg5</code>: <code>open mailbox -&gt; select email</code></li>
+<li><code>eMail_p4_pair_seg6</code>: <code>__end__ -&gt; compose new 
 email -&gt; enter email 
 body -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p4_pair_seg5</code>: <code>send email -&gt; compose new 
-email -&gt; enter 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter
  email 
 subject</code></li>
-<li><code>eMail_p4_pair_seg6</code>: <code>open mailbox</code></li>
-<li><code>eMail_p4_pair_seg7</code>: <code>enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p4_pair_seg8</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p4_pair_seg9</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p4_pair_seg10</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p4_pair_seg11</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p4_pair_seg12</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p4_pair_seg13</code>: <code>send email -&gt; compose new 
+<li><code>eMail_p4_pair_seg7</code>: <code>compose new 
 email</code></li>
-<li><code>eMail_p4_pair_seg14</code>: <code>enter
- email 
-subject -&gt; enter 
-receiver's 
-email address</code></li>
-<li><code>eMail_p4_pair_seg15</code>: <code>select email -&gt; enter forward 
+<li><code>eMail_p4_pair_seg8</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p4_pair_seg16</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p4_pair_seg9</code>: <code>__end__ -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p4_pair_seg17</code>: <code>__end__ -&gt; enter email 
+<li><code>eMail_p4_pair_seg10</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p4_pair_seg11</code>: <code>enter forward 
+receiver's 
+email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p4_pair_seg12</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p4_pair_seg13</code>: <code>send email -&gt; compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p4_pair_seg14</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p4_pair_seg15</code>: <code>select email -&gt; enter forward 
+receiver's 
+email address</code></li>
+<li><code>eMail_p4_pair_seg16</code>: <code>send email -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p4_pair_seg17</code>: <code>send email -&gt; enter email 
 autoresponse 
 date interval</code></li>
 <li><code>eMail_p4_pair_seg18</code>: <code>__end__ -&gt; compose new 
 email</code></li>
 <li><code>eMail_p4_pair_seg19</code>: <code>enter 
 receiver's 
-email address -&gt; enter 
-receiver's 
 email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p4_pair_seg20</code>: <code>enter
  email 
 subject -&gt; enter email 
 body</code></li>
+<li><code>eMail_p4_pair_seg21</code>: <code>open mailbox</code></li>
+<li><code>eMail_p4_pair_seg22</code>: <code>enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p4_pair_seg23</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p4_pair_seg24</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p4_pair_seg25</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
 </ul>
 <h2>Product 5</h2>
 <p><strong>Selected features:</strong> selected = {ad, au, e, s}</p>
@@ -439,7 +486,7 @@ addressbook
 for a receiver -&gt; enter the  
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (6 test cases, 19 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 19 transitions total)</h3>
 <ul>
 <li><code>eMail_p5_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -451,7 +498,7 @@ date interval</code></li>
 <li><code>eMail_p5_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p5_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p5_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p5_trans_seg3</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
@@ -460,8 +507,9 @@ email address -&gt; enter alias
 email addresses 
 of receiver -&gt; compose new 
 email</code></li>
-<li><code>eMail_p5_trans_seg4</code>: <code>sign mail</code></li>
-<li><code>eMail_p5_trans_seg5</code>: <code>enter
+<li><code>eMail_p5_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p5_trans_seg5</code>: <code>sign mail -&gt; send email</code></li>
+<li><code>eMail_p5_trans_seg6</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
@@ -472,144 +520,162 @@ email address -&gt; enter
 receiver's 
 email address -&gt; get alias 
 email addresses 
-of receiver -&gt; send email</code></li>
+of receiver</code></li>
 </ul>
-<h3>All-transition-pairs coverage (30 test cases, 86 transitions total)</h3>
+<h3>All-transition-pairs coverage (38 test cases, 94 transitions total)</h3>
 <ul>
 <li><code>eMail_p5_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p5_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p5_pair_seg1</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p5_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p5_pair_seg3</code>: <code>enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p5_pair_seg4</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p5_pair_seg5</code>: <code>compose new 
+<li><code>eMail_p5_pair_seg3</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p5_pair_seg4</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter
  email 
-subject -&gt; enter 
+subject</code></li>
+<li><code>eMail_p5_pair_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p5_pair_seg6</code>: <code>enter alias 
+<li><code>eMail_p5_pair_seg6</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p5_pair_seg7</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p5_pair_seg8</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p5_pair_seg9</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; compose new 
 email -&gt; enter
  email 
-subject -&gt; enter email 
-body -&gt; enter 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p5_pair_seg10</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p5_pair_seg11</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p5_pair_seg12</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p5_pair_seg13</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p5_pair_seg14</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver</code></li>
-<li><code>eMail_p5_pair_seg7</code>: <code>send email -&gt; create an 
-addressbook 
-for a receiver -&gt; enter the  
+<li><code>eMail_p5_pair_seg15</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p5_pair_seg16</code>: <code>enter 
 receiver's 
-email address -&gt; enter alias 
+email address -&gt; send email -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p5_pair_seg17</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p5_pair_seg8</code>: <code>enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p5_pair_seg9</code>: <code>open mailbox</code></li>
-<li><code>eMail_p5_pair_seg10</code>: <code>create an 
+<li><code>eMail_p5_pair_seg18</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p5_pair_seg19</code>: <code>send email -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p5_pair_seg11</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p5_pair_seg12</code>: <code>send email -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p5_pair_seg13</code>: <code>enter alias 
+<li><code>eMail_p5_pair_seg20</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
-<li><code>eMail_p5_pair_seg14</code>: <code>enter 
-receiver's 
-email address -&gt; send email -&gt; compose new 
+<li><code>eMail_p5_pair_seg21</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p5_pair_seg22</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p5_pair_seg23</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p5_pair_seg24</code>: <code>compose new 
 email -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
+subject -&gt; enter email 
+body -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p5_pair_seg25</code>: <code>enter
+ email 
 subject -&gt; enter
  email 
-subject</code></li>
-<li><code>eMail_p5_pair_seg15</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p5_pair_seg16</code>: <code>send email -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p5_pair_seg17</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p5_pair_seg18</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p5_pair_seg19</code>: <code>__end__ -&gt; enter 
+subject -&gt; enter email 
+body -&gt; enter email 
+body</code></li>
+<li><code>eMail_p5_pair_seg26</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p5_pair_seg20</code>: <code>enter alias 
+<li><code>eMail_p5_pair_seg27</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p5_pair_seg28</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p5_pair_seg29</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p5_pair_seg30</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; send email</code></li>
+<li><code>eMail_p5_pair_seg31</code>: <code>open mailbox</code></li>
+<li><code>eMail_p5_pair_seg32</code>: <code>create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p5_pair_seg33</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
-for a receiver</code></li>
-<li><code>eMail_p5_pair_seg21</code>: <code>enter alias 
+for a receiver -&gt; enter the  
+receiver's 
+email address</code></li>
+<li><code>eMail_p5_pair_seg34</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p5_pair_seg22</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p5_pair_seg23</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p5_pair_seg24</code>: <code>enter
+<li><code>eMail_p5_pair_seg35</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
 email address -&gt; enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p5_pair_seg25</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p5_pair_seg26</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p5_pair_seg27</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver -&gt; send email -&gt; enter email 
 autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
 date interval</code></li>
-<li><code>eMail_p5_pair_seg28</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p5_pair_seg29</code>: <code>enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body -&gt; enter email 
-body</code></li>
+<li><code>eMail_p5_pair_seg36</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p5_pair_seg37</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
 </ul>
 <h2>Product 6</h2>
 <p><strong>Selected features:</strong> selected = {ad, au, e, f, s}</p>
@@ -630,7 +696,7 @@ addressbook
 for a receiver -&gt; enter the  
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (5 test cases, 20 transitions total)</h3>
+<h3>All-transitions coverage (10 test cases, 20 transitions total)</h3>
 <ul>
 <li><code>eMail_p6_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -642,22 +708,22 @@ date interval</code></li>
 <li><code>eMail_p6_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p6_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p6_trans_seg2</code>: <code>open mailbox</code></li>
+<li><code>eMail_p6_trans_seg3</code>: <code>enter forward 
 receiver's 
-email address -&gt; send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p6_trans_seg4</code>: <code>select email</code></li>
+<li><code>eMail_p6_trans_seg5</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p6_trans_seg3</code>: <code>get alias 
-email addresses 
 of receiver</code></li>
-<li><code>eMail_p6_trans_seg4</code>: <code>enter 
+<li><code>eMail_p6_trans_seg6</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p6_trans_seg7</code>: <code>sign mail -&gt; send email</code></li>
+<li><code>eMail_p6_trans_seg8</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
@@ -665,144 +731,168 @@ subject -&gt; enter email
 body -&gt; enter
  email 
 subject</code></li>
+<li><code>eMail_p6_trans_seg9</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver</code></li>
 </ul>
-<h3>All-transition-pairs coverage (29 test cases, 87 transitions total)</h3>
+<h3>All-transition-pairs coverage (38 test cases, 96 transitions total)</h3>
 <ul>
 <li><code>eMail_p6_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p6_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p6_pair_seg1</code>: <code>open mailbox -&gt; select email</code></li>
+<li><code>eMail_p6_pair_seg2</code>: <code>enter forward 
+receiver's 
+email address -&gt; send email -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p6_pair_seg3</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p6_pair_seg4</code>: <code>compose new 
+email -&gt; enter email 
+body -&gt; enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p6_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p6_pair_seg6</code>: <code>select email -&gt; enter forward 
+receiver's 
+email address</code></li>
+<li><code>eMail_p6_pair_seg7</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p6_pair_seg8</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p6_pair_seg9</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
+email -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver</code></li>
+<li><code>eMail_p6_pair_seg10</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p6_pair_seg11</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; enter 
 autoresponse 
 email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p6_pair_seg2</code>: <code>__end__ -&gt; enter email 
+<li><code>eMail_p6_pair_seg12</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p6_pair_seg13</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p6_pair_seg14</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p6_pair_seg15</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p6_pair_seg16</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p6_pair_seg17</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p6_pair_seg18</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p6_pair_seg19</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p6_pair_seg20</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p6_pair_seg21</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; open mailbox</code></li>
+<li><code>eMail_p6_pair_seg22</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p6_pair_seg23</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p6_pair_seg24</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter email 
+body -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p6_pair_seg25</code>: <code>enter
+ email 
+subject -&gt; enter
+ email 
+subject -&gt; enter email 
+body -&gt; enter email 
+body</code></li>
+<li><code>eMail_p6_pair_seg26</code>: <code>enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p6_pair_seg27</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p6_pair_seg28</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p6_pair_seg29</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; send email</code></li>
+<li><code>eMail_p6_pair_seg30</code>: <code>open mailbox</code></li>
+<li><code>eMail_p6_pair_seg31</code>: <code>create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p6_pair_seg32</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
+email addresses 
+of receiver -&gt; create an 
+addressbook 
+for a receiver -&gt; enter the  
+receiver's 
+email address</code></li>
+<li><code>eMail_p6_pair_seg33</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p6_pair_seg34</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p6_pair_seg35</code>: <code>enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email -&gt; enter email 
 autoresponse 
 date interval -&gt; enter 
 autoresponse 
 email body -&gt; enter email 
 autoresponse 
+date interval</code></li>
+<li><code>eMail_p6_pair_seg36</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p6_pair_seg37</code>: <code>enter email 
+autoresponse 
 date interval -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p6_pair_seg3</code>: <code>enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p6_pair_seg4</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
-email -&gt; enter email 
-body -&gt; enter
- email 
-subject -&gt; enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; sign mail -&gt; send email -&gt; create an 
-addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
-email addresses 
-of receiver -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p6_pair_seg5</code>: <code>enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p6_pair_seg6</code>: <code>compose new 
-email -&gt; enter
- email 
-subject -&gt; enter email 
-body -&gt; enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p6_pair_seg7</code>: <code>open mailbox</code></li>
-<li><code>eMail_p6_pair_seg8</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p6_pair_seg9</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p6_pair_seg10</code>: <code>send email -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p6_pair_seg11</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; open mailbox</code></li>
-<li><code>eMail_p6_pair_seg12</code>: <code>enter 
-receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p6_pair_seg13</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p6_pair_seg14</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p6_pair_seg15</code>: <code>enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p6_pair_seg16</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p6_pair_seg17</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p6_pair_seg18</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p6_pair_seg19</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p6_pair_seg20</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p6_pair_seg21</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p6_pair_seg22</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p6_pair_seg23</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver</code></li>
-<li><code>eMail_p6_pair_seg24</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p6_pair_seg25</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p6_pair_seg26</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p6_pair_seg27</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p6_pair_seg28</code>: <code>enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body -&gt; enter email 
-body</code></li>
 </ul>
 <h2>Product 7</h2>
 <p><strong>Selected features:</strong> selected = {ad, e, s}</p>
@@ -819,7 +909,7 @@ of receiver -&gt; compose new
 email -&gt; enter 
 receiver's 
 email address -&gt; sign mail</pre>
-<h3>All-transitions coverage (5 test cases, 15 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 15 transitions total)</h3>
 <ul>
 <li><code>eMail_p7_trans_seg0</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p7_trans_seg1</code>: <code>create an 
@@ -828,24 +918,26 @@ for a receiver -&gt; enter the
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; compose new 
-email</code></li>
+of receiver</code></li>
 <li><code>eMail_p7_trans_seg2</code>: <code>send email</code></li>
-<li><code>eMail_p7_trans_seg3</code>: <code>sign mail</code></li>
-<li><code>eMail_p7_trans_seg4</code>: <code>enter
+<li><code>eMail_p7_trans_seg3</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p7_trans_seg4</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p7_trans_seg5</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p7_trans_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (15 test cases, 54 transitions total)</h3>
+<h3>All-transition-pairs coverage (20 test cases, 59 transitions total)</h3>
 <ul>
 <li><code>eMail_p7_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -853,78 +945,90 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p7_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email -&gt; create an 
 addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
+for a receiver</code></li>
+<li><code>eMail_p7_pair_seg2</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p7_pair_seg1</code>: <code>enter 
+<li><code>eMail_p7_pair_seg3</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
+email -&gt; enter email 
+body -&gt; enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver</code></li>
-<li><code>eMail_p7_pair_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p7_pair_seg3</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p7_pair_seg4</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter email 
+<li><code>eMail_p7_pair_seg4</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p7_pair_seg5</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p7_pair_seg6</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p7_pair_seg7</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p7_pair_seg8</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p7_pair_seg9</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p7_pair_seg10</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email</code></li>
+<li><code>eMail_p7_pair_seg11</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p7_pair_seg12</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p7_pair_seg13</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p7_pair_seg14</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p7_pair_seg15</code>: <code>enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p7_pair_seg16</code>: <code>enter
+ email 
+subject -&gt; enter email 
 body -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p7_pair_seg17</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p7_pair_seg18</code>: <code>open mailbox</code></li>
+<li><code>eMail_p7_pair_seg19</code>: <code>create an 
 addressbook 
-for a receiver</code></li>
-<li><code>eMail_p7_pair_seg5</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p7_pair_seg6</code>: <code>open mailbox</code></li>
-<li><code>eMail_p7_pair_seg7</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p7_pair_seg8</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
-email</code></li>
-<li><code>eMail_p7_pair_seg9</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p7_pair_seg10</code>: <code>enter 
+for a receiver -&gt; enter the  
 receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p7_pair_seg11</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver -&gt; send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p7_pair_seg12</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p7_pair_seg13</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p7_pair_seg14</code>: <code>enter alias 
+email address -&gt; enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
 </ul>
@@ -947,7 +1051,7 @@ email -&gt; enter
 receiver's 
 email address -&gt; get receiver's  
 public key</pre>
-<h3>All-transitions coverage (6 test cases, 17 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 17 transitions total)</h3>
 <ul>
 <li><code>eMail_p8_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -959,14 +1063,15 @@ date interval</code></li>
 <li><code>eMail_p8_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p8_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p8_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p8_trans_seg3</code>: <code>compose new 
 email</code></li>
-<li><code>eMail_p8_trans_seg4</code>: <code>get receiver's  
+<li><code>eMail_p8_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p8_trans_seg5</code>: <code>get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
-public key</code></li>
-<li><code>eMail_p8_trans_seg5</code>: <code>enter
+public key -&gt; send email</code></li>
+<li><code>eMail_p8_trans_seg6</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
@@ -975,106 +1080,123 @@ subject -&gt; enter
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; sign mail -&gt; send email</code></li>
+email address -&gt; sign mail</code></li>
 </ul>
-<h3>All-transition-pairs coverage (21 test cases, 67 transitions total)</h3>
+<h3>All-transition-pairs coverage (28 test cases, 74 transitions total)</h3>
 <ul>
 <li><code>eMail_p8_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
 <li><code>eMail_p8_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p8_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p8_pair_seg3</code>: <code>enter 
-autoresponse 
-email body -&gt; enter email 
+<li><code>eMail_p8_pair_seg2</code>: <code>__end__ -&gt; enter email 
 autoresponse 
 date interval</code></li>
+<li><code>eMail_p8_pair_seg3</code>: <code>__end__ -&gt; open mailbox</code></li>
 <li><code>eMail_p8_pair_seg4</code>: <code>__end__ -&gt; enter email 
 autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
+date interval</code></li>
 <li><code>eMail_p8_pair_seg5</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; sign mail -&gt; send email -&gt; enter 
+subject</code></li>
+<li><code>eMail_p8_pair_seg6</code>: <code>send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p8_pair_seg6</code>: <code>__end__ -&gt; compose new 
+<li><code>eMail_p8_pair_seg7</code>: <code>compose new 
 email -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address -&gt; sign mail -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p8_pair_seg8</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p8_pair_seg9</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p8_pair_seg10</code>: <code>send email -&gt; compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p8_pair_seg11</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p8_pair_seg12</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p8_pair_seg13</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p8_pair_seg14</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p8_pair_seg7</code>: <code>send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; enter
+email address</code></li>
+<li><code>eMail_p8_pair_seg15</code>: <code>enter
+ email 
+subject -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter email 
 body</code></li>
-<li><code>eMail_p8_pair_seg8</code>: <code>open mailbox</code></li>
-<li><code>eMail_p8_pair_seg9</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
+<li><code>eMail_p8_pair_seg16</code>: <code>enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p8_pair_seg17</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail</code></li>
-<li><code>eMail_p8_pair_seg10</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p8_pair_seg11</code>: <code>enter 
+<li><code>eMail_p8_pair_seg18</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p8_pair_seg19</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
-public key -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p8_pair_seg12</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p8_pair_seg13</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p8_pair_seg14</code>: <code>enter 
+public key</code></li>
+<li><code>eMail_p8_pair_seg20</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p8_pair_seg21</code>: <code>enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p8_pair_seg15</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p8_pair_seg16</code>: <code>send email -&gt; compose new 
+email address -&gt; enter 
+receiver's 
+email address -&gt; send email</code></li>
+<li><code>eMail_p8_pair_seg22</code>: <code>compose new 
 email</code></li>
-<li><code>eMail_p8_pair_seg17</code>: <code>enter
+<li><code>eMail_p8_pair_seg23</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
 email address -&gt; get receiver's  
 public key</code></li>
-<li><code>eMail_p8_pair_seg18</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p8_pair_seg24</code>: <code>encrypt mail 
+with receiver's 
+public key -&gt; send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p8_pair_seg19</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p8_pair_seg20</code>: <code>enter 
-receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p8_pair_seg25</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p8_pair_seg26</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p8_pair_seg27</code>: <code>open mailbox</code></li>
 </ul>
 <h2>Product 9</h2>
 <p><strong>Selected features:</strong> selected = {ad, e, f, s}</p>
@@ -1093,34 +1215,36 @@ of receiver -&gt; compose new
 email -&gt; enter 
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (4 test cases, 16 transitions total)</h3>
+<h3>All-transitions coverage (6 test cases, 16 transitions total)</h3>
 <ul>
 <li><code>eMail_p9_trans_seg0</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
 receiver's 
-email address -&gt; send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p9_trans_seg1</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; send email</code></li>
-<li><code>eMail_p9_trans_seg1</code>: <code>sign mail</code></li>
-<li><code>eMail_p9_trans_seg2</code>: <code>get alias 
-email addresses 
 of receiver</code></li>
+<li><code>eMail_p9_trans_seg2</code>: <code>send email -&gt; compose new 
+email</code></li>
 <li><code>eMail_p9_trans_seg3</code>: <code>enter 
 receiver's 
-email address -&gt; enter
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p9_trans_seg4</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
 subject</code></li>
+<li><code>eMail_p9_trans_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (15 test cases, 56 transitions total)</h3>
+<h3>All-transition-pairs coverage (20 test cases, 61 transitions total)</h3>
 <ul>
 <li><code>eMail_p9_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -1128,80 +1252,92 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p9_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email -&gt; create an 
 addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
+for a receiver</code></li>
+<li><code>eMail_p9_pair_seg2</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p9_pair_seg1</code>: <code>enter 
+<li><code>eMail_p9_pair_seg3</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
+email -&gt; enter email 
+body -&gt; enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
-of receiver -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p9_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p9_pair_seg3</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter email 
+of receiver</code></li>
+<li><code>eMail_p9_pair_seg4</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p9_pair_seg5</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p9_pair_seg6</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p9_pair_seg7</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p9_pair_seg8</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p9_pair_seg9</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p9_pair_seg10</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p9_pair_seg11</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p9_pair_seg12</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p9_pair_seg13</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p9_pair_seg14</code>: <code>select email -&gt; enter forward 
+receiver's 
+email address -&gt; send email</code></li>
+<li><code>eMail_p9_pair_seg15</code>: <code>enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p9_pair_seg16</code>: <code>enter
+ email 
+subject -&gt; enter email 
 body -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p9_pair_seg17</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p9_pair_seg18</code>: <code>open mailbox</code></li>
+<li><code>eMail_p9_pair_seg19</code>: <code>create an 
 addressbook 
-for a receiver</code></li>
-<li><code>eMail_p9_pair_seg4</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p9_pair_seg5</code>: <code>open mailbox</code></li>
-<li><code>eMail_p9_pair_seg6</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p9_pair_seg7</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
-email</code></li>
-<li><code>eMail_p9_pair_seg8</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p9_pair_seg9</code>: <code>enter 
+for a receiver -&gt; enter the  
 receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p9_pair_seg10</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver</code></li>
-<li><code>eMail_p9_pair_seg11</code>: <code>select email -&gt; enter forward 
-receiver's 
-email address -&gt; send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p9_pair_seg12</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p9_pair_seg13</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p9_pair_seg14</code>: <code>enter alias 
+email address -&gt; enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
 </ul>
@@ -1216,25 +1352,29 @@ email address -&gt; send email -&gt; compose new
 email -&gt; enter 
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (3 test cases, 12 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 12 transitions total)</h3>
 <ul>
-<li><code>eMail_p10_trans_seg0</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p10_trans_seg0</code>: <code>enter forward 
 receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
+email address</code></li>
+<li><code>eMail_p10_trans_seg1</code>: <code>open mailbox -&gt; select email</code></li>
+<li><code>eMail_p10_trans_seg2</code>: <code>send email</code></li>
+<li><code>eMail_p10_trans_seg3</code>: <code>enter 
 receiver's 
-email address -&gt; send email</code></li>
-<li><code>eMail_p10_trans_seg1</code>: <code>sign mail</code></li>
-<li><code>eMail_p10_trans_seg2</code>: <code>enter 
-receiver's 
-email address -&gt; enter
+email address</code></li>
+<li><code>eMail_p10_trans_seg4</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p10_trans_seg5</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
 subject</code></li>
+<li><code>eMail_p10_trans_seg6</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (8 test cases, 38 transitions total)</h3>
+<h3>All-transition-pairs coverage (13 test cases, 43 transitions total)</h3>
 <ul>
 <li><code>eMail_p10_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -1242,48 +1382,61 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p10_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p10_pair_seg1</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p10_pair_seg2</code>: <code>select email -&gt; enter forward 
-receiver's 
-email address -&gt; send email -&gt; compose new 
+<li><code>eMail_p10_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p10_pair_seg3</code>: <code>__end__ -&gt; compose new 
 email -&gt; enter email 
-body -&gt; enter email 
-body -&gt; enter
- email 
-subject -&gt; enter 
+body -&gt; enter 
 receiver's 
-email address -&gt; enter 
+email address</code></li>
+<li><code>eMail_p10_pair_seg4</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; compose new 
 email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p10_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p10_pair_seg6</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p10_pair_seg7</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter
  email 
 subject</code></li>
-<li><code>eMail_p10_pair_seg3</code>: <code>enter 
+<li><code>eMail_p10_pair_seg8</code>: <code>enter 
 receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p10_pair_seg4</code>: <code>enter 
+email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p10_pair_seg9</code>: <code>select email -&gt; enter forward 
 receiver's 
-email address -&gt; enter 
+email address -&gt; send email</code></li>
+<li><code>eMail_p10_pair_seg10</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p10_pair_seg11</code>: <code>enter
+ email 
 subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p10_pair_seg5</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p10_pair_seg6</code>: <code>enter
+body -&gt; enter email 
+body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p10_pair_seg7</code>: <code>open mailbox</code></li>
+email address</code></li>
+<li><code>eMail_p10_pair_seg12</code>: <code>open mailbox</code></li>
 </ul>
 <h2>Product 11</h2>
 <p><strong>Selected features:</strong> selected = {e, en}</p>
@@ -1297,27 +1450,28 @@ email address -&gt; get receiver's
 public key -&gt; encrypt mail 
 with receiver's 
 public key</pre>
-<h3>All-transitions coverage (4 test cases, 12 transitions total)</h3>
+<h3>All-transitions coverage (5 test cases, 12 transitions total)</h3>
 <ul>
 <li><code>eMail_p11_trans_seg0</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p11_trans_seg1</code>: <code>compose new 
 email</code></li>
 <li><code>eMail_p11_trans_seg2</code>: <code>send email</code></li>
-<li><code>eMail_p11_trans_seg3</code>: <code>enter
+<li><code>eMail_p11_trans_seg3</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p11_trans_seg4</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
 public key -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (8 test cases, 37 transitions total)</h3>
+<h3>All-transition-pairs coverage (11 test cases, 40 transitions total)</h3>
 <ul>
 <li><code>eMail_p11_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -1325,50 +1479,58 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
-receiver's 
-email address -&gt; enter 
+body</code></li>
+<li><code>eMail_p11_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; compose new 
 email -&gt; enter email 
-body -&gt; enter email 
-body -&gt; enter
- email 
-subject -&gt; enter 
+body -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p11_pair_seg2</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
 public key -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p11_pair_seg1</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p11_pair_seg2</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter 
+<li><code>eMail_p11_pair_seg3</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p11_pair_seg4</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p11_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter
  email 
 subject</code></li>
-<li><code>eMail_p11_pair_seg3</code>: <code>enter 
+<li><code>eMail_p11_pair_seg6</code>: <code>compose new 
+email -&gt; enter 
 receiver's 
 email address -&gt; get receiver's  
 public key</code></li>
-<li><code>eMail_p11_pair_seg4</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
+<li><code>eMail_p11_pair_seg7</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p11_pair_seg8</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p11_pair_seg9</code>: <code>enter
+ email 
 subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p11_pair_seg5</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p11_pair_seg6</code>: <code>enter
+body -&gt; enter email 
+body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
 email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p11_pair_seg7</code>: <code>open mailbox</code></li>
+<li><code>eMail_p11_pair_seg10</code>: <code>open mailbox</code></li>
 </ul>
 <h2>Product 12</h2>
 <p><strong>Selected features:</strong> selected = {ad, au, e}</p>
@@ -1391,7 +1553,7 @@ addressbook
 for a receiver -&gt; enter the  
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (5 test cases, 18 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 18 transitions total)</h3>
 <ul>
 <li><code>eMail_p12_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -1403,7 +1565,7 @@ date interval</code></li>
 <li><code>eMail_p12_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p12_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p12_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p12_trans_seg3</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
@@ -1412,41 +1574,31 @@ email address -&gt; enter alias
 email addresses 
 of receiver -&gt; compose new 
 email</code></li>
-<li><code>eMail_p12_trans_seg4</code>: <code>enter
+<li><code>eMail_p12_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p12_trans_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p12_trans_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (29 test cases, 82 transitions total)</h3>
+<h3>All-transition-pairs coverage (35 test cases, 88 transitions total)</h3>
 <ul>
 <li><code>eMail_p12_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
 <li><code>eMail_p12_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p12_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p12_pair_seg3</code>: <code>enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p12_pair_seg4</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p12_pair_seg5</code>: <code>compose new 
+<li><code>eMail_p12_pair_seg2</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p12_pair_seg3</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
@@ -1454,12 +1606,18 @@ subject -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver -&gt; send email -&gt; enter 
+email address</code></li>
+<li><code>eMail_p12_pair_seg4</code>: <code>send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p12_pair_seg6</code>: <code>enter alias 
+<li><code>eMail_p12_pair_seg5</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p12_pair_seg6</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p12_pair_seg7</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p12_pair_seg8</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; compose new 
 email -&gt; enter
@@ -1467,26 +1625,49 @@ email -&gt; enter
 subject -&gt; enter email 
 body -&gt; enter 
 receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver</code></li>
+<li><code>eMail_p12_pair_seg9</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p12_pair_seg10</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p12_pair_seg11</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p12_pair_seg12</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p12_pair_seg13</code>: <code>get alias 
+email addresses 
+of receiver -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p12_pair_seg14</code>: <code>enter 
+receiver's 
 email address -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p12_pair_seg7</code>: <code>enter alias 
+<li><code>eMail_p12_pair_seg15</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p12_pair_seg8</code>: <code>__end__ -&gt; create an 
+<li><code>eMail_p12_pair_seg16</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p12_pair_seg17</code>: <code>send email -&gt; create an 
 addressbook 
 for a receiver -&gt; enter the  
 receiver's 
-email address -&gt; enter alias 
+email address</code></li>
+<li><code>eMail_p12_pair_seg18</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
-<li><code>eMail_p12_pair_seg9</code>: <code>open mailbox</code></li>
-<li><code>eMail_p12_pair_seg10</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p12_pair_seg11</code>: <code>send email -&gt; compose new 
+<li><code>eMail_p12_pair_seg19</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p12_pair_seg20</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p12_pair_seg21</code>: <code>compose new 
 email -&gt; enter 
 receiver's 
 email address -&gt; enter
@@ -1494,68 +1675,67 @@ email address -&gt; enter
 subject -&gt; enter email 
 body -&gt; enter email 
 body</code></li>
-<li><code>eMail_p12_pair_seg12</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p12_pair_seg13</code>: <code>send email -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p12_pair_seg14</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p12_pair_seg22</code>: <code>enter 
+autoresponse 
+email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p12_pair_seg15</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p12_pair_seg16</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p12_pair_seg17</code>: <code>send email -&gt; create an 
+<li><code>eMail_p12_pair_seg23</code>: <code>enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p12_pair_seg24</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p12_pair_seg25</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p12_pair_seg26</code>: <code>open mailbox</code></li>
+<li><code>eMail_p12_pair_seg27</code>: <code>create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p12_pair_seg18</code>: <code>enter alias 
+<li><code>eMail_p12_pair_seg28</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p12_pair_seg19</code>: <code>enter alias 
+<li><code>eMail_p12_pair_seg29</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
 email addresses 
 of receiver -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p12_pair_seg20</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p12_pair_seg21</code>: <code>__end__ -&gt; compose new 
+<li><code>eMail_p12_pair_seg30</code>: <code>__end__ -&gt; compose new 
 email</code></li>
-<li><code>eMail_p12_pair_seg22</code>: <code>enter
+<li><code>eMail_p12_pair_seg31</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p12_pair_seg23</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p12_pair_seg24</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p12_pair_seg25</code>: <code>enter 
-receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver</code></li>
-<li><code>eMail_p12_pair_seg26</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p12_pair_seg32</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p12_pair_seg27</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p12_pair_seg28</code>: <code>enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
+<li><code>eMail_p12_pair_seg33</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p12_pair_seg34</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
 </ul>
 <h2>Product 13</h2>
 <p><strong>Selected features:</strong> selected = {au, e, en}</p>
@@ -1573,7 +1753,7 @@ autoresponse
 date interval -&gt; enter 
 autoresponse 
 email body</pre>
-<h3>All-transitions coverage (5 test cases, 16 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 16 transitions total)</h3>
 <ul>
 <li><code>eMail_p13_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -1585,116 +1765,143 @@ date interval</code></li>
 <li><code>eMail_p13_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p13_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p13_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p13_trans_seg3</code>: <code>compose new 
 email</code></li>
-<li><code>eMail_p13_trans_seg4</code>: <code>enter
+<li><code>eMail_p13_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p13_trans_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p13_trans_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
 public key -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (20 test cases, 63 transitions total)</h3>
+<h3>All-transition-pairs coverage (30 test cases, 73 transitions total)</h3>
 <ul>
 <li><code>eMail_p13_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p13_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p13_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p13_pair_seg3</code>: <code>enter 
-autoresponse 
-email body -&gt; enter email 
+<li><code>eMail_p13_pair_seg1</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p13_pair_seg2</code>: <code>__end__ -&gt; enter email 
 autoresponse 
 date interval</code></li>
+<li><code>eMail_p13_pair_seg3</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
 <li><code>eMail_p13_pair_seg4</code>: <code>__end__ -&gt; enter email 
 autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
+date interval</code></li>
 <li><code>eMail_p13_pair_seg5</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter
  email 
-subject -&gt; enter 
+subject</code></li>
+<li><code>eMail_p13_pair_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p13_pair_seg6</code>: <code>send email -&gt; compose new 
+<li><code>eMail_p13_pair_seg7</code>: <code>compose new 
 email -&gt; enter
  email 
-subject -&gt; enter email 
-body -&gt; enter 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p13_pair_seg8</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p13_pair_seg9</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p13_pair_seg10</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p13_pair_seg11</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p13_pair_seg12</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p13_pair_seg13</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter email 
+body -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p13_pair_seg14</code>: <code>enter
+ email 
+subject -&gt; enter
+ email 
+subject -&gt; enter email 
 body -&gt; enter email 
 body</code></li>
-<li><code>eMail_p13_pair_seg7</code>: <code>open mailbox</code></li>
-<li><code>eMail_p13_pair_seg8</code>: <code>__end__ -&gt; compose new 
+<li><code>eMail_p13_pair_seg15</code>: <code>enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p13_pair_seg16</code>: <code>compose new 
 email -&gt; enter 
 receiver's 
-email address -&gt; enter 
+email address</code></li>
+<li><code>eMail_p13_pair_seg17</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
-public key -&gt; send email -&gt; enter 
+public key</code></li>
+<li><code>eMail_p13_pair_seg18</code>: <code>send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p13_pair_seg9</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p13_pair_seg10</code>: <code>enter 
+<li><code>eMail_p13_pair_seg19</code>: <code>enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p13_pair_seg11</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p13_pair_seg12</code>: <code>send email -&gt; compose new 
+email address -&gt; send email</code></li>
+<li><code>eMail_p13_pair_seg20</code>: <code>__end__ -&gt; compose new 
 email</code></li>
-<li><code>eMail_p13_pair_seg13</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p13_pair_seg14</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p13_pair_seg15</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p13_pair_seg16</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p13_pair_seg17</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p13_pair_seg18</code>: <code>enter 
+<li><code>eMail_p13_pair_seg21</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
+email address</code></li>
+<li><code>eMail_p13_pair_seg22</code>: <code>encrypt mail 
+with receiver's 
+public key -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p13_pair_seg23</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p13_pair_seg24</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p13_pair_seg25</code>: <code>enter 
+receiver's 
 email address -&gt; get receiver's  
 public key</code></li>
-<li><code>eMail_p13_pair_seg19</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p13_pair_seg26</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p13_pair_seg27</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p13_pair_seg28</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p13_pair_seg29</code>: <code>open mailbox</code></li>
 </ul>
 <h2>Product 14</h2>
 <p><strong>Selected features:</strong> selected = {ad, e, en}</p>
@@ -1714,7 +1921,7 @@ email address -&gt; get receiver's
 public key -&gt; encrypt mail 
 with receiver's 
 public key</pre>
-<h3>All-transitions coverage (5 test cases, 16 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 16 transitions total)</h3>
 <ul>
 <li><code>eMail_p14_trans_seg0</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p14_trans_seg1</code>: <code>create an 
@@ -1723,27 +1930,29 @@ for a receiver -&gt; enter the
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; compose new 
-email</code></li>
+of receiver</code></li>
 <li><code>eMail_p14_trans_seg2</code>: <code>send email</code></li>
-<li><code>eMail_p14_trans_seg3</code>: <code>get receiver's  
+<li><code>eMail_p14_trans_seg3</code>: <code>enter 
+receiver's 
+email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
 public key</code></li>
-<li><code>eMail_p14_trans_seg4</code>: <code>enter
+<li><code>eMail_p14_trans_seg4</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p14_trans_seg5</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p14_trans_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (15 test cases, 55 transitions total)</h3>
+<h3>All-transition-pairs coverage (22 test cases, 62 transitions total)</h3>
 <ul>
 <li><code>eMail_p14_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -1751,84 +1960,102 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p14_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver</code></li>
-<li><code>eMail_p14_pair_seg1</code>: <code>send email -&gt; create an 
+<li><code>eMail_p14_pair_seg2</code>: <code>send email -&gt; create an 
 addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
+for a receiver</code></li>
+<li><code>eMail_p14_pair_seg3</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p14_pair_seg2</code>: <code>open mailbox -&gt; select email</code></li>
-<li><code>eMail_p14_pair_seg3</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p14_pair_seg4</code>: <code>__end__ -&gt; compose new 
+<li><code>eMail_p14_pair_seg4</code>: <code>compose new 
 email -&gt; enter email 
-body -&gt; enter email 
-body -&gt; enter
- email 
-subject -&gt; enter 
+body -&gt; enter 
 receiver's 
-email address -&gt; enter 
+email address</code></li>
+<li><code>eMail_p14_pair_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
+email</code></li>
+<li><code>eMail_p14_pair_seg6</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email</code></li>
+<li><code>eMail_p14_pair_seg7</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
-public key -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p14_pair_seg5</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p14_pair_seg6</code>: <code>enter 
+public key</code></li>
+<li><code>eMail_p14_pair_seg8</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p14_pair_seg9</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p14_pair_seg10</code>: <code>__end__ -&gt; compose new 
+email -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p14_pair_seg7</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p14_pair_seg8</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p14_pair_seg9</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
-email</code></li>
-<li><code>eMail_p14_pair_seg10</code>: <code>enter
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter
  email 
 subject</code></li>
 <li><code>eMail_p14_pair_seg11</code>: <code>enter 
 receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver -&gt; send email -&gt; compose new 
+email address -&gt; get receiver's  
+public key</code></li>
+<li><code>eMail_p14_pair_seg12</code>: <code>encrypt mail 
+with receiver's 
+public key -&gt; send email -&gt; compose new 
 email</code></li>
-<li><code>eMail_p14_pair_seg12</code>: <code>enter 
+<li><code>eMail_p14_pair_seg13</code>: <code>enter 
 receiver's 
-email address -&gt; enter 
+email address -&gt; send email -&gt; create an 
+addressbook 
+for a receiver -&gt; enter the  
+receiver's 
+email address</code></li>
+<li><code>eMail_p14_pair_seg14</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
+email</code></li>
+<li><code>eMail_p14_pair_seg15</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; enter
+email address</code></li>
+<li><code>eMail_p14_pair_seg16</code>: <code>enter
  email 
 subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p14_pair_seg13</code>: <code>enter 
+body -&gt; enter email 
+body -&gt; enter
+ email 
+subject -&gt; enter 
 receiver's 
-email address -&gt; get receiver's  
-public key</code></li>
-<li><code>eMail_p14_pair_seg14</code>: <code>enter alias 
+email address</code></li>
+<li><code>eMail_p14_pair_seg17</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p14_pair_seg18</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p14_pair_seg19</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
+<li><code>eMail_p14_pair_seg20</code>: <code>open mailbox</code></li>
+<li><code>eMail_p14_pair_seg21</code>: <code>create an 
+addressbook 
+for a receiver</code></li>
 </ul>
 <h2>Product 15</h2>
 <p><strong>Selected features:</strong> selected = {au, e, f, s}</p>
@@ -1843,7 +2070,7 @@ autoresponse
 date interval -&gt; enter 
 autoresponse 
 email body</pre>
-<h3>All-transitions coverage (4 test cases, 16 transitions total)</h3>
+<h3>All-transitions coverage (6 test cases, 16 transitions total)</h3>
 <ul>
 <li><code>eMail_p15_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -1855,103 +2082,118 @@ date interval</code></li>
 <li><code>eMail_p15_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p15_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p15_trans_seg2</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
 receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p15_trans_seg3</code>: <code>enter 
-receiver's 
-email address -&gt; enter
+email address -&gt; send email</code></li>
+<li><code>eMail_p15_trans_seg3</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p15_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p15_trans_seg5</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject</code></li>
+subject -&gt; enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; sign mail</code></li>
 </ul>
-<h3>All-transition-pairs coverage (19 test cases, 63 transitions total)</h3>
+<h3>All-transition-pairs coverage (25 test cases, 69 transitions total)</h3>
 <ul>
 <li><code>eMail_p15_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p15_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p15_pair_seg1</code>: <code>enter forward 
 receiver's 
 email address -&gt; send email -&gt; enter 
 autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p15_pair_seg2</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
 email body</code></li>
-<li><code>eMail_p15_pair_seg3</code>: <code>enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p15_pair_seg4</code>: <code>send email -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p15_pair_seg5</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p15_pair_seg6</code>: <code>compose new 
+<li><code>eMail_p15_pair_seg2</code>: <code>select email -&gt; enter forward 
+receiver's 
+email address</code></li>
+<li><code>eMail_p15_pair_seg3</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p15_pair_seg4</code>: <code>send email -&gt; compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter
  email 
+subject</code></li>
+<li><code>eMail_p15_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail -&gt; send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p15_pair_seg6</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p15_pair_seg7</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p15_pair_seg8</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p15_pair_seg9</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p15_pair_seg10</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p15_pair_seg11</code>: <code>compose new 
+email -&gt; enter
+ email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; sign mail -&gt; send email -&gt; compose new 
-email -&gt; enter
+email address -&gt; send email -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p15_pair_seg12</code>: <code>send email -&gt; compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p15_pair_seg13</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p15_pair_seg14</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p15_pair_seg15</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p15_pair_seg16</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; enter
+email address</code></li>
+<li><code>eMail_p15_pair_seg17</code>: <code>enter
+ email 
+subject -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter email 
 body</code></li>
-<li><code>eMail_p15_pair_seg7</code>: <code>open mailbox</code></li>
-<li><code>eMail_p15_pair_seg8</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p15_pair_seg9</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p15_pair_seg10</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p15_pair_seg11</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p15_pair_seg18</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p15_pair_seg12</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p15_pair_seg19</code>: <code>__end__ -&gt; enter 
 autoresponse 
-date interval</code></li>
-<li><code>eMail_p15_pair_seg13</code>: <code>enter 
+email body -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p15_pair_seg20</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p15_pair_seg21</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p15_pair_seg22</code>: <code>open mailbox</code></li>
+<li><code>eMail_p15_pair_seg23</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p15_pair_seg24</code>: <code>enter 
 receiver's 
 email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p15_pair_seg14</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p15_pair_seg15</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p15_pair_seg16</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p15_pair_seg17</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p15_pair_seg18</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
@@ -1959,7 +2201,7 @@ subject -&gt; enter
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; sign mail</code></li>
+email address -&gt; send email</code></li>
 </ul>
 <h2>Product 16</h2>
 <p><strong>Selected features:</strong> selected = {ad, au, e, f}</p>
@@ -1982,7 +2224,7 @@ addressbook
 for a receiver -&gt; enter the  
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (4 test cases, 19 transitions total)</h3>
+<h3>All-transitions coverage (6 test cases, 19 transitions total)</h3>
 <ul>
 <li><code>eMail_p16_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -1994,56 +2236,48 @@ date interval</code></li>
 <li><code>eMail_p16_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p16_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p16_trans_seg2</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
 receiver's 
-email address -&gt; send email -&gt; create an 
+email address -&gt; send email</code></li>
+<li><code>eMail_p16_trans_seg3</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
 receiver's 
 email address -&gt; enter alias 
 email addresses 
 of receiver -&gt; compose new 
-email -&gt; enter 
+email</code></li>
+<li><code>eMail_p16_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p16_trans_seg5</code>: <code>enter
+ email 
+subject -&gt; enter email 
+body -&gt; enter
+ email 
+subject -&gt; enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver</code></li>
-<li><code>eMail_p16_trans_seg3</code>: <code>enter
- email 
-subject -&gt; enter email 
-body -&gt; enter
- email 
-subject</code></li>
 </ul>
-<h3>All-transition-pairs coverage (28 test cases, 83 transitions total)</h3>
+<h3>All-transition-pairs coverage (35 test cases, 90 transitions total)</h3>
 <ul>
 <li><code>eMail_p16_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p16_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p16_pair_seg1</code>: <code>enter forward 
 receiver's 
 email address -&gt; send email -&gt; enter 
 autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p16_pair_seg2</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
 email body</code></li>
-<li><code>eMail_p16_pair_seg3</code>: <code>enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p16_pair_seg4</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
+<li><code>eMail_p16_pair_seg2</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
+receiver's 
+email address</code></li>
+<li><code>eMail_p16_pair_seg3</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p16_pair_seg4</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
@@ -2053,17 +2287,8 @@ subject -&gt; enter
 receiver's 
 email address -&gt; get alias 
 email addresses 
-of receiver -&gt; send email -&gt; create an 
-addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
-email addresses 
-of receiver -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p16_pair_seg5</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p16_pair_seg6</code>: <code>compose new 
+of receiver -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p16_pair_seg5</code>: <code>send email -&gt; compose new 
 email -&gt; enter
  email 
 subject -&gt; enter email 
@@ -2072,14 +2297,33 @@ receiver's
 email address -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p16_pair_seg7</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; open mailbox</code></li>
-<li><code>eMail_p16_pair_seg8</code>: <code>open mailbox</code></li>
-<li><code>eMail_p16_pair_seg9</code>: <code>__end__ -&gt; create an 
+<li><code>eMail_p16_pair_seg6</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p16_pair_seg7</code>: <code>__end__ -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p16_pair_seg10</code>: <code>send email -&gt; compose new 
+<li><code>eMail_p16_pair_seg8</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
+email</code></li>
+<li><code>eMail_p16_pair_seg9</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p16_pair_seg10</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p16_pair_seg11</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p16_pair_seg12</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p16_pair_seg13</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p16_pair_seg14</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p16_pair_seg15</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p16_pair_seg16</code>: <code>compose new 
 email -&gt; enter 
 receiver's 
 email address -&gt; enter
@@ -2087,68 +2331,85 @@ email address -&gt; enter
 subject -&gt; enter email 
 body -&gt; enter email 
 body</code></li>
-<li><code>eMail_p16_pair_seg11</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p16_pair_seg12</code>: <code>send email -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p16_pair_seg13</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p16_pair_seg17</code>: <code>enter 
+autoresponse 
+email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p16_pair_seg14</code>: <code>__end__ -&gt; create an 
+<li><code>eMail_p16_pair_seg18</code>: <code>__end__ -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p16_pair_seg15</code>: <code>enter alias 
+<li><code>eMail_p16_pair_seg19</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p16_pair_seg20</code>: <code>create an 
+addressbook 
+for a receiver -&gt; enter the  
+receiver's 
+email address</code></li>
+<li><code>eMail_p16_pair_seg21</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; open mailbox</code></li>
+<li><code>eMail_p16_pair_seg22</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p16_pair_seg23</code>: <code>enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p16_pair_seg24</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p16_pair_seg25</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p16_pair_seg26</code>: <code>open mailbox</code></li>
+<li><code>eMail_p16_pair_seg27</code>: <code>create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p16_pair_seg28</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p16_pair_seg16</code>: <code>enter alias 
+<li><code>eMail_p16_pair_seg29</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
 email addresses 
 of receiver -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p16_pair_seg17</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p16_pair_seg18</code>: <code>__end__ -&gt; compose new 
+<li><code>eMail_p16_pair_seg30</code>: <code>__end__ -&gt; compose new 
 email</code></li>
-<li><code>eMail_p16_pair_seg19</code>: <code>enter
+<li><code>eMail_p16_pair_seg31</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p16_pair_seg20</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p16_pair_seg21</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p16_pair_seg22</code>: <code>enter 
-receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver</code></li>
-<li><code>eMail_p16_pair_seg23</code>: <code>__end__ -&gt; enter email 
+<li><code>eMail_p16_pair_seg32</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p16_pair_seg24</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p16_pair_seg33</code>: <code>__end__ -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p16_pair_seg25</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p16_pair_seg34</code>: <code>enter email 
 autoresponse 
-date interval</code></li>
-<li><code>eMail_p16_pair_seg26</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p16_pair_seg27</code>: <code>enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
 </ul>
 <h2>Product 17</h2>
 <p><strong>Selected features:</strong> selected = {ad, au, e, en}</p>
@@ -2177,7 +2438,7 @@ email -&gt; enter
 receiver's 
 email address -&gt; get receiver's  
 public key</pre>
-<h3>All-transitions coverage (6 test cases, 20 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 20 transitions total)</h3>
 <ul>
 <li><code>eMail_p17_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -2189,7 +2450,7 @@ date interval</code></li>
 <li><code>eMail_p17_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p17_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p17_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p17_trans_seg3</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
@@ -2198,11 +2459,12 @@ email address -&gt; enter alias
 email addresses 
 of receiver -&gt; compose new 
 email</code></li>
-<li><code>eMail_p17_trans_seg4</code>: <code>get receiver's  
+<li><code>eMail_p17_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p17_trans_seg5</code>: <code>get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
-public key</code></li>
-<li><code>eMail_p17_trans_seg5</code>: <code>enter
+public key -&gt; send email</code></li>
+<li><code>eMail_p17_trans_seg6</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
@@ -2213,36 +2475,26 @@ email address -&gt; enter
 receiver's 
 email address -&gt; get alias 
 email addresses 
-of receiver -&gt; send email</code></li>
+of receiver</code></li>
 </ul>
-<h3>All-transition-pairs coverage (30 test cases, 87 transitions total)</h3>
+<h3>All-transition-pairs coverage (39 test cases, 96 transitions total)</h3>
 <ul>
 <li><code>eMail_p17_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p17_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p17_pair_seg1</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p17_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p17_pair_seg3</code>: <code>enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p17_pair_seg4</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p17_pair_seg5</code>: <code>compose new 
+<li><code>eMail_p17_pair_seg3</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p17_pair_seg4</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter
  email 
-subject -&gt; enter 
+subject</code></li>
+<li><code>eMail_p17_pair_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
@@ -2250,111 +2502,142 @@ of receiver</code></li>
 <li><code>eMail_p17_pair_seg6</code>: <code>send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p17_pair_seg7</code>: <code>enter alias 
+<li><code>eMail_p17_pair_seg7</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p17_pair_seg8</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p17_pair_seg9</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p17_pair_seg10</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p17_pair_seg11</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; compose new 
 email -&gt; enter
  email 
-subject -&gt; enter email 
-body -&gt; enter 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p17_pair_seg12</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p17_pair_seg13</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p17_pair_seg8</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p17_pair_seg9</code>: <code>enter 
-receiver's 
-email address -&gt; get receiver's  
-public key -&gt; encrypt mail 
-with receiver's 
-public key -&gt; send email -&gt; create an 
-addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
-email addresses 
-of receiver -&gt; open mailbox</code></li>
-<li><code>eMail_p17_pair_seg10</code>: <code>open mailbox</code></li>
-<li><code>eMail_p17_pair_seg11</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p17_pair_seg12</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p17_pair_seg13</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
 <li><code>eMail_p17_pair_seg14</code>: <code>__end__ -&gt; create an 
 addressbook 
 for a receiver</code></li>
 <li><code>eMail_p17_pair_seg15</code>: <code>send email -&gt; compose new 
 email</code></li>
-<li><code>eMail_p17_pair_seg16</code>: <code>enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
+<li><code>eMail_p17_pair_seg16</code>: <code>send email -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p17_pair_seg17</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p17_pair_seg18</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p17_pair_seg19</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p17_pair_seg20</code>: <code>enter alias 
+<li><code>eMail_p17_pair_seg17</code>: <code>enter alias 
 email addresses 
-of receiver -&gt; create an 
-addressbook 
-for a receiver</code></li>
+of receiver -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p17_pair_seg18</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; open mailbox</code></li>
+<li><code>eMail_p17_pair_seg19</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p17_pair_seg20</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
 <li><code>eMail_p17_pair_seg21</code>: <code>send email -&gt; open mailbox</code></li>
 <li><code>eMail_p17_pair_seg22</code>: <code>enter 
-receiver's 
-email address -&gt; get receiver's  
-public key</code></li>
-<li><code>eMail_p17_pair_seg23</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p17_pair_seg24</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p17_pair_seg25</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p17_pair_seg26</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p17_pair_seg27</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver -&gt; send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p17_pair_seg28</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p17_pair_seg29</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter email 
+body -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p17_pair_seg23</code>: <code>enter
+ email 
+subject -&gt; enter
+ email 
+subject -&gt; enter email 
 body -&gt; enter email 
 body</code></li>
+<li><code>eMail_p17_pair_seg24</code>: <code>enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p17_pair_seg25</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p17_pair_seg26</code>: <code>enter 
+receiver's 
+email address -&gt; get receiver's  
+public key -&gt; encrypt mail 
+with receiver's 
+public key</code></li>
+<li><code>eMail_p17_pair_seg27</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p17_pair_seg28</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p17_pair_seg29</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; send email</code></li>
+<li><code>eMail_p17_pair_seg30</code>: <code>open mailbox</code></li>
+<li><code>eMail_p17_pair_seg31</code>: <code>create an 
+addressbook 
+for a receiver -&gt; enter the  
+receiver's 
+email address -&gt; enter alias 
+email addresses 
+of receiver -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p17_pair_seg32</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p17_pair_seg33</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p17_pair_seg34</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p17_pair_seg35</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address -&gt; get receiver's  
+public key</code></li>
+<li><code>eMail_p17_pair_seg36</code>: <code>encrypt mail 
+with receiver's 
+public key -&gt; send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p17_pair_seg37</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p17_pair_seg38</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
 </ul>
 <h2>Product 18</h2>
 <p><strong>Selected features:</strong> selected = {ad, e, f}</p>
@@ -2373,33 +2656,38 @@ of receiver -&gt; compose new
 email -&gt; enter 
 receiver's 
 email address</pre>
-<h3>All-transitions coverage (3 test cases, 15 transitions total)</h3>
+<h3>All-transitions coverage (8 test cases, 15 transitions total)</h3>
 <ul>
-<li><code>eMail_p18_trans_seg0</code>: <code>open mailbox -&gt; select email -&gt; enter forward 
+<li><code>eMail_p18_trans_seg0</code>: <code>enter forward 
 receiver's 
-email address -&gt; send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p18_trans_seg1</code>: <code>open mailbox -&gt; select email</code></li>
+<li><code>eMail_p18_trans_seg2</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; send email</code></li>
-<li><code>eMail_p18_trans_seg1</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
 of receiver</code></li>
-<li><code>eMail_p18_trans_seg2</code>: <code>enter
+<li><code>eMail_p18_trans_seg3</code>: <code>send email</code></li>
+<li><code>eMail_p18_trans_seg4</code>: <code>enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p18_trans_seg5</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p18_trans_seg6</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
 subject</code></li>
+<li><code>eMail_p18_trans_seg7</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (14 test cases, 52 transitions total)</h3>
+<h3>All-transition-pairs coverage (23 test cases, 61 transitions total)</h3>
 <ul>
 <li><code>eMail_p18_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -2407,75 +2695,99 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p18_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
-of receiver -&gt; send email -&gt; create an 
+of receiver</code></li>
+<li><code>eMail_p18_pair_seg2</code>: <code>send email -&gt; create an 
 addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
+for a receiver</code></li>
+<li><code>eMail_p18_pair_seg3</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p18_pair_seg1</code>: <code>send email -&gt; compose new 
+<li><code>eMail_p18_pair_seg4</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
 email -&gt; enter email 
+body -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p18_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p18_pair_seg6</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p18_pair_seg7</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p18_pair_seg8</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p18_pair_seg9</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p18_pair_seg10</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p18_pair_seg11</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
+email addresses 
+of receiver</code></li>
+<li><code>eMail_p18_pair_seg12</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p18_pair_seg13</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p18_pair_seg14</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p18_pair_seg15</code>: <code>enter forward 
+receiver's 
+email address -&gt; send email</code></li>
+<li><code>eMail_p18_pair_seg16</code>: <code>select email -&gt; enter forward 
+receiver's 
+email address</code></li>
+<li><code>eMail_p18_pair_seg17</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p18_pair_seg18</code>: <code>enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p18_pair_seg19</code>: <code>enter
+ email 
+subject -&gt; enter email 
 body -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p18_pair_seg20</code>: <code>open mailbox</code></li>
+<li><code>eMail_p18_pair_seg21</code>: <code>create an 
 addressbook 
-for a receiver</code></li>
-<li><code>eMail_p18_pair_seg2</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
-email -&gt; enter 
+for a receiver -&gt; enter the  
 receiver's 
-email address -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p18_pair_seg3</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p18_pair_seg4</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p18_pair_seg5</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p18_pair_seg6</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver</code></li>
-<li><code>eMail_p18_pair_seg7</code>: <code>select email -&gt; enter forward 
-receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p18_pair_seg8</code>: <code>open mailbox</code></li>
-<li><code>eMail_p18_pair_seg9</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p18_pair_seg10</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p18_pair_seg11</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p18_pair_seg12</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p18_pair_seg13</code>: <code>enter alias 
+email address</code></li>
+<li><code>eMail_p18_pair_seg22</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
 </ul>
@@ -2492,7 +2804,7 @@ autoresponse
 date interval -&gt; enter 
 autoresponse 
 email body</pre>
-<h3>All-transitions coverage (5 test cases, 15 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 15 transitions total)</h3>
 <ul>
 <li><code>eMail_p19_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -2504,101 +2816,117 @@ date interval</code></li>
 <li><code>eMail_p19_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p19_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p19_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p19_trans_seg3</code>: <code>compose new 
 email</code></li>
-<li><code>eMail_p19_trans_seg4</code>: <code>enter
+<li><code>eMail_p19_trans_seg4</code>: <code>send email</code></li>
+<li><code>eMail_p19_trans_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p19_trans_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (20 test cases, 62 transitions total)</h3>
+<h3>All-transition-pairs coverage (27 test cases, 69 transitions total)</h3>
 <ul>
 <li><code>eMail_p19_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p19_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p19_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p19_pair_seg3</code>: <code>enter 
-autoresponse 
-email body -&gt; enter email 
+<li><code>eMail_p19_pair_seg1</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p19_pair_seg2</code>: <code>__end__ -&gt; enter email 
 autoresponse 
 date interval</code></li>
+<li><code>eMail_p19_pair_seg3</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
 <li><code>eMail_p19_pair_seg4</code>: <code>__end__ -&gt; enter email 
 autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
+date interval</code></li>
 <li><code>eMail_p19_pair_seg5</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter
  email 
+subject</code></li>
+<li><code>eMail_p19_pair_seg6</code>: <code>sign mail -&gt; send email -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p19_pair_seg7</code>: <code>compose new 
+email -&gt; enter
+ email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; sign mail -&gt; send email -&gt; enter 
+email address</code></li>
+<li><code>eMail_p19_pair_seg8</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p19_pair_seg9</code>: <code>__end__ -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p19_pair_seg6</code>: <code>send email -&gt; enter 
+<li><code>eMail_p19_pair_seg10</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p19_pair_seg11</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p19_pair_seg12</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p19_pair_seg13</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p19_pair_seg7</code>: <code>send email -&gt; open mailbox</code></li>
-<li><code>eMail_p19_pair_seg8</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter
+<li><code>eMail_p19_pair_seg14</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p19_pair_seg15</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p19_pair_seg16</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p19_pair_seg17</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p19_pair_seg18</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; enter
+email address</code></li>
+<li><code>eMail_p19_pair_seg19</code>: <code>enter
+ email 
+subject -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter email 
 body</code></li>
-<li><code>eMail_p19_pair_seg9</code>: <code>open mailbox</code></li>
-<li><code>eMail_p19_pair_seg10</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p19_pair_seg20</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p19_pair_seg11</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p19_pair_seg12</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p19_pair_seg13</code>: <code>__end__ -&gt; enter email 
+<li><code>eMail_p19_pair_seg21</code>: <code>__end__ -&gt; enter 
 autoresponse 
-date interval</code></li>
-<li><code>eMail_p19_pair_seg14</code>: <code>enter 
+email body -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p19_pair_seg22</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p19_pair_seg23</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p19_pair_seg24</code>: <code>open mailbox</code></li>
+<li><code>eMail_p19_pair_seg25</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p19_pair_seg26</code>: <code>enter 
 receiver's 
 email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p19_pair_seg15</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p19_pair_seg16</code>: <code>__end__ -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p19_pair_seg17</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p19_pair_seg18</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p19_pair_seg19</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
@@ -2606,7 +2934,7 @@ subject -&gt; enter
 receiver's 
 email address -&gt; enter 
 receiver's 
-email address -&gt; sign mail</code></li>
+email address -&gt; send email</code></li>
 </ul>
 <h2>Product 20</h2>
 <p><strong>Selected features:</strong> selected = {ad, au, e, en, s}</p>
@@ -2633,7 +2961,7 @@ email -&gt; enter
 receiver's 
 email address -&gt; get receiver's  
 public key</pre>
-<h3>All-transitions coverage (7 test cases, 21 transitions total)</h3>
+<h3>All-transitions coverage (9 test cases, 21 transitions total)</h3>
 <ul>
 <li><code>eMail_p20_trans_seg0</code>: <code>enter email 
 autoresponse 
@@ -2645,154 +2973,174 @@ date interval</code></li>
 <li><code>eMail_p20_trans_seg1</code>: <code>enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p20_trans_seg2</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p20_trans_seg2</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p20_trans_seg3</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; compose new 
+of receiver</code></li>
+<li><code>eMail_p20_trans_seg4</code>: <code>send email -&gt; compose new 
 email</code></li>
-<li><code>eMail_p20_trans_seg4</code>: <code>get receiver's  
+<li><code>eMail_p20_trans_seg5</code>: <code>get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
 public key</code></li>
-<li><code>eMail_p20_trans_seg5</code>: <code>sign mail</code></li>
-<li><code>eMail_p20_trans_seg6</code>: <code>enter
+<li><code>eMail_p20_trans_seg6</code>: <code>sign mail -&gt; send email</code></li>
+<li><code>eMail_p20_trans_seg7</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p20_trans_seg8</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
-of receiver -&gt; send email</code></li>
+of receiver</code></li>
 </ul>
-<h3>All-transition-pairs coverage (31 test cases, 91 transitions total)</h3>
+<h3>All-transition-pairs coverage (39 test cases, 99 transitions total)</h3>
 <ul>
 <li><code>eMail_p20_pair_seg0</code>: <code>enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p20_pair_seg1</code>: <code>__end__ -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p20_pair_seg1</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p20_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p20_pair_seg3</code>: <code>enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p20_pair_seg4</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body -&gt; enter email 
-autoresponse 
-date interval -&gt; enter 
-autoresponse 
-email body</code></li>
-<li><code>eMail_p20_pair_seg5</code>: <code>compose new 
+<li><code>eMail_p20_pair_seg3</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p20_pair_seg4</code>: <code>compose new 
 email -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter
  email 
-subject -&gt; enter 
+subject</code></li>
+<li><code>eMail_p20_pair_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p20_pair_seg6</code>: <code>send email -&gt; enter 
+<li><code>eMail_p20_pair_seg6</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p20_pair_seg7</code>: <code>__end__ -&gt; enter email 
 autoresponse 
-email body</code></li>
-<li><code>eMail_p20_pair_seg7</code>: <code>enter alias 
+date interval</code></li>
+<li><code>eMail_p20_pair_seg8</code>: <code>__end__ -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p20_pair_seg9</code>: <code>__end__ -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p20_pair_seg10</code>: <code>compose new 
+email -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p20_pair_seg11</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; compose new 
-email -&gt; enter
+email</code></li>
+<li><code>eMail_p20_pair_seg12</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p20_pair_seg13</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p20_pair_seg14</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p20_pair_seg15</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p20_pair_seg16</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p20_pair_seg17</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; open mailbox</code></li>
+<li><code>eMail_p20_pair_seg18</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval</code></li>
+<li><code>eMail_p20_pair_seg19</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p20_pair_seg20</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p20_pair_seg21</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter 
 receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver</code></li>
-<li><code>eMail_p20_pair_seg8</code>: <code>send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p20_pair_seg22</code>: <code>enter
+ email 
+subject -&gt; enter
+ email 
+subject -&gt; enter email 
+body -&gt; enter email 
+body</code></li>
+<li><code>eMail_p20_pair_seg23</code>: <code>enter 
+autoresponse 
+email body</code></li>
+<li><code>eMail_p20_pair_seg24</code>: <code>__end__ -&gt; compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p20_pair_seg25</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p20_pair_seg26</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p20_pair_seg27</code>: <code>enter 
+receiver's 
+email address -&gt; get receiver's  
+public key -&gt; encrypt mail 
+with receiver's 
+public key -&gt; send email</code></li>
+<li><code>eMail_p20_pair_seg28</code>: <code>compose new 
+email</code></li>
+<li><code>eMail_p20_pair_seg29</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; send email</code></li>
+<li><code>eMail_p20_pair_seg30</code>: <code>open mailbox</code></li>
+<li><code>eMail_p20_pair_seg31</code>: <code>create an 
 addressbook 
 for a receiver -&gt; enter the  
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p20_pair_seg9</code>: <code>enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p20_pair_seg10</code>: <code>__end__ -&gt; create an 
+of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p20_pair_seg11</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p20_pair_seg12</code>: <code>__end__ -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p20_pair_seg13</code>: <code>enter
- email 
-subject -&gt; enter email 
-body -&gt; enter email 
-body</code></li>
-<li><code>eMail_p20_pair_seg14</code>: <code>open mailbox</code></li>
-<li><code>eMail_p20_pair_seg15</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p20_pair_seg16</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p20_pair_seg32</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p20_pair_seg17</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; open mailbox</code></li>
-<li><code>eMail_p20_pair_seg18</code>: <code>enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p20_pair_seg19</code>: <code>__end__ -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p20_pair_seg20</code>: <code>enter 
-receiver's 
-email address -&gt; get receiver's  
-public key -&gt; encrypt mail 
-with receiver's 
-public key -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p20_pair_seg21</code>: <code>enter 
+<li><code>eMail_p20_pair_seg33</code>: <code>enter 
 receiver's 
 email address -&gt; enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p20_pair_seg22</code>: <code>send email -&gt; enter email 
-autoresponse 
-date interval</code></li>
-<li><code>eMail_p20_pair_seg23</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p20_pair_seg24</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
-of receiver -&gt; send email -&gt; compose new 
+of receiver</code></li>
+<li><code>eMail_p20_pair_seg34</code>: <code>send email -&gt; compose new 
 email</code></li>
-<li><code>eMail_p20_pair_seg25</code>: <code>enter 
+<li><code>eMail_p20_pair_seg35</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
@@ -2800,23 +3148,21 @@ subject -&gt; enter
 receiver's 
 email address -&gt; get receiver's  
 public key</code></li>
-<li><code>eMail_p20_pair_seg26</code>: <code>send email -&gt; enter email 
+<li><code>eMail_p20_pair_seg36</code>: <code>send email -&gt; enter email 
+autoresponse 
+date interval -&gt; enter 
+autoresponse 
+email body -&gt; enter email 
 autoresponse 
 date interval</code></li>
-<li><code>eMail_p20_pair_seg27</code>: <code>__end__ -&gt; enter 
+<li><code>eMail_p20_pair_seg37</code>: <code>__end__ -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p20_pair_seg28</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; enter 
+<li><code>eMail_p20_pair_seg38</code>: <code>enter email 
+autoresponse 
+date interval -&gt; enter 
 autoresponse 
 email body</code></li>
-<li><code>eMail_p20_pair_seg29</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p20_pair_seg30</code>: <code>send email -&gt; open mailbox</code></li>
 </ul>
 <h2>Product 21</h2>
 <p><strong>Selected features:</strong> selected = {e, en, s}</p>
@@ -2830,28 +3176,29 @@ email address -&gt; get receiver's
 public key -&gt; encrypt mail 
 with receiver's 
 public key</pre>
-<h3>All-transitions coverage (5 test cases, 13 transitions total)</h3>
+<h3>All-transitions coverage (6 test cases, 13 transitions total)</h3>
 <ul>
 <li><code>eMail_p21_trans_seg0</code>: <code>open mailbox -&gt; select email</code></li>
-<li><code>eMail_p21_trans_seg1</code>: <code>compose new 
-email</code></li>
-<li><code>eMail_p21_trans_seg2</code>: <code>send email</code></li>
-<li><code>eMail_p21_trans_seg3</code>: <code>get receiver's  
+<li><code>eMail_p21_trans_seg1</code>: <code>send email</code></li>
+<li><code>eMail_p21_trans_seg2</code>: <code>enter 
+receiver's 
+email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
 public key</code></li>
+<li><code>eMail_p21_trans_seg3</code>: <code>compose new 
+email</code></li>
 <li><code>eMail_p21_trans_seg4</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p21_trans_seg5</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (9 test cases, 41 transitions total)</h3>
+<h3>All-transition-pairs coverage (15 test cases, 47 transitions total)</h3>
 <ul>
 <li><code>eMail_p21_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -2859,55 +3206,70 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p21_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; sign mail -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p21_pair_seg1</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p21_pair_seg2</code>: <code>open mailbox</code></li>
-<li><code>eMail_p21_pair_seg3</code>: <code>enter 
+<li><code>eMail_p21_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p21_pair_seg3</code>: <code>compose new 
+email -&gt; enter email 
+body -&gt; enter 
 receiver's 
-email address -&gt; enter 
+email address</code></li>
+<li><code>eMail_p21_pair_seg4</code>: <code>enter 
 receiver's 
 email address -&gt; send email -&gt; compose new 
-email -&gt; enter email 
-body -&gt; enter email 
-body -&gt; enter
- email 
-subject -&gt; enter 
+email</code></li>
+<li><code>eMail_p21_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p21_pair_seg6</code>: <code>send email -&gt; compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p21_pair_seg7</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
-public key -&gt; send email -&gt; compose new 
-email -&gt; enter 
+public key -&gt; send email</code></li>
+<li><code>eMail_p21_pair_seg8</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
 receiver's 
 email address -&gt; enter
  email 
 subject -&gt; enter
  email 
 subject</code></li>
-<li><code>eMail_p21_pair_seg4</code>: <code>enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p21_pair_seg5</code>: <code>enter 
+<li><code>eMail_p21_pair_seg9</code>: <code>enter 
 receiver's 
 email address -&gt; get receiver's  
 public key</code></li>
-<li><code>eMail_p21_pair_seg6</code>: <code>enter 
+<li><code>eMail_p21_pair_seg10</code>: <code>enter 
 receiver's 
-email address -&gt; enter 
+email address -&gt; send email -&gt; open mailbox</code></li>
+<li><code>eMail_p21_pair_seg11</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p21_pair_seg12</code>: <code>enter 
 receiver's 
 email address -&gt; enter
  email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p21_pair_seg13</code>: <code>enter
+ email 
 subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p21_pair_seg7</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p21_pair_seg8</code>: <code>enter
+body -&gt; enter email 
+body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; send email -&gt; open mailbox</code></li>
+email address</code></li>
+<li><code>eMail_p21_pair_seg14</code>: <code>open mailbox</code></li>
 </ul>
 <h2>Product 22</h2>
 <p><strong>Selected features:</strong> selected = {ad, e}</p>
@@ -2926,7 +3288,7 @@ receiver's
 email address -&gt; get alias 
 email addresses 
 of receiver</pre>
-<h3>All-transitions coverage (4 test cases, 14 transitions total)</h3>
+<h3>All-transitions coverage (5 test cases, 14 transitions total)</h3>
 <ul>
 <li><code>eMail_p22_trans_seg0</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p22_trans_seg1</code>: <code>create an 
@@ -2938,20 +3300,21 @@ email addresses
 of receiver -&gt; compose new 
 email</code></li>
 <li><code>eMail_p22_trans_seg2</code>: <code>send email</code></li>
-<li><code>eMail_p22_trans_seg3</code>: <code>enter
+<li><code>eMail_p22_trans_seg3</code>: <code>enter 
+receiver's 
+email address -&gt; enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p22_trans_seg4</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (14 test cases, 50 transitions total)</h3>
+<h3>All-transition-pairs coverage (21 test cases, 57 transitions total)</h3>
 <ul>
 <li><code>eMail_p22_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -2959,73 +3322,93 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p22_pair_seg1</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver</code></li>
-<li><code>eMail_p22_pair_seg1</code>: <code>send email -&gt; create an 
+<li><code>eMail_p22_pair_seg2</code>: <code>send email -&gt; create an 
 addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
+for a receiver</code></li>
+<li><code>eMail_p22_pair_seg3</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p22_pair_seg2</code>: <code>send email -&gt; compose new 
+<li><code>eMail_p22_pair_seg4</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
 email -&gt; enter email 
+body -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p22_pair_seg5</code>: <code>send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p22_pair_seg6</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p22_pair_seg7</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p22_pair_seg8</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p22_pair_seg9</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p22_pair_seg10</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p22_pair_seg11</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p22_pair_seg12</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
+email addresses 
+of receiver</code></li>
+<li><code>eMail_p22_pair_seg13</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p22_pair_seg14</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p22_pair_seg15</code>: <code>__end__ -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p22_pair_seg16</code>: <code>enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p22_pair_seg17</code>: <code>enter
+ email 
+subject -&gt; enter email 
 body -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
+email address</code></li>
+<li><code>eMail_p22_pair_seg18</code>: <code>open mailbox</code></li>
+<li><code>eMail_p22_pair_seg19</code>: <code>create an 
 addressbook 
-for a receiver</code></li>
-<li><code>eMail_p22_pair_seg3</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
-email -&gt; enter 
+for a receiver -&gt; enter the  
 receiver's 
-email address -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
-<li><code>eMail_p22_pair_seg4</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p22_pair_seg5</code>: <code>__end__ -&gt; compose new 
-email</code></li>
-<li><code>eMail_p22_pair_seg6</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p22_pair_seg7</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p22_pair_seg8</code>: <code>open mailbox</code></li>
-<li><code>eMail_p22_pair_seg9</code>: <code>create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p22_pair_seg10</code>: <code>send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p22_pair_seg11</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p22_pair_seg12</code>: <code>__end__ -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p22_pair_seg13</code>: <code>enter alias 
+email address</code></li>
+<li><code>eMail_p22_pair_seg20</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
 </ul>
@@ -3047,7 +3430,7 @@ email address -&gt; get receiver's
 public key -&gt; encrypt mail 
 with receiver's 
 public key</pre>
-<h3>All-transitions coverage (6 test cases, 17 transitions total)</h3>
+<h3>All-transitions coverage (7 test cases, 17 transitions total)</h3>
 <ul>
 <li><code>eMail_p23_trans_seg0</code>: <code>open mailbox -&gt; select email</code></li>
 <li><code>eMail_p23_trans_seg1</code>: <code>create an 
@@ -3056,28 +3439,29 @@ for a receiver -&gt; enter the
 receiver's 
 email address -&gt; enter alias 
 email addresses 
-of receiver -&gt; compose new 
+of receiver</code></li>
+<li><code>eMail_p23_trans_seg2</code>: <code>send email -&gt; compose new 
 email</code></li>
-<li><code>eMail_p23_trans_seg2</code>: <code>send email</code></li>
 <li><code>eMail_p23_trans_seg3</code>: <code>get receiver's  
 public key -&gt; encrypt mail 
 with receiver's 
 public key</code></li>
-<li><code>eMail_p23_trans_seg4</code>: <code>sign mail</code></li>
+<li><code>eMail_p23_trans_seg4</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
 <li><code>eMail_p23_trans_seg5</code>: <code>enter
  email 
 subject -&gt; enter email 
 body -&gt; enter
  email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; enter 
+subject</code></li>
+<li><code>eMail_p23_trans_seg6</code>: <code>enter 
 receiver's 
 email address -&gt; get alias 
 email addresses 
 of receiver -&gt; send email</code></li>
 </ul>
-<h3>All-transition-pairs coverage (16 test cases, 59 transitions total)</h3>
+<h3>All-transition-pairs coverage (25 test cases, 68 transitions total)</h3>
 <ul>
 <li><code>eMail_p23_pair_seg0</code>: <code>compose new 
 email -&gt; enter
@@ -3085,89 +3469,110 @@ email -&gt; enter
 subject -&gt; enter
  email 
 subject -&gt; enter email 
-body -&gt; enter 
+body</code></li>
+<li><code>eMail_p23_pair_seg1</code>: <code>enter 
 receiver's 
-email address -&gt; sign mail -&gt; send email -&gt; create an 
-addressbook 
-for a receiver -&gt; enter the  
-receiver's 
-email address -&gt; enter alias 
+email address -&gt; sign mail -&gt; send email</code></li>
+<li><code>eMail_p23_pair_seg2</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p23_pair_seg1</code>: <code>open mailbox -&gt; select email</code></li>
-<li><code>eMail_p23_pair_seg2</code>: <code>__end__ -&gt; open mailbox</code></li>
-<li><code>eMail_p23_pair_seg3</code>: <code>__end__ -&gt; compose new 
+<li><code>eMail_p23_pair_seg3</code>: <code>compose new 
 email -&gt; enter email 
+body -&gt; enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver</code></li>
+<li><code>eMail_p23_pair_seg4</code>: <code>send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p23_pair_seg5</code>: <code>enter 
+receiver's 
+email address -&gt; send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p23_pair_seg6</code>: <code>enter 
+receiver's 
+email address -&gt; sign mail</code></li>
+<li><code>eMail_p23_pair_seg7</code>: <code>enter alias 
+email addresses 
+of receiver -&gt; compose new 
+email</code></li>
+<li><code>eMail_p23_pair_seg8</code>: <code>enter 
+receiver's 
+email address -&gt; get alias 
+email addresses 
+of receiver -&gt; send email -&gt; open mailbox -&gt; select email</code></li>
+<li><code>eMail_p23_pair_seg9</code>: <code>__end__ -&gt; open mailbox</code></li>
+<li><code>eMail_p23_pair_seg10</code>: <code>__end__ -&gt; compose new 
+email</code></li>
+<li><code>eMail_p23_pair_seg11</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; get receiver's  
+public key -&gt; encrypt mail 
+with receiver's 
+public key</code></li>
+<li><code>eMail_p23_pair_seg12</code>: <code>send email -&gt; compose new 
+email</code></li>
+<li><code>eMail_p23_pair_seg13</code>: <code>enter 
+receiver's 
+email address -&gt; enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter
+ email 
+subject</code></li>
+<li><code>eMail_p23_pair_seg14</code>: <code>enter 
+receiver's 
+email address -&gt; get receiver's  
+public key</code></li>
+<li><code>eMail_p23_pair_seg15</code>: <code>encrypt mail 
+with receiver's 
+public key -&gt; send email</code></li>
+<li><code>eMail_p23_pair_seg16</code>: <code>compose new 
+email -&gt; enter 
+receiver's 
+email address -&gt; send email -&gt; create an 
+addressbook 
+for a receiver</code></li>
+<li><code>eMail_p23_pair_seg17</code>: <code>enter the  
+receiver's 
+email address -&gt; enter alias 
+email addresses 
+of receiver</code></li>
+<li><code>eMail_p23_pair_seg18</code>: <code>enter 
+receiver's 
+email address -&gt; enter
+ email 
+subject -&gt; enter 
+receiver's 
+email address</code></li>
+<li><code>eMail_p23_pair_seg19</code>: <code>enter
+ email 
+subject -&gt; enter email 
 body -&gt; enter email 
 body -&gt; enter
  email 
 subject -&gt; enter 
 receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver -&gt; send email -&gt; open mailbox</code></li>
-<li><code>eMail_p23_pair_seg4</code>: <code>__end__ -&gt; create an 
+email address</code></li>
+<li><code>eMail_p23_pair_seg20</code>: <code>send email -&gt; open mailbox</code></li>
+<li><code>eMail_p23_pair_seg21</code>: <code>__end__ -&gt; create an 
 addressbook 
-for a receiver</code></li>
-<li><code>eMail_p23_pair_seg5</code>: <code>enter 
+for a receiver -&gt; enter the  
 receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; compose new 
-email -&gt; enter 
-receiver's 
-email address -&gt; get receiver's  
-public key -&gt; encrypt mail 
-with receiver's 
-public key -&gt; send email -&gt; compose new 
-email</code></li>
-<li><code>eMail_p23_pair_seg6</code>: <code>enter
- email 
-subject -&gt; enter
- email 
-subject</code></li>
-<li><code>eMail_p23_pair_seg7</code>: <code>enter 
-receiver's 
-email address -&gt; sign mail</code></li>
-<li><code>eMail_p23_pair_seg8</code>: <code>enter 
-receiver's 
-email address -&gt; get alias 
-email addresses 
-of receiver</code></li>
-<li><code>eMail_p23_pair_seg9</code>: <code>enter alias 
-email addresses 
-of receiver -&gt; compose new 
-email</code></li>
-<li><code>eMail_p23_pair_seg10</code>: <code>enter 
-receiver's 
-email address -&gt; get receiver's  
-public key</code></li>
-<li><code>eMail_p23_pair_seg11</code>: <code>enter alias 
+email address</code></li>
+<li><code>eMail_p23_pair_seg22</code>: <code>enter alias 
 email addresses 
 of receiver -&gt; open mailbox</code></li>
-<li><code>eMail_p23_pair_seg12</code>: <code>create an 
+<li><code>eMail_p23_pair_seg23</code>: <code>open mailbox</code></li>
+<li><code>eMail_p23_pair_seg24</code>: <code>create an 
 addressbook 
 for a receiver</code></li>
-<li><code>eMail_p23_pair_seg13</code>: <code>enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter email 
-body</code></li>
-<li><code>eMail_p23_pair_seg14</code>: <code>enter 
-receiver's 
-email address -&gt; enter 
-receiver's 
-email address -&gt; enter
- email 
-subject -&gt; enter 
-receiver's 
-email address -&gt; send email -&gt; create an 
-addressbook 
-for a receiver</code></li>
-<li><code>eMail_p23_pair_seg15</code>: <code>send email -&gt; open mailbox</code></li>
 </ul>
 <hr/>
 <p>Total products: 23.</p>

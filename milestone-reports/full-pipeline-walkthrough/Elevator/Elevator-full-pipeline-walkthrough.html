@@ -26,7 +26,7 @@ img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; 
 <p>InitialSccFilter keeps only the SCC containing the initial state and drops every other state plus the transitions touching them. 5 state(s) and 6 transition(s) removed. Result is strongly connected by construction — every state can reach every other state.</p>
 <img src="Elevator-step3-strongly-connected.png" alt="Step 3"/>
 <h2>Step 4 — Strongly-connected + balanced FTS</h2>
-<p><strong>Size:</strong> 7 states, 28 transitions</p>
-<p>EulerianBalancer adds 8 synthetic '__balance__N' transitions so every state has in-degree = out-degree, the second precondition for Hierholzer's Euler-cycle algorithm. 20 real transition(s) preserved, 8 synthetic balancing transition(s) inserted; 7 total state(s).</p>
+<p><strong>Size:</strong> 7 states, 34 transitions</p>
+<p>EulerianBalancer applies a directed Chinese Postman strategy: for each pair of imbalanced states it finds a shortest path of real transitions and doubles each transition along it (action label is suffixed with '__dup__N'). The cycle thus stays contiguous and every traversal is a real action. 14 doubled transition(s) inserted (dashed-red in the image); 0 direct synthetic fallback edge(s) when no real path existed; 20 original transition(s) preserved; 7 total state(s). The doubled edges are filtered from coverage measurement (their action carries the '__dup__' marker), but they DO appear in the test case as another occurrence of the underlying real action — a property useful for mutation detection.</p>
 <img src="Elevator-step4-balanced.png" alt="Step 4"/>
 </body></html>
