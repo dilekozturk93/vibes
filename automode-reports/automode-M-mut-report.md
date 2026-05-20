@@ -1,5 +1,20 @@
 # Automode Milestone M-mut Report
 
+> ⚠ **Counts here predate [M0-rev](automode-M0-rev-report.html).** SVM
+> cardinalities cited below (11 states, 18 transitions) are from the
+> initial naive converter. After M0-rev's bisimulation-minimized
+> converter, SVM is 9 states / 13 transitions / 12 actions, so the
+> mutant counts in this report change accordingly:
+>
+> | Operator          | M-mut report  | Current (post-M0-rev) |
+> |-------------------|---------------|-----------------------|
+> | TransitionMissing | 18            | **13**                |
+> | ActionExchange    | 18 × 11 = 198 | **13 × 11 = 143**     |
+>
+> The operators themselves are unchanged; only the input FTS size
+> shrank. The current numbers will be re-computed automatically by the
+> experiment harness in Phase 2.
+
 **Date:** 2026-05-15
 **Branch:** `feat/product-test-generation`
 **Commit:** (set in the commit that lands this report)
