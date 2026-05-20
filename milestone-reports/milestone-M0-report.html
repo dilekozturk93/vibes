@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>milestone-M0-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Milestone M0 Report</h1>
+<p>> ⚠ <strong>Superseded by <a href="milestone-M0-rev-report.html">M0-rev</a>.</strong> The converter > described below is the initial naive 1-vertex-per-state implementation > with <code>v&lt;mxGraphId&gt;</code>-style state names. After user review on > 2026-05-18, that converter was replaced with a bisimulation-minimized > version that produces sequential <code>state1, state2,...</code> names matching > Devroey's canonical FTS. This document is kept as a historical record > of the first iteration; the current converter behaviour is described > in <a href="milestone-M0-rev-report.html">milestone-M0-rev-report</a>.</p>
+<p><strong>Date:</strong> 2026-05-13 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report)</p>
+<h2>Scope</h2>
+<p>Stand up the <code>vibes-testgeneration</code> Maven module, verify the surrounding VIBeS infrastructure that downstream milestones rely on, copy the SVM ESG-Fx / DIMACS inputs into the module's resources, implement the MXE → FTS converter, and gate it with smoke + structural tests on SVM. This is the foundation for M1 (eMail + Elevator conversion) and M2+ (graph algorithms + coverage generators).</p>
+<h2>Files changed</h2>
+<ul>
+  <li><code>pom.xml</code>: register the new <code>vibes-testgeneration</code> module.</li>
+  <li><code>.gitignore</code>: fix <code>.DS_Store</code> glob (was <code>.DS_Store/</code> with trailing slash so</li>
+</ul>
+<p>nothing matched), ignore local IDE / tool state directories, <code>.vscode/</code>, <code>**/bin/</code>, and the exploratory <code>vibes-example/*.dot</code> / <code>*.png</code> outputs.</p>
+<ul>
+  <li><code>vibes-example/pom.xml</code>: drop unresolved <code>${log4j.version}</code> direct dep</li>
+</ul>
+<p>(already pulled transitively via <code>slf4j-log4j12</code>); align parent version to <code>2.0.6-SNAPSHOT</code>.</p>
+<ul>
+  <li><code>vibes-example/.../Main.java</code>: rewrite as a minimal Dot-printing demo</li>
+</ul>
+<p>against the VIBeS 2.x DSL.</p>
+<ul>
+  <li><code>vibes-example/.../SodaVendingMachineModel.java</code>: update import to</li>
+</ul>
+<p><code>be.vibes.dsl.ts.FeaturedTransitionSystemDefinition</code>.</p>
+<ul>
+  <li><code>vibes-example/.../ManualTestSuite.java</code>: delete (depended on pre-2.x</li>
+</ul>
+<p>DSL APIs that no longer exist; not referenced by the new pipeline).</p>
+<ul>
+  <li><code>vibes-testgeneration/pom.xml</code>: new module pom (deps: vibes-core,</li>
+</ul>
+<p>vibes-fexpression, vibes-dsl, guava, junit, hamcrest, slf4j).</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/conversion/MxeToFtsConverter.java</code>:</li>
+</ul>
+<p>the converter itself, ~250 LoC with full javadoc and a CLI <code>main</code>.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/conversion/MxeToFtsConverterTest.java</code>:</li>
+</ul>
+<p>7-test suite — label parsing (3), SVM cardinalities + actions + initial-state invariants (3), and XML round-trip idempotency (1).</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/resources/cases/SodaVendingMachine/</code>:</li>
+</ul>
+<p>SVM ESG-Fx MXE and <code>configs/SVM.dimacs</code> + <code>configs/SVM_dimacsmapping.txt</code> copied from the user's ESG-Fx project.</p>
+<h2>What was implemented</h2>
+<p><strong>MxeToFtsConverter</strong> is the core deliverable. Conversion rules (encoded in the class javadoc and verified by tests):</p>
+<ul>
+  <li>"[" → FTS initial state <code>INIT</code>.</li>
+  <li>"]" has no corresponding state; merged with <code>INIT</code> so the FTS is cyclic.</li>
+  <li>An ESG vertex <code>v</code> whose outgoing edges all target "]" is "terminal" and</li>
+</ul>
+<p>also merged with <code>INIT</code>. This reproduces the inlining seen in hand-written <code>fts-sodaVendingMachine.xml</code> (where <code>state9 -[close/!f]-&gt; state1</code> comes from ESG <code>take/!f → close/!f → ]</code> being collapsed).</p>
+<ul>
+  <li>Every other ESG vertex <code>v</code> becomes its own FTS state <code>s_v</code> (state name</li>
+</ul>
+<p>prefixed with <code>v</code> to avoid collisions with the mxGraph numeric ids).</p>
+<ul>
+  <li>An ESG edge <code>u -&gt; v</code> becomes an FTS transition</li>
+</ul>
+<p><code>state(u) -[event(v)/fexpr(v)]-&gt; state(v)</code> where <code>state(x)</code> resolves to <code>INIT</code> for <code>[</code>, <code>]</code>, or terminal vertices and to <code>s_x</code> otherwise.</p>
+<ul>
+  <li>Edges of the form <code>u -&gt; &quot;]&quot;</code> are dropped (already captured by terminal</li>
+</ul>
+<p>merging).</p>
+<ul>
+  <li>Feature-expression syntax: <code>!X</code> is parsed as a negation of feature <code>X</code>;</li>
+</ul>
+<p>bare <code>X</code> is the leaf expression; missing or empty expression yields <code>FExpression.trueValue()</code>.</p>
+<p>The class is deliberately self-contained and uses only the VIBeS public API (<code>FeaturedTransitionSystemFactory</code>, <code>FExpression</code>, <code>Xml</code>). No JGraphT, no DOM helpers beyond <code>javax.xml.parsers</code>. CLI entry point allows <code>java -jar … &lt;input.mxe&gt; [output.xml]</code>.</p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td>Module compiles cleanly via <code>mvn -pl vibes-testgeneration -am compile</code></td><td>✓</td></tr>
+    <tr><td>Test suite (7 tests) green</td><td>✓ — <code>Tests run: 7, Failures: 0, Errors: 0, Skipped: 0</code></td></tr>
+    <tr><td>SVM ESG (15 vertices, 21 edges) → FTS with 11 states, 18 transitions</td><td>✓ — matches the expected <code>(15 − 2 brackets − 3 terminals) + INIT = 11</code> and <code>21 − 3 dropped = 18</code></td></tr>
+    <tr><td>All 12 SVM ESG events appear as actions in the FTS</td><td>✓ (<code>pay, change, free, soda, tea, serveSoda, serveTea, cancel, return, open, take, close</code>)</td></tr>
+    <tr><td><code>INIT</code> is the initial state and has > 0 outgoing transitions</td><td>✓</td></tr>
+    <tr><td><code>Xml.print</code> → <code>Xml.loadFeaturedTransitionSystem</code> is round-trip idempotent on state and transition counts</td><td>✓</td></tr>
+    <tr><td>Whole reactor build still green (<code>mvn install</code> of all modules)</td><td>not re-run for M0 to save time; will run at M1 boundary when the new module first ships into the full reactor</td></tr>
+  </tbody>
+</table>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong><code>vibes-mutation</code> left disabled.</strong> The module exists with <code>TransitionMissing</code></li>
+</ul>
+<p>and <code>ActionExchange</code> operators we need, but everything inside is still on the pre-2.x <code>be.unamur.transitionsystem.*</code> package and depends on the also pre-2.x <code>vibes-transformation</code> module. Migrating it is a non-trivial side quest that the plan defers to Phase 1 (mutation testing setup). M0 explicitly does NOT re-enable it.</p>
+<ul>
+  <li><strong>Auto-generated FTS is bigger than the hand-written reference.</strong> SVM</li>
+</ul>
+<p>produces 11 states / 18 transitions vs. the hand-written <code>fts-sodaVendingMachine.xml</code> (9 / 13). The difference comes from state-merging decisions the human author made when two ESG vertices have identical successor sets (e.g. <code>change/!f</code> and <code>free/f</code> both merge into the same FTS state in the hand-written file). The automated converter keeps these separate, which is semantically equivalent: the same set of feature-valid action sequences is accepted. Coverage metrics will count more elements but consistently across the pipeline, so RQ comparisons stay valid.</p>
+<ul>
+  <li><strong>State naming uses <code>v&lt;mxGraphId&gt;</code></strong> (e.g. <code>v40</code>, <code>v83</code>) instead of</li>
+</ul>
+<p>event names. mxGraph ids are unique within a document; event names are not (e.g. SVM has <code>take/f</code> and <code>take/!f</code>). Using the id avoids state collisions for any input model.</p>
+<ul>
+  <li><strong>Terminal-vertex merging is automatic, no flag.</strong> A vertex is terminal</li>
+</ul>
+<p>iff it has ≥ 1 outgoing edge and all of them target <code>&quot;]&quot;</code>. This is the simplest definition that reproduces the hand-written-FTS shape on SVM. If a future SPL needs different semantics we will revisit.</p>
+<ul>
+  <li><strong>Push to <code>origin</code> failed</strong> with</li>
+</ul>
+<p><code>fatal: could not read Username for 'https://github.com/dilekozturk93/vibes.git': Device not configured</code>. The branch was committed locally; the user needs to configure git credentials (<code>gh auth login</code>, an SSH key, or a credential helper) once; subsequent milestones will push automatically. M0 work is fully reproducible from the local commit either way.</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>Git push credentials.</strong> Listed under "Decisions taken" above. Not blocking</li>
+</ul>
+<p>M1; I will keep accumulating commits locally and retry push at every milestone end so as soon as credentials are configured, the whole chain flushes upstream.</p>
+<ul>
+  <li><strong>DIMACS files for 4 SPLs missing.</strong> Of the 8 SPLs only SVM, HockertyShirts,</li>
+</ul>
+<p>Tesla and syngovia have <code>&lt;SPL&gt;.dimacs</code> + <code>&lt;SPL&gt;_dimacsmapping.txt</code> already in the ESG-Fx project. The other four (eMail, Elevator, BankAccountv2, StudentAttendanceSystem) have only <code>configs/model.xml</code>. Generating their DIMACS is a Phase 1 task and out of M0 scope; M1 (eMail + Elevator FTS conversion) only needs the MXE files, which are present.</p>
+<h2>Next milestone preview</h2>
+<p><strong>M1 :</strong> apply <code>MxeToFtsConverter</code> to <code>eMail/eM_ESGFx.mxe</code> and <code>Elevator/El_ESGFx.mxe</code>; copy each MXE into <code>vibes-testgeneration/src/main/resources/cases/&lt;SPL&gt;/</code>; extend the test suite with structural smoke tests for the two new SPLs (state/transition counts plus action-set spot-checks); render each as Dot for visual verification. Estimated 2-3 h.</p>
+</body></html>

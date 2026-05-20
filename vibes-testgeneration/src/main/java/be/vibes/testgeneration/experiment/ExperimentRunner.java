@@ -33,7 +33,7 @@ import java.util.Locale;
  * Phase-0 experiment harness. Loops every enabled SPL × every coverage
  * criterion × every valid product configuration, generates the test
  * suite, measures coverage / size / time / memory, and emits one CSV row
- * per cell to {@code automode-reports/metrics/phase0-prelim-metrics.csv}
+ * per cell to {@code milestone-reports/metrics/phase0-prelim-metrics.csv}
  * (or a path provided via {@code OUTPUT_CSV} env var).
  *
  * <p>Honours the same env-var contract as the user's ESG-Fx-side
@@ -52,7 +52,7 @@ import java.util.Locale;
  *       fixed set {@code state}, {@code transition}, {@code pair};
  *       defaults to all three.</li>
  *   <li>{@code OUTPUT_CSV} — destination path; defaults to
- *       {@code automode-reports/metrics/phase0-prelim-metrics.csv}.</li>
+ *       {@code milestone-reports/metrics/phase0-prelim-metrics.csv}.</li>
  * </ul>
  *
  * <p>The CSV uses {@code ;} as the field separator and {@code ,} as the
@@ -63,7 +63,7 @@ public final class ExperimentRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExperimentRunner.class);
 
-    private static final String DEFAULT_OUTPUT = "automode-reports/metrics/phase0-prelim-metrics.csv";
+    private static final String DEFAULT_OUTPUT = "milestone-reports/metrics/phase0-prelim-metrics.csv";
     private static final List<String> DEFAULT_SPLS = Arrays.asList("SVM", "eMail", "Elevator");
     private static final List<String> DEFAULT_COVERAGES = Arrays.asList("state", "transition", "pair");
 

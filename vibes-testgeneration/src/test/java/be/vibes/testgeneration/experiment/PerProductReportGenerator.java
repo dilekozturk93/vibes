@@ -38,7 +38,7 @@ import java.util.TreeSet;
  * a PNG, then list the test suites generated for state / transition / pair
  * coverage immediately below it. Output is a single markdown document
  * referencing the per-product PNGs, under
- * {@code automode-reports/per-product/<SPL>/}.
+ * {@code milestone-reports/per-product/<SPL>/}.
  *
  * <p>The selected/deselected feature list is filtered to features that
  * actually label at least one transition in the SPL FTS. Abstract or
@@ -103,7 +103,7 @@ public final class PerProductReportGenerator {
                 ? args[0]
                 : System.getenv().getOrDefault("SPL", "SVM");
         SplSpec spec = specFor(splName);
-        Path outputDir = Paths.get("automode-reports/per-product/" + spec.name);
+        Path outputDir = Paths.get("milestone-reports/per-product/" + spec.name);
         Path reportFile = outputDir.resolve(spec.name + "-per-product-report.md");
         Path htmlFile = outputDir.resolve(spec.name + "-per-product-report.html");
         Files.createDirectories(outputDir);
@@ -221,9 +221,14 @@ public final class PerProductReportGenerator {
         FeaturedTransitionSystem projected = FExpressionPreservingProjection.project(fts, config);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
 
-        // Render the repaired FTS to Dot then to PNG.
+        // Persist the repaired FTS itself (XML) plus a Dot and a PNG
+        // rendering. The XML is the source-of-truth product-level model
+        // the test suites below are generated from; keeping it on disk
+        // alongside the visualizations makes the report self-contained.
+        Path xmlPath = outputDir.resolve(spec.name + "-product" + productIndex + ".fts.xml");
         Path dotPath = outputDir.resolve(spec.name + "-product" + productIndex + ".dot");
         Path pngPath = outputDir.resolve(spec.name + "-product" + productIndex + ".png");
+        be.vibes.dsl.io.Xml.print(repaired, xmlPath.toFile());
         try (PrintStream out = new PrintStream(dotPath.toFile())) {
             out.println(Dot.format(repaired));
         }

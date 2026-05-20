@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>milestone-M7-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Milestone M7 Report</h1>
+<p><strong>Date:</strong> 2026-05-16 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report)</p>
+<h2>Scope</h2>
+<p>Wire the Phase-0 experiment harness: a CSV-producing runner that loops the enabled SPLs × the three coverage criteria × every valid product configuration, calls the generators from M4 / M5 / M6, and records per-cell coverage, suite size, generation time, and peak memory. This is the feasibility evidence for the May 18 abstract.</p>
+<h2>Files changed</h2>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/experiment/MetricsCollector.java</code></li>
+</ul>
+<p>— coverage measurement (state / transition / pair) on a walk or a suite, JVM heap helpers, and total-transition counters that exclude synthetic balancing edges.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/experiment/ExperimentRunner.java</code></li>
+</ul>
+<p>— main entry point. Honours the same env-var contract as the user's ESG-Fx <code>RQ2_ExtremeScalability_L234</code> (<code>SHARD</code>, <code>N_SHARDS</code>, <code>runID</code>, <code>TIMEOUT_HOURS</code>); writes a semicolon-separated CSV with comma-decimal values to <code>milestone-reports/metrics/phase0-prelim-metrics.csv</code> (or the path supplied via the <code>OUTPUT_CSV</code> env var).</p>
+<ul>
+  <li><code>milestone-reports/metrics/phase0-prelim-metrics.csv</code> — output of the</li>
+</ul>
+<p>first harness run, 36 rows (12 SVM configurations × 3 coverages).</p>
+<h2>What was implemented</h2>
+<h3><code>MetricsCollector</code></h3>
+<p>Coverage percentage of a generated walk (M4 / M5) or suite (M6) against the repaired product-level FTS. Synthetic balancing transitions are filtered before computing both numerator and denominator. APIs:</p>
+<ul>
+  <li><code>stateCoveragePercentage(repaired, walk)</code> /</li>
+</ul>
+<p><code>stateCoveragePercentageOfSuite(repaired, suite)</code></p>
+<ul>
+  <li><code>transitionCoveragePercentage</code> and its suite variant</li>
+  <li><code>pairCoveragePercentageOfSuite(repaired, suite)</code> and</li>
+</ul>
+<p><code>pairCoveragePercentage(repaired, walk)</code></p>
+<ul>
+  <li><code>totalSuiteTransitions(suite)</code>, <code>totalWalkTransitions(walk)</code></li>
+  <li><code>usedHeapBytes()</code>, <code>bytesToMb(bytes)</code> for the runner's memory baseline.</li>
+</ul>
+<h3><code>ExperimentRunner</code></h3>
+<p>Env-var contract identical to the user's ESG-Fx harness (so existing Python aggregation scripts work unchanged):</p>
+<table>
+  <thead><tr><th>Variable</th><th>Default</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>SHARD</code></td><td>0</td><td>This run's shard index</td></tr>
+    <tr><td><code>N_SHARDS</code></td><td>1</td><td>Total shard count; row included iff <code>(productId - 1) % N == shard</code></td></tr>
+    <tr><td><code>runID</code></td><td>1</td><td>Replication identifier (included in every row)</td></tr>
+    <tr><td><code>TIMEOUT_HOURS</code></td><td>0 (unlimited)</td><td>Soft wall-clock budget</td></tr>
+    <tr><td><code>SPLS</code></td><td><code>SVM,eMail,Elevator</code></td><td>Comma-separated SPL list</td></tr>
+    <tr><td><code>COVERAGES</code></td><td><code>state,transition,pair</code></td><td>Comma-separated coverage list</td></tr>
+    <tr><td><code>OUTPUT_CSV</code></td><td><code>milestone-reports/metrics/phase0-prelim-metrics.csv</code></td><td>Output path</td></tr>
+  </tbody>
+</table>
+<p>For each cell (SPL, configuration, coverage): 1. <code>FExpressionPreservingProjection.project</code> (M4). 2. <code>InitialSccFilter.keepInitialScc</code> (M4). 3. Run the coverage-specific generator (M4 transition / M5 state / M6 pair). 4. Measure coverage percentage on the repaired FTS. 5. Measure generation time (<code>System.nanoTime</code> around the generator call) and peak heap delta over the cell. 6. Emit one CSV row.</p>
+<h3>CSV format</h3>
+<pre><code>spl;coverage;productId;runID;configCount;suiteSize;totalTransitions;coveragePct;genTimeMs;peakMemoryMb
+</code></pre>
+<p>Field separator <code>;</code>, decimal separator <code>,</code>, matching the user's existing ESG-Fx-side Python aggregation scripts.</p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td>All 49 pre-existing tests still pass</td><td>✓</td></tr>
+    <tr><td>Module compiles cleanly</td><td>✓</td></tr>
+    <tr><td><code>ExperimentRunner</code> produces a 36-row CSV for SVM in under 1 second</td><td>✓</td></tr>
+  </tbody>
+</table>
+<h2>Phase-0 preliminary results (SVM, all 12 configurations)</h2>
+<table>
+  <thead><tr><th>Coverage</th><th>Mean coverage achieved</th><th>Mean suite length (transitions)</th><th>Min / max length</th><th>Mean gen time (ms)</th><th>Max gen time (ms)</th></tr></thead>
+  <tbody>
+    <tr><td>state</td><td><strong>1.000</strong></td><td>7.8</td><td>3 / 15</td><td>0.441</td><td>1.776</td></tr>
+    <tr><td>transition</td><td><strong>1.000</strong></td><td>7.5</td><td>4 / 12</td><td>1.027</td><td>4.119</td></tr>
+    <tr><td>pair</td><td><strong>1.000</strong></td><td>9.8</td><td>5 / 17</td><td>0.846</td><td>2.754</td></tr>
+  </tbody>
+</table>
+<p>Peak heap usage per cell is ≤ 0.5 MB across all 36 cells.</p>
+<p><strong>Key observations:</strong></p>
+<ul>
+  <li>All three coverage criteria reach 100% on every product configuration.</li>
+  <li>Coverage hierarchy holds in suite length: state ≈ transition < pair,</li>
+</ul>
+<p>matching the theoretical expectation that pair coverage is the strongest of the three.</p>
+<ul>
+  <li>Generation is fast (sub-millisecond average for state, low single-digit</li>
+</ul>
+<p>milliseconds worst case for transition/pair). For RQ1 ("feasibility") this is decisive evidence: even the strongest criterion completes per product in milliseconds on SVM.</p>
+<ul>
+  <li>State-coverage walk being SHORTER than transition-coverage cycle</li>
+</ul>
+<p>on average matches the algorithm: state coverage stops as soon as every state has been visited, while transition coverage walks every edge (with the Eulerian-balance overhead).</p>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong><code>SPLS</code> defaults to {SVM, eMail, Elevator}</strong> but the harness fails</li>
+</ul>
+<p>fast on eMail / Elevator because their DIMACS + mapping files have not yet been generated. M7 was run with only <code>SPLS=SVM</code> for now; bundling DIMACS for the remaining SPLs is Phase-1 work (see plan M9 / M-mut reuse: run the user's <code>FeatureModelToDimacsExporter</code> on each SPL's <code>model.xml</code>).</p>
+<ul>
+  <li><strong>Memory measured as heap delta</strong>, not RSS. RSS is more accurate but</li>
+</ul>
+<p>requires platform-specific probes; heap is a reasonable proxy for the algorithm's working set and is portable.</p>
+<ul>
+  <li><strong><code>System.gc()</code> before each cell.</strong> A best-effort baseline; the JVM</li>
+</ul>
+<p>does not have to honour it, but it keeps the heap delta numbers in the same ballpark across cells.</p>
+<ul>
+  <li><strong>Coverage percentages clamped to ≤ 1.0</strong> at the numerator (number of</li>
+</ul>
+<p>hits, not raw covered-set size) so a walk that contains transitions outside the repaired FTS cannot inflate the percentage above 100%. (Should not happen in our pipeline, but the clamp is a defensive guard.)</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>DIMACS for eMail / Elevator / BankAccountv2 / StudentAttendanceSystem</strong></li>
+</ul>
+<p>is not yet bundled with the project. These SPLs need <code>FeatureModelToDimacsExporter</code> run on their <code>model.xml</code> and the resulting <code>.dimacs</code> + <code>_dimacsmapping.txt</code> files copied into the <code>vibes-testgeneration/src/main/resources/cases/&lt;SPL&gt;/configs/</code> directory before the harness can include them.</p>
+<ul>
+  <li><strong>Git push credentials</strong> — unchanged.</li>
+</ul>
+<h2>Next milestone preview</h2>
+<p><strong>M8 (May 17–18):</strong> abstract update with the SVM feasibility numbers above, then submission. Phase 1 work (DIMACS generation for the remaining four SPLs + mutation-testing harness integration + random baseline) starts post-abstract.</p>
+</body></html>

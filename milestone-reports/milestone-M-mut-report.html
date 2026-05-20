@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>milestone-M-mut-report.md</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 980px; margin: 2em auto; padding: 0 1em; color: #222; line-height: 1.55; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { color: #555; margin-top: 1.5em; }
+h4 { color: #666; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; line-height: 1.45; }
+pre code { background: transparent; padding: 0; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { padding-left: 1.6em; }
+</style>
+</head><body>
+<h1>Milestone M-mut Report</h1>
+<p>> ⚠ <strong>Counts here predate <a href="milestone-M0-rev-report.html">M0-rev</a>.</strong> SVM > cardinalities cited below (11 states, 18 transitions) are from the > initial naive converter. After M0-rev's bisimulation-minimized > converter, SVM is 9 states / 13 transitions / 12 actions, so the > mutant counts in this report change accordingly: > > | Operator | M-mut report | Current (post-M0-rev) | > |-------------------|---------------|-----------------------| > | TransitionMissing | 18 | <strong>13</strong> | > | ActionExchange | 18 × 11 = 198 | <strong>13 × 11 = 143</strong> | > > The operators themselves are unchanged; only the input FTS size > shrank. The current numbers will be re-computed automatically by the > experiment harness in Phase 2.</p>
+<p><strong>Date:</strong> 2026-05-15 <strong>Branch:</strong> <code>feat/product-test-generation</code> <strong>Commit:</strong> (set in the commit that lands this report)</p>
+<h2>Scope</h2>
+<p>Port the two mutation operators referenced in the ICTSS abstract (TransitionMissing and ActionExchange) from the user's ESG-Fx project into the new <code>vibes-testgeneration</code> module, working directly on the VIBeS <code>FeaturedTransitionSystem</code> API. Slotted earlier than the original plan (M9) at the user's explicit request after they chose option C ("port logic from ESG-Fx project") over reviving the old <code>vibes-mutation</code> module (which is still on the pre-2.x API and would have required a non-trivial migration).</p>
+<h2>Files changed</h2>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/MutationOperator.java</code></li>
+</ul>
+<p>— abstract base class modelled after the ESG-Fx <code>tr.edu.iyte.esgfx.mutationtesting.mutationoperators.MutationOperator</code>. Holds the mutant map and the operator's human-readable name; concrete subclasses override <code>generateMutants(FeaturedTransitionSystem)</code>.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/FtsCloning.java</code></li>
+</ul>
+<p>— utility that builds modified copies of an FTS via <code>FeaturedTransitionSystemFactory</code>. Three entry points: <code>copy(fts)</code>, <code>withoutTransition(fts, t)</code>, <code>withReplacedAction(fts, t, a)</code>. Centralises the rebuild-with-one-change pattern so operators stay short.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/TransitionMissing.java</code></li>
+</ul>
+<p>— FTS analog of ESG-Fx's <code>EdgeOmitter</code>. One mutant per transition; the transition is dropped, everything else preserved.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/ActionExchange.java</code></li>
+</ul>
+<p>— FTS analog of vibes-mutation's <code>ActionExchange</code>. For each <code>(transition, alternative_action)</code> pair, produce a mutant where the transition's label is swapped to the alternative action; source state, target state, and feature expression preserved.</p>
+<ul>
+  <li><code>vibes-testgeneration/src/test/java/be/vibes/testgeneration/mutation/MutationOperatorsTest.java</code></li>
+</ul>
+<p>— 9 tests covering toy graph (2-state loop) and SVM cardinalities, key uniqueness, mutant distinctness, and the cloning utility's copy / drop / replace primitives.</p>
+<h2>What was implemented</h2>
+<h3><code>MutationOperator</code> (base class)</h3>
+<p>Closely mirrors the ESG-Fx-side hierarchy:</p>
+<ul>
+  <li><code>protected String name</code> + <code>protected Map&lt;String, FeaturedTransitionSystem&gt; mutants</code></li>
+  <li><code>public abstract void generateMutants(FeaturedTransitionSystem fts)</code></li>
+  <li>Read-only accessors: <code>getName()</code>, <code>getMutants()</code> (unmodifiable view),</li>
+</ul>
+<p><code>getMutantCount()</code>.</p>
+<p>Validation of whether a mutant is "valid" (e.g. still strongly connected post-mutation) is intentionally NOT performed here. The ESG-Fx pipeline also produces both valid and invalid mutants and lets the downstream fault-detection harness sort them out. We mirror that decision so the methodology is unchanged from the prior published study.</p>
+<h3><code>FtsCloning</code></h3>
+<p>Three operations parameterised by a single shared <code>rebuild</code> kernel:</p>
+<ul>
+  <li><code>copy(fts)</code> — identity rebuild; needed for the toy-graph round-trip test</li>
+</ul>
+<p>and as a primitive used by mutation operators if they ever need to decouple from the input identity-wise.</p>
+<ul>
+  <li><code>withoutTransition(fts, t)</code> — rebuild skipping one transition.</li>
+  <li><code>withReplacedAction(fts, t, a)</code> — rebuild skipping the target transition</li>
+</ul>
+<p>AND adding a new transition with the same source / target / feature expression but the replacement action. This is the structural primitive the <code>ActionExchange</code> operator needs.</p>
+<h3><code>TransitionMissing</code></h3>
+<p>Snapshots the original transition list (so iteration order does not interact with the per-mutant rebuilds), then for each transition calls <code>FtsCloning.withoutTransition(fts, t)</code>. Mutant key format: <code>TM__&lt;source&gt;__&lt;action&gt;__&lt;target&gt;</code>. Stable across runs (depends only on source/action/target names) and grep-friendly.</p>
+<h3><code>ActionExchange</code></h3>
+<p>For each transition × every other action in the FTS alphabet, generates a mutant with <code>FtsCloning.withReplacedAction(fts, t, replacement)</code>. The total mutant count is <code>|T| × (|A| − 1)</code>. For SVM (18 transitions, 12 actions) that yields 198 mutants. Mutant key format: <code>AEX__&lt;source&gt;__&lt;originalAction&gt;__&lt;newAction&gt;__&lt;target&gt;</code>.</p>
+<h2>Verification</h2>
+<table>
+  <thead><tr><th>Check</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td><code>mvn -pl vibes-testgeneration test</code> green (36 tests now)</td><td>✓ — <code>Tests run: 36, Failures: 0, Errors: 0, Skipped: 0</code></td></tr>
+    <tr><td>Toy graph: TransitionMissing produces 2 mutants from 2 transitions, each with 1 fewer transition</td><td>✓</td></tr>
+    <tr><td>TransitionMissing mutant keys are unique and use the <code>TM__</code> prefix</td><td>✓</td></tr>
+    <tr><td>SVM: TransitionMissing produces exactly 18 mutants (=</td><td>T</td><td>)</td><td>✓</td></tr>
+    <tr><td>Toy graph: ActionExchange produces 2 mutants (= 2 × 1)</td><td>✓</td></tr>
+    <tr><td>SVM: ActionExchange produces exactly 198 mutants (= 18 × 11)</td><td>✓</td></tr>
+    <tr><td>Every TransitionMissing mutant is structurally distinct from every other</td><td>✓</td></tr>
+    <tr><td>Every ActionExchange mutant is structurally distinct from every other</td><td>✓</td></tr>
+    <tr><td>TransitionMissing and ActionExchange mutant sets are disjoint (different cardinalities for the transition list)</td><td>✓</td></tr>
+    <tr><td><code>FtsCloning.copy</code> produces a structurally-equal but distinct object</td><td>✓</td></tr>
+    <tr><td><code>FtsCloning.withoutTransition</code> drops only the named transition</td><td>✓</td></tr>
+  </tbody>
+</table>
+<h2>Decisions taken</h2>
+<ul>
+  <li><strong>Operators live in <code>be.vibes.testgeneration.mutation</code></strong>, not in the</li>
+</ul>
+<p>legacy <code>vibes-mutation</code> module. The legacy module is still on the pre-2.x API and depends on the also-disabled <code>vibes-transformation</code> module; reviving it would have been larger than this whole port. Putting the operators inside <code>vibes-testgeneration</code> also keeps the new pipeline self-contained.</p>
+<ul>
+  <li><strong>No "validate the mutant" step in the operators themselves.</strong> Whether</li>
+</ul>
+<p>a mutant is "viable" (e.g. still strongly connected, still reachable from the initial state) is a question the experiment harness decides on, not the operator. We match the user's ESG-Fx convention here.</p>
+<ul>
+  <li>**<code>ActionExchange</code> enumerates every <code>(transition, alternative_action)</code></li>
+</ul>
+<p>pair**, not just one swap per transition (which is what vibes-mutation's selection-strategy-driven version does). This matches the ESG-Fx-style "enumerate every mutation site" approach and makes the mutant-set reproducible across runs (no RNG, no strategy choice).</p>
+<ul>
+  <li><strong>Mutant keys include human-readable state and action names</strong> rather</li>
+</ul>
+<p>than opaque integer IDs. Easier to grep and to diff between runs; cost is a few extra bytes per CSV row.</p>
+<ul>
+  <li><strong>No mutant validity check (strong-connectivity etc.) here.</strong> Adding</li>
+</ul>
+<p>one would let us mark mutants up front as "definitely cannot be killed by any test" (= equivalent in our setting), but that's a property of the <em>coverage criterion + test suite</em> pair, not of the operator. The experiment harness will handle this in M7.</p>
+<h2>SVM mutant inventory</h2>
+<p>For the SVM SPL (M0 conversion: 11 states, 18 transitions, 12 actions), running both operators against the SPL-level FTS yields:</p>
+<table>
+  <thead><tr><th>Operator</th><th>Mutants</th></tr></thead>
+  <tbody>
+    <tr><td>TransitionMissing</td><td>18</td></tr>
+    <tr><td>ActionExchange</td><td>198</td></tr>
+    <tr><td><strong>Total</strong></td><td><strong>216</strong></td></tr>
+  </tbody>
+</table>
+<p>A typical mutation-testing run will also apply each operator to each <em>projected product</em> FTS (= per-configuration mutants). For SVM with 12 valid configurations, an unfiltered upper bound on the per-product mutant count is in the same order of magnitude (less because projected FTSs are smaller).</p>
+<h2>Open questions / blockers</h2>
+<ul>
+  <li><strong>Git push credentials</strong> — same as M0–M4. Continuing local-only;</li>
+</ul>
+<p>please configure <code>gh auth login</code> (or equivalent) when convenient.</p>
+<h2>Next milestone preview</h2>
+<p><strong>M5 (next):</strong> <code>StateCoverageGenerator</code> — Hierholzer + reactive Dijkstra reroute toward the nearest uncovered state when the natural traversal exhausts uncovered neighbours. Analog of the ESG-Fx-side <code>EulerCycleGeneratorForEventCoverage</code>. State coverage produces shorter test cases than transition coverage (it does not need every edge), so the resulting test suites are the natural lower-cost baseline for RQ3.</p>
+</body></html>
