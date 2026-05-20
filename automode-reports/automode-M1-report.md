@@ -1,5 +1,27 @@
 # Automode Milestone M1 Report
 
+> ⚠ **Two clarifications carried in from later milestones:**
+>
+> 1. **Cardinalities below predate [M0-rev](automode-M0-rev-report.html).**
+>    The 11/18, 16/31, 20/70 numbers come from the initial naive
+>    1-vertex-per-state converter. After bisimulation reduction the
+>    canonical FTS sizes are 9/13 (SVM), 11/22 (eMail), 14/42
+>    (Elevator).
+>
+> 2. **"Terminal vertices merged into INIT" uses a strict definition.**
+>    A vertex counts as terminal **only if every outgoing edge goes
+>    to `]`**. Vertices that have at least one non-`]` successor are
+>    NOT counted here even though they may also have an edge to `]`
+>    — those edges are silently dropped while the vertex itself stays
+>    as its own FTS state. This is why eMail reports "2" terminals
+>    (despite 4 events touching `]`) and Elevator reports "0"
+>    (despite 10 events touching `]`): in eMail only 2 events have
+>    `]` as their sole successor, and in Elevator every event has at
+>    least one non-`]` continuation.
+>
+>    Dropped `]`-edges are reflected in the `FTS transitions` column:
+>    `FTS transitions = ESG edges − (edges to ])`.
+
 **Date:** 2026-05-13
 **Branch:** `feat/product-test-generation`
 **Commit:** (set in the commit that lands this report)
