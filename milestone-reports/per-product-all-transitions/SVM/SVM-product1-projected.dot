@@ -1,0 +1,15 @@
+digraph G {
+rankdir=LR;
+state0[ label = "state1", style=filled, color=green ];
+state1 [ label = "state6" ];
+state2 [ label = "state5" ];
+state3 [ label = "state7" ];
+state4 [ label = "state3" ];
+state2 -> state3 [ label=" serveTea/t " ];
+state3 -> state0 [ label=" take/f " ];
+state4 -> state1 [ label=" cancel/c " ];
+state0 -> state4 [ label=" free/f " ];
+state1 -> state0 [ label=" return/c " ];
+state4 -> state2 [ label=" tea/t " ];
+}
+

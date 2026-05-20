@@ -1,0 +1,24 @@
+digraph G {
+rankdir=LR;
+state0[ label = "state1", style=filled, color=green ];
+state1 [ label = "state11" ];
+state2 [ label = "state8" ];
+state3 [ label = "state7" ];
+state4 [ label = "state10" ];
+state5 [ label = "state2" ];
+state6 [ label = "state3" ];
+state3 -> state0 [ label=" send email/e " ];
+state3 -> state1 [ label=" get receiver's   public key/en " ];
+state1 -> state4 [ label=" encrypt mail  with receiver's  public key/en " ];
+state6 -> state2 [ label=" select email/e " ];
+state5 -> state3 [ label=" enter  receiver's  email address/e " ];
+state3 -> state5 [ label=" enter  email  subject/e " ];
+state2 -> state0 [ label=" __end__/true ", style=dashed, color=red ];
+state0 -> state6 [ label=" open mailbox/e " ];
+state0 -> state5 [ label=" compose new  email/e " ];
+state5 -> state5 [ label=" enter email  body/e " ];
+state5 -> state5 [ label=" enter  email  subject/e " ];
+state4 -> state0 [ label=" send email/e " ];
+state3 -> state3 [ label=" enter  receiver's  email address/e " ];
+}
+

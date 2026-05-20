@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>Per-Product All-Transitions — Elevator</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 1080px; margin: 2em auto; padding: 0 1em; line-height: 1.55; color: #222; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { margin-top: 1.6em; color: #555; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95em; }
+pre { background: #f4f4f4; padding: 10px 12px; border-radius: 4px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9em; }
+img { max-width: 100%; border: 1px solid #ccc; padding: 4px; background: white; display: block; margin: 1em auto; }
+ul { padding-left: 1.4em; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+</style>
+</head><body>
+<h1>Per-Product All-Transitions Coverage — Elevator</h1>
+<h2>How the all-transitions test case is built (M4 pipeline)</h2>
+<p>Given an SPL-level FTS plus one product configuration, the generator runs five steps. All five live in <code>vibes-testgeneration</code>; the orchestrator is <code>TransitionCoverageGenerator.generate(...)</code>.</p>
+<ol>
+<li><strong>Project onto the product.</strong> <code>FExpressionPreservingProjection.project</code> keeps every transition whose feature expression evaluates true under the configuration; a forward BFS from the initial state then drops unreachable states.</li>
+<li><strong>Repair strong connectivity.</strong> <code>InitialSccFilter.keepInitialScc</code> (uses <code>StronglyConnectedComponents</code> for Tarjan) isolates the SCC containing the initial state.</li>
+<li><strong>Balance for an Euler cycle.</strong> <code>EulerianBalancer.balance</code> runs a directed Chinese Postman: for each pair of imbalanced states it finds a shortest path of real transitions and doubles them (label suffix <code>__dup__N</code>); fallback to direct <code>__balance__N</code> when no path exists.</li>
+<li><strong>Trace the Euler cycle.</strong> <code>HierholzerEulerCycle.compute</code> walks the balanced graph with Hierholzer's algorithm, returning one contiguous transition sequence that visits every edge of the balanced graph exactly once.</li>
+<li><strong>Wrap into a TestCase.</strong> The cycle is enqueued; synthetic actions remain as test-case boundary markers and are filtered from coverage measurement via <code>EulerianBalancer.isSyntheticAction</code>.</li>
+</ol>
+<p><strong>Coverage claim (by construction).</strong> Balancing only adds edges, Hierholzer visits every edge of the balanced graph exactly once, therefore the cycle's real (non-synthetic) transitions cover 100% of the projected FTS' real transitions — a structural invariant, not an empirical observation.</p>
+<hr/>
+<h2>Products</h2>
+<p>Each product below shows the projected FTS (synthetic <code>__end__</code> dashed-red) and the balanced FTS (Chinese-Postman doubled <code>&lt;action&gt;__dup__N</code> dashed-red). The generated all-transitions test case is listed underneath, segmented at every synthetic action.</p>
+<h3>Product 1</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, PinPad}</p>
+<p><strong>Projected FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 43 transitions (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product1-projected.png" alt="Projected FTS — product 1"/>
+<img src="Elevator-product1-balanced.png" alt="Balanced FTS — product 1"/>
+<p><strong>All-transitions test case (<code>Elevator_p1_trans</code>)</strong> — 43 step(s) total (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>enter PIN &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; enter PIN &amp;rarr; press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall down &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; enter PIN</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; enter PIN -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 2</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 34 transitions (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product2-projected.png" alt="Projected FTS — product 2"/>
+<img src="Elevator-product2-balanced.png" alt="Balanced FTS — product 2"/>
+<p><strong>All-transitions test case (<code>Elevator_p2_trans</code>)</strong> — 34 step(s) total (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>18/18 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>tap mobile key &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>tap mobile key &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; tap mobile key -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 3</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor}</p>
+<p><strong>Projected FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 43 transitions (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product3-projected.png" alt="Projected FTS — product 3"/>
+<img src="Elevator-product3-balanced.png" alt="Balanced FTS — product 3"/>
+<p><strong>All-transitions test case (<code>Elevator_p3_trans</code>)</strong> — 43 step(s) total (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; read card &amp;rarr; press cabin executive floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall down &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; read card</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; read card -&gt; press cabin executive floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; read card -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 4</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 38 transitions (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product4-projected.png" alt="Projected FTS — product 4"/>
+<img src="Elevator-product4-balanced.png" alt="Balanced FTS — product 4"/>
+<p><strong>All-transitions test case (<code>Elevator_p4_trans</code>)</strong> — 38 step(s) total (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; tap mobile key &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>tap mobile key &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; tap mobile key -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 5</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService}</p>
+<p><strong>Projected FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 49 transitions (20 real / 10 <code>__end__</code> / 25 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product5-projected.png" alt="Projected FTS — product 5"/>
+<img src="Elevator-product5-balanced.png" alt="Balanced FTS — product 5"/>
+<p><strong>All-transitions test case (<code>Elevator_p5_trans</code>)</strong> — 49 step(s) total (20 real / 10 <code>__end__</code> / 25 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press&amp;hold door close &amp;rarr; release door close</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 3</strong>: <code>press alarm button</code></li>
+<li><strong>sub-walk 4</strong>: <code>press&amp;hold door open</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin lobby &amp;rarr; press&amp;hold door open &amp;rarr; release door open &amp;rarr; press&amp;hold door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 8</strong>: <code>press hall down &amp;rarr; press cabin roof &amp;rarr; press&amp;hold door close</code></li>
+<li><strong>sub-walk 9</strong>: <code>press&amp;hold door close</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press alarm button(dup) -&gt; press&amp;hold door close -&gt; release door close -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby(dup) -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press alarm button(dup) -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press&amp;hold door open(dup) -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press&amp;hold door open -&gt; release door open -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; press&amp;hold door close(dup) -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__</pre>
+<h3>Product 6</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, Intercom, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 38 transitions (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product6-projected.png" alt="Projected FTS — product 6"/>
+<img src="Elevator-product6-balanced.png" alt="Balanced FTS — product 6"/>
+<p><strong>All-transitions test case (<code>Elevator_p6_trans</code>)</strong> — 38 step(s) total (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>read card &amp;rarr; press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>read card &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 7</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 49 transitions (22 real / 13 <code>__end__</code> / 24 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product7-projected.png" alt="Projected FTS — product 7"/>
+<img src="Elevator-product7-balanced.png" alt="Balanced FTS — product 7"/>
+<p><strong>All-transitions test case (<code>Elevator_p7_trans</code>)</strong> — 49 step(s) total (22 real / 13 <code>__end__</code> / 24 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>tap mobile key &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 7</strong>: <code>tap mobile key</code></li>
+<li><strong>sub-walk 8</strong>: <code>press alarm button</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 13</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 14</strong>: <code>press hall LobbyUp &amp;rarr; tap mobile key</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 8</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, PinPad}</p>
+<p><strong>Projected FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 57 transitions (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product8-projected.png" alt="Projected FTS — product 8"/>
+<img src="Elevator-product8-balanced.png" alt="Balanced FTS — product 8"/>
+<p><strong>All-transitions test case (<code>Elevator_p8_trans</code>)</strong> — 57 step(s) total (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>26/26 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; enter PIN &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin roof &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin executive floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 5</strong>: <code>press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 11</strong>: <code>enter PIN</code></li>
+<li><strong>sub-walk 12</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 13</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 14</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 15</strong>: <code>press hall LobbyUp &amp;rarr; enter PIN</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; enter PIN -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin roof -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor(dup) -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 9</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Projected FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 57 transitions (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product9-projected.png" alt="Projected FTS — product 9"/>
+<img src="Elevator-product9-balanced.png" alt="Balanced FTS — product 9"/>
+<p><strong>All-transitions test case (<code>Elevator_p9_trans</code>)</strong> — 57 step(s) total (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>26/26 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; enter PIN &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin roof &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin executive floor &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 5</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 11</strong>: <code>enter PIN</code></li>
+<li><strong>sub-walk 12</strong>: <code>press intercom</code></li>
+<li><strong>sub-walk 13</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 14</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 15</strong>: <code>press hall LobbyUp &amp;rarr; enter PIN</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; enter PIN -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin roof -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; press intercom -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 10</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, FirefighterService, Intercom}</p>
+<p><strong>Projected FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 49 transitions (20 real / 10 <code>__end__</code> / 25 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product10-projected.png" alt="Projected FTS — product 10"/>
+<img src="Elevator-product10-balanced.png" alt="Balanced FTS — product 10"/>
+<p><strong>All-transitions test case (<code>Elevator_p10_trans</code>)</strong> — 49 step(s) total (20 real / 10 <code>__end__</code> / 25 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press&amp;hold door close &amp;rarr; release door close</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 3</strong>: <code>press intercom</code></li>
+<li><strong>sub-walk 4</strong>: <code>press&amp;hold door open</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin lobby &amp;rarr; press&amp;hold door open &amp;rarr; release door open &amp;rarr; press&amp;hold door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 8</strong>: <code>press hall down &amp;rarr; press cabin roof &amp;rarr; press&amp;hold door close</code></li>
+<li><strong>sub-walk 9</strong>: <code>press&amp;hold door close</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press intercom(dup) -&gt; press&amp;hold door close -&gt; release door close -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby(dup) -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press intercom(dup) -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press&amp;hold door open(dup) -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press&amp;hold door open -&gt; release door open -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; press&amp;hold door close(dup) -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__</pre>
+<h3>Product 11</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, Intercom, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 12 states, 31 transitions (25 real / 6 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 12 states, 31 transitions (25 real / 6 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 12 states, 48 transitions (25 real / 9 <code>__end__</code> / 17 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product11-projected.png" alt="Projected FTS — product 11"/>
+<img src="Elevator-product11-balanced.png" alt="Balanced FTS — product 11"/>
+<p><strong>All-transitions test case (<code>Elevator_p11_trans</code>)</strong> — 48 step(s) total (25 real / 9 <code>__end__</code> / 17 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>25/25 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press intercom &amp;rarr; press&amp;hold door open &amp;rarr; release door open</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 3</strong>: <code>press alarm button &amp;rarr; press&amp;hold door close &amp;rarr; release door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin roof &amp;rarr; press&amp;hold door open</code></li>
+<li><strong>sub-walk 8</strong>: <code>press&amp;hold door open</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof &amp;rarr; press&amp;hold door close</code></li>
+<li><strong>sub-walk 11</strong>: <code>press&amp;hold door close</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press intercom -&gt; press&amp;hold door open -&gt; release door open -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby(dup) -&gt; press alarm button -&gt; press&amp;hold door close -&gt; release door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom(dup) -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall up -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin roof -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; press&amp;hold door close(dup) -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__</pre>
+<h3>Product 12</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, PinPad}</p>
+<p><strong>Projected FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 43 transitions (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product12-projected.png" alt="Projected FTS — product 12"/>
+<img src="Elevator-product12-balanced.png" alt="Balanced FTS — product 12"/>
+<p><strong>All-transitions test case (<code>Elevator_p12_trans</code>)</strong> — 43 step(s) total (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>enter PIN &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; enter PIN &amp;rarr; press cabin executive floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall down &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; enter PIN</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; enter PIN -&gt; press cabin executive floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 13</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 12 states, 46 transitions (24 real / 9 <code>__end__</code> / 16 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product13-projected.png" alt="Projected FTS — product 13"/>
+<img src="Elevator-product13-balanced.png" alt="Balanced FTS — product 13"/>
+<p><strong>All-transitions test case (<code>Elevator_p13_trans</code>)</strong> — 46 step(s) total (24 real / 9 <code>__end__</code> / 16 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>24/24 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press&amp;hold door open</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 3</strong>: <code>press alarm button &amp;rarr; press&amp;hold door close &amp;rarr; release door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall up &amp;rarr; press cabin roof &amp;rarr; press&amp;hold door open &amp;rarr; release door open &amp;rarr; press&amp;hold door open</code></li>
+<li><strong>sub-walk 8</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor &amp;rarr; press&amp;hold door close</code></li>
+<li><strong>sub-walk 9</strong>: <code>press&amp;hold door close</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press alarm button(dup) -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby(dup) -&gt; press alarm button -&gt; press&amp;hold door close -&gt; release door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press alarm button(dup) -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; press cabin roof -&gt; press&amp;hold door open -&gt; release door open -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__</pre>
+<h3>Product 14</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom}</p>
+<p><strong>Projected FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 49 transitions (22 real / 13 <code>__end__</code> / 24 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product14-projected.png" alt="Projected FTS — product 14"/>
+<img src="Elevator-product14-balanced.png" alt="Balanced FTS — product 14"/>
+<p><strong>All-transitions test case (<code>Elevator_p14_trans</code>)</strong> — 49 step(s) total (22 real / 13 <code>__end__</code> / 24 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>read card &amp;rarr; press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall up &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall down &amp;rarr; read card</code></li>
+<li><strong>sub-walk 11</strong>: <code>press alarm button</code></li>
+<li><strong>sub-walk 12</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 13</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 14</strong>: <code>press hall LobbyUp &amp;rarr; read card</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall down -&gt; read card -&gt; press cabin executive floor(dup) -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; read card -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 15</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, FirefighterService, Intercom, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 12 states, 46 transitions (24 real / 9 <code>__end__</code> / 16 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product15-projected.png" alt="Projected FTS — product 15"/>
+<img src="Elevator-product15-balanced.png" alt="Balanced FTS — product 15"/>
+<p><strong>All-transitions test case (<code>Elevator_p15_trans</code>)</strong> — 46 step(s) total (24 real / 9 <code>__end__</code> / 16 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>24/24 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press&amp;hold door open</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 3</strong>: <code>press&amp;hold door close &amp;rarr; release door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall up &amp;rarr; press cabin roof &amp;rarr; press&amp;hold door open &amp;rarr; release door open &amp;rarr; press&amp;hold door open</code></li>
+<li><strong>sub-walk 8</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor &amp;rarr; press&amp;hold door close</code></li>
+<li><strong>sub-walk 9</strong>: <code>press&amp;hold door close</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press intercom(dup) -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby(dup) -&gt; press intercom(dup) -&gt; press&amp;hold door close -&gt; release door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; press cabin roof -&gt; press&amp;hold door open -&gt; release door open -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__</pre>
+<h3>Product 16</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons}</p>
+<p><strong>Projected FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 34 transitions (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product16-projected.png" alt="Projected FTS — product 16"/>
+<img src="Elevator-product16-balanced.png" alt="Balanced FTS — product 16"/>
+<p><strong>All-transitions test case (<code>Elevator_p16_trans</code>)</strong> — 34 step(s) total (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>18/18 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; read card &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>read card &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; read card -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 17</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, Intercom}</p>
+<p><strong>Projected FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 35 transitions (19 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product17-projected.png" alt="Projected FTS — product 17"/>
+<img src="Elevator-product17-balanced.png" alt="Balanced FTS — product 17"/>
+<p><strong>All-transitions test case (<code>Elevator_p17_trans</code>)</strong> — 35 step(s) total (19 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>19/19 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin [1-N] floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; read card &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>read card &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; read card -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 18</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 43 transitions (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product18-projected.png" alt="Projected FTS — product 18"/>
+<img src="Elevator-product18-balanced.png" alt="Balanced FTS — product 18"/>
+<p><strong>All-transitions test case (<code>Elevator_p18_trans</code>)</strong> — 43 step(s) total (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 9</strong>: <code>tap mobile key &amp;rarr; press cabin executive floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; tap mobile key</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; tap mobile key -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin executive floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 19</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ManualDoorControl, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 38 transitions (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product19-projected.png" alt="Projected FTS — product 19"/>
+<img src="Elevator-product19-balanced.png" alt="Balanced FTS — product 19"/>
+<p><strong>All-transitions test case (<code>Elevator_p19_trans</code>)</strong> — 38 step(s) total (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; tap mobile key &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>tap mobile key &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; tap mobile key -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 20</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 57 transitions (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product20-projected.png" alt="Projected FTS — product 20"/>
+<img src="Elevator-product20-balanced.png" alt="Balanced FTS — product 20"/>
+<p><strong>All-transitions test case (<code>Elevator_p20_trans</code>)</strong> — 57 step(s) total (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>26/26 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin executive floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 7</strong>: <code>press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 8</strong>: <code>tap mobile key</code></li>
+<li><strong>sub-walk 9</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 12</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 13</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 14</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 15</strong>: <code>press hall LobbyUp &amp;rarr; tap mobile key</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor(dup) -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 21</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, Intercom}</p>
+<p><strong>Projected FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 34 transitions (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product21-projected.png" alt="Projected FTS — product 21"/>
+<img src="Elevator-product21-balanced.png" alt="Balanced FTS — product 21"/>
+<p><strong>All-transitions test case (<code>Elevator_p21_trans</code>)</strong> — 34 step(s) total (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>18/18 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin [1-N] floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; read card &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>read card &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; read card -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 22</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, PinPad}</p>
+<p><strong>Projected FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 49 transitions (22 real / 13 <code>__end__</code> / 24 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product22-projected.png" alt="Projected FTS — product 22"/>
+<img src="Elevator-product22-balanced.png" alt="Balanced FTS — product 22"/>
+<p><strong>All-transitions test case (<code>Elevator_p22_trans</code>)</strong> — 49 step(s) total (22 real / 13 <code>__end__</code> / 24 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>enter PIN &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall up &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall down &amp;rarr; enter PIN</code></li>
+<li><strong>sub-walk 12</strong>: <code>press alarm button</code></li>
+<li><strong>sub-walk 13</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 14</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 15</strong>: <code>press hall LobbyUp &amp;rarr; enter PIN</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; enter PIN -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; enter PIN(dup) -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall down -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 23</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 63 transitions (28 real / 15 <code>__end__</code> / 30 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product23-projected.png" alt="Projected FTS — product 23"/>
+<img src="Elevator-product23-balanced.png" alt="Balanced FTS — product 23"/>
+<p><strong>All-transitions test case (<code>Elevator_p23_trans</code>)</strong> — 63 step(s) total (28 real / 15 <code>__end__</code> / 30 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>28/28 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin [1-N] floor &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 8</strong>: <code>press alarm button</code></li>
+<li><strong>sub-walk 9</strong>: <code>read card</code></li>
+<li><strong>sub-walk 10</strong>: <code>press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 12</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 13</strong>: <code>press hall up &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 14</strong>: <code>press hall down &amp;rarr; read card</code></li>
+<li><strong>sub-walk 15</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 16</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 17</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 18</strong>: <code>press hall LobbyUp &amp;rarr; read card</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; read card(dup) -&gt; press cabin lobby -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin [1-N] floor -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin executive floor(dup) -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin executive floor(dup) -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall down -&gt; read card -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; read card -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 24</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 63 transitions (28 real / 15 <code>__end__</code> / 30 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product24-projected.png" alt="Projected FTS — product 24"/>
+<img src="Elevator-product24-balanced.png" alt="Balanced FTS — product 24"/>
+<p><strong>All-transitions test case (<code>Elevator_p24_trans</code>)</strong> — 63 step(s) total (28 real / 15 <code>__end__</code> / 30 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>28/28 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 5</strong>: <code>tap mobile key &amp;rarr; press cabin [1-N] floor &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 8</strong>: <code>press alarm button</code></li>
+<li><strong>sub-walk 9</strong>: <code>press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 10</strong>: <code>tap mobile key</code></li>
+<li><strong>sub-walk 11</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 12</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 13</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 14</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 15</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 16</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 17</strong>: <code>press hall LobbyUp &amp;rarr; tap mobile key</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; tap mobile key(dup) -&gt; press cabin lobby -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor(dup) -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor(dup) -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 25</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, Intercom, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 39 transitions (23 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product25-projected.png" alt="Projected FTS — product 25"/>
+<img src="Elevator-product25-balanced.png" alt="Balanced FTS — product 25"/>
+<p><strong>All-transitions test case (<code>Elevator_p25_trans</code>)</strong> — 39 step(s) total (23 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>23/23 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>read card &amp;rarr; press cabin lobby &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>read card &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin lobby -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall up -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__</pre>
+<h3>Product 26</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 57 transitions (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product26-projected.png" alt="Projected FTS — product 26"/>
+<img src="Elevator-product26-balanced.png" alt="Balanced FTS — product 26"/>
+<p><strong>All-transitions test case (<code>Elevator_p26_trans</code>)</strong> — 57 step(s) total (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>26/26 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin lobby &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin executive floor &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>read card</code></li>
+<li><strong>sub-walk 8</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>read card</code></li>
+<li><strong>sub-walk 13</strong>: <code>press intercom</code></li>
+<li><strong>sub-walk 14</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 15</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 16</strong>: <code>press hall LobbyUp &amp;rarr; read card</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin lobby -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin executive floor -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin executive floor(dup) -&gt; press intercom -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; read card -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 27</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 39 transitions (23 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product27-projected.png" alt="Projected FTS — product 27"/>
+<img src="Elevator-product27-balanced.png" alt="Balanced FTS — product 27"/>
+<p><strong>All-transitions test case (<code>Elevator_p27_trans</code>)</strong> — 39 step(s) total (23 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>23/23 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; tap mobile key &amp;rarr; press cabin [1-N] floor &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>tap mobile key &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall up -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; tap mobile key -&gt; press cabin roof -&gt; __end__</pre>
+<h3>Product 28</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, Intercom}</p>
+<p><strong>Projected FTS:</strong> 10 states, 25 transitions (21 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 25 transitions (21 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 44 transitions (21 real / 9 <code>__end__</code> / 19 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product28-projected.png" alt="Projected FTS — product 28"/>
+<img src="Elevator-product28-balanced.png" alt="Balanced FTS — product 28"/>
+<p><strong>All-transitions test case (<code>Elevator_p28_trans</code>)</strong> — 44 step(s) total (21 real / 9 <code>__end__</code> / 19 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>21/21 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press intercom &amp;rarr; press&amp;hold door open</code></li>
+<li><strong>sub-walk 2</strong>: <code>press&amp;hold door close &amp;rarr; release door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>release door open</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; press cabin lobby &amp;rarr; press&amp;hold door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>press&amp;hold door open</code></li>
+<li><strong>sub-walk 8</strong>: <code>press hall down &amp;rarr; press cabin roof &amp;rarr; press&amp;hold door close</code></li>
+<li><strong>sub-walk 9</strong>: <code>press&amp;hold door close</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press intercom -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby(dup) -&gt; press intercom(dup) -&gt; press&amp;hold door close -&gt; release door close -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press&amp;hold door open(dup) -&gt; release door open -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; press&amp;hold door open -&gt; release door open(dup) -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; press&amp;hold door close -&gt; release door close(dup) -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__</pre>
+<h3>Product 29</h3>
+<p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom}</p>
+<p><strong>Projected FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 43 transitions (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product29-projected.png" alt="Projected FTS — product 29"/>
+<img src="Elevator-product29-balanced.png" alt="Balanced FTS — product 29"/>
+<p><strong>All-transitions test case (<code>Elevator_p29_trans</code>)</strong> — 43 step(s) total (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; read card &amp;rarr; press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall down &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; read card</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; read card -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; read card -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 30</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 34 transitions (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product30-projected.png" alt="Projected FTS — product 30"/>
+<img src="Elevator-product30-balanced.png" alt="Balanced FTS — product 30"/>
+<p><strong>All-transitions test case (<code>Elevator_p30_trans</code>)</strong> — 34 step(s) total (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>18/18 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>tap mobile key &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>tap mobile key &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; tap mobile key -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 31</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 38 transitions (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product31-projected.png" alt="Projected FTS — product 31"/>
+<img src="Elevator-product31-balanced.png" alt="Balanced FTS — product 31"/>
+<p><strong>All-transitions test case (<code>Elevator_p31_trans</code>)</strong> — 38 step(s) total (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>read card &amp;rarr; press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>read card &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>read card &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; read card -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 32</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Projected FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 38 transitions (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product32-projected.png" alt="Projected FTS — product 32"/>
+<img src="Elevator-product32-balanced.png" alt="Balanced FTS — product 32"/>
+<p><strong>All-transitions test case (<code>Elevator_p32_trans</code>)</strong> — 38 step(s) total (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>enter PIN &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin [1-N] floor &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>enter PIN &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>enter PIN &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; enter PIN -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; enter PIN -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 33</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 57 transitions (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product33-projected.png" alt="Projected FTS — product 33"/>
+<img src="Elevator-product33-balanced.png" alt="Balanced FTS — product 33"/>
+<p><strong>All-transitions test case (<code>Elevator_p33_trans</code>)</strong> — 57 step(s) total (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>26/26 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin executive floor &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 7</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 8</strong>: <code>tap mobile key</code></li>
+<li><strong>sub-walk 9</strong>: <code>press intercom</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 12</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 13</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 14</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 15</strong>: <code>press hall LobbyUp &amp;rarr; tap mobile key</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; press intercom -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 34</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, ManualDoorControl}</p>
+<p><strong>Projected FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 57 transitions (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product34-projected.png" alt="Projected FTS — product 34"/>
+<img src="Elevator-product34-balanced.png" alt="Balanced FTS — product 34"/>
+<p><strong>All-transitions test case (<code>Elevator_p34_trans</code>)</strong> — 57 step(s) total (26 real / 14 <code>__end__</code> / 26 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>26/26 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin lobby &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press cabin executive floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 7</strong>: <code>read card</code></li>
+<li><strong>sub-walk 8</strong>: <code>press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 10</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>read card</code></li>
+<li><strong>sub-walk 13</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 14</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 15</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 16</strong>: <code>press hall LobbyUp &amp;rarr; read card</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin lobby -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card(dup) -&gt; press cabin executive floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; read card -&gt; press cabin executive floor(dup) -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; read card -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; read card -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 35</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 35 transitions (19 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product35-projected.png" alt="Projected FTS — product 35"/>
+<img src="Elevator-product35-balanced.png" alt="Balanced FTS — product 35"/>
+<p><strong>All-transitions test case (<code>Elevator_p35_trans</code>)</strong> — 35 step(s) total (19 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>19/19 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>tap mobile key &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>tap mobile key &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; tap mobile key -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; tap mobile key -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 36</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, PinPad}</p>
+<p><strong>Projected FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 35 transitions (19 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product36-projected.png" alt="Projected FTS — product 36"/>
+<img src="Elevator-product36-balanced.png" alt="Balanced FTS — product 36"/>
+<p><strong>All-transitions test case (<code>Elevator_p36_trans</code>)</strong> — 35 step(s) total (19 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>19/19 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin [1-N] floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; enter PIN &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>enter PIN &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>enter PIN &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; enter PIN -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; enter PIN -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 37</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, MobileKey}</p>
+<p><strong>Projected FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 8 states, 43 transitions (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product37-projected.png" alt="Projected FTS — product 37"/>
+<img src="Elevator-product37-balanced.png" alt="Balanced FTS — product 37"/>
+<p><strong>All-transitions test case (<code>Elevator_p37_trans</code>)</strong> — 43 step(s) total (20 real / 12 <code>__end__</code> / 20 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>20/20 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press hall RoofDown &amp;rarr; tap mobile key &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 7</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 9</strong>: <code>tap mobile key &amp;rarr; press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall LobbyUp &amp;rarr; tap mobile key</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown -&gt; tap mobile key -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; tap mobile key(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; tap mobile key -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; tap mobile key -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 38</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, PinPad}</p>
+<p><strong>Projected FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 34 transitions (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product38-projected.png" alt="Projected FTS — product 38"/>
+<img src="Elevator-product38-balanced.png" alt="Balanced FTS — product 38"/>
+<p><strong>All-transitions test case (<code>Elevator_p38_trans</code>)</strong> — 34 step(s) total (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>18/18 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; enter PIN &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>enter PIN &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>enter PIN &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; enter PIN -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; enter PIN -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 39</h3>
+<p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, PinPad}</p>
+<p><strong>Projected FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 7 states, 34 transitions (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product39-projected.png" alt="Projected FTS — product 39"/>
+<img src="Elevator-product39-balanced.png" alt="Balanced FTS — product 39"/>
+<p><strong>All-transitions test case (<code>Elevator_p39_trans</code>)</strong> — 34 step(s) total (18 real / 10 <code>__end__</code> / 14 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>18/18 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>press cabin [1-N] floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown &amp;rarr; enter PIN &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 4</strong>: <code>enter PIN &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 5</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin roof</code></li>
+<li><strong>sub-walk 7</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>enter PIN &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; enter PIN -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; enter PIN -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 40</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ManualDoorControl, PinPad}</p>
+<p><strong>Projected FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 38 transitions (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product40-projected.png" alt="Projected FTS — product 40"/>
+<img src="Elevator-product40-balanced.png" alt="Balanced FTS — product 40"/>
+<p><strong>All-transitions test case (<code>Elevator_p40_trans</code>)</strong> — 38 step(s) total (22 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>22/22 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>enter PIN &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin [1-N] floor &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; press cabin lobby</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>enter PIN &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>enter PIN &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; enter PIN -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp(dup) -&gt; enter PIN -&gt; press cabin roof -&gt; __end__(dup)</pre>
+<h3>Product 41</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Projected FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 10 states, 63 transitions (28 real / 15 <code>__end__</code> / 30 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product41-projected.png" alt="Projected FTS — product 41"/>
+<img src="Elevator-product41-balanced.png" alt="Balanced FTS — product 41"/>
+<p><strong>All-transitions test case (<code>Elevator_p41_trans</code>)</strong> — 63 step(s) total (28 real / 15 <code>__end__</code> / 30 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>28/28 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>enter PIN &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press cabin [1-N] floor &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press hall RoofDown</code></li>
+<li><strong>sub-walk 4</strong>: <code>press cabin roof &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin executive floor &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 6</strong>: <code>press alarm button</code></li>
+<li><strong>sub-walk 7</strong>: <code>press door close</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 9</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>press cabin lobby</code></li>
+<li><strong>sub-walk 11</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 12</strong>: <code>press hall up &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 13</strong>: <code>press hall down &amp;rarr; enter PIN</code></li>
+<li><strong>sub-walk 14</strong>: <code>press door open</code></li>
+<li><strong>sub-walk 15</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 16</strong>: <code>press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 17</strong>: <code>press hall LobbyUp &amp;rarr; enter PIN</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; enter PIN -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin [1-N] floor -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown -&gt; enter PIN(dup) -&gt; press cabin roof -&gt; press door open -&gt; press door close -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor -&gt; press intercom -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor(dup) -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; enter PIN(dup) -&gt; press cabin executive floor(dup) -&gt; press door close -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin lobby -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall up -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall down -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; press door open -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin [1-N] floor -&gt; __end__ -&gt; press hall LobbyUp -&gt; enter PIN -&gt; press cabin executive floor(dup) -&gt; __end__</pre>
+<h3>Product 42</h3>
+<p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, PinPad}</p>
+<p><strong>Projected FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
+<p><strong>Balanced FTS:</strong> 9 states, 39 transitions (23 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>).</p>
+<img src="Elevator-product42-projected.png" alt="Projected FTS — product 42"/>
+<img src="Elevator-product42-balanced.png" alt="Balanced FTS — product 42"/>
+<p><strong>All-transitions test case (<code>Elevator_p42_trans</code>)</strong> — 39 step(s) total (23 real / 10 <code>__end__</code> / 12 <code>__dup__</code> / 0 <code>__balance__</code>). Real-transition coverage on the repaired FTS: <strong>23/23 = 100.0%</strong>.</p>
+<p>Sub-walks between synthetic boundaries:</p>
+<ul>
+<li><strong>sub-walk 1</strong>: <code>enter PIN &amp;rarr; press cabin lobby &amp;rarr; press intercom</code></li>
+<li><strong>sub-walk 2</strong>: <code>press hall RoofDown &amp;rarr; press cabin lobby &amp;rarr; press alarm button</code></li>
+<li><strong>sub-walk 3</strong>: <code>press cabin [1-N] floor &amp;rarr; press door open &amp;rarr; press door close</code></li>
+<li><strong>sub-walk 4</strong>: <code>press hall up &amp;rarr; press cabin lobby &amp;rarr; press door close &amp;rarr; press door open</code></li>
+<li><strong>sub-walk 5</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 6</strong>: <code>press hall down &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 7</strong>: <code>enter PIN &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 8</strong>: <code>press cabin roof</code></li>
+<li><strong>sub-walk 9</strong>: <code>press hall LobbyUp &amp;rarr; press cabin [1-N] floor</code></li>
+<li><strong>sub-walk 10</strong>: <code>enter PIN &amp;rarr; press cabin roof</code></li>
+</ul>
+<p>Full cycle (synthetic actions shown verbatim):</p>
+<pre>press hall RoofDown(dup) -&gt; enter PIN -&gt; press cabin lobby -&gt; press intercom -&gt; __end__ -&gt; press hall RoofDown -&gt; press cabin lobby -&gt; press alarm button -&gt; __end__(dup) -&gt; press hall RoofDown(dup) -&gt; press cabin [1-N] floor -&gt; press door open -&gt; press door close -&gt; __end__ -&gt; press hall up -&gt; press cabin lobby -&gt; press door close -&gt; press door open -&gt; __end__ -&gt; press hall up(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall down -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall up(dup) -&gt; enter PIN -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; press cabin roof -&gt; __end__(dup) -&gt; press hall LobbyUp -&gt; press cabin [1-N] floor -&gt; __end__(dup) -&gt; press hall LobbyUp(dup) -&gt; enter PIN -&gt; press cabin roof -&gt; __end__</pre>
+<hr/>
+<p>Total products: 42.</p>
+</body></html>
