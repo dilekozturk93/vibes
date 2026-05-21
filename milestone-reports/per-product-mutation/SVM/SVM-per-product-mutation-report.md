@@ -22,20 +22,152 @@
 
 ### Product 1
 
+**Selected features:** selected = {c, f, s, t}
+
+**Repaired FTS:** 6 states, 8 transitions (8 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 6 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 8 | 6/8 = 75.0% | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% |
+| ActionExchange | 56 | 42/56 = 75.0% | 49/56 = 87.5% | 56/56 = 100.0% | 56/56 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (2):
+
+- `TM__state7__take__state1`
+- `TM__state1__free__state3`
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state6__return__state1`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (14):
+
+- `AEX__state7__take__cancel__state1`
+- `AEX__state7__take__tea__state1`
+- `AEX__state7__take__serveTea__state1`
+- `AEX__state7__take__serveSoda__state1`
+- `AEX__state7__take__free__state1`
+- `AEX__state7__take__soda__state1`
+- `AEX__state7__take__return__state1`
+- `AEX__state1__free__cancel__state3`
+- `AEX__state1__free__take__state3`
+- `AEX__state1__free__tea__state3`
+- `AEX__state1__free__serveTea__state3`
+- `AEX__state1__free__serveSoda__state3`
+- `AEX__state1__free__soda__state3`
+- `AEX__state1__free__return__state3`
+
+**ActionExchange — survived product state coverage** (7):
+
+- `AEX__state6__return__cancel__state1`
+- `AEX__state6__return__take__state1`
+- `AEX__state6__return__tea__state1`
+- `AEX__state6__return__serveTea__state1`
+- `AEX__state6__return__serveSoda__state1`
+- `AEX__state6__return__free__state1`
+- `AEX__state6__return__soda__state1`
+
+### Product 2
+
+**Selected features:** selected = {t}
+
+**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 4 test case(s) (of 3 family-level), 14 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 7 | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% |
+| ActionExchange | 42 | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state9__close__state1`
+
+**ActionExchange — survived product state coverage** (6):
+
+- `AEX__state9__close__take__state1`
+- `AEX__state9__close__tea__state1`
+- `AEX__state9__close__serveTea__state1`
+- `AEX__state9__close__change__state1`
+- `AEX__state9__close__pay__state1`
+- `AEX__state9__close__open__state1`
+
+### Product 3
+
+**Selected features:** selected = {f, t}
+
+**Repaired FTS:** 4 states, 4 transitions (4 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 1 test case(s) (of 3 family-level), 2 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 4 | 2/4 = 50.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+| ActionExchange | 12 | 6/12 = 50.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (2):
+
+- `TM__state7__take__state1`
+- `TM__state1__free__state3`
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state7__take__state1`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (6):
+
+- `AEX__state7__take__tea__state1`
+- `AEX__state7__take__serveTea__state1`
+- `AEX__state7__take__free__state1`
+- `AEX__state1__free__take__state3`
+- `AEX__state1__free__tea__state3`
+- `AEX__state1__free__serveTea__state3`
+
+**ActionExchange — survived product state coverage** (3):
+
+- `AEX__state7__take__tea__state1`
+- `AEX__state7__take__serveTea__state1`
+- `AEX__state7__take__free__state1`
+
+### Product 4
+
 **Selected features:** selected = {c, f, t}
 
 **Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 6 | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
+**Family baseline projected to this product:** 2 test case(s) (of 3 family-level), 4 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (1):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 6 | 4/6 = 66.7% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 30 | 20/30 = 66.7% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (2):
+
+- `TM__state7__take__state1`
+- `TM__state1__free__state3`
+
+**TransitionMissing — survived product state coverage** (1):
 
 - `TM__state6__return__state1`
 
-**ActionExchange — survived state coverage** (5):
+**ActionExchange — survived family-level state coverage (Devroey)** (10):
+
+- `AEX__state7__take__cancel__state1`
+- `AEX__state7__take__tea__state1`
+- `AEX__state7__take__serveTea__state1`
+- `AEX__state7__take__free__state1`
+- `AEX__state7__take__return__state1`
+- `AEX__state1__free__cancel__state3`
+- `AEX__state1__free__take__state3`
+- `AEX__state1__free__tea__state3`
+- `AEX__state1__free__serveTea__state3`
+- `AEX__state1__free__return__state3`
+
+**ActionExchange — survived product state coverage** (5):
 
 - `AEX__state6__return__cancel__state1`
 - `AEX__state6__return__take__state1`
@@ -43,22 +175,50 @@
 - `AEX__state6__return__serveTea__state1`
 - `AEX__state6__return__free__state1`
 
-### Product 2
+### Product 5
+
+**Selected features:** selected = {s}
+
+**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 4 test case(s) (of 3 family-level), 14 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 7 | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% |
+| ActionExchange | 42 | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state9__close__state1`
+
+**ActionExchange — survived product state coverage** (6):
+
+- `AEX__state9__close__take__state1`
+- `AEX__state9__close__serveSoda__state1`
+- `AEX__state9__close__change__state1`
+- `AEX__state9__close__pay__state1`
+- `AEX__state9__close__soda__state1`
+- `AEX__state9__close__open__state1`
+
+### Product 6
 
 **Selected features:** selected = {s, t}
 
 **Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 9 | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
+**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 16 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (1):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 9 | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
+| ActionExchange | 72 | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (1):
 
 - `TM__state5__serveTea__state7`
 
-**ActionExchange — survived state coverage** (8):
+**ActionExchange — survived product state coverage** (8):
 
 - `AEX__state5__serveTea__take__state7`
 - `AEX__state5__serveTea__tea__state7`
@@ -69,253 +229,223 @@
 - `AEX__state5__serveTea__close__state7`
 - `AEX__state5__serveTea__open__state7`
 
-### Product 3
+### Product 7
 
-**Selected features:** selected = {s}
+**Selected features:** selected = {c, f, s}
 
-**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
+**Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 7 | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% |
-| ActionExchange | 42 | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% |
+**Family baseline projected to this product:** 2 test case(s) (of 3 family-level), 4 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (1):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 6 | 4/6 = 66.7% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 30 | 20/30 = 66.7% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
 
-- `TM__state9__close__state1`
+**TransitionMissing — survived family-level state coverage (Devroey)** (2):
 
-**ActionExchange — survived state coverage** (6):
+- `TM__state7__take__state1`
+- `TM__state1__free__state3`
 
-- `AEX__state9__close__take__state1`
-- `AEX__state9__close__serveSoda__state1`
-- `AEX__state9__close__change__state1`
-- `AEX__state9__close__pay__state1`
-- `AEX__state9__close__soda__state1`
-- `AEX__state9__close__open__state1`
+**TransitionMissing — survived product state coverage** (1):
 
-### Product 4
+- `TM__state6__return__state1`
 
-**Selected features:** selected = {t}
+**ActionExchange — survived family-level state coverage (Devroey)** (10):
 
-**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
+- `AEX__state7__take__cancel__state1`
+- `AEX__state7__take__serveSoda__state1`
+- `AEX__state7__take__free__state1`
+- `AEX__state7__take__soda__state1`
+- `AEX__state7__take__return__state1`
+- `AEX__state1__free__cancel__state3`
+- `AEX__state1__free__take__state3`
+- `AEX__state1__free__serveSoda__state3`
+- `AEX__state1__free__soda__state3`
+- `AEX__state1__free__return__state3`
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 7 | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% |
-| ActionExchange | 42 | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% |
+**ActionExchange — survived product state coverage** (5):
 
-**TransitionMissing — survived state coverage** (1):
+- `AEX__state6__return__cancel__state1`
+- `AEX__state6__return__take__state1`
+- `AEX__state6__return__serveSoda__state1`
+- `AEX__state6__return__free__state1`
+- `AEX__state6__return__soda__state1`
 
-- `TM__state9__close__state1`
+### Product 8
 
-**ActionExchange — survived state coverage** (6):
+**Selected features:** selected = {c, s}
 
-- `AEX__state9__close__take__state1`
-- `AEX__state9__close__tea__state1`
-- `AEX__state9__close__serveTea__state1`
-- `AEX__state9__close__change__state1`
-- `AEX__state9__close__pay__state1`
-- `AEX__state9__close__open__state1`
+**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
 
-### Product 5
+**Family baseline projected to this product:** 4 test case(s) (of 3 family-level), 16 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 9 | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
+| ActionExchange | 72 | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state6__return__state1`
+
+**ActionExchange — survived product state coverage** (8):
+
+- `AEX__state6__return__cancel__state1`
+- `AEX__state6__return__take__state1`
+- `AEX__state6__return__serveSoda__state1`
+- `AEX__state6__return__change__state1`
+- `AEX__state6__return__pay__state1`
+- `AEX__state6__return__soda__state1`
+- `AEX__state6__return__close__state1`
+- `AEX__state6__return__open__state1`
+
+### Product 9
+
+**Selected features:** selected = {f, s}
+
+**Repaired FTS:** 4 states, 4 transitions (4 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 1 test case(s) (of 3 family-level), 2 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 4 | 2/4 = 50.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+| ActionExchange | 12 | 6/12 = 50.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (2):
+
+- `TM__state7__take__state1`
+- `TM__state1__free__state3`
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state7__take__state1`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (6):
+
+- `AEX__state7__take__serveSoda__state1`
+- `AEX__state7__take__free__state1`
+- `AEX__state7__take__soda__state1`
+- `AEX__state1__free__take__state3`
+- `AEX__state1__free__serveSoda__state3`
+- `AEX__state1__free__soda__state3`
+
+**ActionExchange — survived product state coverage** (3):
+
+- `AEX__state7__take__serveSoda__state1`
+- `AEX__state7__take__free__state1`
+- `AEX__state7__take__soda__state1`
+
+### Product 10
+
+**Selected features:** selected = {c, t}
+
+**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 4 test case(s) (of 3 family-level), 16 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 9 | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
+| ActionExchange | 72 | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state6__return__state1`
+
+**ActionExchange — survived product state coverage** (8):
+
+- `AEX__state6__return__cancel__state1`
+- `AEX__state6__return__take__state1`
+- `AEX__state6__return__tea__state1`
+- `AEX__state6__return__serveTea__state1`
+- `AEX__state6__return__change__state1`
+- `AEX__state6__return__pay__state1`
+- `AEX__state6__return__close__state1`
+- `AEX__state6__return__open__state1`
+
+### Product 11
+
+**Selected features:** selected = {c, s, t}
+
+**Repaired FTS:** 9 states, 11 transitions (11 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 18 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 11 | 11/11 = 100.0% | 10/11 = 90.9% | 11/11 = 100.0% | 11/11 = 100.0% |
+| ActionExchange | 110 | 110/110 = 100.0% | 100/110 = 90.9% | 110/110 = 100.0% | 110/110 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (1):
+
+- `TM__state6__return__state1`
+
+**ActionExchange — survived product state coverage** (10):
+
+- `AEX__state6__return__cancel__state1`
+- `AEX__state6__return__take__state1`
+- `AEX__state6__return__tea__state1`
+- `AEX__state6__return__serveTea__state1`
+- `AEX__state6__return__serveSoda__state1`
+- `AEX__state6__return__change__state1`
+- `AEX__state6__return__pay__state1`
+- `AEX__state6__return__soda__state1`
+- `AEX__state6__return__close__state1`
+- `AEX__state6__return__open__state1`
+
+### Product 12
 
 **Selected features:** selected = {f, s, t}
 
 **Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 6 | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
+**Family baseline projected to this product:** 2 test case(s) (of 3 family-level), 4 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (1):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 6 | 4/6 = 66.7% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 30 | 20/30 = 66.7% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (2):
+
+- `TM__state7__take__state1`
+- `TM__state1__free__state3`
+
+**TransitionMissing — survived product state coverage** (1):
 
 - `TM__state5__serveTea__state7`
 
-**ActionExchange — survived state coverage** (5):
+**ActionExchange — survived family-level state coverage (Devroey)** (10):
+
+- `AEX__state7__take__tea__state1`
+- `AEX__state7__take__serveTea__state1`
+- `AEX__state7__take__serveSoda__state1`
+- `AEX__state7__take__free__state1`
+- `AEX__state7__take__soda__state1`
+- `AEX__state1__free__take__state3`
+- `AEX__state1__free__tea__state3`
+- `AEX__state1__free__serveTea__state3`
+- `AEX__state1__free__serveSoda__state3`
+- `AEX__state1__free__soda__state3`
+
+**ActionExchange — survived product state coverage** (5):
 
 - `AEX__state5__serveTea__take__state7`
 - `AEX__state5__serveTea__tea__state7`
 - `AEX__state5__serveTea__serveSoda__state7`
 - `AEX__state5__serveTea__free__state7`
 - `AEX__state5__serveTea__soda__state7`
-
-### Product 6
-
-**Selected features:** selected = {c, f, s}
-
-**Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 6 | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
-
-**TransitionMissing — survived state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived state coverage** (5):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__free__state1`
-- `AEX__state6__return__soda__state1`
-
-### Product 7
-
-**Selected features:** selected = {c, s}
-
-**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 9 | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
-
-**TransitionMissing — survived state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived state coverage** (8):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__change__state1`
-- `AEX__state6__return__pay__state1`
-- `AEX__state6__return__soda__state1`
-- `AEX__state6__return__close__state1`
-- `AEX__state6__return__open__state1`
-
-### Product 8
-
-**Selected features:** selected = {f, t}
-
-**Repaired FTS:** 4 states, 4 transitions (4 real / 0 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 4 | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% |
-| ActionExchange | 12 | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% |
-
-**TransitionMissing — survived state coverage** (1):
-
-- `TM__state7__take__state1`
-
-**ActionExchange — survived state coverage** (3):
-
-- `AEX__state7__take__tea__state1`
-- `AEX__state7__take__serveTea__state1`
-- `AEX__state7__take__free__state1`
-
-### Product 9
-
-**Selected features:** selected = {c, f, s, t}
-
-**Repaired FTS:** 6 states, 8 transitions (8 real / 0 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 8 | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% |
-| ActionExchange | 56 | 49/56 = 87.5% | 56/56 = 100.0% | 56/56 = 100.0% |
-
-**TransitionMissing — survived state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived state coverage** (7):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__free__state1`
-- `AEX__state6__return__soda__state1`
-
-### Product 10
-
-**Selected features:** selected = {c, s, t}
-
-**Repaired FTS:** 9 states, 11 transitions (11 real / 0 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 11 | 10/11 = 90.9% | 11/11 = 100.0% | 11/11 = 100.0% |
-| ActionExchange | 110 | 100/110 = 90.9% | 110/110 = 100.0% | 110/110 = 100.0% |
-
-**TransitionMissing — survived state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived state coverage** (10):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__change__state1`
-- `AEX__state6__return__pay__state1`
-- `AEX__state6__return__soda__state1`
-- `AEX__state6__return__close__state1`
-- `AEX__state6__return__open__state1`
-
-### Product 11
-
-**Selected features:** selected = {c, t}
-
-**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 9 | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
-
-**TransitionMissing — survived state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived state coverage** (8):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__change__state1`
-- `AEX__state6__return__pay__state1`
-- `AEX__state6__return__close__state1`
-- `AEX__state6__return__open__state1`
-
-### Product 12
-
-**Selected features:** selected = {f, s}
-
-**Repaired FTS:** 4 states, 4 transitions (4 real / 0 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 4 | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% |
-| ActionExchange | 12 | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% |
-
-**TransitionMissing — survived state coverage** (1):
-
-- `TM__state7__take__state1`
-
-**ActionExchange — survived state coverage** (3):
-
-- `AEX__state7__take__serveSoda__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state7__take__soda__state1`
 ---
 
 ## SVM summary (aggregate over 12 products)
 
-| Operator | Mutants | State-cov kills | Transition-cov kills | Pair-cov kills |
-|---|---|---|---|---|
-| TransitionMissing | 86 | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% |
-| ActionExchange | 580 | 506/580 = 87.2% | 580/580 = 100.0% | 580/580 = 100.0% |
+**Family-level baseline** (Devroey 2014, ported from VIBeS commit f856c90): 3 test case(s) generated once for the SPL, projected per-product via fexpr-filtering before kill-checking.
+
+| Operator | Mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 86 | 74/86 = 86.0% | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% |
+| ActionExchange | 580 | 524/580 = 90.3% | 506/580 = 87.2% | 580/580 = 100.0% | 580/580 = 100.0% |
 
 Total products: 12.

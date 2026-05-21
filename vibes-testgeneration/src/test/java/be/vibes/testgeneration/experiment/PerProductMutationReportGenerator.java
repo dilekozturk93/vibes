@@ -15,7 +15,9 @@ import be.vibes.testgeneration.mutation.ActionExchange;
 import be.vibes.testgeneration.mutation.FaultDetector;
 import be.vibes.testgeneration.mutation.MutationOperator;
 import be.vibes.testgeneration.mutation.TransitionMissing;
+import be.vibes.testgeneration.coverage.baseline.AllStatesGenerator;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
+import be.vibes.fexpression.FExpression;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.State;
 import be.vibes.ts.TestCase;
@@ -104,12 +106,28 @@ public final class PerProductMutationReportGenerator {
         Sat4JSolverFacade solver = loadSolver(spec.dimacs, spec.mapping);
         Set<String> ftsFeatures = collectFeatureNames(fts);
 
+        // Family-level (SPL-level) all-states baseline per Devroey 2014.
+        // Computed ONCE per SPL; per-product kill check filters each
+        // family-level test case's transitions to those whose feature
+        // expression is satisfied by the product configuration.
+        // Reload the solver afterwards because AllStatesGenerator adds
+        // and removes SAT constraints during walk validation.
+        System.out.println("Running family-level baseline for " + spec.name + "...");
+        Sat4JSolverFacade baselineSolver = loadSolver(spec.dimacs, spec.mapping);
+        List<TestCase> familyBaseline = AllStatesGenerator.generateForFts(
+                fts, baselineSolver, spec.name + "_family");
+        System.out.println("  -> " + familyBaseline.size() + " family-level test case(s)");
+
         Path mdPath = outDir.resolve(spec.name + "-per-product-mutation-report.md");
         Path htmlPath = outDir.resolve(spec.name + "-per-product-mutation-report.html");
 
         // Aggregate stats across all products for the summary table.
-        int totalTmReal = 0, totalTmKilled_state = 0, totalTmKilled_trans = 0, totalTmKilled_pair = 0;
-        int totalAexReal = 0, totalAexKilled_state = 0, totalAexKilled_trans = 0, totalAexKilled_pair = 0;
+        int totalTmReal = 0;
+        int totalTmKilled_familyState = 0;
+        int totalTmKilled_state = 0, totalTmKilled_trans = 0, totalTmKilled_pair = 0;
+        int totalAexReal = 0;
+        int totalAexKilled_familyState = 0;
+        int totalAexKilled_state = 0, totalAexKilled_trans = 0, totalAexKilled_pair = 0;
         int productCount = 0;
 
         try (BufferedWriter md = new BufferedWriter(new FileWriter(mdPath.toFile()));
@@ -129,12 +147,15 @@ public final class PerProductMutationReportGenerator {
             while (configs.hasNext()) {
                 Configuration cfg = configs.next();
                 productCount++;
-                ProductScores ps = writeProductSection(md, html, spec, fts, cfg, productCount, ftsFeatures);
+                ProductScores ps = writeProductSection(md, html, spec, fts, cfg,
+                        productCount, ftsFeatures, familyBaseline);
                 totalTmReal += ps.tmTotal;
+                totalTmKilled_familyState += ps.tmKilledFamilyState;
                 totalTmKilled_state += ps.tmKilledState;
                 totalTmKilled_trans += ps.tmKilledTrans;
                 totalTmKilled_pair += ps.tmKilledPair;
                 totalAexReal += ps.aexTotal;
+                totalAexKilled_familyState += ps.aexKilledFamilyState;
                 totalAexKilled_state += ps.aexKilledState;
                 totalAexKilled_trans += ps.aexKilledTrans;
                 totalAexKilled_pair += ps.aexKilledPair;
@@ -142,13 +163,20 @@ public final class PerProductMutationReportGenerator {
 
             md.write("---\n\n## " + spec.name + " summary (aggregate over " + productCount
                     + " products)\n\n");
-            md.write("| Operator | Mutants | State-cov kills | Transition-cov kills | Pair-cov kills |\n");
-            md.write("|---|---|---|---|---|\n");
+            md.write("**Family-level baseline** (Devroey 2014, ported from VIBeS commit "
+                    + "f856c90): " + familyBaseline.size() + " test case(s) generated once "
+                    + "for the SPL, projected per-product via fexpr-filtering before "
+                    + "kill-checking.\n\n");
+            md.write("| Operator | Mutants | Family state-cov (Devroey) | Product state-cov | "
+                    + "Product transition-cov | Product pair-cov |\n");
+            md.write("|---|---|---|---|---|---|\n");
             md.write("| TransitionMissing | " + totalTmReal + " | "
+                    + formatScore(totalTmKilled_familyState, totalTmReal) + " | "
                     + formatScore(totalTmKilled_state, totalTmReal) + " | "
                     + formatScore(totalTmKilled_trans, totalTmReal) + " | "
                     + formatScore(totalTmKilled_pair, totalTmReal) + " |\n");
             md.write("| ActionExchange | " + totalAexReal + " | "
+                    + formatScore(totalAexKilled_familyState, totalAexReal) + " | "
                     + formatScore(totalAexKilled_state, totalAexReal) + " | "
                     + formatScore(totalAexKilled_trans, totalAexReal) + " | "
                     + formatScore(totalAexKilled_pair, totalAexReal) + " |\n");
@@ -156,14 +184,23 @@ public final class PerProductMutationReportGenerator {
 
             html.write("<hr/>\n<h2>" + escapeHtml(spec.name)
                     + " summary (aggregate over " + productCount + " products)</h2>\n");
+            html.write("<p><strong>Family-level baseline</strong> (Devroey 2014, ported from "
+                    + "VIBeS commit f856c90): " + familyBaseline.size() + " test case(s) "
+                    + "generated once for the SPL, projected per-product via fexpr-filtering "
+                    + "before kill-checking.</p>\n");
             html.write("<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\">\n");
-            html.write("<tr><th>Operator</th><th>Mutants</th><th>State-cov kills</th>"
-                    + "<th>Transition-cov kills</th><th>Pair-cov kills</th></tr>\n");
+            html.write("<tr><th>Operator</th><th>Mutants</th>"
+                    + "<th>Family state-cov (Devroey)</th>"
+                    + "<th>Product state-cov</th>"
+                    + "<th>Product transition-cov</th>"
+                    + "<th>Product pair-cov</th></tr>\n");
             html.write("<tr><td>TransitionMissing</td><td>" + totalTmReal + "</td><td>"
+                    + formatScore(totalTmKilled_familyState, totalTmReal) + "</td><td>"
                     + formatScore(totalTmKilled_state, totalTmReal) + "</td><td>"
                     + formatScore(totalTmKilled_trans, totalTmReal) + "</td><td>"
                     + formatScore(totalTmKilled_pair, totalTmReal) + "</td></tr>\n");
             html.write("<tr><td>ActionExchange</td><td>" + totalAexReal + "</td><td>"
+                    + formatScore(totalAexKilled_familyState, totalAexReal) + "</td><td>"
                     + formatScore(totalAexKilled_state, totalAexReal) + "</td><td>"
                     + formatScore(totalAexKilled_trans, totalAexReal) + "</td><td>"
                     + formatScore(totalAexKilled_pair, totalAexReal) + "</td></tr>\n");
@@ -258,7 +295,8 @@ public final class PerProductMutationReportGenerator {
     private static ProductScores writeProductSection(BufferedWriter md, BufferedWriter html,
                                                      SplSpec spec, FeaturedTransitionSystem fts,
                                                      Configuration cfg, int productIndex,
-                                                     Set<String> ftsFeatures) throws Exception {
+                                                     Set<String> ftsFeatures,
+                                                     List<TestCase> familyBaseline) throws Exception {
         String featuresLine = formatFeatures(cfg, ftsFeatures);
         FeaturedTransitionSystem projected = FExpressionPreservingProjection.project(fts, cfg);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
@@ -281,9 +319,18 @@ public final class PerProductMutationReportGenerator {
         List<TestCase> stateSuite = Collections.singletonList(stateTc);
         List<TestCase> transSuite = Collections.singletonList(transTc);
 
+        // Project the family-level baseline onto this product: keep family
+        // test-case transitions whose SPL-level feature expression is
+        // satisfied by the product configuration. This emulates "a tester
+        // runs Devroey's SPL-level suite on this product — only the
+        // applicable steps execute".
+        List<TestCase> projectedFamily = projectFamilySuite(familyBaseline, fts, cfg);
+
+        FaultDetector.KillResult tmFamilyState = FaultDetector.scoreSuite(projectedFamily, tmMutants);
         FaultDetector.KillResult tmState = FaultDetector.scoreSuite(stateSuite, tmMutants);
         FaultDetector.KillResult tmTrans = FaultDetector.scoreSuite(transSuite, tmMutants);
         FaultDetector.KillResult tmPair = FaultDetector.scoreSuite(pairSuite, tmMutants);
+        FaultDetector.KillResult aexFamilyState = FaultDetector.scoreSuite(projectedFamily, aexMutants);
         FaultDetector.KillResult aexState = FaultDetector.scoreSuite(stateSuite, aexMutants);
         FaultDetector.KillResult aexTrans = FaultDetector.scoreSuite(transSuite, aexMutants);
         FaultDetector.KillResult aexPair = FaultDetector.scoreSuite(pairSuite, aexMutants);
@@ -294,25 +341,34 @@ public final class PerProductMutationReportGenerator {
                 + countTransitions(repaired) + " transitions ("
                 + countRealTransitions(repaired) + " real / "
                 + countEnd(repaired) + " `__end__`).\n\n");
-        md.write("| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |\n");
-        md.write("|---|---|---|---|---|\n");
+        md.write("**Family baseline projected to this product:** "
+                + projectedFamily.size() + " test case(s) (of "
+                + familyBaseline.size() + " family-level), "
+                + countTestSuiteTransitions(projectedFamily) + " real step(s) applicable.\n\n");
+        md.write("| Operator | Real mutants | Family state-cov (Devroey) | "
+                + "Product state-cov | Product transition-cov | Product pair-cov |\n");
+        md.write("|---|---|---|---|---|---|\n");
         md.write("| TransitionMissing | " + tmMutants.size() + " | "
+                + formatScore(tmFamilyState.getKilled(), tmMutants.size()) + " | "
                 + formatScore(tmState.getKilled(), tmMutants.size()) + " | "
                 + formatScore(tmTrans.getKilled(), tmMutants.size()) + " | "
                 + formatScore(tmPair.getKilled(), tmMutants.size()) + " |\n");
         md.write("| ActionExchange | " + aexMutants.size() + " | "
+                + formatScore(aexFamilyState.getKilled(), aexMutants.size()) + " | "
                 + formatScore(aexState.getKilled(), aexMutants.size()) + " | "
                 + formatScore(aexTrans.getKilled(), aexMutants.size()) + " | "
                 + formatScore(aexPair.getKilled(), aexMutants.size()) + " |\n");
 
         // Surviving mutants (escaped detection by any criterion) — these are
         // the interesting ones for paper analysis.
-        appendSurvivors(md, "TransitionMissing — survived state coverage", tmState.getSurvivors());
-        appendSurvivors(md, "TransitionMissing — survived transition coverage", tmTrans.getSurvivors());
-        appendSurvivors(md, "TransitionMissing — survived pair coverage", tmPair.getSurvivors());
-        appendSurvivors(md, "ActionExchange — survived state coverage", aexState.getSurvivors());
-        appendSurvivors(md, "ActionExchange — survived transition coverage", aexTrans.getSurvivors());
-        appendSurvivors(md, "ActionExchange — survived pair coverage", aexPair.getSurvivors());
+        appendSurvivors(md, "TransitionMissing — survived family-level state coverage (Devroey)", tmFamilyState.getSurvivors());
+        appendSurvivors(md, "TransitionMissing — survived product state coverage", tmState.getSurvivors());
+        appendSurvivors(md, "TransitionMissing — survived product transition coverage", tmTrans.getSurvivors());
+        appendSurvivors(md, "TransitionMissing — survived product pair coverage", tmPair.getSurvivors());
+        appendSurvivors(md, "ActionExchange — survived family-level state coverage (Devroey)", aexFamilyState.getSurvivors());
+        appendSurvivors(md, "ActionExchange — survived product state coverage", aexState.getSurvivors());
+        appendSurvivors(md, "ActionExchange — survived product transition coverage", aexTrans.getSurvivors());
+        appendSurvivors(md, "ActionExchange — survived product pair coverage", aexPair.getSurvivors());
 
         // HTML
         html.write("<h3>Product " + productIndex + "</h3>\n");
@@ -322,35 +378,104 @@ public final class PerProductMutationReportGenerator {
                 + countTransitions(repaired) + " transitions ("
                 + countRealTransitions(repaired) + " real / "
                 + countEnd(repaired) + " <code>__end__</code>).</p>\n");
+        html.write("<p><strong>Family baseline projected to this product:</strong> "
+                + projectedFamily.size() + " test case(s) (of "
+                + familyBaseline.size() + " family-level), "
+                + countTestSuiteTransitions(projectedFamily) + " real step(s) applicable.</p>\n");
         html.write("<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\">\n");
         html.write("<tr><th>Operator</th><th>Real mutants</th>"
-                + "<th>State-cov</th><th>Transition-cov</th><th>Pair-cov</th></tr>\n");
+                + "<th>Family state-cov (Devroey)</th>"
+                + "<th>Product state-cov</th>"
+                + "<th>Product transition-cov</th>"
+                + "<th>Product pair-cov</th></tr>\n");
         html.write("<tr><td>TransitionMissing</td><td>" + tmMutants.size() + "</td><td>"
+                + formatScore(tmFamilyState.getKilled(), tmMutants.size()) + "</td><td>"
                 + formatScore(tmState.getKilled(), tmMutants.size()) + "</td><td>"
                 + formatScore(tmTrans.getKilled(), tmMutants.size()) + "</td><td>"
                 + formatScore(tmPair.getKilled(), tmMutants.size()) + "</td></tr>\n");
         html.write("<tr><td>ActionExchange</td><td>" + aexMutants.size() + "</td><td>"
+                + formatScore(aexFamilyState.getKilled(), aexMutants.size()) + "</td><td>"
                 + formatScore(aexState.getKilled(), aexMutants.size()) + "</td><td>"
                 + formatScore(aexTrans.getKilled(), aexMutants.size()) + "</td><td>"
                 + formatScore(aexPair.getKilled(), aexMutants.size()) + "</td></tr>\n");
         html.write("</table>\n");
-        appendSurvivorsHtml(html, "TransitionMissing — survived state coverage", tmState.getSurvivors());
-        appendSurvivorsHtml(html, "TransitionMissing — survived transition coverage", tmTrans.getSurvivors());
-        appendSurvivorsHtml(html, "TransitionMissing — survived pair coverage", tmPair.getSurvivors());
-        appendSurvivorsHtml(html, "ActionExchange — survived state coverage", aexState.getSurvivors());
-        appendSurvivorsHtml(html, "ActionExchange — survived transition coverage", aexTrans.getSurvivors());
-        appendSurvivorsHtml(html, "ActionExchange — survived pair coverage", aexPair.getSurvivors());
+        appendSurvivorsHtml(html, "TransitionMissing — survived family-level state coverage (Devroey)", tmFamilyState.getSurvivors());
+        appendSurvivorsHtml(html, "TransitionMissing — survived product state coverage", tmState.getSurvivors());
+        appendSurvivorsHtml(html, "TransitionMissing — survived product transition coverage", tmTrans.getSurvivors());
+        appendSurvivorsHtml(html, "TransitionMissing — survived product pair coverage", tmPair.getSurvivors());
+        appendSurvivorsHtml(html, "ActionExchange — survived family-level state coverage (Devroey)", aexFamilyState.getSurvivors());
+        appendSurvivorsHtml(html, "ActionExchange — survived product state coverage", aexState.getSurvivors());
+        appendSurvivorsHtml(html, "ActionExchange — survived product transition coverage", aexTrans.getSurvivors());
+        appendSurvivorsHtml(html, "ActionExchange — survived product pair coverage", aexPair.getSurvivors());
 
         ProductScores ps = new ProductScores();
         ps.tmTotal = tmMutants.size();
+        ps.tmKilledFamilyState = tmFamilyState.getKilled();
         ps.tmKilledState = tmState.getKilled();
         ps.tmKilledTrans = tmTrans.getKilled();
         ps.tmKilledPair = tmPair.getKilled();
         ps.aexTotal = aexMutants.size();
+        ps.aexKilledFamilyState = aexFamilyState.getKilled();
         ps.aexKilledState = aexState.getKilled();
         ps.aexKilledTrans = aexTrans.getKilled();
         ps.aexKilledPair = aexPair.getKilled();
         return ps;
+    }
+
+    /**
+     * Projects a family-level test suite onto a product configuration by
+     * keeping only those transitions whose feature expression is satisfied
+     * by the configuration. The result is a per-product suite that
+     * represents "the executable steps of the family-level suite on this
+     * product" — the realistic semantic for RQ2's family-vs-product
+     * comparison.
+     */
+    private static List<TestCase> projectFamilySuite(List<TestCase> familySuite,
+                                                     FeaturedTransitionSystem fts,
+                                                     be.vibes.fexpression.configuration.Configuration cfg) {
+        List<TestCase> projected = new java.util.ArrayList<>(familySuite.size());
+        int idx = 0;
+        for (TestCase familyTc : familySuite) {
+            TestCase projectedTc = new TestCase(familyTc.getId() + "_proj");
+            int kept = 0;
+            try {
+                for (Transition t : familyTc) {
+                    FExpression fexpr = fts.getFExpression(t);
+                    if (fexpr == null || fexpr.assign(cfg).applySimplification().isTrue()) {
+                        projectedTc.enqueue(t);
+                        kept++;
+                    } else {
+                        // Step is not executable on this product — drop.
+                        // Resetting the projected TC because subsequent
+                        // transitions may not be contiguous with the kept
+                        // prefix; we record the prefix as a separate test
+                        // case and start a fresh one.
+                        if (kept > 0) {
+                            projected.add(projectedTc);
+                            idx++;
+                            projectedTc = new TestCase(familyTc.getId() + "_proj_" + idx);
+                            kept = 0;
+                        }
+                    }
+                }
+            } catch (be.vibes.ts.exception.TransitionSystenExecutionException e) {
+                // Suite step not contiguous — split here.
+            }
+            if (kept > 0) {
+                projected.add(projectedTc);
+                idx++;
+            }
+        }
+        return projected;
+    }
+
+    private static int countTestSuiteTransitions(List<TestCase> suite) {
+        int n = 0;
+        for (TestCase tc : suite) {
+            Iterator<Transition> it = tc.iterator();
+            while (it.hasNext()) { it.next(); n++; }
+        }
+        return n;
     }
 
     private static void appendSurvivors(BufferedWriter md, String label, List<String> survivors)
@@ -414,8 +539,8 @@ public final class PerProductMutationReportGenerator {
     }
 
     private static final class ProductScores {
-        int tmTotal, tmKilledState, tmKilledTrans, tmKilledPair;
-        int aexTotal, aexKilledState, aexKilledTrans, aexKilledPair;
+        int tmTotal, tmKilledFamilyState, tmKilledState, tmKilledTrans, tmKilledPair;
+        int aexTotal, aexKilledFamilyState, aexKilledState, aexKilledTrans, aexKilledPair;
     }
 
     // ---------- Helpers (shared with other generators) ----------

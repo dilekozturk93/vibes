@@ -22,430 +22,1140 @@
 
 ### Product 1
 
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, PinPad}
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
 
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 180 | 72/180 = 40.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+**Family baseline projected to this product:** 13 test case(s) (of 9 family-level), 35 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (12):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 26 | 12/26 = 46.2% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
+| ActionExchange | 286 | 132/286 = 46.2% | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
 
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
+**TransitionMissing — survived family-level state coverage (Devroey)** (14):
+
+- `TM__state5__press intercom__state9`
 - `TM__state4__press cabin 
 [1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state4__enter PIN__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state1__press hall down__state3`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
 - `TM__state2__press cabin lobby__state5`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (108):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__enter PIN__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__enter PIN__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state4__enter PIN__press cabin roof__state6`
-- `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state4__enter PIN__press cabin 
-executive floor__state6`
-- `AEX__state4__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state4__enter PIN__press intercom__state6`
-- `AEX__state4__enter PIN__press hall up__state6`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state2__press cabin lobby__press cabin roof__state5`
-- `AEX__state2__press cabin lobby__press hall down__state5`
-- `AEX__state2__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state2__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin lobby__press intercom__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
-- `AEX__state2__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 2
-
-**Selected features:** selected = {Alarm, ControlButtons, MobileKey}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 18 | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
-| ActionExchange | 144 | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
-
-**TransitionMissing — survived state coverage** (11):
-
 - `TM__state6__press cabin 
 [1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state4__press cabin roof__state5`
+- `TM__state8__press door close__state7`
 - `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
 [1-N] floor__state5`
 - `TM__state6__press cabin roof__state5`
 - `TM__state3__press cabin lobby__state5`
 - `TM__state3__press cabin roof__state5`
 - `TM__state4__tap mobile
 key__state6`
+- `TM__state7__press door open__state8`
 - `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (17):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
 - `TM__state3__press cabin 
 [1-N] floor__state5`
+- `TM__state12__press door open__state8`
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
 
-**ActionExchange — survived state coverage** (88):
+**ActionExchange — survived family-level state coverage (Devroey)** (154):
 
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press door open__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press door close__state9`
+- `AEX__state5__press intercom__tap mobile
+key__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__tap mobile
+key__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__tap mobile
 key__state5`
 - `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__tap mobile
+key__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
 [1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__tap mobile
+key__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (187):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__tap mobile
+key__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press door open__press cabin roof__state8`
+- `AEX__state12__press door open__press hall down__state8`
+- `AEX__state12__press door open__press cabin 
+executive floor__state8`
+- `AEX__state12__press door open__press cabin lobby__state8`
+- `AEX__state12__press door open__press door close__state8`
+- `AEX__state12__press door open__tap mobile
+key__state8`
+- `AEX__state12__press door open__press hall 
+RoofDown__state8`
+- `AEX__state12__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state12__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state12__press door open__press intercom__state8`
+- `AEX__state12__press door open__press hall up__state8`
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press door open__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press door close__state5`
+- `AEX__state6__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press intercom__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall up__state5`
 - `AEX__state2__tap mobile
 key__press cabin roof__state6`
 - `AEX__state2__tap mobile
+key__press door open__state6`
+- `AEX__state2__tap mobile
 key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press door close__state6`
 - `AEX__state2__tap mobile
 key__press hall 
 RoofDown__state6`
 - `AEX__state2__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state2__tap mobile
 key__press cabin 
 [1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
 - `AEX__state2__tap mobile
 key__press hall 
 LobbyUp__state6`
 - `AEX__state2__tap mobile
+key__press intercom__state6`
+- `AEX__state2__tap mobile
 key__press hall up__state6`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__tap mobile
+key__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__tap mobile
 key__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
 [1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
 - `AEX__state6__press cabin roof__tap mobile
 key__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press door open__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press door close__state9`
+- `AEX__state12__press intercom__tap mobile
+key__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 2
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, ManualDoorControl}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 31 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 26 | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
+| ActionExchange | 286 | 121/286 = 42.3% | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (15):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state3__read card__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (17):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state4__read card__state6`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press door open__state8`
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (165):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__read card__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__read card__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__read card__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state3__read card__press cabin roof__state6`
+- `AEX__state3__read card__press door open__state6`
+- `AEX__state3__read card__press hall down__state6`
+- `AEX__state3__read card__press cabin 
+executive floor__state6`
+- `AEX__state3__read card__press cabin lobby__state6`
+- `AEX__state3__read card__press door close__state6`
+- `AEX__state3__read card__press hall 
+RoofDown__state6`
+- `AEX__state3__read card__press alarm
+button__state6`
+- `AEX__state3__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__read card__press hall 
+LobbyUp__state6`
+- `AEX__state3__read card__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
 - `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state6__press cabin roof__press alarm
 button__state5`
 - `AEX__state6__press cabin roof__press cabin 
 [1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__read card__state5`
 - `AEX__state6__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
 - `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
 - `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
 - `AEX__state3__press cabin lobby__press hall 
 RoofDown__state5`
 - `AEX__state3__press cabin lobby__press alarm
 button__state5`
 - `AEX__state3__press cabin lobby__press cabin 
 [1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
 - `AEX__state3__press cabin lobby__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
 - `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state3__press cabin roof__press alarm
 button__state5`
 - `AEX__state3__press cabin roof__press cabin 
 [1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__read card__state5`
 - `AEX__state3__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press hall 
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__read card__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state2__read card__press hall 
 RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press alarm
+- `AEX__state2__read card__press alarm
 button__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
+- `AEX__state2__read card__press cabin 
 [1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press hall 
+- `AEX__state2__read card__press hall 
 LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
+- `AEX__state2__read card__press hall up__state6`
 - `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
 - `AEX__state1__press hall down__press alarm
 button__state3`
 - `AEX__state1__press hall down__press cabin 
 [1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__read card__state3`
 - `AEX__state1__press hall down__press hall 
 LobbyUp__state3`
 - `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (187):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__read card__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press door open__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press cabin 
+executive floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press door close__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
+[1-N] floor__press door open__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
@@ -453,53 +1163,36 @@ RoofDown__state5`
 [1-N] floor__press alarm
 button__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
+[1-N] floor__read card__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall up__state5`
-
-### Product 3
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 180 | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
-
-**TransitionMissing — survived state coverage** (13):
-
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state4__read card__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (117):
-
+- `AEX__state12__press door open__press cabin roof__state8`
+- `AEX__state12__press door open__press hall down__state8`
+- `AEX__state12__press door open__press cabin 
+executive floor__state8`
+- `AEX__state12__press door open__press cabin lobby__state8`
+- `AEX__state12__press door open__press door close__state8`
+- `AEX__state12__press door open__press hall 
+RoofDown__state8`
+- `AEX__state12__press door open__press alarm
+button__state8`
+- `AEX__state12__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state12__press door open__read card__state8`
+- `AEX__state12__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state12__press door open__press hall up__state8`
 - `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press door open__state5`
 - `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
 - `AEX__state6__press cabin lobby__press cabin 
 executive floor__state5`
+- `AEX__state6__press cabin lobby__press door close__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
 - `AEX__state6__press cabin lobby__press alarm
 button__state5`
 - `AEX__state6__press cabin lobby__press cabin 
@@ -511,125 +1204,95 @@ LobbyUp__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
+[1-N] floor__press door open__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
+[1-N] floor__press hall down__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin 
 executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press alarm
 button__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__read card__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall up__state5`
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__read card__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__read card__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press hall up__state7`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
+[1-N] floor__press door open__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
+[1-N] floor__press hall down__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin 
 executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press alarm
 button__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__read card__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
 - `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
 - `AEX__state6__press cabin roof__press cabin 
 executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
 - `AEX__state6__press cabin roof__press alarm
 button__state5`
 - `AEX__state6__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
 - `AEX__state6__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
 - `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
 - `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
 - `AEX__state3__press cabin lobby__press cabin 
 executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
 - `AEX__state3__press cabin lobby__press alarm
 button__state5`
 - `AEX__state3__press cabin lobby__press cabin 
@@ -638,126 +1301,441 @@ button__state5`
 - `AEX__state3__press cabin lobby__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press cabin 
-executive floor__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press hall up__state6`
+- `AEX__state3__press cabin roof__press door open__state5`
 - `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
 - `AEX__state3__press cabin roof__press cabin 
 executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
 - `AEX__state3__press cabin roof__press alarm
 button__state5`
 - `AEX__state3__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
 - `AEX__state3__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin roof__press hall up__state5`
 - `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
 - `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
 - `AEX__state2__read card__press cabin 
 executive floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
 - `AEX__state2__read card__press alarm
 button__state6`
 - `AEX__state2__read card__press cabin 
 [1-N] floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
 - `AEX__state2__read card__press hall 
 LobbyUp__state6`
 - `AEX__state2__read card__press hall up__state6`
 - `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
+- `AEX__state1__press hall down__press door open__state3`
 - `AEX__state1__press hall down__press cabin 
 executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
 - `AEX__state1__press hall down__press alarm
 button__state3`
 - `AEX__state1__press hall down__press cabin 
 [1-N] floor__state3`
 - `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
 - `AEX__state1__press hall down__press hall 
 LobbyUp__state3`
 - `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
 
-### Product 4
+### Product 3
 
-**Selected features:** selected = {ControlButtons, Intercom, ManualDoorControl, MobileKey}
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, PinPad}
 
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 26 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (13):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 23 | 23/23 = 100.0% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% |
+| ActionExchange | 253 | 253/253 = 100.0% | 99/253 = 39.1% | 253/253 = 100.0% | 253/253 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (14):
 
 - `TM__state4__press cabin roof__state5`
+- `TM__state5__press alarm
+button__state9`
 - `TM__state4__press cabin 
 [1-N] floor__state5`
 - `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
 - `TM__state3__press cabin 
 [1-N] floor__state5`
 - `TM__state6__press cabin 
 [1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (154):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press door open__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__enter PIN__state9`
+- `AEX__state5__press alarm
+button__press door close__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__enter PIN__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press door open__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press door close__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press intercom__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state4__enter PIN__press cabin roof__state6`
+- `AEX__state4__enter PIN__press door open__state6`
+- `AEX__state4__enter PIN__press hall down__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
+- `AEX__state4__enter PIN__press door close__state6`
+- `AEX__state4__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state4__enter PIN__press alarm
+button__state6`
+- `AEX__state4__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state4__enter PIN__press intercom__state6`
+- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__enter PIN__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 4
+
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, MobileKey}
+
+**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 28 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 19 | 19/19 = 100.0% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% |
+| ActionExchange | 171 | 171/171 = 100.0% | 63/171 = 36.8% | 171/171 = 100.0% | 171/171 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (12):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
 - `TM__state2__tap mobile
 key__state6`
+- `TM__state4__press cabin roof__state5`
 - `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
 [1-N] floor__state5`
 - `TM__state6__press cabin roof__state5`
 - `TM__state3__press cabin lobby__state5`
 - `TM__state3__press cabin roof__state5`
 - `TM__state4__tap mobile
 key__state6`
-- `TM__state7__press door open__state8`
 - `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
 
-**ActionExchange — survived state coverage** (130):
+**ActionExchange — survived product state coverage** (108):
 
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press intercom__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
 - `AEX__state4__press cabin roof__tap mobile
 key__state5`
-- `AEX__state4__press cabin roof__press door open__state5`
 - `AEX__state4__press cabin roof__press hall down__state5`
 - `AEX__state4__press cabin roof__press hall 
 RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
 - `AEX__state4__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state4__press cabin roof__press cabin lobby__state5`
@@ -765,125 +1743,19 @@ RoofDown__state5`
 LobbyUp__state5`
 - `AEX__state4__press cabin roof__press intercom__state5`
 - `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__tap mobile
-key__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press door open__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press intercom__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state2__tap mobile
-key__press door close__state6`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__tap mobile
 key__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state2__press cabin 
@@ -893,14 +1765,57 @@ LobbyUp__state5`
 [1-N] floor__press intercom__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
 - `AEX__state6__press cabin roof__tap mobile
 key__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
 - `AEX__state6__press cabin roof__press hall down__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
 - `AEX__state6__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state6__press cabin roof__press cabin lobby__state5`
@@ -908,27 +1823,27 @@ RoofDown__state5`
 LobbyUp__state5`
 - `AEX__state6__press cabin roof__press intercom__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
 - `AEX__state3__press cabin lobby__press cabin roof__state5`
 - `AEX__state3__press cabin lobby__tap mobile
 key__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
 - `AEX__state3__press cabin lobby__press hall down__state5`
 - `AEX__state3__press cabin lobby__press hall 
 RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
 - `AEX__state3__press cabin lobby__press cabin 
 [1-N] floor__state5`
 - `AEX__state3__press cabin lobby__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin lobby__press intercom__state5`
 - `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
 - `AEX__state3__press cabin roof__tap mobile
 key__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
 - `AEX__state3__press cabin roof__press hall down__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
 - `AEX__state3__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state3__press cabin roof__press cabin lobby__state5`
@@ -936,16 +1851,16 @@ RoofDown__state5`
 LobbyUp__state5`
 - `AEX__state3__press cabin roof__press intercom__state5`
 - `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
 - `AEX__state4__tap mobile
 key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press door open__state6`
 - `AEX__state4__tap mobile
 key__press hall down__state6`
 - `AEX__state4__tap mobile
 key__press hall 
 RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
 - `AEX__state4__tap mobile
 key__press cabin 
 [1-N] floor__state6`
@@ -958,28 +1873,13 @@ LobbyUp__state6`
 key__press intercom__state6`
 - `AEX__state4__tap mobile
 key__press hall up__state6`
-- `AEX__state4__tap mobile
-key__press door close__state6`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__tap mobile
-key__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state7__press door open__press door close__state8`
 - `AEX__state1__press hall down__press cabin roof__state3`
 - `AEX__state1__press hall down__tap mobile
 key__state3`
-- `AEX__state1__press hall down__press door open__state3`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
 - `AEX__state1__press hall down__press cabin 
 [1-N] floor__state3`
 - `AEX__state1__press hall down__press cabin lobby__state3`
@@ -987,7 +1887,28 @@ RoofDown__state3`
 LobbyUp__state3`
 - `AEX__state1__press hall down__press intercom__state3`
 - `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
 
 ### Product 5
 
@@ -995,12 +1916,14 @@ LobbyUp__state3`
 
 **Repaired FTS:** 10 states, 24 transitions (20 real / 4 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 220 | 110/220 = 50.0% | 220/220 = 100.0% | 220/220 = 100.0% |
+**Family baseline projected to this product:** 16 test case(s) (of 9 family-level), 26 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (10):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 20/20 = 100.0% | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 110/220 = 50.0% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (10):
 
 - `TM__state9__press&hold 
 door close__state11`
@@ -1020,7 +1943,7 @@ door open__state10`
 - `TM__state3__press cabin 
 [1-N] floor__state5`
 
-**ActionExchange — survived state coverage** (110):
+**ActionExchange — survived product state coverage** (110):
 
 - `AEX__state9__press&hold 
 door close__press cabin roof__state11`
@@ -1265,16 +2188,7285 @@ LobbyUp__state5`
 
 ### Product 6
 
+**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, PinPad}
+
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 25 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 22/22 = 100.0% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (130):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__enter PIN__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press door open__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state3__enter PIN__press door close__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state4__enter PIN__press cabin roof__state6`
+- `AEX__state4__enter PIN__press door open__state6`
+- `AEX__state4__enter PIN__press hall down__state6`
+- `AEX__state4__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state4__enter PIN__press alarm
+button__state6`
+- `AEX__state4__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
+- `AEX__state4__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state4__enter PIN__press door close__state6`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__enter PIN__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state1__press hall down__press door close__state3`
+
+### Product 7
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, PinPad}
+
+**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 19 test case(s) (of 9 family-level), 30 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 10/22 = 45.5% | 8/22 = 36.4% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 100/220 = 45.5% | 80/220 = 36.4% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (12):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state2__enter PIN__state6`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (14):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin roof__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (120):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__enter PIN__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press alarm
+button__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__enter PIN__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__enter PIN__press cabin roof__state6`
+- `AEX__state2__enter PIN__press hall down__state6`
+- `AEX__state2__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state2__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state2__enter PIN__press alarm
+button__state6`
+- `AEX__state2__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__enter PIN__press cabin lobby__state6`
+- `AEX__state2__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state2__enter PIN__press intercom__state6`
+- `AEX__state2__enter PIN__press hall up__state6`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press intercom__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (140):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__enter PIN__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__enter PIN__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press alarm
+button__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__enter PIN__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state4__enter PIN__press cabin roof__state6`
+- `AEX__state4__enter PIN__press hall down__state6`
+- `AEX__state4__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state4__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state4__enter PIN__press alarm
+button__state6`
+- `AEX__state4__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
+- `AEX__state4__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state4__enter PIN__press intercom__state6`
+- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 8
+
+**Selected features:** selected = {ControlButtons, FirefighterService, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 28 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 24 | 24/24 = 100.0% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% |
+| ActionExchange | 312 | 312/312 = 100.0% | 169/312 = 54.2% | 312/312 = 100.0% | 312/312 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state13__press&hold 
+door open__state10`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state14__press&hold 
+door close__state11`
+- `TM__state5__press door close__state7`
+- `TM__state5__press&hold 
+door open__state10`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state9__press&hold 
+door close__state11`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (143):
+
+- `AEX__state13__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state13__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state13__press&hold 
+door open__press door open__state10`
+- `AEX__state13__press&hold 
+door open__press hall down__state10`
+- `AEX__state13__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state13__press&hold 
+door open__release door open__state10`
+- `AEX__state13__press&hold 
+door open__press door close__state10`
+- `AEX__state13__press&hold 
+door open__release door close__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state13__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state13__press&hold 
+door open__press intercom__state10`
+- `AEX__state13__press&hold 
+door open__press hall up__state10`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state14__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state14__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state14__press&hold 
+door close__press door open__state11`
+- `AEX__state14__press&hold 
+door close__press hall down__state11`
+- `AEX__state14__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state14__press&hold 
+door close__release door open__state11`
+- `AEX__state14__press&hold 
+door close__press door close__state11`
+- `AEX__state14__press&hold 
+door close__release door close__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state14__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state14__press&hold 
+door close__press intercom__state11`
+- `AEX__state14__press&hold 
+door close__press hall up__state11`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press&hold 
+door open__state7`
+- `AEX__state5__press door close__press&hold 
+door close__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__release door open__state7`
+- `AEX__state5__press door close__release door close__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state5__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state5__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state5__press&hold 
+door open__press door open__state10`
+- `AEX__state5__press&hold 
+door open__press hall down__state10`
+- `AEX__state5__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state5__press&hold 
+door open__release door open__state10`
+- `AEX__state5__press&hold 
+door open__press door close__state10`
+- `AEX__state5__press&hold 
+door open__release door close__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state5__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state5__press&hold 
+door open__press intercom__state10`
+- `AEX__state5__press&hold 
+door open__press hall up__state10`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state9__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state9__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state9__press&hold 
+door close__press door open__state11`
+- `AEX__state9__press&hold 
+door close__press hall down__state11`
+- `AEX__state9__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state9__press&hold 
+door close__release door open__state11`
+- `AEX__state9__press&hold 
+door close__press door close__state11`
+- `AEX__state9__press&hold 
+door close__release door close__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state9__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state9__press&hold 
+door close__press intercom__state11`
+- `AEX__state9__press&hold 
+door close__press hall up__state11`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door open__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door close__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__release door open__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__release door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press&hold 
+door open__state8`
+- `AEX__state7__press door open__press&hold 
+door close__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__release door open__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__release door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press&hold 
+door open__state3`
+- `AEX__state1__press hall down__press&hold 
+door close__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__release door open__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__release door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 9
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 32 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 28 | 12/28 = 42.9% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% |
+| ActionExchange | 336 | 144/336 = 42.9% | 108/336 = 32.1% | 336/336 = 100.0% | 336/336 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (16):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state3__read card__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (19):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin roof__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state4__read card__state6`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press door open__state8`
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (192):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press door open__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press door close__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press alarm
+button__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__read card__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__read card__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__read card__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__read card__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state3__read card__press cabin roof__state6`
+- `AEX__state3__read card__press door open__state6`
+- `AEX__state3__read card__press hall down__state6`
+- `AEX__state3__read card__press cabin 
+executive floor__state6`
+- `AEX__state3__read card__press cabin lobby__state6`
+- `AEX__state3__read card__press door close__state6`
+- `AEX__state3__read card__press hall 
+RoofDown__state6`
+- `AEX__state3__read card__press alarm
+button__state6`
+- `AEX__state3__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__read card__press hall 
+LobbyUp__state6`
+- `AEX__state3__read card__press intercom__state6`
+- `AEX__state3__read card__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__read card__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (228):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press door open__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press door close__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__read card__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__read card__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press door open__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press cabin 
+executive floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press door close__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press intercom__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press door open__press cabin roof__state8`
+- `AEX__state12__press door open__press hall down__state8`
+- `AEX__state12__press door open__press cabin 
+executive floor__state8`
+- `AEX__state12__press door open__press cabin lobby__state8`
+- `AEX__state12__press door open__press door close__state8`
+- `AEX__state12__press door open__press hall 
+RoofDown__state8`
+- `AEX__state12__press door open__press alarm
+button__state8`
+- `AEX__state12__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state12__press door open__read card__state8`
+- `AEX__state12__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state12__press door open__press intercom__state8`
+- `AEX__state12__press door open__press hall up__state8`
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press door open__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press door close__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press alarm
+button__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__read card__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press intercom__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__read card__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press door open__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press door close__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press alarm
+button__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__read card__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 10
+
+**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, Intercom}
+
+**Repaired FTS:** 10 states, 25 transitions (21 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 16 test case(s) (of 9 family-level), 27 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 21 | 21/21 = 100.0% | 10/21 = 47.6% | 21/21 = 100.0% | 21/21 = 100.0% |
+| ActionExchange | 252 | 252/252 = 100.0% | 120/252 = 47.6% | 252/252 = 100.0% | 252/252 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state13__press&hold 
+door open__state10`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state14__press&hold 
+door close__state11`
+- `TM__state5__press&hold 
+door open__state10`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state9__press&hold 
+door close__state11`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (132):
+
+- `AEX__state4__press cabin roof__press&hold 
+door open__state5`
+- `AEX__state4__press cabin roof__press&hold 
+door close__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__release door open__state5`
+- `AEX__state4__press cabin roof__release door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state13__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state13__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state13__press&hold 
+door open__press hall down__state10`
+- `AEX__state13__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state13__press&hold 
+door open__release door open__state10`
+- `AEX__state13__press&hold 
+door open__release door close__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state13__press&hold 
+door open__press alarm
+button__state10`
+- `AEX__state13__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state13__press&hold 
+door open__press intercom__state10`
+- `AEX__state13__press&hold 
+door open__press hall up__state10`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press&hold 
+door open__state9`
+- `AEX__state5__press alarm
+button__press&hold 
+door close__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__release door open__state9`
+- `AEX__state5__press alarm
+button__release door close__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state14__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state14__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state14__press&hold 
+door close__press hall down__state11`
+- `AEX__state14__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state14__press&hold 
+door close__release door open__state11`
+- `AEX__state14__press&hold 
+door close__release door close__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state14__press&hold 
+door close__press alarm
+button__state11`
+- `AEX__state14__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state14__press&hold 
+door close__press intercom__state11`
+- `AEX__state14__press&hold 
+door close__press hall up__state11`
+- `AEX__state5__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state5__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state5__press&hold 
+door open__press hall down__state10`
+- `AEX__state5__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state5__press&hold 
+door open__release door open__state10`
+- `AEX__state5__press&hold 
+door open__release door close__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state5__press&hold 
+door open__press alarm
+button__state10`
+- `AEX__state5__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state5__press&hold 
+door open__press intercom__state10`
+- `AEX__state5__press&hold 
+door open__press hall up__state10`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state9__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state9__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state9__press&hold 
+door close__press hall down__state11`
+- `AEX__state9__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state9__press&hold 
+door close__release door open__state11`
+- `AEX__state9__press&hold 
+door close__release door close__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state9__press&hold 
+door close__press alarm
+button__state11`
+- `AEX__state9__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state9__press&hold 
+door close__press intercom__state11`
+- `AEX__state9__press&hold 
+door close__press hall up__state11`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door open__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door close__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__release door open__state5`
+- `AEX__state3__press cabin roof__release door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press&hold 
+door open__state3`
+- `AEX__state1__press hall down__press&hold 
+door close__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__release door open__state3`
+- `AEX__state1__press hall down__release door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 11
+
+**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 19 test case(s) (of 9 family-level), 29 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 180 | 81/180 = 45.0% | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press intercom__state9`
+- `TM__state3__read card__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state4__read card__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (99):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__read card__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state3__read card__press cabin roof__state6`
+- `AEX__state3__read card__press hall down__state6`
+- `AEX__state3__read card__press hall 
+RoofDown__state6`
+- `AEX__state3__read card__press cabin 
+executive floor__state6`
+- `AEX__state3__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__read card__press cabin lobby__state6`
+- `AEX__state3__read card__press hall 
+LobbyUp__state6`
+- `AEX__state3__read card__press intercom__state6`
+- `AEX__state3__read card__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__read card__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (117):
+
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__read card__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press intercom__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__read card__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press cabin 
+executive floor__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press intercom__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 12
+
+**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, ManualDoorControl}
+
+**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
+
+**Family baseline projected to this product:** 16 test case(s) (of 9 family-level), 28 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 24 | 24/24 = 100.0% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% |
+| ActionExchange | 312 | 312/312 = 100.0% | 169/312 = 54.2% | 312/312 = 100.0% | 312/312 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state13__press&hold 
+door open__state10`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state14__press&hold 
+door close__state11`
+- `TM__state5__press door close__state7`
+- `TM__state5__press&hold 
+door open__state10`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state9__press&hold 
+door close__state11`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (143):
+
+- `AEX__state13__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state13__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state13__press&hold 
+door open__press door open__state10`
+- `AEX__state13__press&hold 
+door open__press hall down__state10`
+- `AEX__state13__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state13__press&hold 
+door open__release door open__state10`
+- `AEX__state13__press&hold 
+door open__press door close__state10`
+- `AEX__state13__press&hold 
+door open__release door close__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state13__press&hold 
+door open__press alarm
+button__state10`
+- `AEX__state13__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state13__press&hold 
+door open__press hall up__state10`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state14__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state14__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state14__press&hold 
+door close__press door open__state11`
+- `AEX__state14__press&hold 
+door close__press hall down__state11`
+- `AEX__state14__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state14__press&hold 
+door close__release door open__state11`
+- `AEX__state14__press&hold 
+door close__press door close__state11`
+- `AEX__state14__press&hold 
+door close__release door close__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state14__press&hold 
+door close__press alarm
+button__state11`
+- `AEX__state14__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state14__press&hold 
+door close__press hall up__state11`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press&hold 
+door open__state7`
+- `AEX__state5__press door close__press&hold 
+door close__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__release door open__state7`
+- `AEX__state5__press door close__release door close__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state5__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state5__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state5__press&hold 
+door open__press door open__state10`
+- `AEX__state5__press&hold 
+door open__press hall down__state10`
+- `AEX__state5__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state5__press&hold 
+door open__release door open__state10`
+- `AEX__state5__press&hold 
+door open__press door close__state10`
+- `AEX__state5__press&hold 
+door open__release door close__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state5__press&hold 
+door open__press alarm
+button__state10`
+- `AEX__state5__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state5__press&hold 
+door open__press hall up__state10`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state9__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state9__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state9__press&hold 
+door close__press door open__state11`
+- `AEX__state9__press&hold 
+door close__press hall down__state11`
+- `AEX__state9__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state9__press&hold 
+door close__release door open__state11`
+- `AEX__state9__press&hold 
+door close__press door close__state11`
+- `AEX__state9__press&hold 
+door close__release door close__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state9__press&hold 
+door close__press alarm
+button__state11`
+- `AEX__state9__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state9__press&hold 
+door close__press hall up__state11`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door open__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door close__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__release door open__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__release door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press&hold 
+door open__state8`
+- `AEX__state7__press door open__press&hold 
+door close__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__release door open__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__release door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press&hold 
+door open__state3`
+- `AEX__state1__press hall down__press&hold 
+door close__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__release door open__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__release door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 13
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom}
+
+**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 19 test case(s) (of 9 family-level), 30 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 10/22 = 45.5% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 100/220 = 45.5% | 70/220 = 31.8% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (12):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__read card__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (15):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin roof__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state4__read card__state6`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (120):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press alarm
+button__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__read card__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__read card__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__read card__press cabin roof__state6`
+- `AEX__state3__read card__press hall down__state6`
+- `AEX__state3__read card__press hall 
+RoofDown__state6`
+- `AEX__state3__read card__press cabin 
+executive floor__state6`
+- `AEX__state3__read card__press alarm
+button__state6`
+- `AEX__state3__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__read card__press cabin lobby__state6`
+- `AEX__state3__read card__press hall 
+LobbyUp__state6`
+- `AEX__state3__read card__press intercom__state6`
+- `AEX__state3__read card__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (150):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__read card__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press cabin 
+executive floor__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press intercom__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press alarm
+button__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__read card__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press intercom__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press alarm
+button__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__read card__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 14
+
+**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 31 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 26 | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
+| ActionExchange | 286 | 121/286 = 42.3% | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (15):
+
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state3__read card__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (17):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state4__read card__state6`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press door open__state8`
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (165):
+
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press door open__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press door close__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__read card__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__read card__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__read card__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__read card__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state3__read card__press cabin roof__state6`
+- `AEX__state3__read card__press door open__state6`
+- `AEX__state3__read card__press hall down__state6`
+- `AEX__state3__read card__press cabin 
+executive floor__state6`
+- `AEX__state3__read card__press cabin lobby__state6`
+- `AEX__state3__read card__press door close__state6`
+- `AEX__state3__read card__press hall 
+RoofDown__state6`
+- `AEX__state3__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__read card__press hall 
+LobbyUp__state6`
+- `AEX__state3__read card__press intercom__state6`
+- `AEX__state3__read card__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__read card__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (187):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__read card__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press door open__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press cabin 
+executive floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press door close__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press intercom__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press door open__press cabin roof__state8`
+- `AEX__state12__press door open__press hall down__state8`
+- `AEX__state12__press door open__press cabin 
+executive floor__state8`
+- `AEX__state12__press door open__press cabin lobby__state8`
+- `AEX__state12__press door open__press door close__state8`
+- `AEX__state12__press door open__press hall 
+RoofDown__state8`
+- `AEX__state12__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state12__press door open__read card__state8`
+- `AEX__state12__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state12__press door open__press intercom__state8`
+- `AEX__state12__press door open__press hall up__state8`
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press door open__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press door close__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__read card__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press intercom__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__read card__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press door open__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press door close__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__read card__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 15
+
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 31 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 26 | 11/26 = 42.3% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% |
+| ActionExchange | 286 | 121/286 = 42.3% | 121/286 = 42.3% | 286/286 = 100.0% | 286/286 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (15):
+
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state2__enter PIN__state6`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (15):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state12__press door close__state7`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press door open__state8`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (165):
+
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press door open__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__enter PIN__state9`
+- `AEX__state5__press intercom__press door close__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__enter PIN__press cabin roof__state6`
+- `AEX__state2__enter PIN__press door open__state6`
+- `AEX__state2__enter PIN__press hall down__state6`
+- `AEX__state2__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state2__enter PIN__press cabin lobby__state6`
+- `AEX__state2__enter PIN__press door close__state6`
+- `AEX__state2__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state2__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state2__enter PIN__press intercom__state6`
+- `AEX__state2__enter PIN__press hall up__state6`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__enter PIN__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__enter PIN__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press door open__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press door close__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press intercom__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__enter PIN__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__enter PIN__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (165):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state12__press door close__press cabin roof__state7`
+- `AEX__state12__press door close__press door open__state7`
+- `AEX__state12__press door close__press hall down__state7`
+- `AEX__state12__press door close__press cabin 
+executive floor__state7`
+- `AEX__state12__press door close__press cabin lobby__state7`
+- `AEX__state12__press door close__enter PIN__state7`
+- `AEX__state12__press door close__press hall 
+RoofDown__state7`
+- `AEX__state12__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state12__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state12__press door close__press intercom__state7`
+- `AEX__state12__press door close__press hall up__state7`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__enter PIN__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press door open__press cabin roof__state8`
+- `AEX__state12__press door open__press hall down__state8`
+- `AEX__state12__press door open__press cabin 
+executive floor__state8`
+- `AEX__state12__press door open__press cabin lobby__state8`
+- `AEX__state12__press door open__enter PIN__state8`
+- `AEX__state12__press door open__press door close__state8`
+- `AEX__state12__press door open__press hall 
+RoofDown__state8`
+- `AEX__state12__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state12__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state12__press door open__press intercom__state8`
+- `AEX__state12__press door open__press hall up__state8`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press door open__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press door close__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press intercom__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press door open__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__enter PIN__state9`
+- `AEX__state12__press intercom__press door close__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__enter PIN__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 16
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom}
+
+**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 24 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 19 | 19/19 = 100.0% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% |
+| ActionExchange | 171 | 171/171 = 100.0% | 63/171 = 36.8% | 171/171 = 100.0% | 171/171 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (12):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state4__read card__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived product state coverage** (108):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__read card__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press intercom__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 17
+
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 30 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 23 | 23/23 = 100.0% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% |
+| ActionExchange | 253 | 253/253 = 100.0% | 99/253 = 39.1% | 253/253 = 100.0% | 253/253 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (14):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (154):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press door open__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press door close__state9`
+- `AEX__state5__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press door open__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press door close__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press intercom__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__tap mobile
+key__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 18
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 20 test case(s) (of 9 family-level), 29 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 180 | 81/180 = 45.0% | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press alarm
+button__state9`
+- `TM__state3__read card__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state4__read card__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (99):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state3__read card__press cabin roof__state6`
+- `AEX__state3__read card__press hall down__state6`
+- `AEX__state3__read card__press hall 
+RoofDown__state6`
+- `AEX__state3__read card__press cabin 
+executive floor__state6`
+- `AEX__state3__read card__press alarm
+button__state6`
+- `AEX__state3__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__read card__press cabin lobby__state6`
+- `AEX__state3__read card__press hall 
+LobbyUp__state6`
+- `AEX__state3__read card__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__read card__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (117):
+
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press alarm
+button__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__read card__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__read card__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press cabin 
+executive floor__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+executive floor__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 19
+
+**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 12 states, 31 transitions (25 real / 6 `__end__`).
+
+**Family baseline projected to this product:** 16 test case(s) (of 9 family-level), 29 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 25 | 25/25 = 100.0% | 13/25 = 52.0% | 25/25 = 100.0% | 25/25 = 100.0% |
+| ActionExchange | 350 | 350/350 = 100.0% | 182/350 = 52.0% | 350/350 = 100.0% | 350/350 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (12):
+
+- `TM__state13__press&hold 
+door open__state10`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state14__press&hold 
+door close__state11`
+- `TM__state5__press door close__state7`
+- `TM__state5__press&hold 
+door open__state10`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state9__press&hold 
+door close__state11`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (168):
+
+- `AEX__state13__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state13__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state13__press&hold 
+door open__press door open__state10`
+- `AEX__state13__press&hold 
+door open__press hall down__state10`
+- `AEX__state13__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state13__press&hold 
+door open__release door open__state10`
+- `AEX__state13__press&hold 
+door open__press door close__state10`
+- `AEX__state13__press&hold 
+door open__release door close__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state13__press&hold 
+door open__press alarm
+button__state10`
+- `AEX__state13__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state13__press&hold 
+door open__press intercom__state10`
+- `AEX__state13__press&hold 
+door open__press hall up__state10`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press&hold 
+door open__state9`
+- `AEX__state5__press alarm
+button__press&hold 
+door close__state9`
+- `AEX__state5__press alarm
+button__press door open__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__release door open__state9`
+- `AEX__state5__press alarm
+button__press door close__state9`
+- `AEX__state5__press alarm
+button__release door close__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state14__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state14__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state14__press&hold 
+door close__press door open__state11`
+- `AEX__state14__press&hold 
+door close__press hall down__state11`
+- `AEX__state14__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state14__press&hold 
+door close__release door open__state11`
+- `AEX__state14__press&hold 
+door close__press door close__state11`
+- `AEX__state14__press&hold 
+door close__release door close__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state14__press&hold 
+door close__press alarm
+button__state11`
+- `AEX__state14__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state14__press&hold 
+door close__press intercom__state11`
+- `AEX__state14__press&hold 
+door close__press hall up__state11`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press&hold 
+door open__state7`
+- `AEX__state5__press door close__press&hold 
+door close__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__release door open__state7`
+- `AEX__state5__press door close__release door close__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state5__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state5__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state5__press&hold 
+door open__press door open__state10`
+- `AEX__state5__press&hold 
+door open__press hall down__state10`
+- `AEX__state5__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state5__press&hold 
+door open__release door open__state10`
+- `AEX__state5__press&hold 
+door open__press door close__state10`
+- `AEX__state5__press&hold 
+door open__release door close__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state5__press&hold 
+door open__press alarm
+button__state10`
+- `AEX__state5__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state5__press&hold 
+door open__press intercom__state10`
+- `AEX__state5__press&hold 
+door open__press hall up__state10`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state9__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state9__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state9__press&hold 
+door close__press door open__state11`
+- `AEX__state9__press&hold 
+door close__press hall down__state11`
+- `AEX__state9__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state9__press&hold 
+door close__release door open__state11`
+- `AEX__state9__press&hold 
+door close__press door close__state11`
+- `AEX__state9__press&hold 
+door close__release door close__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state9__press&hold 
+door close__press alarm
+button__state11`
+- `AEX__state9__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state9__press&hold 
+door close__press intercom__state11`
+- `AEX__state9__press&hold 
+door close__press hall up__state11`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door open__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door close__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__release door open__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__release door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press&hold 
+door open__state8`
+- `AEX__state7__press door open__press&hold 
+door close__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__release door open__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__release door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press&hold 
+door open__state3`
+- `AEX__state1__press hall down__press&hold 
+door close__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__release door open__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__release door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 20
+
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, PinPad}
+
+**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 24 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 19 | 19/19 = 100.0% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% |
+| ActionExchange | 171 | 171/171 = 100.0% | 63/171 = 36.8% | 171/171 = 100.0% | 171/171 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (12):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived product state coverage** (108):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press intercom__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__enter PIN__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state4__enter PIN__press cabin roof__state6`
+- `AEX__state4__enter PIN__press hall down__state6`
+- `AEX__state4__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state4__enter PIN__press alarm
+button__state6`
+- `AEX__state4__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
+- `AEX__state4__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state4__enter PIN__press intercom__state6`
+- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 21
+
+**Selected features:** selected = {ControlButtons, FirefighterService, Intercom}
+
+**Repaired FTS:** 10 states, 24 transitions (20 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 26 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 20/20 = 100.0% | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 110/220 = 50.0% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (10):
+
+- `TM__state9__press&hold 
+door close__state11`
+- `TM__state4__press cabin roof__state5`
+- `TM__state13__press&hold 
+door open__state10`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state14__press&hold 
+door close__state11`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state5__press&hold 
+door open__state10`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived product state coverage** (110):
+
+- `AEX__state9__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state9__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state9__press&hold 
+door close__press hall down__state11`
+- `AEX__state9__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state9__press&hold 
+door close__release door open__state11`
+- `AEX__state9__press&hold 
+door close__release door close__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state9__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state9__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state9__press&hold 
+door close__press intercom__state11`
+- `AEX__state9__press&hold 
+door close__press hall up__state11`
+- `AEX__state4__press cabin roof__press&hold 
+door open__state5`
+- `AEX__state4__press cabin roof__press&hold 
+door close__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__release door open__state5`
+- `AEX__state4__press cabin roof__release door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state13__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state13__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state13__press&hold 
+door open__press hall down__state10`
+- `AEX__state13__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state13__press&hold 
+door open__release door open__state10`
+- `AEX__state13__press&hold 
+door open__release door close__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state13__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state13__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state13__press&hold 
+door open__press intercom__state10`
+- `AEX__state13__press&hold 
+door open__press hall up__state10`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state14__press&hold 
+door close__press cabin roof__state11`
+- `AEX__state14__press&hold 
+door close__press&hold 
+door open__state11`
+- `AEX__state14__press&hold 
+door close__press hall down__state11`
+- `AEX__state14__press&hold 
+door close__press cabin lobby__state11`
+- `AEX__state14__press&hold 
+door close__release door open__state11`
+- `AEX__state14__press&hold 
+door close__release door close__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+RoofDown__state11`
+- `AEX__state14__press&hold 
+door close__press cabin 
+[1-N] floor__state11`
+- `AEX__state14__press&hold 
+door close__press hall 
+LobbyUp__state11`
+- `AEX__state14__press&hold 
+door close__press intercom__state11`
+- `AEX__state14__press&hold 
+door close__press hall up__state11`
+- `AEX__state3__press cabin roof__press&hold 
+door open__state5`
+- `AEX__state3__press cabin roof__press&hold 
+door close__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__release door open__state5`
+- `AEX__state3__press cabin roof__release door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press&hold 
+door open__state3`
+- `AEX__state1__press hall down__press&hold 
+door close__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__release door open__state3`
+- `AEX__state1__press hall down__release door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state5__press&hold 
+door open__press cabin roof__state10`
+- `AEX__state5__press&hold 
+door open__press&hold 
+door close__state10`
+- `AEX__state5__press&hold 
+door open__press hall down__state10`
+- `AEX__state5__press&hold 
+door open__press cabin lobby__state10`
+- `AEX__state5__press&hold 
+door open__release door open__state10`
+- `AEX__state5__press&hold 
+door open__release door close__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+RoofDown__state10`
+- `AEX__state5__press&hold 
+door open__press cabin 
+[1-N] floor__state10`
+- `AEX__state5__press&hold 
+door open__press hall 
+LobbyUp__state10`
+- `AEX__state5__press&hold 
+door open__press intercom__state10`
+- `AEX__state5__press&hold 
+door open__press hall up__state10`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press&hold 
+door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__release door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 22
+
+**Selected features:** selected = {CardReader, ControlButtons, Intercom}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 23 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 18 | 18/18 = 100.0% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
+| ActionExchange | 144 | 144/144 = 100.0% | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state4__read card__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived product state coverage** (88):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press intercom__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 23
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, PinPad}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 20 test case(s) (of 9 family-level), 29 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 9/20 = 45.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 180 | 81/180 = 45.0% | 72/180 = 40.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press alarm
+button__state9`
+- `TM__state3__enter PIN__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state2__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (12):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (99):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__enter PIN__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state2__enter PIN__press cabin roof__state6`
+- `AEX__state2__enter PIN__press hall down__state6`
+- `AEX__state2__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state2__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state2__enter PIN__press alarm
+button__state6`
+- `AEX__state2__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__enter PIN__press cabin lobby__state6`
+- `AEX__state2__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state2__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (108):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__enter PIN__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state4__enter PIN__press cabin roof__state6`
+- `AEX__state4__enter PIN__press hall down__state6`
+- `AEX__state4__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state4__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state4__enter PIN__press alarm
+button__state6`
+- `AEX__state4__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
+- `AEX__state4__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 24
+
 **Selected features:** selected = {CardReader, ControlButtons, Intercom, ManualDoorControl}
 
 **Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 25 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (13):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 22/22 = 100.0% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (13):
 
 - `TM__state4__press cabin roof__state5`
 - `TM__state4__press cabin 
@@ -1294,7 +9486,7 @@ LobbyUp__state5`
 - `TM__state2__read card__state6`
 - `TM__state1__press hall down__state3`
 
-**ActionExchange — survived state coverage** (130):
+**ActionExchange — survived product state coverage** (130):
 
 - `AEX__state4__press cabin roof__press door open__state5`
 - `AEX__state4__press cabin roof__press hall down__state5`
@@ -1502,18 +9694,1505 @@ LobbyUp__state3`
 - `AEX__state1__press hall down__press hall up__state3`
 - `AEX__state1__press hall down__press door close__state3`
 
-### Product 7
+### Product 25
+
+**Selected features:** selected = {Alarm, ControlButtons, PinPad}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 23 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 18 | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
+| ActionExchange | 144 | 64/144 = 44.4% | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (10):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state2__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (80):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state2__enter PIN__press cabin roof__state6`
+- `AEX__state2__enter PIN__press hall down__state6`
+- `AEX__state2__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state2__enter PIN__press alarm
+button__state6`
+- `AEX__state2__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__enter PIN__press cabin lobby__state6`
+- `AEX__state2__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state2__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (88):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state4__enter PIN__press cabin roof__state6`
+- `AEX__state4__enter PIN__press hall down__state6`
+- `AEX__state4__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state4__enter PIN__press alarm
+button__state6`
+- `AEX__state4__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
+- `AEX__state4__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 26
+
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, MobileKey}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 15 test case(s) (of 9 family-level), 33 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 10/20 = 50.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 180 | 90/180 = 50.0% | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (10):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press intercom__state9`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (90):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__tap mobile
+key__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (117):
+
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press intercom__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press intercom__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__tap mobile
+key__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 27
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 23 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 18 | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
+| ActionExchange | 144 | 64/144 = 44.4% | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (10):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__read card__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state4__read card__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (80):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__read card__press cabin roof__state6`
+- `AEX__state3__read card__press hall down__state6`
+- `AEX__state3__read card__press hall 
+RoofDown__state6`
+- `AEX__state3__read card__press alarm
+button__state6`
+- `AEX__state3__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__read card__press cabin lobby__state6`
+- `AEX__state3__read card__press hall 
+LobbyUp__state6`
+- `AEX__state3__read card__press hall up__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__read card__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (88):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 28
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 26 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 23 | 23/23 = 100.0% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% |
+| ActionExchange | 253 | 253/253 = 100.0% | 99/253 = 39.1% | 253/253 = 100.0% | 253/253 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (14):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state5__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state4__read card__state6`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (154):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press door open__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press door close__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__read card__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press door open__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press door close__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press intercom__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__read card__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press intercom__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+### Product 29
 
 **Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, MobileKey}
 
 **Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 70/220 = 31.8% | 220/220 = 100.0% | 220/220 = 100.0% |
+**Family baseline projected to this product:** 15 test case(s) (of 9 family-level), 34 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (15):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 11/22 = 50.0% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 110/220 = 50.0% | 70/220 = 31.8% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (11):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (15):
 
 - `TM__state12__press alarm
 button__state9`
@@ -1539,7 +11218,231 @@ key__state6`
 key__state6`
 - `TM__state1__press hall down__state3`
 
-**ActionExchange — survived state coverage** (150):
+**ActionExchange — survived family-level state coverage (Devroey)** (110):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__tap mobile
+key__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press alarm
+button__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (150):
 
 - `AEX__state12__press alarm
 button__press cabin roof__state9`
@@ -1854,18 +11757,1242 @@ LobbyUp__state3`
 - `AEX__state1__press hall down__press intercom__state3`
 - `AEX__state1__press hall down__press hall up__state3`
 
-### Product 8
+### Product 30
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ManualDoorControl}
+
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 25 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 22/22 = 100.0% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state4__read card__state6`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state2__read card__state6`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (130):
+
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__read card__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__read card__press cabin roof__state6`
+- `AEX__state4__read card__press door open__state6`
+- `AEX__state4__read card__press hall down__state6`
+- `AEX__state4__read card__press hall 
+RoofDown__state6`
+- `AEX__state4__read card__press alarm
+button__state6`
+- `AEX__state4__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__read card__press cabin lobby__state6`
+- `AEX__state4__read card__press hall 
+LobbyUp__state6`
+- `AEX__state4__read card__press hall up__state6`
+- `AEX__state4__read card__press door close__state6`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__read card__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__read card__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__read card__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__read card__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__read card__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__read card__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state2__read card__press cabin roof__state6`
+- `AEX__state2__read card__press door open__state6`
+- `AEX__state2__read card__press hall down__state6`
+- `AEX__state2__read card__press hall 
+RoofDown__state6`
+- `AEX__state2__read card__press alarm
+button__state6`
+- `AEX__state2__read card__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__read card__press cabin lobby__state6`
+- `AEX__state2__read card__press hall 
+LobbyUp__state6`
+- `AEX__state2__read card__press hall up__state6`
+- `AEX__state2__read card__press door close__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__read card__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state1__press hall down__press door close__state3`
+
+### Product 31
+
+**Selected features:** selected = {ControlButtons, Intercom, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 29 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 22/22 = 100.0% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (130):
+
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press door open__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press intercom__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state2__tap mobile
+key__press door close__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__tap mobile
+key__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state1__press hall down__press door close__state3`
+
+### Product 32
+
+**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 29 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 22/22 = 100.0% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived product state coverage** (130):
+
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press door open__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state2__tap mobile
+key__press door close__state6`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__tap mobile
+key__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state1__press hall down__press door close__state3`
+
+### Product 33
+
+**Selected features:** selected = {Alarm, ControlButtons, MobileKey}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 27 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 18 | 9/18 = 50.0% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
+| ActionExchange | 144 | 72/144 = 50.0% | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (9):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (72):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (88):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
+
+### Product 34
 
 **Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, PinPad}
 
 **Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 26 | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% |
-| ActionExchange | 286 | 121/286 = 42.3% | 286/286 = 100.0% | 286/286 = 100.0% |
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 31 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (15):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 26 | 11/26 = 42.3% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% |
+| ActionExchange | 286 | 121/286 = 42.3% | 121/286 = 42.3% | 286/286 = 100.0% | 286/286 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (15):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state2__enter PIN__state6`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (15):
 
 - `TM__state12__press alarm
 button__state9`
@@ -1888,7 +13015,290 @@ button__state9`
 - `TM__state7__press door open__state8`
 - `TM__state1__press hall down__state3`
 
-**ActionExchange — survived state coverage** (165):
+**ActionExchange — survived family-level state coverage (Devroey)** (165):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__enter PIN__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__enter PIN__press cabin roof__state6`
+- `AEX__state2__enter PIN__press door open__state6`
+- `AEX__state2__enter PIN__press hall down__state6`
+- `AEX__state2__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state2__enter PIN__press cabin lobby__state6`
+- `AEX__state2__enter PIN__press door close__state6`
+- `AEX__state2__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state2__enter PIN__press alarm
+button__state6`
+- `AEX__state2__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state2__enter PIN__press hall up__state6`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__enter PIN__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__enter PIN__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press door open__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press door close__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__enter PIN__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__enter PIN__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (165):
 
 - `AEX__state12__press alarm
 button__press cabin roof__state9`
@@ -2181,21 +13591,50 @@ button__state3`
 LobbyUp__state3`
 - `AEX__state1__press hall down__press hall up__state3`
 
-### Product 9
+### Product 35
 
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
 
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 26 | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% |
-| ActionExchange | 286 | 121/286 = 42.3% | 286/286 = 100.0% | 286/286 = 100.0% |
+**Family baseline projected to this product:** 17 test case(s) (of 9 family-level), 32 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (15):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 28 | 12/28 = 42.9% | 11/28 = 39.3% | 28/28 = 100.0% | 28/28 = 100.0% |
+| ActionExchange | 336 | 144/336 = 42.9% | 132/336 = 39.3% | 336/336 = 100.0% | 336/336 = 100.0% |
 
+**TransitionMissing — survived family-level state coverage (Devroey)** (16):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state2__enter PIN__state6`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (17):
+
+- `TM__state12__press alarm
+button__state9`
 - `TM__state4__press cabin roof__state5`
 - `TM__state12__press door close__state7`
+- `TM__state5__press alarm
+button__state9`
 - `TM__state4__press cabin 
 [1-N] floor__state5`
 - `TM__state5__press door close__state7`
@@ -2214,38 +13653,53 @@ LobbyUp__state3`
 - `TM__state7__press door open__state8`
 - `TM__state1__press hall down__state3`
 
-**ActionExchange — survived state coverage** (165):
+**ActionExchange — survived family-level state coverage (Devroey)** (192):
 
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state12__press door close__press cabin roof__state7`
-- `AEX__state12__press door close__press door open__state7`
-- `AEX__state12__press door close__press hall down__state7`
-- `AEX__state12__press door close__press cabin 
-executive floor__state7`
-- `AEX__state12__press door close__press cabin lobby__state7`
-- `AEX__state12__press door close__enter PIN__state7`
-- `AEX__state12__press door close__press hall 
-RoofDown__state7`
-- `AEX__state12__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state12__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state12__press door close__press intercom__state7`
-- `AEX__state12__press door close__press hall up__state7`
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__enter PIN__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press door open__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__enter PIN__state9`
+- `AEX__state5__press intercom__press door close__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press alarm
+button__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__press hall up__state9`
 - `AEX__state4__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state4__press cabin 
@@ -2265,12 +13719,49 @@ executive floor__state5`
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press intercom__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state2__enter PIN__press cabin roof__state6`
+- `AEX__state2__enter PIN__press door open__state6`
+- `AEX__state2__enter PIN__press hall down__state6`
+- `AEX__state2__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state2__enter PIN__press cabin lobby__state6`
+- `AEX__state2__enter PIN__press door close__state6`
+- `AEX__state2__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state2__enter PIN__press alarm
+button__state6`
+- `AEX__state2__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state2__enter PIN__press intercom__state6`
+- `AEX__state2__enter PIN__press hall up__state6`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__enter PIN__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
 - `AEX__state5__press door close__press cabin roof__state7`
 - `AEX__state5__press door close__press door open__state7`
 - `AEX__state5__press door close__press hall down__state7`
@@ -2280,6 +13771,8 @@ executive floor__state7`
 - `AEX__state5__press door close__enter PIN__state7`
 - `AEX__state5__press door close__press hall 
 RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
 - `AEX__state5__press door close__press cabin 
 [1-N] floor__state7`
 - `AEX__state5__press door close__press hall 
@@ -2295,6 +13788,338 @@ executive floor__state5`
 - `AEX__state2__press cabin lobby__press door close__state5`
 - `AEX__state2__press cabin lobby__press hall 
 RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press door open__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press door close__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press alarm
+button__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press intercom__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__enter PIN__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__enter PIN__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (204):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__enter PIN__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state12__press door close__press cabin roof__state7`
+- `AEX__state12__press door close__press door open__state7`
+- `AEX__state12__press door close__press hall down__state7`
+- `AEX__state12__press door close__press cabin 
+executive floor__state7`
+- `AEX__state12__press door close__press cabin lobby__state7`
+- `AEX__state12__press door close__enter PIN__state7`
+- `AEX__state12__press door close__press hall 
+RoofDown__state7`
+- `AEX__state12__press door close__press alarm
+button__state7`
+- `AEX__state12__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state12__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state12__press door close__press intercom__state7`
+- `AEX__state12__press door close__press hall up__state7`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press door open__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__enter PIN__state9`
+- `AEX__state5__press alarm
+button__press door close__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__enter PIN__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press alarm
+button__state5`
 - `AEX__state2__press cabin lobby__press cabin 
 [1-N] floor__state5`
 - `AEX__state2__press cabin lobby__press hall 
@@ -2319,6 +14144,9 @@ executive floor__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press alarm
+button__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
@@ -2335,6 +14163,8 @@ executive floor__state8`
 - `AEX__state12__press door open__press door close__state8`
 - `AEX__state12__press door open__press hall 
 RoofDown__state8`
+- `AEX__state12__press door open__press alarm
+button__state8`
 - `AEX__state12__press door open__press cabin 
 [1-N] floor__state8`
 - `AEX__state12__press door open__press hall 
@@ -2359,6 +14189,9 @@ executive floor__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
@@ -2373,8040 +14206,31 @@ LobbyUp__state5`
 executive floor__state6`
 - `AEX__state3__enter PIN__press cabin lobby__state6`
 - `AEX__state3__enter PIN__press door close__state6`
-- `AEX__state3__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state3__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state3__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state3__enter PIN__press intercom__state6`
-- `AEX__state3__enter PIN__press hall up__state6`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press door open__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__enter PIN__state9`
-- `AEX__state12__press intercom__press door close__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin 
-executive floor__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__enter PIN__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 10
-
-**Selected features:** selected = {ControlButtons, FirefighterService, Intercom}
-
-**Repaired FTS:** 10 states, 24 transitions (20 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 220 | 110/220 = 50.0% | 220/220 = 100.0% | 220/220 = 100.0% |
-
-**TransitionMissing — survived state coverage** (10):
-
-- `TM__state9__press&hold 
-door close__state11`
-- `TM__state4__press cabin roof__state5`
-- `TM__state13__press&hold 
-door open__state10`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state14__press&hold 
-door close__state11`
-- `TM__state3__press cabin roof__state5`
-- `TM__state1__press hall down__state3`
-- `TM__state5__press&hold 
-door open__state10`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (110):
-
-- `AEX__state9__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state9__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state9__press&hold 
-door close__press hall down__state11`
-- `AEX__state9__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state9__press&hold 
-door close__release door open__state11`
-- `AEX__state9__press&hold 
-door close__release door close__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state9__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state9__press&hold 
-door close__press intercom__state11`
-- `AEX__state9__press&hold 
-door close__press hall up__state11`
-- `AEX__state4__press cabin roof__press&hold 
-door open__state5`
-- `AEX__state4__press cabin roof__press&hold 
-door close__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__release door open__state5`
-- `AEX__state4__press cabin roof__release door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state13__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state13__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state13__press&hold 
-door open__press hall down__state10`
-- `AEX__state13__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state13__press&hold 
-door open__release door open__state10`
-- `AEX__state13__press&hold 
-door open__release door close__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state13__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state13__press&hold 
-door open__press intercom__state10`
-- `AEX__state13__press&hold 
-door open__press hall up__state10`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state14__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state14__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state14__press&hold 
-door close__press hall down__state11`
-- `AEX__state14__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state14__press&hold 
-door close__release door open__state11`
-- `AEX__state14__press&hold 
-door close__release door close__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state14__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state14__press&hold 
-door close__press intercom__state11`
-- `AEX__state14__press&hold 
-door close__press hall up__state11`
-- `AEX__state3__press cabin roof__press&hold 
-door open__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door close__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__release door open__state5`
-- `AEX__state3__press cabin roof__release door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press&hold 
-door open__state3`
-- `AEX__state1__press hall down__press&hold 
-door close__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__release door open__state3`
-- `AEX__state1__press hall down__release door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state5__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state5__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state5__press&hold 
-door open__press hall down__state10`
-- `AEX__state5__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state5__press&hold 
-door open__release door open__state10`
-- `AEX__state5__press&hold 
-door open__release door close__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state5__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state5__press&hold 
-door open__press intercom__state10`
-- `AEX__state5__press&hold 
-door open__press hall up__state10`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 11
-
-**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, Intercom, ManualDoorControl}
-
-**Repaired FTS:** 12 states, 31 transitions (25 real / 6 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 25 | 13/25 = 52.0% | 25/25 = 100.0% | 25/25 = 100.0% |
-| ActionExchange | 350 | 182/350 = 52.0% | 350/350 = 100.0% | 350/350 = 100.0% |
-
-**TransitionMissing — survived state coverage** (12):
-
-- `TM__state13__press&hold 
-door open__state10`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state14__press&hold 
-door close__state11`
-- `TM__state5__press door close__state7`
-- `TM__state5__press&hold 
-door open__state10`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state9__press&hold 
-door close__state11`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (168):
-
-- `AEX__state13__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state13__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state13__press&hold 
-door open__press door open__state10`
-- `AEX__state13__press&hold 
-door open__press hall down__state10`
-- `AEX__state13__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state13__press&hold 
-door open__release door open__state10`
-- `AEX__state13__press&hold 
-door open__press door close__state10`
-- `AEX__state13__press&hold 
-door open__release door close__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state13__press&hold 
-door open__press alarm
-button__state10`
-- `AEX__state13__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state13__press&hold 
-door open__press intercom__state10`
-- `AEX__state13__press&hold 
-door open__press hall up__state10`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press&hold 
-door open__state9`
-- `AEX__state5__press alarm
-button__press&hold 
-door close__state9`
-- `AEX__state5__press alarm
-button__press door open__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__release door open__state9`
-- `AEX__state5__press alarm
-button__press door close__state9`
-- `AEX__state5__press alarm
-button__release door close__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state14__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state14__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state14__press&hold 
-door close__press door open__state11`
-- `AEX__state14__press&hold 
-door close__press hall down__state11`
-- `AEX__state14__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state14__press&hold 
-door close__release door open__state11`
-- `AEX__state14__press&hold 
-door close__press door close__state11`
-- `AEX__state14__press&hold 
-door close__release door close__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state14__press&hold 
-door close__press alarm
-button__state11`
-- `AEX__state14__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state14__press&hold 
-door close__press intercom__state11`
-- `AEX__state14__press&hold 
-door close__press hall up__state11`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press&hold 
-door open__state7`
-- `AEX__state5__press door close__press&hold 
-door close__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__release door open__state7`
-- `AEX__state5__press door close__release door close__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state5__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state5__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state5__press&hold 
-door open__press door open__state10`
-- `AEX__state5__press&hold 
-door open__press hall down__state10`
-- `AEX__state5__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state5__press&hold 
-door open__release door open__state10`
-- `AEX__state5__press&hold 
-door open__press door close__state10`
-- `AEX__state5__press&hold 
-door open__release door close__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state5__press&hold 
-door open__press alarm
-button__state10`
-- `AEX__state5__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state5__press&hold 
-door open__press intercom__state10`
-- `AEX__state5__press&hold 
-door open__press hall up__state10`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state9__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state9__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state9__press&hold 
-door close__press door open__state11`
-- `AEX__state9__press&hold 
-door close__press hall down__state11`
-- `AEX__state9__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state9__press&hold 
-door close__release door open__state11`
-- `AEX__state9__press&hold 
-door close__press door close__state11`
-- `AEX__state9__press&hold 
-door close__release door close__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state9__press&hold 
-door close__press alarm
-button__state11`
-- `AEX__state9__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state9__press&hold 
-door close__press intercom__state11`
-- `AEX__state9__press&hold 
-door close__press hall up__state11`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door open__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door close__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__release door open__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__release door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press&hold 
-door open__state8`
-- `AEX__state7__press door open__press&hold 
-door close__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__release door open__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state7__press door open__release door close__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press&hold 
-door open__state3`
-- `AEX__state1__press hall down__press&hold 
-door close__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__release door open__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__release door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 12
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, PinPad}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 180 | 72/180 = 40.0% | 180/180 = 100.0% | 180/180 = 100.0% |
-
-**TransitionMissing — survived state coverage** (12):
-
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state4__enter PIN__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state1__press hall down__state3`
-- `TM__state2__press cabin lobby__state5`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (108):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__enter PIN__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__enter PIN__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state4__enter PIN__press cabin roof__state6`
-- `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state4__enter PIN__press cabin 
-executive floor__state6`
-- `AEX__state4__enter PIN__press alarm
-button__state6`
-- `AEX__state4__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state4__enter PIN__press hall up__state6`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state2__press cabin lobby__press cabin roof__state5`
-- `AEX__state2__press cabin lobby__press hall down__state5`
-- `AEX__state2__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin lobby__press alarm
-button__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state2__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
-- `AEX__state2__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 13
-
-**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, ManualDoorControl}
-
-**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 24 | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% |
-| ActionExchange | 312 | 169/312 = 54.2% | 312/312 = 100.0% | 312/312 = 100.0% |
-
-**TransitionMissing — survived state coverage** (11):
-
-- `TM__state13__press&hold 
-door open__state10`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state14__press&hold 
-door close__state11`
-- `TM__state5__press door close__state7`
-- `TM__state5__press&hold 
-door open__state10`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state9__press&hold 
-door close__state11`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (143):
-
-- `AEX__state13__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state13__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state13__press&hold 
-door open__press door open__state10`
-- `AEX__state13__press&hold 
-door open__press hall down__state10`
-- `AEX__state13__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state13__press&hold 
-door open__release door open__state10`
-- `AEX__state13__press&hold 
-door open__press door close__state10`
-- `AEX__state13__press&hold 
-door open__release door close__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state13__press&hold 
-door open__press alarm
-button__state10`
-- `AEX__state13__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state13__press&hold 
-door open__press hall up__state10`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state14__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state14__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state14__press&hold 
-door close__press door open__state11`
-- `AEX__state14__press&hold 
-door close__press hall down__state11`
-- `AEX__state14__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state14__press&hold 
-door close__release door open__state11`
-- `AEX__state14__press&hold 
-door close__press door close__state11`
-- `AEX__state14__press&hold 
-door close__release door close__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state14__press&hold 
-door close__press alarm
-button__state11`
-- `AEX__state14__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state14__press&hold 
-door close__press hall up__state11`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press&hold 
-door open__state7`
-- `AEX__state5__press door close__press&hold 
-door close__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__release door open__state7`
-- `AEX__state5__press door close__release door close__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state5__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state5__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state5__press&hold 
-door open__press door open__state10`
-- `AEX__state5__press&hold 
-door open__press hall down__state10`
-- `AEX__state5__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state5__press&hold 
-door open__release door open__state10`
-- `AEX__state5__press&hold 
-door open__press door close__state10`
-- `AEX__state5__press&hold 
-door open__release door close__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state5__press&hold 
-door open__press alarm
-button__state10`
-- `AEX__state5__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state5__press&hold 
-door open__press hall up__state10`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state9__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state9__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state9__press&hold 
-door close__press door open__state11`
-- `AEX__state9__press&hold 
-door close__press hall down__state11`
-- `AEX__state9__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state9__press&hold 
-door close__release door open__state11`
-- `AEX__state9__press&hold 
-door close__press door close__state11`
-- `AEX__state9__press&hold 
-door close__release door close__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state9__press&hold 
-door close__press alarm
-button__state11`
-- `AEX__state9__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state9__press&hold 
-door close__press hall up__state11`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door open__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door close__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__release door open__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__release door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press&hold 
-door open__state8`
-- `AEX__state7__press door open__press&hold 
-door close__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__release door open__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state7__press door open__release door close__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press&hold 
-door open__state3`
-- `AEX__state1__press hall down__press&hold 
-door close__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__release door open__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__release door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 14
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom}
-
-**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 70/220 = 31.8% | 220/220 = 100.0% | 220/220 = 100.0% |
-
-**TransitionMissing — survived state coverage** (15):
-
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state4__read card__state6`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (150):
-
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__read card__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press intercom__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__read card__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press cabin 
-executive floor__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press intercom__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press alarm
-button__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__read card__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press intercom__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press alarm
-button__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__read card__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press cabin 
-executive floor__state6`
-- `AEX__state2__read card__press alarm
-button__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press intercom__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 15
-
-**Selected features:** selected = {ControlButtons, FirefighterService, Intercom, ManualDoorControl}
-
-**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 24 | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% |
-| ActionExchange | 312 | 169/312 = 54.2% | 312/312 = 100.0% | 312/312 = 100.0% |
-
-**TransitionMissing — survived state coverage** (11):
-
-- `TM__state13__press&hold 
-door open__state10`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state14__press&hold 
-door close__state11`
-- `TM__state5__press door close__state7`
-- `TM__state5__press&hold 
-door open__state10`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state9__press&hold 
-door close__state11`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (143):
-
-- `AEX__state13__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state13__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state13__press&hold 
-door open__press door open__state10`
-- `AEX__state13__press&hold 
-door open__press hall down__state10`
-- `AEX__state13__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state13__press&hold 
-door open__release door open__state10`
-- `AEX__state13__press&hold 
-door open__press door close__state10`
-- `AEX__state13__press&hold 
-door open__release door close__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state13__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state13__press&hold 
-door open__press intercom__state10`
-- `AEX__state13__press&hold 
-door open__press hall up__state10`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state14__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state14__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state14__press&hold 
-door close__press door open__state11`
-- `AEX__state14__press&hold 
-door close__press hall down__state11`
-- `AEX__state14__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state14__press&hold 
-door close__release door open__state11`
-- `AEX__state14__press&hold 
-door close__press door close__state11`
-- `AEX__state14__press&hold 
-door close__release door close__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state14__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state14__press&hold 
-door close__press intercom__state11`
-- `AEX__state14__press&hold 
-door close__press hall up__state11`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press&hold 
-door open__state7`
-- `AEX__state5__press door close__press&hold 
-door close__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__release door open__state7`
-- `AEX__state5__press door close__release door close__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state5__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state5__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state5__press&hold 
-door open__press door open__state10`
-- `AEX__state5__press&hold 
-door open__press hall down__state10`
-- `AEX__state5__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state5__press&hold 
-door open__release door open__state10`
-- `AEX__state5__press&hold 
-door open__press door close__state10`
-- `AEX__state5__press&hold 
-door open__release door close__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state5__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state5__press&hold 
-door open__press intercom__state10`
-- `AEX__state5__press&hold 
-door open__press hall up__state10`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state9__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state9__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state9__press&hold 
-door close__press door open__state11`
-- `AEX__state9__press&hold 
-door close__press hall down__state11`
-- `AEX__state9__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state9__press&hold 
-door close__release door open__state11`
-- `AEX__state9__press&hold 
-door close__press door close__state11`
-- `AEX__state9__press&hold 
-door close__release door close__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state9__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state9__press&hold 
-door close__press intercom__state11`
-- `AEX__state9__press&hold 
-door close__press hall up__state11`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door open__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door close__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__release door open__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__release door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press&hold 
-door open__state8`
-- `AEX__state7__press door open__press&hold 
-door close__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__release door open__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state7__press door open__release door close__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press&hold 
-door open__state3`
-- `AEX__state1__press hall down__press&hold 
-door close__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__release door open__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__release door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 16
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 18 | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
-| ActionExchange | 144 | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
-
-**TransitionMissing — survived state coverage** (11):
-
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state4__read card__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (88):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press alarm
-button__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 17
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom}
-
-**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 19 | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% |
-| ActionExchange | 171 | 63/171 = 36.8% | 171/171 = 100.0% | 171/171 = 100.0% |
-
-**TransitionMissing — survived state coverage** (12):
-
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state4__read card__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (108):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__read card__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press intercom__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press alarm
-button__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press intercom__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 18
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, MobileKey}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 180 | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
-
-**TransitionMissing — survived state coverage** (13):
-
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press alarm
-button__state9`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (117):
-
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press alarm
-button__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__tap mobile
-key__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state2__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state4__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 19
-
-**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
-
-**TransitionMissing — survived state coverage** (13):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state7__press door open__state8`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (130):
-
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__tap mobile
-key__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press door open__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state2__tap mobile
-key__press door close__state6`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press door open__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state4__tap mobile
-key__press door close__state6`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__tap mobile
-key__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state1__press hall down__press door close__state3`
-
-### Product 20
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 26 | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
-| ActionExchange | 286 | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
-
-**TransitionMissing — survived state coverage** (17):
-
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door open__state8`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press door open__state8`
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state8__press door close__state7`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (187):
-
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press door open__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press door close__state9`
-- `AEX__state12__press alarm
-button__tap mobile
-key__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press door open__press cabin roof__state8`
-- `AEX__state5__press door open__press hall down__state8`
-- `AEX__state5__press door open__press cabin 
-executive floor__state8`
-- `AEX__state5__press door open__press cabin lobby__state8`
-- `AEX__state5__press door open__press door close__state8`
-- `AEX__state5__press door open__tap mobile
-key__state8`
-- `AEX__state5__press door open__press hall 
-RoofDown__state8`
-- `AEX__state5__press door open__press alarm
-button__state8`
-- `AEX__state5__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state5__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state5__press door open__press hall up__state8`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin 
-executive floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__tap mobile
-key__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press door open__press cabin roof__state8`
-- `AEX__state12__press door open__press hall down__state8`
-- `AEX__state12__press door open__press cabin 
-executive floor__state8`
-- `AEX__state12__press door open__press cabin lobby__state8`
-- `AEX__state12__press door open__press door close__state8`
-- `AEX__state12__press door open__tap mobile
-key__state8`
-- `AEX__state12__press door open__press hall 
-RoofDown__state8`
-- `AEX__state12__press door open__press alarm
-button__state8`
-- `AEX__state12__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state12__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state12__press door open__press hall up__state8`
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press door open__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press door close__state5`
-- `AEX__state6__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press alarm
-button__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press door open__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press door close__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state8__press door close__press cabin roof__state7`
-- `AEX__state8__press door close__press door open__state7`
-- `AEX__state8__press door close__press hall down__state7`
-- `AEX__state8__press door close__press cabin 
-executive floor__state7`
-- `AEX__state8__press door close__press cabin lobby__state7`
-- `AEX__state8__press door close__tap mobile
-key__state7`
-- `AEX__state8__press door close__press hall 
-RoofDown__state7`
-- `AEX__state8__press door close__press alarm
-button__state7`
-- `AEX__state8__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state8__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state8__press door close__press hall up__state7`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press door open__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press door close__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 21
-
-**Selected features:** selected = {CardReader, ControlButtons, Intercom}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 18 | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
-| ActionExchange | 144 | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
-
-**TransitionMissing — survived state coverage** (11):
-
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state4__read card__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (88):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press intercom__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press intercom__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 22
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, PinPad}
-
-**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 8/22 = 36.4% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 80/220 = 36.4% | 220/220 = 100.0% | 220/220 = 100.0% |
-
-**TransitionMissing — survived state coverage** (14):
-
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state2__press cabin lobby__state5`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state4__enter PIN__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (140):
-
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press intercom__state9`
-- `AEX__state12__press alarm
-button__enter PIN__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__enter PIN__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin lobby__press cabin roof__state5`
-- `AEX__state2__press cabin lobby__press hall down__state5`
-- `AEX__state2__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin lobby__press alarm
-button__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state2__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin lobby__press intercom__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
-- `AEX__state2__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__enter PIN__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press alarm
-button__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__enter PIN__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state4__enter PIN__press cabin roof__state6`
-- `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state4__enter PIN__press cabin 
-executive floor__state6`
-- `AEX__state4__enter PIN__press alarm
-button__state6`
-- `AEX__state4__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state4__enter PIN__press intercom__state6`
-- `AEX__state4__enter PIN__press hall up__state6`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 23
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
-
-**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 28 | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% |
-| ActionExchange | 336 | 108/336 = 32.1% | 336/336 = 100.0% | 336/336 = 100.0% |
-
-**TransitionMissing — survived state coverage** (19):
-
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door open__state8`
-- `TM__state4__read card__state6`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press door open__state8`
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state8__press door close__state7`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (228):
-
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press door open__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press door close__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__read card__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press intercom__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press door open__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press door close__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__read card__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press door open__press cabin roof__state8`
-- `AEX__state5__press door open__press hall down__state8`
-- `AEX__state5__press door open__press cabin 
-executive floor__state8`
-- `AEX__state5__press door open__press cabin lobby__state8`
-- `AEX__state5__press door open__press door close__state8`
-- `AEX__state5__press door open__press hall 
-RoofDown__state8`
-- `AEX__state5__press door open__press alarm
-button__state8`
-- `AEX__state5__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state5__press door open__read card__state8`
-- `AEX__state5__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state5__press door open__press intercom__state8`
-- `AEX__state5__press door open__press hall up__state8`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press door open__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press cabin 
-executive floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press door close__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press intercom__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin 
-executive floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__read card__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press door open__press cabin roof__state8`
-- `AEX__state12__press door open__press hall down__state8`
-- `AEX__state12__press door open__press cabin 
-executive floor__state8`
-- `AEX__state12__press door open__press cabin lobby__state8`
-- `AEX__state12__press door open__press door close__state8`
-- `AEX__state12__press door open__press hall 
-RoofDown__state8`
-- `AEX__state12__press door open__press alarm
-button__state8`
-- `AEX__state12__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state12__press door open__read card__state8`
-- `AEX__state12__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state12__press door open__press intercom__state8`
-- `AEX__state12__press door open__press hall up__state8`
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press door open__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press door close__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press alarm
-button__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__read card__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press intercom__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state8__press door close__press cabin roof__state7`
-- `AEX__state8__press door close__press door open__state7`
-- `AEX__state8__press door close__press hall down__state7`
-- `AEX__state8__press door close__press cabin 
-executive floor__state7`
-- `AEX__state8__press door close__press cabin lobby__state7`
-- `AEX__state8__press door close__press hall 
-RoofDown__state7`
-- `AEX__state8__press door close__press alarm
-button__state7`
-- `AEX__state8__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state8__press door close__read card__state7`
-- `AEX__state8__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state8__press door close__press intercom__state7`
-- `AEX__state8__press door close__press hall up__state7`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press door open__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press door close__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press alarm
-button__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__read card__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press door open__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press cabin 
-executive floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press door close__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press alarm
-button__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press intercom__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 24
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 28 | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% |
-| ActionExchange | 336 | 108/336 = 32.1% | 336/336 = 100.0% | 336/336 = 100.0% |
-
-**TransitionMissing — survived state coverage** (19):
-
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door open__state8`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press door open__state8`
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state8__press door close__state7`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (228):
-
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press door open__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press door close__state9`
-- `AEX__state12__press alarm
-button__tap mobile
-key__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press intercom__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press door open__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press door close__state9`
-- `AEX__state5__press alarm
-button__tap mobile
-key__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press door open__press cabin roof__state8`
-- `AEX__state5__press door open__press hall down__state8`
-- `AEX__state5__press door open__press cabin 
-executive floor__state8`
-- `AEX__state5__press door open__press cabin lobby__state8`
-- `AEX__state5__press door open__press door close__state8`
-- `AEX__state5__press door open__tap mobile
-key__state8`
-- `AEX__state5__press door open__press hall 
-RoofDown__state8`
-- `AEX__state5__press door open__press alarm
-button__state8`
-- `AEX__state5__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state5__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state5__press door open__press intercom__state8`
-- `AEX__state5__press door open__press hall up__state8`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin 
-executive floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__tap mobile
-key__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press door open__press cabin roof__state8`
-- `AEX__state12__press door open__press hall down__state8`
-- `AEX__state12__press door open__press cabin 
-executive floor__state8`
-- `AEX__state12__press door open__press cabin lobby__state8`
-- `AEX__state12__press door open__press door close__state8`
-- `AEX__state12__press door open__tap mobile
-key__state8`
-- `AEX__state12__press door open__press hall 
-RoofDown__state8`
-- `AEX__state12__press door open__press alarm
-button__state8`
-- `AEX__state12__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state12__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state12__press door open__press intercom__state8`
-- `AEX__state12__press door open__press hall up__state8`
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press door open__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press door close__state5`
-- `AEX__state6__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press alarm
-button__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press intercom__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press door open__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press door close__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press intercom__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state8__press door close__press cabin roof__state7`
-- `AEX__state8__press door close__press door open__state7`
-- `AEX__state8__press door close__press hall down__state7`
-- `AEX__state8__press door close__press cabin 
-executive floor__state7`
-- `AEX__state8__press door close__press cabin lobby__state7`
-- `AEX__state8__press door close__tap mobile
-key__state7`
-- `AEX__state8__press door close__press hall 
-RoofDown__state7`
-- `AEX__state8__press door close__press alarm
-button__state7`
-- `AEX__state8__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state8__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state8__press door close__press intercom__state7`
-- `AEX__state8__press door close__press hall up__state7`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press door open__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press door close__state9`
-- `AEX__state12__press intercom__tap mobile
-key__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press alarm
-button__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press door open__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press door close__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press intercom__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 25
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom, ManualDoorControl}
-
-**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 23 | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% |
-| ActionExchange | 253 | 99/253 = 39.1% | 253/253 = 100.0% | 253/253 = 100.0% |
-
-**TransitionMissing — survived state coverage** (14):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state4__read card__state6`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (154):
-
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press door open__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press door close__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__read card__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press door open__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press door close__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press intercom__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__read card__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__read card__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press door open__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press door close__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press alarm
-button__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press intercom__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 26
-
-**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 26 | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
-| ActionExchange | 286 | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
-
-**TransitionMissing — survived state coverage** (17):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door open__state8`
-- `TM__state4__read card__state6`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press door open__state8`
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state8__press door close__state7`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (187):
-
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press door open__press cabin roof__state8`
-- `AEX__state5__press door open__press hall down__state8`
-- `AEX__state5__press door open__press cabin 
-executive floor__state8`
-- `AEX__state5__press door open__press cabin lobby__state8`
-- `AEX__state5__press door open__press door close__state8`
-- `AEX__state5__press door open__press hall 
-RoofDown__state8`
-- `AEX__state5__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state5__press door open__read card__state8`
-- `AEX__state5__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state5__press door open__press intercom__state8`
-- `AEX__state5__press door open__press hall up__state8`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press door open__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press cabin 
-executive floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press door close__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press intercom__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin 
-executive floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__read card__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press door open__press cabin roof__state8`
-- `AEX__state12__press door open__press hall down__state8`
-- `AEX__state12__press door open__press cabin 
-executive floor__state8`
-- `AEX__state12__press door open__press cabin lobby__state8`
-- `AEX__state12__press door open__press door close__state8`
-- `AEX__state12__press door open__press hall 
-RoofDown__state8`
-- `AEX__state12__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state12__press door open__read card__state8`
-- `AEX__state12__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state12__press door open__press intercom__state8`
-- `AEX__state12__press door open__press hall up__state8`
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press door open__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press door close__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__read card__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press intercom__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state8__press door close__press cabin roof__state7`
-- `AEX__state8__press door close__press door open__state7`
-- `AEX__state8__press door close__press hall down__state7`
-- `AEX__state8__press door close__press cabin 
-executive floor__state7`
-- `AEX__state8__press door close__press cabin lobby__state7`
-- `AEX__state8__press door close__press hall 
-RoofDown__state7`
-- `AEX__state8__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state8__press door close__read card__state7`
-- `AEX__state8__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state8__press door close__press intercom__state7`
-- `AEX__state8__press door close__press hall up__state7`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press door open__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press door close__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__read card__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press door open__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press cabin 
-executive floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press door close__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press intercom__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 27
-
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 23 | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% |
-| ActionExchange | 253 | 99/253 = 39.1% | 253/253 = 100.0% | 253/253 = 100.0% |
-
-**TransitionMissing — survived state coverage** (14):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state7__press door open__state8`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (154):
-
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press door open__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press door close__state9`
-- `AEX__state5__press alarm
-button__tap mobile
-key__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__tap mobile
-key__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press door open__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press door close__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press intercom__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press door open__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press door close__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press intercom__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state7__press door open__tap mobile
-key__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 28
-
-**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, Intercom}
-
-**Repaired FTS:** 10 states, 25 transitions (21 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 21 | 10/21 = 47.6% | 21/21 = 100.0% | 21/21 = 100.0% |
-| ActionExchange | 252 | 120/252 = 47.6% | 252/252 = 100.0% | 252/252 = 100.0% |
-
-**TransitionMissing — survived state coverage** (11):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state13__press&hold 
-door open__state10`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state14__press&hold 
-door close__state11`
-- `TM__state5__press&hold 
-door open__state10`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state9__press&hold 
-door close__state11`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (132):
-
-- `AEX__state4__press cabin roof__press&hold 
-door open__state5`
-- `AEX__state4__press cabin roof__press&hold 
-door close__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__release door open__state5`
-- `AEX__state4__press cabin roof__release door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state13__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state13__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state13__press&hold 
-door open__press hall down__state10`
-- `AEX__state13__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state13__press&hold 
-door open__release door open__state10`
-- `AEX__state13__press&hold 
-door open__release door close__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state13__press&hold 
-door open__press alarm
-button__state10`
-- `AEX__state13__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state13__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state13__press&hold 
-door open__press intercom__state10`
-- `AEX__state13__press&hold 
-door open__press hall up__state10`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press&hold 
-door open__state9`
-- `AEX__state5__press alarm
-button__press&hold 
-door close__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__release door open__state9`
-- `AEX__state5__press alarm
-button__release door close__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state14__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state14__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state14__press&hold 
-door close__press hall down__state11`
-- `AEX__state14__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state14__press&hold 
-door close__release door open__state11`
-- `AEX__state14__press&hold 
-door close__release door close__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state14__press&hold 
-door close__press alarm
-button__state11`
-- `AEX__state14__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state14__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state14__press&hold 
-door close__press intercom__state11`
-- `AEX__state14__press&hold 
-door close__press hall up__state11`
-- `AEX__state5__press&hold 
-door open__press cabin roof__state10`
-- `AEX__state5__press&hold 
-door open__press&hold 
-door close__state10`
-- `AEX__state5__press&hold 
-door open__press hall down__state10`
-- `AEX__state5__press&hold 
-door open__press cabin lobby__state10`
-- `AEX__state5__press&hold 
-door open__release door open__state10`
-- `AEX__state5__press&hold 
-door open__release door close__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-RoofDown__state10`
-- `AEX__state5__press&hold 
-door open__press alarm
-button__state10`
-- `AEX__state5__press&hold 
-door open__press cabin 
-[1-N] floor__state10`
-- `AEX__state5__press&hold 
-door open__press hall 
-LobbyUp__state10`
-- `AEX__state5__press&hold 
-door open__press intercom__state10`
-- `AEX__state5__press&hold 
-door open__press hall up__state10`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state9__press&hold 
-door close__press cabin roof__state11`
-- `AEX__state9__press&hold 
-door close__press&hold 
-door open__state11`
-- `AEX__state9__press&hold 
-door close__press hall down__state11`
-- `AEX__state9__press&hold 
-door close__press cabin lobby__state11`
-- `AEX__state9__press&hold 
-door close__release door open__state11`
-- `AEX__state9__press&hold 
-door close__release door close__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-RoofDown__state11`
-- `AEX__state9__press&hold 
-door close__press alarm
-button__state11`
-- `AEX__state9__press&hold 
-door close__press cabin 
-[1-N] floor__state11`
-- `AEX__state9__press&hold 
-door close__press hall 
-LobbyUp__state11`
-- `AEX__state9__press&hold 
-door close__press intercom__state11`
-- `AEX__state9__press&hold 
-door close__press hall up__state11`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press&hold 
-door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__release door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door open__state5`
-- `AEX__state3__press cabin roof__press&hold 
-door close__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__release door open__state5`
-- `AEX__state3__press cabin roof__release door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press&hold 
-door open__state3`
-- `AEX__state1__press hall down__press&hold 
-door close__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__release door open__state3`
-- `AEX__state1__press hall down__release door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 29
-
-**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 180 | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
-
-**TransitionMissing — survived state coverage** (13):
-
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state4__read card__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (117):
-
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__read card__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press intercom__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__read card__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press cabin 
-executive floor__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press intercom__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press cabin 
-executive floor__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press intercom__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 30
-
-**Selected features:** selected = {ControlButtons, Intercom, MobileKey}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 18 | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
-| ActionExchange | 144 | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
-
-**TransitionMissing — survived state coverage** (11):
-
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (88):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press intercom__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press intercom__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 31
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ManualDoorControl}
-
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
-
-**TransitionMissing — survived state coverage** (13):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state4__read card__state6`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (130):
-
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press door open__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state4__read card__press door close__state6`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__read card__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__read card__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press door open__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press alarm
-button__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state2__read card__press door close__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state1__press hall down__press door close__state3`
-
-### Product 32
-
-**Selected features:** selected = {ControlButtons, Intercom, ManualDoorControl, PinPad}
-
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
-
-**TransitionMissing — survived state coverage** (13):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door close__state7`
-- `TM__state2__press cabin lobby__state5`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state3__enter PIN__state6`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state4__enter PIN__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (130):
-
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__enter PIN__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state2__press cabin lobby__press cabin roof__state5`
-- `AEX__state2__press cabin lobby__press door open__state5`
-- `AEX__state2__press cabin lobby__press hall down__state5`
-- `AEX__state2__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state2__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin lobby__press intercom__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
-- `AEX__state2__press cabin lobby__press hall up__state5`
-- `AEX__state2__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__enter PIN__press cabin roof__state6`
-- `AEX__state3__enter PIN__press door open__state6`
-- `AEX__state3__enter PIN__press hall down__state6`
-- `AEX__state3__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state3__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state3__enter PIN__press cabin lobby__state6`
-- `AEX__state3__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state3__enter PIN__press intercom__state6`
-- `AEX__state3__enter PIN__press hall up__state6`
-- `AEX__state3__enter PIN__press door close__state6`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state4__enter PIN__press cabin roof__state6`
-- `AEX__state4__enter PIN__press door open__state6`
-- `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state4__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state4__enter PIN__press intercom__state6`
-- `AEX__state4__enter PIN__press hall up__state6`
-- `AEX__state4__enter PIN__press door close__state6`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__enter PIN__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state1__press hall down__press door close__state3`
-
-### Product 33
-
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 26 | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
-| ActionExchange | 286 | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
-
-**TransitionMissing — survived state coverage** (17):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door open__state8`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press door open__state8`
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state8__press door close__state7`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (187):
-
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press door open__press cabin roof__state8`
-- `AEX__state5__press door open__press hall down__state8`
-- `AEX__state5__press door open__press cabin 
-executive floor__state8`
-- `AEX__state5__press door open__press cabin lobby__state8`
-- `AEX__state5__press door open__press door close__state8`
-- `AEX__state5__press door open__tap mobile
-key__state8`
-- `AEX__state5__press door open__press hall 
-RoofDown__state8`
-- `AEX__state5__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state5__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state5__press door open__press intercom__state8`
-- `AEX__state5__press door open__press hall up__state8`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin 
-executive floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__tap mobile
-key__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press intercom__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press door open__press cabin roof__state8`
-- `AEX__state12__press door open__press hall down__state8`
-- `AEX__state12__press door open__press cabin 
-executive floor__state8`
-- `AEX__state12__press door open__press cabin lobby__state8`
-- `AEX__state12__press door open__press door close__state8`
-- `AEX__state12__press door open__tap mobile
-key__state8`
-- `AEX__state12__press door open__press hall 
-RoofDown__state8`
-- `AEX__state12__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state12__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state12__press door open__press intercom__state8`
-- `AEX__state12__press door open__press hall up__state8`
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press door open__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press door close__state5`
-- `AEX__state6__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press intercom__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press door open__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press door close__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press intercom__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state8__press door close__press cabin roof__state7`
-- `AEX__state8__press door close__press door open__state7`
-- `AEX__state8__press door close__press hall down__state7`
-- `AEX__state8__press door close__press cabin 
-executive floor__state7`
-- `AEX__state8__press door close__press cabin lobby__state7`
-- `AEX__state8__press door close__tap mobile
-key__state7`
-- `AEX__state8__press door close__press hall 
-RoofDown__state7`
-- `AEX__state8__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state8__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state8__press door close__press intercom__state7`
-- `AEX__state8__press door close__press hall up__state7`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__press door open__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press door close__state9`
-- `AEX__state12__press intercom__tap mobile
-key__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press door open__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-executive floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press door close__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press intercom__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 34
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, ManualDoorControl}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 26 | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
-| ActionExchange | 286 | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
-
-**TransitionMissing — survived state coverage** (17):
-
-- `TM__state12__press alarm
-button__state9`
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door open__state8`
-- `TM__state4__read card__state6`
-- `TM__state5__press door close__state7`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state12__press door open__state8`
-- `TM__state6__press cabin lobby__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state8__press door close__state7`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state2__read card__state6`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (187):
-
-- `AEX__state12__press alarm
-button__press cabin roof__state9`
-- `AEX__state12__press alarm
-button__press door open__state9`
-- `AEX__state12__press alarm
-button__press hall down__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-executive floor__state9`
-- `AEX__state12__press alarm
-button__press cabin lobby__state9`
-- `AEX__state12__press alarm
-button__press door close__state9`
-- `AEX__state12__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state12__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press alarm
-button__read card__state9`
-- `AEX__state12__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state12__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__read card__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press door open__press cabin roof__state8`
-- `AEX__state5__press door open__press hall down__state8`
-- `AEX__state5__press door open__press cabin 
-executive floor__state8`
-- `AEX__state5__press door open__press cabin lobby__state8`
-- `AEX__state5__press door open__press door close__state8`
-- `AEX__state5__press door open__press hall 
-RoofDown__state8`
-- `AEX__state5__press door open__press alarm
-button__state8`
-- `AEX__state5__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state5__press door open__read card__state8`
-- `AEX__state5__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state5__press door open__press hall up__state8`
-- `AEX__state4__read card__press cabin roof__state6`
-- `AEX__state4__read card__press door open__state6`
-- `AEX__state4__read card__press hall down__state6`
-- `AEX__state4__read card__press cabin 
-executive floor__state6`
-- `AEX__state4__read card__press cabin lobby__state6`
-- `AEX__state4__read card__press door close__state6`
-- `AEX__state4__read card__press hall 
-RoofDown__state6`
-- `AEX__state4__read card__press alarm
-button__state6`
-- `AEX__state4__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__read card__press hall 
-LobbyUp__state6`
-- `AEX__state4__read card__press hall up__state6`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin 
-executive floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__read card__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state12__press door open__press cabin roof__state8`
-- `AEX__state12__press door open__press hall down__state8`
-- `AEX__state12__press door open__press cabin 
-executive floor__state8`
-- `AEX__state12__press door open__press cabin lobby__state8`
-- `AEX__state12__press door open__press door close__state8`
-- `AEX__state12__press door open__press hall 
-RoofDown__state8`
-- `AEX__state12__press door open__press alarm
-button__state8`
-- `AEX__state12__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state12__press door open__read card__state8`
-- `AEX__state12__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state12__press door open__press hall up__state8`
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__press door open__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press door close__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press alarm
-button__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__read card__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state8__press door close__press cabin roof__state7`
-- `AEX__state8__press door close__press door open__state7`
-- `AEX__state8__press door close__press hall down__state7`
-- `AEX__state8__press door close__press cabin 
-executive floor__state7`
-- `AEX__state8__press door close__press cabin lobby__state7`
-- `AEX__state8__press door close__press hall 
-RoofDown__state7`
-- `AEX__state8__press door close__press alarm
-button__state7`
-- `AEX__state8__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state8__press door close__read card__state7`
-- `AEX__state8__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state8__press door close__press hall up__state7`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__read card__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__read card__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__press door open__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__read card__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__read card__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state2__read card__press cabin roof__state6`
-- `AEX__state2__read card__press door open__state6`
-- `AEX__state2__read card__press hall down__state6`
-- `AEX__state2__read card__press cabin 
-executive floor__state6`
-- `AEX__state2__read card__press cabin lobby__state6`
-- `AEX__state2__read card__press door close__state6`
-- `AEX__state2__read card__press hall 
-RoofDown__state6`
-- `AEX__state2__read card__press alarm
-button__state6`
-- `AEX__state2__read card__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__read card__press hall 
-LobbyUp__state6`
-- `AEX__state2__read card__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press door close__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__read card__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-
-### Product 35
-
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, MobileKey}
-
-**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 19 | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% |
-| ActionExchange | 171 | 63/171 = 36.8% | 171/171 = 100.0% | 171/171 = 100.0% |
-
-**TransitionMissing — survived state coverage** (12):
-
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state2__tap mobile
-key__state6`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state3__press cabin lobby__state5`
-- `TM__state3__press cabin roof__state5`
-- `TM__state4__tap mobile
-key__state6`
-- `TM__state1__press hall down__state3`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (108):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__tap mobile
-key__press cabin roof__state6`
-- `AEX__state2__tap mobile
-key__press hall down__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state2__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state2__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state2__tap mobile
-key__press intercom__state6`
-- `AEX__state2__tap mobile
-key__press hall up__state6`
-- `AEX__state4__press cabin roof__tap mobile
-key__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__tap mobile
-key__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin roof__tap mobile
-key__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin lobby__press cabin roof__state5`
-- `AEX__state3__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state3__press cabin lobby__press hall down__state5`
-- `AEX__state3__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin lobby__press alarm
-button__state5`
-- `AEX__state3__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin lobby__press intercom__state5`
-- `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state3__press cabin roof__tap mobile
-key__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state4__tap mobile
-key__press cabin roof__state6`
-- `AEX__state4__tap mobile
-key__press hall down__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press alarm
-button__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__tap mobile
-key__press cabin lobby__state6`
-- `AEX__state4__tap mobile
-key__press hall 
-LobbyUp__state6`
-- `AEX__state4__tap mobile
-key__press intercom__state6`
-- `AEX__state4__tap mobile
-key__press hall up__state6`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__tap mobile
-key__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__tap mobile
-key__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-
-### Product 36
-
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, PinPad}
-
-**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 19 | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% |
-| ActionExchange | 171 | 63/171 = 36.8% | 171/171 = 100.0% | 171/171 = 100.0% |
-
-**TransitionMissing — survived state coverage** (12):
-
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state3__enter PIN__state6`
-- `TM__state4__press cabin roof__state5`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press alarm
-button__state9`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state4__enter PIN__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state1__press hall down__state3`
-- `TM__state2__press cabin lobby__state5`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-
-**ActionExchange — survived state coverage** (108):
-
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__enter PIN__press cabin roof__state6`
-- `AEX__state3__enter PIN__press hall down__state6`
 - `AEX__state3__enter PIN__press hall 
 RoofDown__state6`
 - `AEX__state3__enter PIN__press alarm
 button__state6`
 - `AEX__state3__enter PIN__press cabin 
 [1-N] floor__state6`
-- `AEX__state3__enter PIN__press cabin lobby__state6`
 - `AEX__state3__enter PIN__press hall 
 LobbyUp__state6`
 - `AEX__state3__enter PIN__press intercom__state6`
 - `AEX__state3__enter PIN__press hall up__state6`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
 [1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
@@ -10414,112 +14238,258 @@ RoofDown__state5`
 [1-N] floor__press alarm
 button__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press intercom__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__enter PIN__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
 - `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state6__press cabin roof__press alarm
 button__state5`
 - `AEX__state6__press cabin roof__press cabin 
 [1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
 - `AEX__state6__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state6__press cabin roof__press intercom__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state4__enter PIN__press cabin roof__state6`
-- `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state4__enter PIN__press alarm
-button__state6`
-- `AEX__state4__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state4__enter PIN__press intercom__state6`
-- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press door open__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__enter PIN__state9`
+- `AEX__state12__press intercom__press door close__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press alarm
+button__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__press hall up__state9`
+- `AEX__state3__press cabin roof__press door open__state5`
 - `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state3__press cabin roof__press alarm
 button__state5`
 - `AEX__state3__press cabin roof__press cabin 
 [1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
 - `AEX__state3__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin roof__press intercom__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
 - `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__enter PIN__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
 - `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press door close__state3`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
 - `AEX__state1__press hall down__press alarm
 button__state3`
 - `AEX__state1__press hall down__press cabin 
 [1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
 - `AEX__state1__press hall down__press hall 
 LobbyUp__state3`
 - `AEX__state1__press hall down__press intercom__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
 - `AEX__state1__press hall down__press hall up__state3`
+
+### Product 36
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 14 test case(s) (of 9 family-level), 35 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 26 | 12/26 = 46.2% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% |
+| ActionExchange | 286 | 132/286 = 46.2% | 99/286 = 34.6% | 286/286 = 100.0% | 286/286 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (14):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (17):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state4__press cabin roof__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press door open__state8`
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
+
+**ActionExchange — survived family-level state coverage (Devroey)** (154):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__tap mobile
+key__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
 - `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press door open__state5`
 - `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__tap mobile
+key__state5`
 - `AEX__state2__press cabin lobby__press hall 
 RoofDown__state5`
 - `AEX__state2__press cabin lobby__press alarm
@@ -10528,13 +14498,314 @@ button__state5`
 [1-N] floor__state5`
 - `AEX__state2__press cabin lobby__press hall 
 LobbyUp__state5`
-- `AEX__state2__press cabin lobby__press intercom__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
 - `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__tap mobile
+key__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__tap mobile
+key__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (187):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__tap mobile
+key__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press hall up__state7`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state3__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state3__press cabin 
 [1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
@@ -10542,31 +14813,253 @@ RoofDown__state5`
 [1-N] floor__press alarm
 button__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__press intercom__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state12__press door open__press cabin roof__state8`
+- `AEX__state12__press door open__press hall down__state8`
+- `AEX__state12__press door open__press cabin 
+executive floor__state8`
+- `AEX__state12__press door open__press cabin lobby__state8`
+- `AEX__state12__press door open__press door close__state8`
+- `AEX__state12__press door open__tap mobile
+key__state8`
+- `AEX__state12__press door open__press hall 
+RoofDown__state8`
+- `AEX__state12__press door open__press alarm
+button__state8`
+- `AEX__state12__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state12__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state12__press door open__press hall up__state8`
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press door open__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press door close__state5`
+- `AEX__state6__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press alarm
+button__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press door open__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press door close__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__tap mobile
+key__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
 
 ### Product 37
 
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, MobileKey}
+**Selected features:** selected = {ControlButtons, Intercom, MobileKey}
 
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 20 | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
-| ActionExchange | 180 | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 27 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (13):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 18 | 18/18 = 100.0% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
+| ActionExchange | 144 | 144/144 = 100.0% | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
 
-- `TM__state6__press cabin lobby__state5`
+**TransitionMissing — survived product state coverage** (11):
+
 - `TM__state6__press cabin 
 [1-N] floor__state5`
 - `TM__state2__tap mobile
@@ -10578,7 +15071,6 @@ key__state6`
 [1-N] floor__state5`
 - `TM__state6__press cabin roof__state5`
 - `TM__state3__press cabin lobby__state5`
-- `TM__state12__press intercom__state9`
 - `TM__state3__press cabin roof__state5`
 - `TM__state4__tap mobile
 key__state6`
@@ -10586,22 +15078,8 @@ key__state6`
 - `TM__state3__press cabin 
 [1-N] floor__state5`
 
-**ActionExchange — survived state coverage** (117):
+**ActionExchange — survived product state coverage** (88):
 
-- `AEX__state6__press cabin lobby__press cabin roof__state5`
-- `AEX__state6__press cabin lobby__tap mobile
-key__state5`
-- `AEX__state6__press cabin lobby__press hall down__state5`
-- `AEX__state6__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin lobby__press intercom__state5`
-- `AEX__state6__press cabin lobby__press hall up__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state6__press cabin 
@@ -10612,9 +15090,6 @@ key__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state6__press cabin 
@@ -10631,9 +15106,6 @@ key__press hall down__state6`
 - `AEX__state2__tap mobile
 key__press hall 
 RoofDown__state6`
-- `AEX__state2__tap mobile
-key__press cabin 
-executive floor__state6`
 - `AEX__state2__tap mobile
 key__press cabin 
 [1-N] floor__state6`
@@ -10652,8 +15124,6 @@ key__state5`
 - `AEX__state4__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state4__press cabin roof__press cabin lobby__state5`
 - `AEX__state4__press cabin roof__press hall 
@@ -10671,9 +15141,6 @@ key__state5`
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
@@ -10693,9 +15160,6 @@ key__state5`
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state4__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall 
@@ -10710,8 +15174,6 @@ key__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state6__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state6__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state6__press cabin roof__press cabin lobby__state5`
 - `AEX__state6__press cabin roof__press hall 
@@ -10725,34 +15187,16 @@ key__state5`
 - `AEX__state3__press cabin lobby__press hall 
 RoofDown__state5`
 - `AEX__state3__press cabin lobby__press cabin 
-executive floor__state5`
-- `AEX__state3__press cabin lobby__press cabin 
 [1-N] floor__state5`
 - `AEX__state3__press cabin lobby__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin lobby__press intercom__state5`
 - `AEX__state3__press cabin lobby__press hall up__state5`
-- `AEX__state12__press intercom__press cabin roof__state9`
-- `AEX__state12__press intercom__tap mobile
-key__state9`
-- `AEX__state12__press intercom__press hall down__state9`
-- `AEX__state12__press intercom__press hall 
-RoofDown__state9`
-- `AEX__state12__press intercom__press cabin 
-executive floor__state9`
-- `AEX__state12__press intercom__press cabin 
-[1-N] floor__state9`
-- `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__press hall 
-LobbyUp__state9`
-- `AEX__state12__press intercom__press hall up__state9`
 - `AEX__state3__press cabin roof__tap mobile
 key__state5`
 - `AEX__state3__press cabin roof__press hall down__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
-- `AEX__state3__press cabin roof__press cabin 
-executive floor__state5`
 - `AEX__state3__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state3__press cabin roof__press cabin lobby__state5`
@@ -10767,9 +15211,6 @@ key__press hall down__state6`
 - `AEX__state4__tap mobile
 key__press hall 
 RoofDown__state6`
-- `AEX__state4__tap mobile
-key__press cabin 
-executive floor__state6`
 - `AEX__state4__tap mobile
 key__press cabin 
 [1-N] floor__state6`
@@ -10788,8 +15229,6 @@ key__state3`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
 - `AEX__state1__press hall down__press cabin 
-executive floor__state3`
-- `AEX__state1__press hall down__press cabin 
 [1-N] floor__state3`
 - `AEX__state1__press hall down__press cabin lobby__state3`
 - `AEX__state1__press hall down__press hall 
@@ -10806,9 +15245,6 @@ key__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin 
-executive floor__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state3__press cabin 
@@ -10821,42 +15257,73 @@ LobbyUp__state5`
 
 ### Product 38
 
-**Selected features:** selected = {Alarm, ControlButtons, PinPad}
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, MobileKey}
 
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 18 | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
-| ActionExchange | 144 | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
+**Family baseline projected to this product:** 16 test case(s) (of 9 family-level), 33 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (11):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 10/20 = 50.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 180 | 90/180 = 50.0% | 63/180 = 35.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (10):
 
 - `TM__state6__press cabin 
 [1-N] floor__state5`
-- `TM__state3__enter PIN__state6`
+- `TM__state12__press alarm
+button__state9`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (13):
+
+- `TM__state6__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state12__press alarm
+button__state9`
+- `TM__state2__tap mobile
+key__state6`
 - `TM__state4__press cabin roof__state5`
 - `TM__state2__press cabin 
 [1-N] floor__state5`
 - `TM__state4__press cabin 
 [1-N] floor__state5`
 - `TM__state6__press cabin roof__state5`
-- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin lobby__state5`
 - `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
 - `TM__state1__press hall down__state3`
-- `TM__state2__press cabin lobby__state5`
 - `TM__state3__press cabin 
 [1-N] floor__state5`
 
-**ActionExchange — survived state coverage** (88):
+**ActionExchange — survived family-level state coverage (Devroey)** (90):
 
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press alarm
 button__state5`
@@ -10866,40 +15333,43 @@ button__state5`
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
 [1-N] floor__press hall up__state5`
-- `AEX__state3__enter PIN__press cabin roof__state6`
-- `AEX__state3__enter PIN__press hall down__state6`
-- `AEX__state3__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state3__enter PIN__press alarm
-button__state6`
-- `AEX__state3__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state3__enter PIN__press cabin lobby__state6`
-- `AEX__state3__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state3__enter PIN__press hall up__state6`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press alarm
 button__state5`
@@ -10908,17 +15378,21 @@ button__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall up__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press alarm
 button__state5`
@@ -10928,12 +15402,14 @@ button__state5`
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
 - `AEX__state6__press cabin roof__press hall down__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
 - `AEX__state6__press cabin roof__press alarm
 button__state5`
 - `AEX__state6__press cabin roof__press cabin 
@@ -10941,23 +15417,29 @@ button__state5`
 - `AEX__state6__press cabin roof__press cabin lobby__state5`
 - `AEX__state6__press cabin roof__press hall 
 LobbyUp__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state4__enter PIN__press cabin roof__state6`
-- `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state4__enter PIN__press alarm
-button__state6`
-- `AEX__state4__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
 - `AEX__state3__press cabin roof__press hall down__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
 - `AEX__state3__press cabin roof__press alarm
 button__state5`
 - `AEX__state3__press cabin roof__press cabin 
@@ -10965,11 +15447,37 @@ button__state5`
 - `AEX__state3__press cabin roof__press cabin lobby__state5`
 - `AEX__state3__press cabin roof__press hall 
 LobbyUp__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
 - `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
 - `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
 - `AEX__state1__press hall down__press alarm
 button__state3`
 - `AEX__state1__press hall down__press cabin 
@@ -10977,27 +15485,266 @@ button__state3`
 - `AEX__state1__press hall down__press cabin lobby__state3`
 - `AEX__state1__press hall down__press hall 
 LobbyUp__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
 - `AEX__state1__press hall down__press hall up__state3`
 - `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__tap mobile
+key__state5`
 - `AEX__state2__press cabin lobby__press hall down__state5`
 - `AEX__state2__press cabin lobby__press hall 
 RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
 - `AEX__state2__press cabin lobby__press alarm
 button__state5`
 - `AEX__state2__press cabin lobby__press cabin 
 [1-N] floor__state5`
 - `AEX__state2__press cabin lobby__press hall 
 LobbyUp__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
 - `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (117):
+
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press alarm
+button__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state2__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press hall up__state3`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press alarm
 button__state5`
@@ -11007,32 +15754,50 @@ button__state5`
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
 [1-N] floor__press hall up__state5`
 
 ### Product 39
 
-**Selected features:** selected = {ControlButtons, Intercom, PinPad}
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, PinPad}
 
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 18 | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
-| ActionExchange | 144 | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
+**Family baseline projected to this product:** 19 test case(s) (of 9 family-level), 29 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (11):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 20 | 9/20 = 45.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% |
+| ActionExchange | 180 | 81/180 = 45.0% | 72/180 = 40.0% | 180/180 = 100.0% | 180/180 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (11):
 
 - `TM__state6__press cabin 
 [1-N] floor__state5`
 - `TM__state3__enter PIN__state6`
+- `TM__state5__press intercom__state9`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state2__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+
+**TransitionMissing — survived product state coverage** (12):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
 - `TM__state4__press cabin roof__state5`
 - `TM__state2__press cabin 
 [1-N] floor__state5`
 - `TM__state4__press cabin 
 [1-N] floor__state5`
 - `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state12__press intercom__state9`
 - `TM__state4__enter PIN__state6`
 - `TM__state3__press cabin roof__state5`
 - `TM__state1__press hall down__state3`
@@ -11040,7 +15805,7 @@ LobbyUp__state5`
 - `TM__state3__press cabin 
 [1-N] floor__state5`
 
-**ActionExchange — survived state coverage** (88):
+**ActionExchange — survived family-level state coverage (Devroey)** (99):
 
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin roof__state5`
@@ -11049,6 +15814,9 @@ LobbyUp__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state6__press cabin 
@@ -11065,15 +15833,176 @@ LobbyUp__state5`
 - `AEX__state3__enter PIN__press hall 
 RoofDown__state6`
 - `AEX__state3__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state3__enter PIN__press cabin 
 [1-N] floor__state6`
 - `AEX__state3__enter PIN__press cabin lobby__state6`
 - `AEX__state3__enter PIN__press hall 
 LobbyUp__state6`
 - `AEX__state3__enter PIN__press intercom__state6`
 - `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state5__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state5__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state5__press intercom__enter PIN__state9`
+- `AEX__state5__press intercom__press hall up__state9`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state2__enter PIN__press cabin roof__state6`
+- `AEX__state2__enter PIN__press hall down__state6`
+- `AEX__state2__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state2__enter PIN__press cabin 
+executive floor__state6`
+- `AEX__state2__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state2__enter PIN__press cabin lobby__state6`
+- `AEX__state2__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state2__enter PIN__press intercom__state6`
+- `AEX__state2__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+
+**ActionExchange — survived product state coverage** (108):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
 - `AEX__state4__press cabin roof__press hall down__state5`
 - `AEX__state4__press cabin roof__press hall 
 RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
 - `AEX__state4__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state4__press cabin roof__press cabin lobby__state5`
@@ -11090,6 +16019,9 @@ LobbyUp__state5`
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
@@ -11107,6 +16039,9 @@ LobbyUp__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state4__press cabin 
@@ -11122,6 +16057,8 @@ LobbyUp__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state6__press cabin roof__press cabin lobby__state5`
 - `AEX__state6__press cabin roof__press hall 
@@ -11129,10 +16066,38 @@ LobbyUp__state5`
 - `AEX__state6__press cabin roof__press intercom__state5`
 - `AEX__state6__press cabin roof__enter PIN__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__enter PIN__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state12__press intercom__press cabin roof__state9`
+- `AEX__state12__press intercom__press hall down__state9`
+- `AEX__state12__press intercom__press hall 
+RoofDown__state9`
+- `AEX__state12__press intercom__press cabin 
+executive floor__state9`
+- `AEX__state12__press intercom__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press intercom__press cabin lobby__state9`
+- `AEX__state12__press intercom__press hall 
+LobbyUp__state9`
+- `AEX__state12__press intercom__enter PIN__state9`
+- `AEX__state12__press intercom__press hall up__state9`
 - `AEX__state4__enter PIN__press cabin roof__state6`
 - `AEX__state4__enter PIN__press hall down__state6`
 - `AEX__state4__enter PIN__press hall 
 RoofDown__state6`
+- `AEX__state4__enter PIN__press cabin 
+executive floor__state6`
 - `AEX__state4__enter PIN__press cabin 
 [1-N] floor__state6`
 - `AEX__state4__enter PIN__press cabin lobby__state6`
@@ -11143,6 +16108,8 @@ LobbyUp__state6`
 - `AEX__state3__press cabin roof__press hall down__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
 - `AEX__state3__press cabin roof__press cabin 
 [1-N] floor__state5`
 - `AEX__state3__press cabin roof__press cabin lobby__state5`
@@ -11155,6 +16122,8 @@ LobbyUp__state5`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
 - `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin 
 [1-N] floor__state3`
 - `AEX__state1__press hall down__press cabin lobby__state3`
 - `AEX__state1__press hall down__press hall 
@@ -11166,6 +16135,8 @@ LobbyUp__state3`
 - `AEX__state2__press cabin lobby__press hall down__state5`
 - `AEX__state2__press cabin lobby__press hall 
 RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+executive floor__state5`
 - `AEX__state2__press cabin lobby__press cabin 
 [1-N] floor__state5`
 - `AEX__state2__press cabin lobby__press hall 
@@ -11180,6 +16151,9 @@ LobbyUp__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state3__press cabin 
@@ -11194,294 +16168,71 @@ LobbyUp__state5`
 
 ### Product 40
 
-**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, PinPad}
-
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
-
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 22 | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
-| ActionExchange | 220 | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
-
-**TransitionMissing — survived state coverage** (13):
-
-- `TM__state4__press cabin roof__state5`
-- `TM__state4__press cabin 
-[1-N] floor__state5`
-- `TM__state5__press door close__state7`
-- `TM__state2__press cabin lobby__state5`
-- `TM__state3__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin 
-[1-N] floor__state5`
-- `TM__state3__enter PIN__state6`
-- `TM__state2__press cabin 
-[1-N] floor__state5`
-- `TM__state6__press cabin roof__state5`
-- `TM__state4__enter PIN__state6`
-- `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
-- `TM__state1__press hall down__state3`
-
-**ActionExchange — survived state coverage** (130):
-
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state5__press door close__press cabin roof__state7`
-- `AEX__state5__press door close__press door open__state7`
-- `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press hall 
-RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
-- `AEX__state5__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state5__press door close__enter PIN__state7`
-- `AEX__state5__press door close__press hall up__state7`
-- `AEX__state2__press cabin lobby__press cabin roof__state5`
-- `AEX__state2__press cabin lobby__press door open__state5`
-- `AEX__state2__press cabin lobby__press hall down__state5`
-- `AEX__state2__press cabin lobby__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin lobby__press alarm
-button__state5`
-- `AEX__state2__press cabin lobby__press cabin 
-[1-N] floor__state5`
-- `AEX__state2__press cabin lobby__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
-- `AEX__state2__press cabin lobby__press hall up__state5`
-- `AEX__state2__press cabin lobby__press door close__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__enter PIN__press cabin roof__state6`
-- `AEX__state3__enter PIN__press door open__state6`
-- `AEX__state3__enter PIN__press hall down__state6`
-- `AEX__state3__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state3__enter PIN__press alarm
-button__state6`
-- `AEX__state3__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state3__enter PIN__press cabin lobby__state6`
-- `AEX__state3__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state3__enter PIN__press hall up__state6`
-- `AEX__state3__enter PIN__press door close__state6`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin roof__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door open__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall down__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-RoofDown__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall 
-LobbyUp__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press hall up__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin roof__press door open__state5`
-- `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
-- `AEX__state6__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
-- `AEX__state6__press cabin roof__press hall up__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
-- `AEX__state4__enter PIN__press cabin roof__state6`
-- `AEX__state4__enter PIN__press door open__state6`
-- `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press hall 
-RoofDown__state6`
-- `AEX__state4__enter PIN__press alarm
-button__state6`
-- `AEX__state4__enter PIN__press cabin 
-[1-N] floor__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press hall 
-LobbyUp__state6`
-- `AEX__state4__enter PIN__press hall up__state6`
-- `AEX__state4__enter PIN__press door close__state6`
-- `AEX__state3__press cabin roof__press door open__state5`
-- `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
-- `AEX__state3__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
-- `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__enter PIN__state8`
-- `AEX__state7__press door open__press hall up__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state1__press hall down__press cabin roof__state3`
-- `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press hall 
-RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
-- `AEX__state1__press hall down__press cabin 
-[1-N] floor__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__press hall 
-LobbyUp__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
-- `AEX__state1__press hall down__press hall up__state3`
-- `AEX__state1__press hall down__press door close__state3`
-
-### Product 41
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
 
 **Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 28 | 11/28 = 39.3% | 28/28 = 100.0% | 28/28 = 100.0% |
-| ActionExchange | 336 | 132/336 = 39.3% | 336/336 = 100.0% | 336/336 = 100.0% |
+**Family baseline projected to this product:** 13 test case(s) (of 9 family-level), 36 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (17):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 28 | 13/28 = 46.4% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% |
+| ActionExchange | 336 | 156/336 = 46.4% | 108/336 = 32.1% | 336/336 = 100.0% | 336/336 = 100.0% |
+
+**TransitionMissing — survived family-level state coverage (Devroey)** (15):
+
+- `TM__state12__press alarm
+button__state9`
+- `TM__state5__press intercom__state9`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state5__press door open__state8`
+- `TM__state5__press door close__state7`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state8__press door close__state7`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
+- `TM__state3__press cabin roof__state5`
+- `TM__state4__tap mobile
+key__state6`
+- `TM__state7__press door open__state8`
+- `TM__state1__press hall down__state3`
+
+**TransitionMissing — survived product state coverage** (19):
 
 - `TM__state12__press alarm
 button__state9`
 - `TM__state4__press cabin roof__state5`
-- `TM__state12__press door close__state7`
 - `TM__state5__press alarm
 button__state9`
 - `TM__state4__press cabin 
 [1-N] floor__state5`
+- `TM__state5__press door open__state8`
 - `TM__state5__press door close__state7`
-- `TM__state2__press cabin lobby__state5`
 - `TM__state3__press cabin 
 [1-N] floor__state5`
 - `TM__state12__press door open__state8`
+- `TM__state6__press cabin lobby__state5`
 - `TM__state6__press cabin 
 [1-N] floor__state5`
-- `TM__state3__enter PIN__state6`
+- `TM__state2__tap mobile
+key__state6`
+- `TM__state8__press door close__state7`
 - `TM__state2__press cabin 
 [1-N] floor__state5`
 - `TM__state6__press cabin roof__state5`
+- `TM__state3__press cabin lobby__state5`
 - `TM__state12__press intercom__state9`
 - `TM__state3__press cabin roof__state5`
-- `TM__state7__press door open__state8`
+- `TM__state4__tap mobile
+key__state6`
 - `TM__state1__press hall down__state3`
 
-**ActionExchange — survived state coverage** (204):
+**ActionExchange — survived family-level state coverage (Devroey)** (180):
 
 - `AEX__state12__press alarm
 button__press cabin roof__state9`
@@ -11495,9 +16246,10 @@ executive floor__state9`
 - `AEX__state12__press alarm
 button__press cabin lobby__state9`
 - `AEX__state12__press alarm
-button__enter PIN__state9`
-- `AEX__state12__press alarm
 button__press door close__state9`
+- `AEX__state12__press alarm
+button__tap mobile
+key__state9`
 - `AEX__state12__press alarm
 button__press hall 
 RoofDown__state9`
@@ -11511,68 +16263,24 @@ LobbyUp__state9`
 button__press intercom__state9`
 - `AEX__state12__press alarm
 button__press hall up__state9`
-- `AEX__state4__press cabin roof__press door open__state5`
-- `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin 
-executive floor__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
-- `AEX__state4__press cabin roof__press hall 
-RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
-- `AEX__state4__press cabin roof__press cabin 
-[1-N] floor__state5`
-- `AEX__state4__press cabin roof__press hall 
-LobbyUp__state5`
-- `AEX__state4__press cabin roof__press intercom__state5`
-- `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state12__press door close__press cabin roof__state7`
-- `AEX__state12__press door close__press door open__state7`
-- `AEX__state12__press door close__press hall down__state7`
-- `AEX__state12__press door close__press cabin 
-executive floor__state7`
-- `AEX__state12__press door close__press cabin lobby__state7`
-- `AEX__state12__press door close__enter PIN__state7`
-- `AEX__state12__press door close__press hall 
-RoofDown__state7`
-- `AEX__state12__press door close__press alarm
-button__state7`
-- `AEX__state12__press door close__press cabin 
-[1-N] floor__state7`
-- `AEX__state12__press door close__press hall 
-LobbyUp__state7`
-- `AEX__state12__press door close__press intercom__state7`
-- `AEX__state12__press door close__press hall up__state7`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press door open__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin 
+- `AEX__state5__press intercom__press cabin roof__state9`
+- `AEX__state5__press intercom__press door open__state9`
+- `AEX__state5__press intercom__press hall down__state9`
+- `AEX__state5__press intercom__press cabin 
 executive floor__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__enter PIN__state9`
-- `AEX__state5__press alarm
-button__press door close__state9`
-- `AEX__state5__press alarm
-button__press hall 
+- `AEX__state5__press intercom__press cabin lobby__state9`
+- `AEX__state5__press intercom__press door close__state9`
+- `AEX__state5__press intercom__tap mobile
+key__state9`
+- `AEX__state5__press intercom__press hall 
 RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
+- `AEX__state5__press intercom__press alarm
+button__state9`
+- `AEX__state5__press intercom__press cabin 
 [1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press hall 
+- `AEX__state5__press intercom__press hall 
 LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
+- `AEX__state5__press intercom__press hall up__state9`
 - `AEX__state4__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state4__press cabin 
@@ -11585,9 +16293,10 @@ executive floor__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
 [1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
@@ -11601,13 +16310,32 @@ LobbyUp__state5`
 [1-N] floor__press intercom__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__tap mobile
+key__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
 - `AEX__state5__press door close__press cabin roof__state7`
 - `AEX__state5__press door close__press door open__state7`
 - `AEX__state5__press door close__press hall down__state7`
 - `AEX__state5__press door close__press cabin 
 executive floor__state7`
 - `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__enter PIN__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
 - `AEX__state5__press door close__press hall 
 RoofDown__state7`
 - `AEX__state5__press door close__press alarm
@@ -11623,8 +16351,9 @@ LobbyUp__state7`
 - `AEX__state2__press cabin lobby__press hall down__state5`
 - `AEX__state2__press cabin lobby__press cabin 
 executive floor__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
 - `AEX__state2__press cabin lobby__press door close__state5`
+- `AEX__state2__press cabin lobby__tap mobile
+key__state5`
 - `AEX__state2__press cabin lobby__press hall 
 RoofDown__state5`
 - `AEX__state2__press cabin lobby__press alarm
@@ -11635,6 +16364,345 @@ button__state5`
 LobbyUp__state5`
 - `AEX__state2__press cabin lobby__press intercom__state5`
 - `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__tap mobile
+key__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press door open__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press alarm
+button__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin roof__press door open__state5`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press alarm
+button__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
+- `AEX__state7__press door open__press cabin roof__state8`
+- `AEX__state7__press door open__press hall down__state8`
+- `AEX__state7__press door open__press cabin 
+executive floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
+- `AEX__state7__press door open__press door close__state8`
+- `AEX__state7__press door open__tap mobile
+key__state8`
+- `AEX__state7__press door open__press hall 
+RoofDown__state8`
+- `AEX__state7__press door open__press alarm
+button__state8`
+- `AEX__state7__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state7__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press door open__state3`
+- `AEX__state1__press hall down__press cabin 
+executive floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press alarm
+button__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+
+**ActionExchange — survived product state coverage** (228):
+
+- `AEX__state12__press alarm
+button__press cabin roof__state9`
+- `AEX__state12__press alarm
+button__press door open__state9`
+- `AEX__state12__press alarm
+button__press hall down__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state12__press alarm
+button__press cabin lobby__state9`
+- `AEX__state12__press alarm
+button__press door close__state9`
+- `AEX__state12__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state12__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state12__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state12__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state12__press alarm
+button__press intercom__state9`
+- `AEX__state12__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin roof__press door open__state5`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press door close__state5`
+- `AEX__state4__press cabin roof__tap mobile
+key__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press alarm
+button__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state5__press alarm
+button__press cabin roof__state9`
+- `AEX__state5__press alarm
+button__press door open__state9`
+- `AEX__state5__press alarm
+button__press hall down__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+executive floor__state9`
+- `AEX__state5__press alarm
+button__press cabin lobby__state9`
+- `AEX__state5__press alarm
+button__press door close__state9`
+- `AEX__state5__press alarm
+button__tap mobile
+key__state9`
+- `AEX__state5__press alarm
+button__press hall 
+RoofDown__state9`
+- `AEX__state5__press alarm
+button__press cabin 
+[1-N] floor__state9`
+- `AEX__state5__press alarm
+button__press hall 
+LobbyUp__state9`
+- `AEX__state5__press alarm
+button__press intercom__state9`
+- `AEX__state5__press alarm
+button__press hall up__state9`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door open__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin 
+executive floor__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__tap mobile
+key__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press alarm
+button__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state5__press door open__press cabin roof__state8`
+- `AEX__state5__press door open__press hall down__state8`
+- `AEX__state5__press door open__press cabin 
+executive floor__state8`
+- `AEX__state5__press door open__press cabin lobby__state8`
+- `AEX__state5__press door open__press door close__state8`
+- `AEX__state5__press door open__tap mobile
+key__state8`
+- `AEX__state5__press door open__press hall 
+RoofDown__state8`
+- `AEX__state5__press door open__press alarm
+button__state8`
+- `AEX__state5__press door open__press cabin 
+[1-N] floor__state8`
+- `AEX__state5__press door open__press hall 
+LobbyUp__state8`
+- `AEX__state5__press door open__press intercom__state8`
+- `AEX__state5__press door open__press hall up__state8`
+- `AEX__state5__press door close__press cabin roof__state7`
+- `AEX__state5__press door close__press door open__state7`
+- `AEX__state5__press door close__press hall down__state7`
+- `AEX__state5__press door close__press cabin 
+executive floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
+- `AEX__state5__press door close__tap mobile
+key__state7`
+- `AEX__state5__press door close__press hall 
+RoofDown__state7`
+- `AEX__state5__press door close__press alarm
+button__state7`
+- `AEX__state5__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state5__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__press hall up__state7`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state3__press cabin 
@@ -11647,9 +16715,10 @@ executive floor__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
 [1-N] floor__press door close__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__tap mobile
+key__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
@@ -11668,8 +16737,9 @@ LobbyUp__state5`
 - `AEX__state12__press door open__press cabin 
 executive floor__state8`
 - `AEX__state12__press door open__press cabin lobby__state8`
-- `AEX__state12__press door open__enter PIN__state8`
 - `AEX__state12__press door open__press door close__state8`
+- `AEX__state12__press door open__tap mobile
+key__state8`
 - `AEX__state12__press door open__press hall 
 RoofDown__state8`
 - `AEX__state12__press door open__press alarm
@@ -11680,6 +16750,24 @@ button__state8`
 LobbyUp__state8`
 - `AEX__state12__press door open__press intercom__state8`
 - `AEX__state12__press door open__press hall up__state8`
+- `AEX__state6__press cabin lobby__press cabin roof__state5`
+- `AEX__state6__press cabin lobby__press door open__state5`
+- `AEX__state6__press cabin lobby__press hall down__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state6__press cabin lobby__press door close__state5`
+- `AEX__state6__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state6__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin lobby__press alarm
+button__state5`
+- `AEX__state6__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin lobby__press intercom__state5`
+- `AEX__state6__press cabin lobby__press hall up__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state6__press cabin 
@@ -11692,9 +16780,10 @@ executive floor__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
 [1-N] floor__press door close__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__tap mobile
+key__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
@@ -11708,23 +16797,53 @@ LobbyUp__state5`
 [1-N] floor__press intercom__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall up__state5`
-- `AEX__state3__enter PIN__press cabin roof__state6`
-- `AEX__state3__enter PIN__press door open__state6`
-- `AEX__state3__enter PIN__press hall down__state6`
-- `AEX__state3__enter PIN__press cabin 
+- `AEX__state2__tap mobile
+key__press cabin roof__state6`
+- `AEX__state2__tap mobile
+key__press door open__state6`
+- `AEX__state2__tap mobile
+key__press hall down__state6`
+- `AEX__state2__tap mobile
+key__press cabin 
 executive floor__state6`
-- `AEX__state3__enter PIN__press cabin lobby__state6`
-- `AEX__state3__enter PIN__press door close__state6`
-- `AEX__state3__enter PIN__press hall 
+- `AEX__state2__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state2__tap mobile
+key__press door close__state6`
+- `AEX__state2__tap mobile
+key__press hall 
 RoofDown__state6`
-- `AEX__state3__enter PIN__press alarm
+- `AEX__state2__tap mobile
+key__press alarm
 button__state6`
-- `AEX__state3__enter PIN__press cabin 
+- `AEX__state2__tap mobile
+key__press cabin 
 [1-N] floor__state6`
-- `AEX__state3__enter PIN__press hall 
+- `AEX__state2__tap mobile
+key__press hall 
 LobbyUp__state6`
-- `AEX__state3__enter PIN__press intercom__state6`
-- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state2__tap mobile
+key__press intercom__state6`
+- `AEX__state2__tap mobile
+key__press hall up__state6`
+- `AEX__state8__press door close__press cabin roof__state7`
+- `AEX__state8__press door close__press door open__state7`
+- `AEX__state8__press door close__press hall down__state7`
+- `AEX__state8__press door close__press cabin 
+executive floor__state7`
+- `AEX__state8__press door close__press cabin lobby__state7`
+- `AEX__state8__press door close__tap mobile
+key__state7`
+- `AEX__state8__press door close__press hall 
+RoofDown__state7`
+- `AEX__state8__press door close__press alarm
+button__state7`
+- `AEX__state8__press door close__press cabin 
+[1-N] floor__state7`
+- `AEX__state8__press door close__press hall 
+LobbyUp__state7`
+- `AEX__state8__press door close__press intercom__state7`
+- `AEX__state8__press door close__press hall up__state7`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state2__press cabin 
@@ -11737,9 +16856,10 @@ executive floor__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin lobby__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press door close__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__tap mobile
+key__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
@@ -11758,8 +16878,9 @@ LobbyUp__state5`
 - `AEX__state6__press cabin roof__press cabin 
 executive floor__state5`
 - `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
 - `AEX__state6__press cabin roof__press door close__state5`
+- `AEX__state6__press cabin roof__tap mobile
+key__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state6__press cabin roof__press alarm
@@ -11770,14 +16891,33 @@ button__state5`
 LobbyUp__state5`
 - `AEX__state6__press cabin roof__press intercom__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin lobby__press cabin roof__state5`
+- `AEX__state3__press cabin lobby__press door open__state5`
+- `AEX__state3__press cabin lobby__press hall down__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+executive floor__state5`
+- `AEX__state3__press cabin lobby__press door close__state5`
+- `AEX__state3__press cabin lobby__tap mobile
+key__state5`
+- `AEX__state3__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin lobby__press alarm
+button__state5`
+- `AEX__state3__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin lobby__press intercom__state5`
+- `AEX__state3__press cabin lobby__press hall up__state5`
 - `AEX__state12__press intercom__press cabin roof__state9`
 - `AEX__state12__press intercom__press door open__state9`
 - `AEX__state12__press intercom__press hall down__state9`
 - `AEX__state12__press intercom__press cabin 
 executive floor__state9`
 - `AEX__state12__press intercom__press cabin lobby__state9`
-- `AEX__state12__press intercom__enter PIN__state9`
 - `AEX__state12__press intercom__press door close__state9`
+- `AEX__state12__press intercom__tap mobile
+key__state9`
 - `AEX__state12__press intercom__press hall 
 RoofDown__state9`
 - `AEX__state12__press intercom__press alarm
@@ -11792,8 +16932,9 @@ LobbyUp__state9`
 - `AEX__state3__press cabin roof__press cabin 
 executive floor__state5`
 - `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
 - `AEX__state3__press cabin roof__press door close__state5`
+- `AEX__state3__press cabin roof__tap mobile
+key__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
 - `AEX__state3__press cabin roof__press alarm
@@ -11804,30 +16945,43 @@ button__state5`
 LobbyUp__state5`
 - `AEX__state3__press cabin roof__press intercom__state5`
 - `AEX__state3__press cabin roof__press hall up__state5`
-- `AEX__state7__press door open__press cabin roof__state8`
-- `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin 
-executive floor__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__enter PIN__state8`
-- `AEX__state7__press door open__press door close__state8`
-- `AEX__state7__press door open__press hall 
-RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
-- `AEX__state7__press door open__press cabin 
-[1-N] floor__state8`
-- `AEX__state7__press door open__press hall 
-LobbyUp__state8`
-- `AEX__state7__press door open__press intercom__state8`
-- `AEX__state7__press door open__press hall up__state8`
+- `AEX__state4__tap mobile
+key__press cabin roof__state6`
+- `AEX__state4__tap mobile
+key__press door open__state6`
+- `AEX__state4__tap mobile
+key__press hall down__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+executive floor__state6`
+- `AEX__state4__tap mobile
+key__press cabin lobby__state6`
+- `AEX__state4__tap mobile
+key__press door close__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+RoofDown__state6`
+- `AEX__state4__tap mobile
+key__press alarm
+button__state6`
+- `AEX__state4__tap mobile
+key__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__tap mobile
+key__press hall 
+LobbyUp__state6`
+- `AEX__state4__tap mobile
+key__press intercom__state6`
+- `AEX__state4__tap mobile
+key__press hall up__state6`
 - `AEX__state1__press hall down__press cabin roof__state3`
 - `AEX__state1__press hall down__press door open__state3`
 - `AEX__state1__press hall down__press cabin 
 executive floor__state3`
 - `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
 - `AEX__state1__press hall down__press door close__state3`
+- `AEX__state1__press hall down__tap mobile
+key__state3`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
 - `AEX__state1__press hall down__press alarm
@@ -11839,22 +16993,22 @@ LobbyUp__state3`
 - `AEX__state1__press hall down__press intercom__state3`
 - `AEX__state1__press hall down__press hall up__state3`
 
-### Product 42
+### Product 41
 
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, PinPad}
+**Selected features:** selected = {ControlButtons, Intercom, ManualDoorControl, PinPad}
 
-**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
 
-| Operator | Real mutants | State-cov | Transition-cov | Pair-cov |
-|---|---|---|---|---|
-| TransitionMissing | 23 | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% |
-| ActionExchange | 253 | 99/253 = 39.1% | 253/253 = 100.0% | 253/253 = 100.0% |
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 25 real step(s) applicable.
 
-**TransitionMissing — survived state coverage** (14):
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 22 | 22/22 = 100.0% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% |
+| ActionExchange | 220 | 220/220 = 100.0% | 90/220 = 40.9% | 220/220 = 100.0% | 220/220 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (13):
 
 - `TM__state4__press cabin roof__state5`
-- `TM__state5__press alarm
-button__state9`
 - `TM__state4__press cabin 
 [1-N] floor__state5`
 - `TM__state5__press door close__state7`
@@ -11872,48 +17026,21 @@ button__state9`
 - `TM__state7__press door open__state8`
 - `TM__state1__press hall down__state3`
 
-**ActionExchange — survived state coverage** (154):
+**ActionExchange — survived product state coverage** (130):
 
 - `AEX__state4__press cabin roof__press door open__state5`
 - `AEX__state4__press cabin roof__press hall down__state5`
-- `AEX__state4__press cabin roof__press cabin lobby__state5`
-- `AEX__state4__press cabin roof__enter PIN__state5`
-- `AEX__state4__press cabin roof__press door close__state5`
 - `AEX__state4__press cabin roof__press hall 
 RoofDown__state5`
-- `AEX__state4__press cabin roof__press alarm
-button__state5`
 - `AEX__state4__press cabin roof__press cabin 
 [1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
 - `AEX__state4__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
 - `AEX__state4__press cabin roof__press hall up__state5`
-- `AEX__state5__press alarm
-button__press cabin roof__state9`
-- `AEX__state5__press alarm
-button__press door open__state9`
-- `AEX__state5__press alarm
-button__press hall down__state9`
-- `AEX__state5__press alarm
-button__press cabin lobby__state9`
-- `AEX__state5__press alarm
-button__enter PIN__state9`
-- `AEX__state5__press alarm
-button__press door close__state9`
-- `AEX__state5__press alarm
-button__press hall 
-RoofDown__state9`
-- `AEX__state5__press alarm
-button__press cabin 
-[1-N] floor__state9`
-- `AEX__state5__press alarm
-button__press hall 
-LobbyUp__state9`
-- `AEX__state5__press alarm
-button__press intercom__state9`
-- `AEX__state5__press alarm
-button__press hall up__state9`
+- `AEX__state4__press cabin roof__press door close__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state4__press cabin 
@@ -11921,54 +17048,47 @@ button__press hall up__state9`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state4__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state4__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state4__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state4__press cabin 
-[1-N] floor__press alarm
-button__state5`
+[1-N] floor__press cabin lobby__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state4__press cabin 
 [1-N] floor__press intercom__state5`
 - `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state5__press door close__press cabin roof__state7`
 - `AEX__state5__press door close__press door open__state7`
 - `AEX__state5__press door close__press hall down__state7`
-- `AEX__state5__press door close__press cabin lobby__state7`
-- `AEX__state5__press door close__enter PIN__state7`
 - `AEX__state5__press door close__press hall 
 RoofDown__state7`
-- `AEX__state5__press door close__press alarm
-button__state7`
 - `AEX__state5__press door close__press cabin 
 [1-N] floor__state7`
+- `AEX__state5__press door close__press cabin lobby__state7`
 - `AEX__state5__press door close__press hall 
 LobbyUp__state7`
 - `AEX__state5__press door close__press intercom__state7`
+- `AEX__state5__press door close__enter PIN__state7`
 - `AEX__state5__press door close__press hall up__state7`
 - `AEX__state2__press cabin lobby__press cabin roof__state5`
 - `AEX__state2__press cabin lobby__press door open__state5`
 - `AEX__state2__press cabin lobby__press hall down__state5`
-- `AEX__state2__press cabin lobby__enter PIN__state5`
-- `AEX__state2__press cabin lobby__press door close__state5`
 - `AEX__state2__press cabin lobby__press hall 
 RoofDown__state5`
-- `AEX__state2__press cabin lobby__press alarm
-button__state5`
 - `AEX__state2__press cabin lobby__press cabin 
 [1-N] floor__state5`
 - `AEX__state2__press cabin lobby__press hall 
 LobbyUp__state5`
 - `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
 - `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state2__press cabin lobby__press door close__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state3__press cabin 
@@ -11976,24 +17096,21 @@ LobbyUp__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state3__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state3__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state3__press cabin 
-[1-N] floor__press alarm
-button__state5`
+[1-N] floor__press cabin lobby__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin 
 [1-N] floor__press intercom__state5`
 - `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state6__press cabin 
@@ -12001,39 +17118,34 @@ LobbyUp__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state6__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state6__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state6__press cabin 
-[1-N] floor__press alarm
-button__state5`
+[1-N] floor__press cabin lobby__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state6__press cabin 
 [1-N] floor__press intercom__state5`
 - `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state3__enter PIN__press cabin roof__state6`
 - `AEX__state3__enter PIN__press door open__state6`
 - `AEX__state3__enter PIN__press hall down__state6`
-- `AEX__state3__enter PIN__press cabin lobby__state6`
-- `AEX__state3__enter PIN__press door close__state6`
 - `AEX__state3__enter PIN__press hall 
 RoofDown__state6`
-- `AEX__state3__enter PIN__press alarm
-button__state6`
 - `AEX__state3__enter PIN__press cabin 
 [1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
 - `AEX__state3__enter PIN__press hall 
 LobbyUp__state6`
 - `AEX__state3__enter PIN__press intercom__state6`
 - `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state3__enter PIN__press door close__state6`
 - `AEX__state2__press cabin 
 [1-N] floor__press cabin roof__state5`
 - `AEX__state2__press cabin 
@@ -12041,106 +17153,278 @@ LobbyUp__state6`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall down__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press cabin lobby__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__enter PIN__state5`
-- `AEX__state2__press cabin 
-[1-N] floor__press door close__state5`
-- `AEX__state2__press cabin 
 [1-N] floor__press hall 
 RoofDown__state5`
 - `AEX__state2__press cabin 
-[1-N] floor__press alarm
-button__state5`
+[1-N] floor__press cabin lobby__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press hall 
 LobbyUp__state5`
 - `AEX__state2__press cabin 
 [1-N] floor__press intercom__state5`
 - `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
 [1-N] floor__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press door close__state5`
 - `AEX__state6__press cabin roof__press door open__state5`
 - `AEX__state6__press cabin roof__press hall down__state5`
-- `AEX__state6__press cabin roof__press cabin lobby__state5`
-- `AEX__state6__press cabin roof__enter PIN__state5`
-- `AEX__state6__press cabin roof__press door close__state5`
 - `AEX__state6__press cabin roof__press hall 
 RoofDown__state5`
-- `AEX__state6__press cabin roof__press alarm
-button__state5`
 - `AEX__state6__press cabin roof__press cabin 
 [1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
 - `AEX__state6__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
 - `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state6__press cabin roof__press door close__state5`
 - `AEX__state4__enter PIN__press cabin roof__state6`
 - `AEX__state4__enter PIN__press door open__state6`
 - `AEX__state4__enter PIN__press hall down__state6`
-- `AEX__state4__enter PIN__press cabin lobby__state6`
-- `AEX__state4__enter PIN__press door close__state6`
 - `AEX__state4__enter PIN__press hall 
 RoofDown__state6`
-- `AEX__state4__enter PIN__press alarm
-button__state6`
 - `AEX__state4__enter PIN__press cabin 
 [1-N] floor__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
 - `AEX__state4__enter PIN__press hall 
 LobbyUp__state6`
 - `AEX__state4__enter PIN__press intercom__state6`
 - `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state4__enter PIN__press door close__state6`
 - `AEX__state3__press cabin roof__press door open__state5`
 - `AEX__state3__press cabin roof__press hall down__state5`
-- `AEX__state3__press cabin roof__press cabin lobby__state5`
-- `AEX__state3__press cabin roof__enter PIN__state5`
-- `AEX__state3__press cabin roof__press door close__state5`
 - `AEX__state3__press cabin roof__press hall 
 RoofDown__state5`
-- `AEX__state3__press cabin roof__press alarm
-button__state5`
 - `AEX__state3__press cabin roof__press cabin 
 [1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
 - `AEX__state3__press cabin roof__press hall 
 LobbyUp__state5`
 - `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
 - `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state3__press cabin roof__press door close__state5`
 - `AEX__state7__press door open__press cabin roof__state8`
 - `AEX__state7__press door open__press hall down__state8`
-- `AEX__state7__press door open__press cabin lobby__state8`
-- `AEX__state7__press door open__enter PIN__state8`
-- `AEX__state7__press door open__press door close__state8`
 - `AEX__state7__press door open__press hall 
 RoofDown__state8`
-- `AEX__state7__press door open__press alarm
-button__state8`
 - `AEX__state7__press door open__press cabin 
 [1-N] floor__state8`
+- `AEX__state7__press door open__press cabin lobby__state8`
 - `AEX__state7__press door open__press hall 
 LobbyUp__state8`
 - `AEX__state7__press door open__press intercom__state8`
+- `AEX__state7__press door open__enter PIN__state8`
 - `AEX__state7__press door open__press hall up__state8`
+- `AEX__state7__press door open__press door close__state8`
 - `AEX__state1__press hall down__press cabin roof__state3`
 - `AEX__state1__press hall down__press door open__state3`
-- `AEX__state1__press hall down__press cabin lobby__state3`
-- `AEX__state1__press hall down__enter PIN__state3`
-- `AEX__state1__press hall down__press door close__state3`
 - `AEX__state1__press hall down__press hall 
 RoofDown__state3`
-- `AEX__state1__press hall down__press alarm
-button__state3`
 - `AEX__state1__press hall down__press cabin 
 [1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
 - `AEX__state1__press hall down__press hall 
 LobbyUp__state3`
 - `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
 - `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state1__press hall down__press door close__state3`
+
+### Product 42
+
+**Selected features:** selected = {ControlButtons, Intercom, PinPad}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 18 test case(s) (of 9 family-level), 23 real step(s) applicable.
+
+| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 18 | 18/18 = 100.0% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% |
+| ActionExchange | 144 | 144/144 = 100.0% | 56/144 = 38.9% | 144/144 = 100.0% | 144/144 = 100.0% |
+
+**TransitionMissing — survived product state coverage** (11):
+
+- `TM__state6__press cabin 
+[1-N] floor__state5`
+- `TM__state3__enter PIN__state6`
+- `TM__state4__press cabin roof__state5`
+- `TM__state2__press cabin 
+[1-N] floor__state5`
+- `TM__state4__press cabin 
+[1-N] floor__state5`
+- `TM__state6__press cabin roof__state5`
+- `TM__state4__enter PIN__state6`
+- `TM__state3__press cabin roof__state5`
+- `TM__state1__press hall down__state3`
+- `TM__state2__press cabin lobby__state5`
+- `TM__state3__press cabin 
+[1-N] floor__state5`
+
+**ActionExchange — survived product state coverage** (88):
+
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state6__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state3__enter PIN__press cabin roof__state6`
+- `AEX__state3__enter PIN__press hall down__state6`
+- `AEX__state3__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state3__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state3__enter PIN__press cabin lobby__state6`
+- `AEX__state3__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state3__enter PIN__press intercom__state6`
+- `AEX__state3__enter PIN__press hall up__state6`
+- `AEX__state4__press cabin roof__press hall down__state5`
+- `AEX__state4__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state4__press cabin roof__press cabin lobby__state5`
+- `AEX__state4__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin roof__press intercom__state5`
+- `AEX__state4__press cabin roof__enter PIN__state5`
+- `AEX__state4__press cabin roof__press hall up__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state2__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state4__press cabin 
+[1-N] floor__press hall up__state5`
+- `AEX__state6__press cabin roof__press hall down__state5`
+- `AEX__state6__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state6__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state6__press cabin roof__press cabin lobby__state5`
+- `AEX__state6__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state6__press cabin roof__press intercom__state5`
+- `AEX__state6__press cabin roof__enter PIN__state5`
+- `AEX__state6__press cabin roof__press hall up__state5`
+- `AEX__state4__enter PIN__press cabin roof__state6`
+- `AEX__state4__enter PIN__press hall down__state6`
+- `AEX__state4__enter PIN__press hall 
+RoofDown__state6`
+- `AEX__state4__enter PIN__press cabin 
+[1-N] floor__state6`
+- `AEX__state4__enter PIN__press cabin lobby__state6`
+- `AEX__state4__enter PIN__press hall 
+LobbyUp__state6`
+- `AEX__state4__enter PIN__press intercom__state6`
+- `AEX__state4__enter PIN__press hall up__state6`
+- `AEX__state3__press cabin roof__press hall down__state5`
+- `AEX__state3__press cabin roof__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin roof__press cabin 
+[1-N] floor__state5`
+- `AEX__state3__press cabin roof__press cabin lobby__state5`
+- `AEX__state3__press cabin roof__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin roof__press intercom__state5`
+- `AEX__state3__press cabin roof__enter PIN__state5`
+- `AEX__state3__press cabin roof__press hall up__state5`
+- `AEX__state1__press hall down__press cabin roof__state3`
+- `AEX__state1__press hall down__press hall 
+RoofDown__state3`
+- `AEX__state1__press hall down__press cabin 
+[1-N] floor__state3`
+- `AEX__state1__press hall down__press cabin lobby__state3`
+- `AEX__state1__press hall down__press hall 
+LobbyUp__state3`
+- `AEX__state1__press hall down__press intercom__state3`
+- `AEX__state1__press hall down__enter PIN__state3`
+- `AEX__state1__press hall down__press hall up__state3`
+- `AEX__state2__press cabin lobby__press cabin roof__state5`
+- `AEX__state2__press cabin lobby__press hall down__state5`
+- `AEX__state2__press cabin lobby__press hall 
+RoofDown__state5`
+- `AEX__state2__press cabin lobby__press cabin 
+[1-N] floor__state5`
+- `AEX__state2__press cabin lobby__press hall 
+LobbyUp__state5`
+- `AEX__state2__press cabin lobby__press intercom__state5`
+- `AEX__state2__press cabin lobby__enter PIN__state5`
+- `AEX__state2__press cabin lobby__press hall up__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin roof__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall down__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+RoofDown__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press cabin lobby__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall 
+LobbyUp__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press intercom__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__enter PIN__state5`
+- `AEX__state3__press cabin 
+[1-N] floor__press hall up__state5`
 ---
 
 ## Elevator summary (aggregate over 42 products)
 
-| Operator | Mutants | State-cov kills | Transition-cov kills | Pair-cov kills |
-|---|---|---|---|---|
-| TransitionMissing | 926 | 366/926 = 39.5% | 926/926 = 100.0% | 926/926 = 100.0% |
-| ActionExchange | 9586 | 3824/9586 = 39.9% | 9586/9586 = 100.0% | 9586/9586 = 100.0% |
+**Family-level baseline** (Devroey 2014, ported from VIBeS commit f856c90): 9 test case(s) generated once for the SPL, projected per-product via fexpr-filtering before kill-checking.
+
+| Operator | Mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
+|---|---|---|---|---|---|
+| TransitionMissing | 926 | 663/926 = 71.6% | 366/926 = 39.5% | 926/926 = 100.0% | 926/926 = 100.0% |
+| ActionExchange | 9586 | 6896/9586 = 71.9% | 3824/9586 = 39.9% | 9586/9586 = 100.0% | 9586/9586 = 100.0% |
 
 Total products: 42.
