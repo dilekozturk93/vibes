@@ -5,13 +5,18 @@ import be.vibes.testgeneration.conversion.MxeToFtsConverter;
 import be.vibes.ts.Action;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.FeaturedTransitionSystemFactory;
+import be.vibes.ts.State;
 import be.vibes.ts.Transition;
 import org.junit.Test;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -70,41 +75,96 @@ public class MutationOperatorsTest {
     }
 
     @Test
-    public void actionExchange_toyGraph_producesTimesTransitionsAndActionsMinusOne() {
+    public void actionExchange_toyGraph_underAdjacencyScope_yieldsExpectedCount() {
         FeaturedTransitionSystem fts = twoStateLoop();
         ActionExchange op = new ActionExchange();
         op.generateMutants(fts);
 
-        // 2 transitions × (2 actions − 1) = 2 mutants total: each transition
-        // has its label swapped with the other action.
+        // Adjacency scope on the toy two-state loop:
+        //   t1 = (a, ab, b): outgoing(a) ∪ outgoing(b) \ {ab} = {ba}
+        //                    (a, ba, b) is not in the FTS  → 1 mutant
+        //   t2 = (b, ba, a): outgoing(b) ∪ outgoing(a) \ {ba} = {ab}
+        //                    (b, ab, a) is not in the FTS  → 1 mutant
+        // Total: 2 mutants — the same count the old full-Cartesian scope
+        // produced on this graph, because |A| = 2 makes the two scopes
+        // coincide. The interesting reduction only appears on graphs with
+        // more than one distinct outgoing action per state.
         assertEquals(2, op.getMutantCount());
         for (FeaturedTransitionSystem mutant : op.getMutants().values()) {
-            // After action exchange the transition count is unchanged.
+            // Action exchange preserves transition count (it is a label
+            // swap, not a structural removal).
             assertEquals(countTransitions(fts), countTransitions(mutant));
-            // Each mutant's action multiset must differ from the original's
-            // multiset, because we swapped the label of at least one
-            // transition while keeping every other label.
             assertNotEquals(actionMultisetSignature(fts),
                     actionMultisetSignature(mutant));
         }
     }
 
     @Test
-    public void actionExchange_svm_mutantCountMatchesFormula() throws Exception {
+    public void actionExchange_svm_mutantCountMatchesAdjacencyScope() throws Exception {
         FeaturedTransitionSystem svm = loadSvm();
         int transitions = countTransitions(svm);
         int actions = countActions(svm);
+        int expectedAdjacency = expectedAexAdjacencyCount(svm);
+        int fullCartesian = transitions * (actions - 1);
 
-        ActionExchange op = new ActionExchange();
+        ActionExchange op = new ActionExchange(); // no solver: feature-compat filter off
         op.generateMutants(svm);
-        assertEquals("SVM ActionExchange mutant count must equal |T| * (|A| - 1)",
-                transitions * (actions - 1), op.getMutantCount());
+
+        assertEquals("SVM AEX mutant count must equal the adjacency-scope expectation",
+                expectedAdjacency, op.getMutantCount());
+        // Adjacency scope is a strict subset of full Cartesian unless every
+        // state happens to expose every action, which is not the case for
+        // any of our SPLs.
+        assertTrue("Adjacency scope must not exceed |T| × (|A| − 1)",
+                op.getMutantCount() <= fullCartesian);
 
         for (FeaturedTransitionSystem mutant : op.getMutants().values()) {
-            // Transition count unchanged; the mutation is a label swap, not
-            // a structural removal.
             assertEquals(transitions, countTransitions(mutant));
         }
+    }
+
+    /**
+     * Mirrors the adjacency-scope counting logic of {@link ActionExchange}
+     * with the feature-compatibility filter disabled (matching the
+     * no-solver constructor used in the SVM test):
+     *
+     * <pre>
+     *   for each t = (s, α, d):
+     *     candidates = OutgoingActions(s) ∪ OutgoingActions(d) \ {α}
+     *     skip β with (s, β, d) already in the FTS
+     *     count remaining β
+     * </pre>
+     */
+    private static int expectedAexAdjacencyCount(FeaturedTransitionSystem fts) {
+        Map<State, Set<Action>> outgoing = new HashMap<>();
+        Set<String> existing = new HashSet<>();
+        List<Transition> all = new ArrayList<>();
+        Iterator<Transition> it = fts.transitions();
+        while (it.hasNext()) {
+            Transition t = it.next();
+            all.add(t);
+            outgoing.computeIfAbsent(t.getSource(), k -> new HashSet<>()).add(t.getAction());
+            existing.add(tripleKey(t.getSource().getName(), t.getAction().getName(),
+                    t.getTarget().getName()));
+        }
+        int count = 0;
+        for (Transition t : all) {
+            Set<Action> cand = new HashSet<>();
+            cand.addAll(outgoing.getOrDefault(t.getSource(), Collections.emptySet()));
+            cand.addAll(outgoing.getOrDefault(t.getTarget(), Collections.emptySet()));
+            cand.remove(t.getAction());
+            for (Action beta : cand) {
+                if (!existing.contains(tripleKey(t.getSource().getName(),
+                        beta.getName(), t.getTarget().getName()))) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private static String tripleKey(String src, String act, String tgt) {
+        return src + "|" + act + "|" + tgt;
     }
 
     @Test

@@ -8,7 +8,7 @@
 
 1. **Project + repair.** Same as the coverage reports — `FExpressionPreservingProjection.project` followed by `InitialSccFilter.keepInitialScc` gives the product-level repaired FTS (the system under test for this product).
 2. **Generate test suites.** Three independent generators produce one suite per criterion: `StateCoverageGenerator.generate` (one TestCase, greedy + BFS reroute), `TransitionCoverageGenerator.generate` (one TestCase, Chinese-Postman + Hierholzer Euler cycle), and `TransitionPairCoverageGenerator.generate` (suite of TestCases via pair-graph Hierholzer, deduped by action sequence).
-3. **Generate mutants.** [`TransitionMissing`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/TransitionMissing.java) emits one mutant per transition (the transition is removed). [`ActionExchange`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/ActionExchange.java) emits one mutant per (transition, alternative-action) pair (the transition's action label is swapped to the alternative).
+3. **Generate mutants.** [`TransitionMissing`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/TransitionMissing.java) emits one mutant per transition (the transition is removed). [`ActionExchange`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/ActionExchange.java) emits one mutant per (transition, neighbourhood-adjacent action) pair: for `t = (s, α, d)` the replacement `β` is drawn from `OutgoingActions(s) ∪ OutgoingActions(d) \ {α}` (source- and sequentially-adjacent actions), skipping any `β` for which `(s, β, d)` already exists in the FTS, and restricted to feature-compatible swaps (co-satisfiability of `t`'s feature expression with that of some `β`-labelled transition, checked via SAT under the feature model). Source state, target state, and feature expression of `t` are preserved.
 4. **Filter synthetic mutants.** A mutant whose mutation site is on a synthetic transition (`__end__`) is dropped from the denominator. The SUT doesn't have such a transition; whether a test suite happens to 'kill' such a mutant is not a meaningful signal about real fault detection.
 5. **Replay test suite on each mutant.** A TestCase **kills** a mutant iff at least one of its non-synthetic transitions `(source, action, target)` is NOT present in the mutant. For TransitionMissing this happens whenever the suite traverses the removed transition; for ActionExchange whenever the suite traverses the mutated transition (the original `(s, a_orig, t)` triple is gone — replaced by `(s, a_new, t)`).
 6. **Mutation score per criterion** = killed mutants / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). The equivalent set is conservatively defined as mutants surviving all five suites in this study (family + product state + product transition + product pair + random).
@@ -34,101 +34,11 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 8 | 0/8 = 0.0% | 0/8 = 0.0% | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% | 6/8 = 75.0% |
-| ActionExchange | 56 | 0/56 = 0.0% | 0/56 = 0.0% | 49/56 = 87.5% | 56/56 = 100.0% | 56/56 = 100.0% | 44/56 = 78.6% |
-| StateMissing | 5 | 0/5 = 0.0% | 0/5 = 0.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% | 4/5 = 80.0% |
+| TransitionMissing | 8 | 0/8 = 0.0% | 0/8 = 0.0% | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| ActionExchange | 16 | 0/16 = 0.0% | 0/16 = 0.0% | 15/16 = 93.8% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% |
+| StateMissing | 5 | 0/5 = 0.0% | 0/5 = 0.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% |
 
 ### Product 2
-
-**Selected features:** selected = {t}
-
-**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
-
-**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 11 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-| ActionExchange | 42 | 0/42 = 0.0% | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% | 42/42 = 100.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-
-### Product 3
-
-**Selected features:** selected = {f, t}
-
-**Repaired FTS:** 4 states, 4 transitions (4 real / 0 `__end__`).
-
-**Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
-| ActionExchange | 12 | 0/12 = 0.0% | 0/12 = 0.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% |
-| StateMissing | 3 | 0/3 = 0.0% | 0/3 = 0.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% |
-
-### Product 4
-
-**Selected features:** selected = {c, f, t}
-
-**Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
-
-**Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 0/30 = 0.0% | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 30/30 = 100.0% |
-| StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
-
-### Product 5
-
-**Selected features:** selected = {s}
-
-**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
-
-**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 11 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-| ActionExchange | 42 | 0/42 = 0.0% | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% | 42/42 = 100.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-
-### Product 6
-
-**Selected features:** selected = {s, t}
-
-**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
-
-**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 16 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 0/72 = 0.0% | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% | 72/72 = 100.0% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-
-### Product 7
 
 **Selected features:** selected = {c, f, s}
 
@@ -143,16 +53,16 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
 | TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 0/30 = 0.0% | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 30/30 = 100.0% |
+| ActionExchange | 9 | 0/9 = 0.0% | 0/9 = 0.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
 | StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
 
-### Product 8
+### Product 3
 
-**Selected features:** selected = {c, s}
+**Selected features:** selected = {s}
 
-**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
+**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
 
-**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 13 real step(s) applicable.
+**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 11 real step(s) applicable.
 
 **Random baseline:** 5 test case(s).
 
@@ -160,11 +70,29 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 0/72 = 0.0% | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% | 72/72 = 100.0% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| ActionExchange | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
 
-### Product 9
+### Product 4
+
+**Selected features:** selected = {f, t}
+
+**Repaired FTS:** 4 states, 4 transitions (4 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
+
+**Random baseline:** 5 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+| ActionExchange | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+| StateMissing | 3 | 0/3 = 0.0% | 0/3 = 0.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% |
+
+### Product 5
 
 **Selected features:** selected = {f, s}
 
@@ -179,10 +107,10 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
 | TransitionMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
-| ActionExchange | 12 | 0/12 = 0.0% | 0/12 = 0.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% |
+| ActionExchange | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
 | StateMissing | 3 | 0/3 = 0.0% | 0/3 = 0.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% |
 
-### Product 10
+### Product 6
 
 **Selected features:** selected = {c, t}
 
@@ -196,9 +124,81 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
+| TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 4/9 = 44.4% |
+| ActionExchange | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 11/12 = 91.7% | 12/12 = 100.0% | 12/12 = 100.0% | 7/12 = 58.3% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 3/7 = 42.9% |
+
+### Product 7
+
+**Selected features:** selected = {c, f, t}
+
+**Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
+
+**Random baseline:** 5 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 9 | 0/9 = 0.0% | 0/9 = 0.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+
+### Product 8
+
+**Selected features:** selected = {t}
+
+**Repaired FTS:** 7 states, 7 transitions (7 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 11 real step(s) applicable.
+
+**Random baseline:** 5 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| ActionExchange | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+
+### Product 9
+
+**Selected features:** selected = {c, s}
+
+**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 13 real step(s) applicable.
+
+**Random baseline:** 5 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
 | TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 0/72 = 0.0% | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% | 72/72 = 100.0% |
+| ActionExchange | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 11/12 = 91.7% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% |
 | StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+
+### Product 10
+
+**Selected features:** selected = {f, s, t}
+
+**Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
+
+**Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
+
+**Random baseline:** 5 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 9 | 0/9 = 0.0% | 0/9 = 0.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
 
 ### Product 11
 
@@ -215,16 +215,16 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
 | TransitionMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 10/11 = 90.9% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% |
-| ActionExchange | 110 | 0/110 = 0.0% | 110/110 = 100.0% | 100/110 = 90.9% | 110/110 = 100.0% | 110/110 = 100.0% | 110/110 = 100.0% |
+| ActionExchange | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 18/19 = 94.7% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% |
 | StateMissing | 8 | 0/8 = 0.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
 
 ### Product 12
 
-**Selected features:** selected = {f, s, t}
+**Selected features:** selected = {s, t}
 
-**Repaired FTS:** 5 states, 6 transitions (6 real / 0 `__end__`).
+**Repaired FTS:** 8 states, 9 transitions (9 real / 0 `__end__`).
 
-**Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
+**Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 16 real step(s) applicable.
 
 **Random baseline:** 5 test case(s).
 
@@ -232,9 +232,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 0/30 = 0.0% | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 30/30 = 100.0% |
-| StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+| TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| ActionExchange | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 11/12 = 91.7% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
 ---
 
 ## SVM summary (aggregate over 12 products)
@@ -245,8 +245,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total mutants | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 86 | 0/86 = 0.0% | 52/86 = 60.5% | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% | 84/86 = 97.7% |
-| ActionExchange | 580 | 0/580 = 0.0% | 410/580 = 70.7% | 506/580 = 87.2% | 580/580 = 100.0% | 580/580 = 100.0% | 568/580 = 97.9% |
-| StateMissing | 64 | 0/64 = 0.0% | 41/64 = 64.1% | 64/64 = 100.0% | 64/64 = 100.0% | 64/64 = 100.0% | 63/64 = 98.4% |
+| TransitionMissing | 86 | 0/86 = 0.0% | 52/86 = 60.5% | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% | 81/86 = 94.2% |
+| ActionExchange | 120 | 0/120 = 0.0% | 69/120 = 57.5% | 108/120 = 90.0% | 120/120 = 100.0% | 120/120 = 100.0% | 115/120 = 95.8% |
+| StateMissing | 64 | 0/64 = 0.0% | 41/64 = 64.1% | 64/64 = 100.0% | 64/64 = 100.0% | 64/64 = 100.0% | 60/64 = 93.8% |
 
 Total products: 12.

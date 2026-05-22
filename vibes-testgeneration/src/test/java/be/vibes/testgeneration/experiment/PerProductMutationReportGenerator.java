@@ -234,8 +234,14 @@ public final class PerProductMutationReportGenerator {
                 + "TransitionMissing.java) emits one mutant per transition (the transition is "
                 + "removed). [`ActionExchange`]"
                 + "(../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/"
-                + "ActionExchange.java) emits one mutant per (transition, alternative-action) "
-                + "pair (the transition's action label is swapped to the alternative).\n");
+                + "ActionExchange.java) emits one mutant per (transition, neighbourhood-adjacent "
+                + "action) pair: for `t = (s, α, d)` the replacement `β` is drawn from "
+                + "`OutgoingActions(s) ∪ OutgoingActions(d) \\ {α}` (source- and "
+                + "sequentially-adjacent actions), skipping any `β` for which `(s, β, d)` "
+                + "already exists in the FTS, and restricted to feature-compatible swaps "
+                + "(co-satisfiability of `t`'s feature expression with that of some "
+                + "`β`-labelled transition, checked via SAT under the feature model). "
+                + "Source state, target state, and feature expression of `t` are preserved.\n");
         md.write("4. **Filter synthetic mutants.** A mutant whose mutation site is on a "
                 + "synthetic transition (`__end__`) is dropped from the denominator. The SUT "
                 + "doesn't have such a transition; whether a test suite happens to 'kill' "
@@ -275,8 +281,11 @@ public final class PerProductMutationReportGenerator {
                 + "generators (state, transition, pair).</li>\n");
         html.write("<li><strong>Generate mutants</strong> via "
                 + "<code>TransitionMissing</code> (one per transition, removed) and "
-                + "<code>ActionExchange</code> (one per (transition, alternative-action) "
-                + "pair, action swapped).</li>\n");
+                + "<code>ActionExchange</code> (one per (transition, neighbourhood-adjacent "
+                + "action) pair — replacement drawn from "
+                + "<code>OutgoingActions(s) ∪ OutgoingActions(d) \\ {α}</code> for "
+                + "<code>t = (s, α, d)</code>, skipping pre-existing triples, restricted to "
+                + "feature-compatible swaps via SAT under the feature model).</li>\n");
         html.write("<li><strong>Filter synthetic mutants</strong> — drop mutants whose "
                 + "mutation site is on an <code>__end__</code> transition (no SUT meaning).</li>\n");
         html.write("<li><strong>Replay each suite on each mutant</strong> — a TestCase kills "
@@ -314,7 +323,13 @@ public final class PerProductMutationReportGenerator {
 
         TransitionMissing tm = new TransitionMissing();
         tm.generateMutants(repaired);
-        ActionExchange aex = new ActionExchange();
+        // ActionExchange consumes a feature-model SAT solver to enforce
+        // the feature-compatibility filter on candidate action swaps. We
+        // build a dedicated solver per product (rather than reusing the
+        // enumeration solver) because the enumeration iterator owns its
+        // own blocking-clause state and must not be perturbed.
+        Sat4JSolverFacade aexSolver = loadSolver(spec.dimacs, spec.mapping);
+        ActionExchange aex = new ActionExchange(aexSolver);
         aex.generateMutants(repaired);
         StateMissing sm = new StateMissing();
         sm.generateMutants(repaired);
