@@ -77,16 +77,14 @@ public final class FeatureIdeToDimacsExporter {
         addClause(idOf(root));
         // Walk the tree and emit structural clauses.
         encodeStructure(root, null);
-        // Require at least one concrete (non-abstract) non-root feature to
-        // be selected. Without this constraint, models like eMail where
-        // the root is concrete and all real features are optional admit a
-        // "trivial" product where only the root is selected. The user's
-        // prior published study (and matching configuration counts in the
-        // thesis) excludes that trivial product. For SVM and Elevator the
-        // constraint is structurally redundant (mandatory chains force at
-        // least one concrete feature regardless), but adding it
-        // universally keeps the encoder's semantics uniform across SPLs.
-        addAtLeastOneConcreteNonRoot(doc, root);
+        // "At-least-one optional concrete feature" clause — ports the
+        // user's ESG-Fx-side SATSolverGenerationFromFeatureModel
+        // .addOptionalConcreteFeatureClauses logic (their thesis +
+        // published-paper convention). Excludes the root-only trivial
+        // product without spuriously rejecting any product that selects
+        // at least one optional concrete feature. See the method's
+        // JavaDoc for the precise set membership rules.
+        addAtLeastOneOptionalConcrete(root);
         // Cross-tree constraints.
         NodeList constraintRules = doc.getElementsByTagName("rule");
         for (int i = 0; i < constraintRules.getLength(); i++) {
@@ -97,44 +95,95 @@ public final class FeatureIdeToDimacsExporter {
     }
 
     /**
-     * Emits a single clause {@code f_1 ∨ f_2 ∨ … ∨ f_k} where each
-     * {@code f_i} is a concrete (non-abstract) feature other than the
-     * root. Has the effect of ruling out the "only the root is selected"
-     * trivial product.
+     * Emits a single clause {@code f_1 ∨ f_2 ∨ … ∨ f_k} where the
+     * features are exactly the user's ESG-Fx
+     * {@code optionalConcreteFeatures} set (from
+     * {@code SATSolverGenerationFromFeatureModel.addFeatureClauses /
+     * addMandatoryORFeatureClauses / addOptionalORFeatureClauses}).
+     *
+     * <p>Set membership rules (matches the ESG-Fx source line-by-line):
+     * <ul>
+     *   <li>OR-group node ({@code <or>}, mandatory OR optional):
+     *       add every concrete (non-abstract) child;</li>
+     *   <li>XOR-group node ({@code <alt>}, mandatory OR optional):
+     *       add NOTHING — the alt-group's exactly-one constraint is
+     *       handled separately;</li>
+     *   <li>AND-group node ({@code <and>}) — including the root: for
+     *       each direct {@code <feature>} child that is concrete AND
+     *       optional, add it. Recurse into all children of any tag.
+     *       Mandatory concrete leaves are excluded because they're
+     *       forced by a unit clause upstream;</li>
+     *   <li>Root, abstract features, and any non-leaf feature
+     *       elements are NEVER added.</li>
+     * </ul>
+     *
+     * <p>Effect on the four MVP SPLs (verified against
+     * the published reference table):
+     * <ul>
+     *   <li>SVM → {s, t, f, c} (b is mandatory OR-group → s, t added; f, c
+     *       are optional concrete leaves of svm AND-group)</li>
+     *   <li>eMail → {ad, au, f, en, s} (all optional concrete leaves under
+     *       AND-parents; no OR/XOR groups)</li>
+     *   <li>Elevator → {Alarm, Intercom, ManualDoorControl,
+     *       FirefighterService, ExecutiveFloor} (EmergencyFeatures OR-group
+     *       → Alarm, Intercom added; AccessControl XOR-group → CardReader,
+     *       MobileKey, PinPad NOT added; ControlButtons mandatory → not
+     *       added)</li>
+     *   <li>BankAccountv2 → {up, t, cd, cw, i, ie, dl} (cancellation OR-group
+     *       → cd, cw added; currency / extraMoney XOR-groups → tl/eu/us,
+     *       c/o NOT added; d, w mandatory → not added)</li>
+     * </ul>
      */
-    private void addAtLeastOneConcreteNonRoot(Document doc, Element root) {
-        NodeList all = doc.getElementsByTagName("*");
-        List<Integer> ids = new ArrayList<>();
-        String rootName = root.getAttribute("name");
-        for (int i = 0; i < all.getLength(); i++) {
-            Node n = all.item(i);
-            if (n.getNodeType() != Node.ELEMENT_NODE) {
-                continue;
-            }
-            Element e = (Element) n;
-            if (!isFeatureElement(e)) {
-                continue;
-            }
-            if ("true".equals(e.getAttribute("abstract"))) {
-                continue;
-            }
-            String name = e.getAttribute("name");
-            if (name.isEmpty() || name.equals(rootName)) {
-                continue;
-            }
-            Integer id = featureToId.get(name);
-            if (id != null) {
-                ids.add(id);
-            }
-        }
+    private void addAtLeastOneOptionalConcrete(Element root) {
+        java.util.LinkedHashSet<Integer> ids = new java.util.LinkedHashSet<>();
+        collectOptionalConcreteIds(root, ids);
         if (ids.isEmpty()) {
-            return; // nothing to constrain (model has only abstract / root features)
+            return;
         }
         int[] clause = new int[ids.size()];
-        for (int i = 0; i < ids.size(); i++) {
-            clause[i] = ids.get(i);
+        int i = 0;
+        for (int id : ids) {
+            clause[i++] = id;
         }
         addClause(clause);
+    }
+
+    /**
+     * Walks the feature tree implementing the ESG-Fx
+     * {@code optionalConcreteFeatures} set semantics.
+     */
+    private void collectOptionalConcreteIds(Element node, java.util.LinkedHashSet<Integer> acc) {
+        String tag = node.getTagName();
+
+        if (tag.equals("or")) {
+            // OR-group: add every concrete child, then recurse into all.
+            for (Element child : featureChildren(node)) {
+                if (child.getTagName().equals("feature")
+                        && !"true".equals(child.getAttribute("abstract"))) {
+                    acc.add(idOf(child));
+                }
+                collectOptionalConcreteIds(child, acc);
+            }
+        } else if (tag.equals("alt")) {
+            // XOR-group: do NOT add children. Only recurse for their subtrees
+            // (in case they have nested OR/AND/etc., which is rare but
+            // syntactically valid in FeatureIDE).
+            for (Element child : featureChildren(node)) {
+                collectOptionalConcreteIds(child, acc);
+            }
+        } else if (tag.equals("and")) {
+            // AND-group: for each direct <feature> child that is concrete
+            // optional, add it. Recurse into all children regardless of tag.
+            for (Element child : featureChildren(node)) {
+                if (child.getTagName().equals("feature")
+                        && !"true".equals(child.getAttribute("abstract"))
+                        && !"true".equals(child.getAttribute("mandatory"))) {
+                    acc.add(idOf(child));
+                }
+                collectOptionalConcreteIds(child, acc);
+            }
+        }
+        // tag.equals("feature"): leaf, nothing to do.
     }
 
     private static Document parse(File f) throws Exception {
