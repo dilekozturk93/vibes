@@ -92,6 +92,10 @@ public final class PerProductMutationReportGenerator {
                     "cases/Elevator/El_ESGFx.mxe",
                     "cases/Elevator/configs/El.dimacs",
                     "cases/Elevator/configs/El_dimacsmapping.txt"),
+            new SplSpec("BankAccountv2",
+                    "cases/BankAccountv2/BAv2_ESGFx.mxe",
+                    "cases/BankAccountv2/configs/BAv2.dimacs",
+                    "cases/BankAccountv2/configs/BAv2_dimacsmapping.txt"),
     };
 
     private PerProductMutationReportGenerator() {

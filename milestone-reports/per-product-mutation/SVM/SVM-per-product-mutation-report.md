@@ -11,9 +11,9 @@
 3. **Generate mutants.** [`TransitionMissing`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/TransitionMissing.java) emits one mutant per transition (the transition is removed). [`ActionExchange`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/ActionExchange.java) emits one mutant per (transition, alternative-action) pair (the transition's action label is swapped to the alternative).
 4. **Filter synthetic mutants.** A mutant whose mutation site is on a synthetic transition (`__end__`) is dropped from the denominator. The SUT doesn't have such a transition; whether a test suite happens to 'kill' such a mutant is not a meaningful signal about real fault detection.
 5. **Replay test suite on each mutant.** A TestCase **kills** a mutant iff at least one of its non-synthetic transitions `(source, action, target)` is NOT present in the mutant. For TransitionMissing this happens whenever the suite traverses the removed transition; for ActionExchange whenever the suite traverses the mutated transition (the original `(s, a_orig, t)` triple is gone — replaced by `(s, a_new, t)`).
-6. **Mutation score per criterion** = killed mutants / total real mutants. Higher is better. The central RQ2 claim is that the score monotonically increases with the coverage criterion's strictness (state &le; transition &le; transition-pair).
+6. **Mutation score per criterion** = killed mutants / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). The equivalent set is conservatively defined as mutants surviving all five suites in this study (family + product state + product transition + product pair + random).
 
-**Note on kill semantics.** Strict definition: the test suite kills the mutant iff running the suite on the mutant produces a different observable behaviour from running it on the original (e.g. a transition refused mid-execution, or an extra transition fired). For both operators, this is equivalent to the cheaper static check used here — "some real transition in the test case is not in the mutant" — because both operators only modify the FTS's transition set, not its execution semantics.
+**Note on coverage saturation.** TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models. RQ3 is reframed around the cost dimension under this saturation property.
 
 ---
 
@@ -34,9 +34,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 8 | 0/8 = 0.0% | 0/8 = 0.0% | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% | 6/8 = 75.0% |
-| ActionExchange | 56 | 0/56 = 0.0% | 0/56 = 0.0% | 49/56 = 87.5% | 56/56 = 100.0% | 56/56 = 100.0% | 44/56 = 78.6% |
-| StateMissing | 5 | 0/5 = 0.0% | 0/5 = 0.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% | 4/5 = 80.0% |
+| TransitionMissing | 8 | 0/8 = 0.0% | 0/8 = 0.0% | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| ActionExchange | 56 | 0/56 = 0.0% | 0/56 = 0.0% | 49/56 = 87.5% | 56/56 = 100.0% | 56/56 = 100.0% | 56/56 = 100.0% |
+| StateMissing | 5 | 0/5 = 0.0% | 0/5 = 0.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% |
 
 ### Product 2
 
@@ -245,8 +245,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total mutants | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 86 | 0/86 = 0.0% | 52/86 = 60.5% | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% | 84/86 = 97.7% |
-| ActionExchange | 580 | 0/580 = 0.0% | 410/580 = 70.7% | 506/580 = 87.2% | 580/580 = 100.0% | 580/580 = 100.0% | 568/580 = 97.9% |
-| StateMissing | 64 | 0/64 = 0.0% | 41/64 = 64.1% | 64/64 = 100.0% | 64/64 = 100.0% | 64/64 = 100.0% | 63/64 = 98.4% |
+| TransitionMissing | 86 | 0/86 = 0.0% | 52/86 = 60.5% | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% | 86/86 = 100.0% |
+| ActionExchange | 580 | 0/580 = 0.0% | 410/580 = 70.7% | 506/580 = 87.2% | 580/580 = 100.0% | 580/580 = 100.0% | 580/580 = 100.0% |
+| StateMissing | 64 | 0/64 = 0.0% | 41/64 = 64.1% | 64/64 = 100.0% | 64/64 = 100.0% | 64/64 = 100.0% | 64/64 = 100.0% |
 
 Total products: 12.

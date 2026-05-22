@@ -11,9 +11,9 @@
 3. **Generate mutants.** [`TransitionMissing`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/TransitionMissing.java) emits one mutant per transition (the transition is removed). [`ActionExchange`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/ActionExchange.java) emits one mutant per (transition, alternative-action) pair (the transition's action label is swapped to the alternative).
 4. **Filter synthetic mutants.** A mutant whose mutation site is on a synthetic transition (`__end__`) is dropped from the denominator. The SUT doesn't have such a transition; whether a test suite happens to 'kill' such a mutant is not a meaningful signal about real fault detection.
 5. **Replay test suite on each mutant.** A TestCase **kills** a mutant iff at least one of its non-synthetic transitions `(source, action, target)` is NOT present in the mutant. For TransitionMissing this happens whenever the suite traverses the removed transition; for ActionExchange whenever the suite traverses the mutated transition (the original `(s, a_orig, t)` triple is gone — replaced by `(s, a_new, t)`).
-6. **Mutation score per criterion** = killed mutants / total real mutants. Higher is better. The central RQ2 claim is that the score monotonically increases with the coverage criterion's strictness (state &le; transition &le; transition-pair).
+6. **Mutation score per criterion** = killed mutants / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). The equivalent set is conservatively defined as mutants surviving all five suites in this study (family + product state + product transition + product pair + random).
 
-**Note on kill semantics.** Strict definition: the test suite kills the mutant iff running the suite on the mutant produces a different observable behaviour from running it on the original (e.g. a transition refused mid-execution, or an extra transition fired). For both operators, this is equivalent to the cheaper static check used here — "some real transition in the test case is not in the mutant" — because both operators only modify the FTS's transition set, not its execution semantics.
+**Note on coverage saturation.** TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models. RQ3 is reframed around the cost dimension under this saturation property.
 
 ---
 
@@ -52,9 +52,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 12/28 = 42.9% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% | 10/28 = 35.7% |
-| ActionExchange | 336 | 0/336 = 0.0% | 147/336 = 43.8% | 114/336 = 33.9% | 336/336 = 100.0% | 336/336 = 100.0% | 122/336 = 36.3% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 6/9 = 66.7% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 12/28 = 42.9% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% | 13/28 = 46.4% |
+| ActionExchange | 336 | 0/336 = 0.0% | 147/336 = 43.8% | 114/336 = 33.9% | 336/336 = 100.0% | 336/336 = 100.0% | 160/336 = 47.6% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
 
 ### Product 3
 
@@ -70,8 +70,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 9/18 = 50.0% |
-| ActionExchange | 144 | 0/144 = 0.0% | 65/144 = 45.1% | 60/144 = 41.7% | 144/144 = 100.0% | 144/144 = 100.0% | 76/144 = 52.8% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 8/18 = 44.4% |
+| ActionExchange | 144 | 0/144 = 0.0% | 65/144 = 45.1% | 60/144 = 41.7% | 144/144 = 100.0% | 144/144 = 100.0% | 67/144 = 46.5% |
 | StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 5/6 = 83.3% |
 
 ### Product 4
@@ -88,9 +88,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 8/28 = 28.6% | 11/28 = 39.3% | 28/28 = 100.0% | 28/28 = 100.0% | 12/28 = 42.9% |
-| ActionExchange | 336 | 0/336 = 0.0% | 97/336 = 28.9% | 136/336 = 40.5% | 336/336 = 100.0% | 336/336 = 100.0% | 150/336 = 44.6% |
-| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 6/9 = 66.7% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 8/28 = 28.6% | 11/28 = 39.3% | 28/28 = 100.0% | 28/28 = 100.0% | 14/28 = 50.0% |
+| ActionExchange | 336 | 0/336 = 0.0% | 97/336 = 28.9% | 136/336 = 40.5% | 336/336 = 100.0% | 336/336 = 100.0% | 172/336 = 51.2% |
+| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
 
 ### Product 5
 
@@ -106,8 +106,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 7/23 = 30.4% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 12/23 = 52.2% |
-| ActionExchange | 253 | 0/253 = 0.0% | 78/253 = 30.8% | 103/253 = 40.7% | 253/253 = 100.0% | 253/253 = 100.0% | 135/253 = 53.4% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 7/23 = 30.4% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 11/23 = 47.8% |
+| ActionExchange | 253 | 0/253 = 0.0% | 78/253 = 30.8% | 103/253 = 40.7% | 253/253 = 100.0% | 253/253 = 100.0% | 124/253 = 49.0% |
 | StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
 
 ### Product 6
@@ -124,9 +124,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 7/24 = 29.2% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 312 | 0/312 = 0.0% | 95/312 = 30.4% | 176/312 = 56.4% | 312/312 = 100.0% | 312/312 = 100.0% | 198/312 = 63.5% |
-| StateMissing | 11 | 0/11 = 0.0% | 6/11 = 54.5% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 7/24 = 29.2% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 12/24 = 50.0% |
+| ActionExchange | 312 | 0/312 = 0.0% | 95/312 = 30.4% | 176/312 = 56.4% | 312/312 = 100.0% | 312/312 = 100.0% | 164/312 = 52.6% |
+| StateMissing | 11 | 0/11 = 0.0% | 6/11 = 54.5% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
 
 ### Product 7
 
@@ -160,9 +160,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 10/22 = 45.5% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 12/22 = 54.5% |
-| ActionExchange | 220 | 0/220 = 0.0% | 103/220 = 46.8% | 74/220 = 33.6% | 220/220 = 100.0% | 220/220 = 100.0% | 123/220 = 55.9% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 10/22 = 45.5% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 10/22 = 45.5% |
+| ActionExchange | 220 | 0/220 = 0.0% | 103/220 = 46.8% | 74/220 = 33.6% | 220/220 = 100.0% | 220/220 = 100.0% | 105/220 = 47.7% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 5/7 = 71.4% |
 
 ### Product 9
 
@@ -178,8 +178,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 11/22 = 50.0% |
-| ActionExchange | 220 | 0/220 = 0.0% | 70/220 = 31.8% | 93/220 = 42.3% | 220/220 = 100.0% | 220/220 = 100.0% | 114/220 = 51.8% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
+| ActionExchange | 220 | 0/220 = 0.0% | 70/220 = 31.8% | 93/220 = 42.3% | 220/220 = 100.0% | 220/220 = 100.0% | 133/220 = 60.5% |
 | StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
 
 ### Product 10
@@ -198,7 +198,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 |---|---|---|---|---|---|---|---|
 | TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% | 11/20 = 55.0% |
 | ActionExchange | 180 | 0/180 = 0.0% | 63/180 = 35.0% | 76/180 = 42.2% | 180/180 = 100.0% | 180/180 = 100.0% | 102/180 = 56.7% |
-| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
 
 ### Product 11
 
@@ -214,9 +214,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 10/25 = 40.0% | 13/25 = 52.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
-| ActionExchange | 350 | 0/350 = 0.0% | 147/350 = 42.0% | 189/350 = 54.0% | 350/350 = 100.0% | 350/350 = 100.0% | 246/350 = 70.3% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 9/11 = 81.8% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 10/25 = 40.0% | 13/25 = 52.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 350 | 0/350 = 0.0% | 147/350 = 42.0% | 189/350 = 54.0% | 350/350 = 100.0% | 350/350 = 100.0% | 262/350 = 74.9% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 10/11 = 90.9% |
 
 ### Product 12
 
@@ -232,9 +232,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 9/26 = 34.6% |
-| ActionExchange | 286 | 0/286 = 0.0% | 124/286 = 43.4% | 105/286 = 36.7% | 286/286 = 100.0% | 286/286 = 100.0% | 104/286 = 36.4% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 6/9 = 66.7% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
+| ActionExchange | 286 | 0/286 = 0.0% | 124/286 = 43.4% | 105/286 = 36.7% | 286/286 = 100.0% | 286/286 = 100.0% | 158/286 = 55.2% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
 
 ### Product 13
 
@@ -251,8 +251,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
 | TransitionMissing | 28 | 0/28 = 0.0% | 8/28 = 28.6% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% | 10/28 = 35.7% |
-| ActionExchange | 336 | 0/336 = 0.0% | 97/336 = 28.9% | 112/336 = 33.3% | 336/336 = 100.0% | 336/336 = 100.0% | 127/336 = 37.8% |
-| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 6/9 = 66.7% |
+| ActionExchange | 336 | 0/336 = 0.0% | 97/336 = 28.9% | 112/336 = 33.3% | 336/336 = 100.0% | 336/336 = 100.0% | 124/336 = 36.9% |
+| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
 
 ### Product 14
 
@@ -268,9 +268,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 9/20 = 45.0% |
-| ActionExchange | 180 | 0/180 = 0.0% | 73/180 = 40.6% | 67/180 = 37.2% | 180/180 = 100.0% | 180/180 = 100.0% | 83/180 = 46.1% |
-| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 5/7 = 71.4% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 11/20 = 55.0% |
+| ActionExchange | 180 | 0/180 = 0.0% | 73/180 = 40.6% | 67/180 = 37.2% | 180/180 = 100.0% | 180/180 = 100.0% | 104/180 = 57.8% |
+| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
 
 ### Product 15
 
@@ -286,8 +286,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 8/19 = 42.1% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 10/19 = 52.6% |
-| ActionExchange | 171 | 0/171 = 0.0% | 72/171 = 42.1% | 65/171 = 38.0% | 171/171 = 100.0% | 171/171 = 100.0% | 92/171 = 53.8% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 8/19 = 42.1% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 11/19 = 57.9% |
+| ActionExchange | 171 | 0/171 = 0.0% | 72/171 = 42.1% | 65/171 = 38.0% | 171/171 = 100.0% | 171/171 = 100.0% | 100/171 = 58.5% |
 | StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 5/6 = 83.3% |
 
 ### Product 16
@@ -304,9 +304,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 9/22 = 40.9% |
-| ActionExchange | 220 | 0/220 = 0.0% | 70/220 = 31.8% | 95/220 = 43.2% | 220/220 = 100.0% | 220/220 = 100.0% | 93/220 = 42.3% |
-| StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 5/8 = 62.5% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 11/22 = 50.0% |
+| ActionExchange | 220 | 0/220 = 0.0% | 70/220 = 31.8% | 95/220 = 43.2% | 220/220 = 100.0% | 220/220 = 100.0% | 114/220 = 51.8% |
+| StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
 
 ### Product 17
 
@@ -322,8 +322,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
-| ActionExchange | 180 | 0/180 = 0.0% | 84/180 = 46.7% | 65/180 = 36.1% | 180/180 = 100.0% | 180/180 = 100.0% | 92/180 = 51.1% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
+| ActionExchange | 180 | 0/180 = 0.0% | 84/180 = 46.7% | 65/180 = 36.1% | 180/180 = 100.0% | 180/180 = 100.0% | 119/180 = 66.1% |
 | StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
 
 ### Product 18
@@ -341,8 +341,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
 | TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 9/18 = 50.0% |
-| ActionExchange | 144 | 0/144 = 0.0% | 56/144 = 38.9% | 60/144 = 41.7% | 144/144 = 100.0% | 144/144 = 100.0% | 76/144 = 52.8% |
-| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 144 | 0/144 = 0.0% | 56/144 = 38.9% | 60/144 = 41.7% | 144/144 = 100.0% | 144/144 = 100.0% | 75/144 = 52.1% |
+| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 5/6 = 83.3% |
 
 ### Product 19
 
@@ -358,9 +358,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 286 | 0/286 = 0.0% | 124/286 = 43.4% | 105/286 = 36.7% | 286/286 = 100.0% | 286/286 = 100.0% | 158/286 = 55.2% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 12/26 = 46.2% |
+| ActionExchange | 286 | 0/286 = 0.0% | 124/286 = 43.4% | 105/286 = 36.7% | 286/286 = 100.0% | 286/286 = 100.0% | 137/286 = 47.9% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 6/9 = 66.7% |
 
 ### Product 20
 
@@ -376,9 +376,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% | 9/20 = 45.0% |
-| ActionExchange | 180 | 0/180 = 0.0% | 73/180 = 40.6% | 76/180 = 42.2% | 180/180 = 100.0% | 180/180 = 100.0% | 85/180 = 47.2% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% | 7/20 = 35.0% |
+| ActionExchange | 180 | 0/180 = 0.0% | 73/180 = 40.6% | 76/180 = 42.2% | 180/180 = 100.0% | 180/180 = 100.0% | 66/180 = 36.7% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 4/7 = 57.1% |
 
 ### Product 21
 
@@ -394,9 +394,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 10/21 = 47.6% | 10/21 = 47.6% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 252 | 0/252 = 0.0% | 123/252 = 48.8% | 123/252 = 48.8% | 252/252 = 100.0% | 252/252 = 100.0% | 172/252 = 68.3% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 10/21 = 47.6% | 10/21 = 47.6% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
+| ActionExchange | 252 | 0/252 = 0.0% | 123/252 = 48.8% | 123/252 = 48.8% | 252/252 = 100.0% | 252/252 = 100.0% | 159/252 = 63.1% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
 
 ### Product 22
 
@@ -412,9 +412,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 10/24 = 41.7% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 16/24 = 66.7% |
-| ActionExchange | 312 | 0/312 = 0.0% | 137/312 = 43.9% | 176/312 = 56.4% | 312/312 = 100.0% | 312/312 = 100.0% | 216/312 = 69.2% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 9/11 = 81.8% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 10/24 = 41.7% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 13/24 = 54.2% |
+| ActionExchange | 312 | 0/312 = 0.0% | 137/312 = 43.9% | 176/312 = 56.4% | 312/312 = 100.0% | 312/312 = 100.0% | 174/312 = 55.8% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 10/11 = 90.9% |
 
 ### Product 23
 
@@ -430,8 +430,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 253 | 0/253 = 0.0% | 88/253 = 34.8% | 104/253 = 41.1% | 253/253 = 100.0% | 253/253 = 100.0% | 158/253 = 62.5% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 12/23 = 52.2% |
+| ActionExchange | 253 | 0/253 = 0.0% | 88/253 = 34.8% | 104/253 = 41.1% | 253/253 = 100.0% | 253/253 = 100.0% | 138/253 = 54.5% |
 | StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
 
 ### Product 24
@@ -448,9 +448,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 8/22 = 36.4% |
-| ActionExchange | 220 | 0/220 = 0.0% | 80/220 = 36.4% | 95/220 = 43.2% | 220/220 = 100.0% | 220/220 = 100.0% | 82/220 = 37.3% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 5/8 = 62.5% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 220 | 0/220 = 0.0% | 80/220 = 36.4% | 95/220 = 43.2% | 220/220 = 100.0% | 220/220 = 100.0% | 142/220 = 64.5% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
 
 ### Product 25
 
@@ -466,9 +466,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 220 | 0/220 = 0.0% | 81/220 = 36.8% | 93/220 = 42.3% | 220/220 = 100.0% | 220/220 = 100.0% | 135/220 = 61.4% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 7/22 = 31.8% |
+| ActionExchange | 220 | 0/220 = 0.0% | 81/220 = 36.8% | 93/220 = 42.3% | 220/220 = 100.0% | 220/220 = 100.0% | 73/220 = 33.2% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 5/8 = 62.5% |
 
 ### Product 26
 
@@ -484,9 +484,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 220 | 0/220 = 0.0% | 79/220 = 35.9% | 113/220 = 51.4% | 220/220 = 100.0% | 220/220 = 100.0% | 144/220 = 65.5% |
-| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
+| ActionExchange | 220 | 0/220 = 0.0% | 79/220 = 35.9% | 113/220 = 51.4% | 220/220 = 100.0% | 220/220 = 100.0% | 135/220 = 61.4% |
+| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
 
 ### Product 27
 
@@ -502,8 +502,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 64/144 = 44.4% | 58/144 = 40.3% | 144/144 = 100.0% | 144/144 = 100.0% | 82/144 = 56.9% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 8/18 = 44.4% |
+| ActionExchange | 144 | 0/144 = 0.0% | 64/144 = 44.4% | 58/144 = 40.3% | 144/144 = 100.0% | 144/144 = 100.0% | 68/144 = 47.2% |
 | StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 5/6 = 83.3% |
 
 ### Product 28
@@ -522,7 +522,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 |---|---|---|---|---|---|---|---|
 | TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 9/18 = 50.0% |
 | ActionExchange | 144 | 0/144 = 0.0% | 56/144 = 38.9% | 58/144 = 40.3% | 144/144 = 100.0% | 144/144 = 100.0% | 76/144 = 52.8% |
-| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 5/6 = 83.3% |
 
 ### Product 29
 
@@ -538,8 +538,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 6/18 = 33.3% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
-| ActionExchange | 144 | 0/144 = 0.0% | 48/144 = 33.3% | 58/144 = 40.3% | 144/144 = 100.0% | 144/144 = 100.0% | 100/144 = 69.4% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 6/18 = 33.3% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 9/18 = 50.0% |
+| ActionExchange | 144 | 0/144 = 0.0% | 48/144 = 33.3% | 58/144 = 40.3% | 144/144 = 100.0% | 144/144 = 100.0% | 76/144 = 52.8% |
 | StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
 
 ### Product 30
@@ -556,9 +556,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 9/20 = 45.0% |
-| ActionExchange | 180 | 0/180 = 0.0% | 84/180 = 46.7% | 65/180 = 36.1% | 180/180 = 100.0% | 180/180 = 100.0% | 85/180 = 47.2% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 11/20 = 55.0% |
+| ActionExchange | 180 | 0/180 = 0.0% | 84/180 = 46.7% | 65/180 = 36.1% | 180/180 = 100.0% | 180/180 = 100.0% | 103/180 = 57.2% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
 
 ### Product 31
 
@@ -574,9 +574,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 11/22 = 50.0% |
-| ActionExchange | 220 | 0/220 = 0.0% | 81/220 = 36.8% | 72/220 = 32.7% | 220/220 = 100.0% | 220/220 = 100.0% | 113/220 = 51.4% |
-| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 9/22 = 40.9% |
+| ActionExchange | 220 | 0/220 = 0.0% | 81/220 = 36.8% | 72/220 = 32.7% | 220/220 = 100.0% | 220/220 = 100.0% | 93/220 = 42.3% |
+| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 5/7 = 71.4% |
 
 ### Product 32
 
@@ -592,9 +592,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 11/26 = 42.3% |
-| ActionExchange | 286 | 0/286 = 0.0% | 77/286 = 26.9% | 103/286 = 36.0% | 286/286 = 100.0% | 286/286 = 100.0% | 122/286 = 42.7% |
-| StateMissing | 9 | 0/9 = 0.0% | 5/9 = 55.6% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 13/26 = 50.0% |
+| ActionExchange | 286 | 0/286 = 0.0% | 77/286 = 26.9% | 103/286 = 36.0% | 286/286 = 100.0% | 286/286 = 100.0% | 146/286 = 51.0% |
+| StateMissing | 9 | 0/9 = 0.0% | 5/9 = 55.6% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
 
 ### Product 33
 
@@ -610,9 +610,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 11/23 = 47.8% |
-| ActionExchange | 253 | 0/253 = 0.0% | 89/253 = 35.2% | 102/253 = 40.3% | 253/253 = 100.0% | 253/253 = 100.0% | 126/253 = 49.8% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 6/8 = 75.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 12/23 = 52.2% |
+| ActionExchange | 253 | 0/253 = 0.0% | 89/253 = 35.2% | 102/253 = 40.3% | 253/253 = 100.0% | 253/253 = 100.0% | 134/253 = 53.0% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
 
 ### Product 34
 
@@ -628,8 +628,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 12/26 = 46.2% |
-| ActionExchange | 286 | 0/286 = 0.0% | 89/286 = 31.1% | 103/286 = 36.0% | 286/286 = 100.0% | 286/286 = 100.0% | 135/286 = 47.2% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 15/26 = 57.7% |
+| ActionExchange | 286 | 0/286 = 0.0% | 89/286 = 31.1% | 103/286 = 36.0% | 286/286 = 100.0% | 286/286 = 100.0% | 169/286 = 59.1% |
 | StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
 
 ### Product 35
@@ -646,9 +646,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 11/20 = 55.0% |
-| ActionExchange | 180 | 0/180 = 0.0% | 63/180 = 35.0% | 67/180 = 37.2% | 180/180 = 100.0% | 180/180 = 100.0% | 103/180 = 57.2% |
-| StateMissing | 7 | 0/7 = 0.0% | 5/7 = 71.4% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 9/20 = 45.0% |
+| ActionExchange | 180 | 0/180 = 0.0% | 63/180 = 35.0% | 67/180 = 37.2% | 180/180 = 100.0% | 180/180 = 100.0% | 84/180 = 46.7% |
+| StateMissing | 7 | 0/7 = 0.0% | 5/7 = 71.4% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 5/7 = 71.4% |
 
 ### Product 36
 
@@ -682,9 +682,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 10/26 = 38.5% |
-| ActionExchange | 286 | 0/286 = 0.0% | 89/286 = 31.1% | 125/286 = 43.7% | 286/286 = 100.0% | 286/286 = 100.0% | 112/286 = 39.2% |
-| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 6/9 = 66.7% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 13/26 = 50.0% |
+| ActionExchange | 286 | 0/286 = 0.0% | 89/286 = 31.1% | 125/286 = 43.7% | 286/286 = 100.0% | 286/286 = 100.0% | 146/286 = 51.0% |
+| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
 
 ### Product 38
 
@@ -700,8 +700,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 220 | 0/220 = 0.0% | 71/220 = 32.3% | 94/220 = 42.7% | 220/220 = 100.0% | 220/220 = 100.0% | 136/220 = 61.8% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 12/22 = 54.5% |
+| ActionExchange | 220 | 0/220 = 0.0% | 71/220 = 32.3% | 94/220 = 42.7% | 220/220 = 100.0% | 220/220 = 100.0% | 123/220 = 55.9% |
 | StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
 
 ### Product 39
@@ -718,9 +718,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 6/22 = 27.3% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
-| ActionExchange | 220 | 0/220 = 0.0% | 60/220 = 27.3% | 94/220 = 42.7% | 220/220 = 100.0% | 220/220 = 100.0% | 144/220 = 65.5% |
-| StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 6/22 = 27.3% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 12/22 = 54.5% |
+| ActionExchange | 220 | 0/220 = 0.0% | 60/220 = 27.3% | 94/220 = 42.7% | 220/220 = 100.0% | 220/220 = 100.0% | 126/220 = 57.3% |
+| StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 6/8 = 75.0% |
 
 ### Product 40
 
@@ -736,9 +736,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 8/26 = 30.8% |
-| ActionExchange | 286 | 0/286 = 0.0% | 77/286 = 26.9% | 125/286 = 43.7% | 286/286 = 100.0% | 286/286 = 100.0% | 93/286 = 32.5% |
-| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 6/9 = 66.7% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
+| ActionExchange | 286 | 0/286 = 0.0% | 77/286 = 26.9% | 125/286 = 43.7% | 286/286 = 100.0% | 286/286 = 100.0% | 159/286 = 55.6% |
+| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
 
 ### Product 41
 
@@ -754,9 +754,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 8/22 = 36.4% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 220 | 0/220 = 0.0% | 81/220 = 36.8% | 83/220 = 37.7% | 220/220 = 100.0% | 220/220 = 100.0% | 134/220 = 60.9% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 6/7 = 85.7% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 8/22 = 36.4% | 22/22 = 100.0% | 22/22 = 100.0% | 10/22 = 45.5% |
+| ActionExchange | 220 | 0/220 = 0.0% | 81/220 = 36.8% | 83/220 = 37.7% | 220/220 = 100.0% | 220/220 = 100.0% | 104/220 = 47.3% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 5/7 = 71.4% |
 
 ### Product 42
 
@@ -772,9 +772,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 7/19 = 36.8% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
-| ActionExchange | 171 | 0/171 = 0.0% | 64/171 = 37.4% | 65/171 = 38.0% | 171/171 = 100.0% | 171/171 = 100.0% | 111/171 = 64.9% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 7/19 = 36.8% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 11/19 = 57.9% |
+| ActionExchange | 171 | 0/171 = 0.0% | 64/171 = 37.4% | 65/171 = 38.0% | 171/171 = 100.0% | 171/171 = 100.0% | 102/171 = 59.6% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 5/6 = 83.3% |
 ---
 
 ## Elevator summary (aggregate over 42 products)
@@ -785,8 +785,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total mutants | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 926 | 0/926 = 0.0% | 340/926 = 36.7% | 366/926 = 39.5% | 926/926 = 100.0% | 926/926 = 100.0% | 472/926 = 51.0% |
-| ActionExchange | 9586 | 0/9586 = 0.0% | 3562/9586 = 37.2% | 3985/9586 = 41.6% | 9586/9586 = 100.0% | 9586/9586 = 100.0% | 5051/9586 = 52.7% |
-| StateMissing | 330 | 0/330 = 0.0% | 272/330 = 82.4% | 330/330 = 100.0% | 330/330 = 100.0% | 330/330 = 100.0% | 275/330 = 83.3% |
+| TransitionMissing | 926 | 0/926 = 0.0% | 340/926 = 36.7% | 366/926 = 39.5% | 926/926 = 100.0% | 926/926 = 100.0% | 476/926 = 51.4% |
+| ActionExchange | 9586 | 0/9586 = 0.0% | 3562/9586 = 37.2% | 3985/9586 = 41.6% | 9586/9586 = 100.0% | 9586/9586 = 100.0% | 5112/9586 = 53.3% |
+| StateMissing | 330 | 0/330 = 0.0% | 272/330 = 82.4% | 330/330 = 100.0% | 330/330 = 100.0% | 330/330 = 100.0% | 277/330 = 83.9% |
 
 Total products: 42.

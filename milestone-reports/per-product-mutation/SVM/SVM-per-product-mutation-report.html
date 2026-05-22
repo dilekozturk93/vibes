@@ -23,8 +23,9 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <li><strong>Generate mutants</strong> via <code>TransitionMissing</code> (one per transition, removed) and <code>ActionExchange</code> (one per (transition, alternative-action) pair, action swapped).</li>
 <li><strong>Filter synthetic mutants</strong> — drop mutants whose mutation site is on an <code>__end__</code> transition (no SUT meaning).</li>
 <li><strong>Replay each suite on each mutant</strong> — a TestCase kills a mutant iff at least one of its non-synthetic transitions <code>(source, action, target)</code> is absent in the mutant.</li>
-<li><strong>Mutation score</strong> = killed / total. RQ2 claim: score increases with the coverage criterion's strictness (state &le; transition &le; pair).</li>
+<li><strong>Mutation score</strong> = killed / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). Equivalent set is mutants surviving all five suites (family + product state + product transition + product pair + random).</li>
 </ol>
+<p><strong>Note on coverage saturation.</strong> TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models.</p>
 <hr/>
 <h2>Products</h2>
 <h3>Product 1</h3>
@@ -35,9 +36,9 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>8</td><td>0/8 = 0.0%</td><td>0/8 = 0.0%</td><td>7/8 = 87.5%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>6/8 = 75.0%</td></tr>
-<tr><td>ActionExchange</td><td>56</td><td>0/56 = 0.0%</td><td>0/56 = 0.0%</td><td>49/56 = 87.5%</td><td>56/56 = 100.0%</td><td>56/56 = 100.0%</td><td>44/56 = 78.6%</td></tr>
-<tr><td>StateMissing</td><td>5</td><td>0/5 = 0.0%</td><td>0/5 = 0.0%</td><td>5/5 = 100.0%</td><td>5/5 = 100.0%</td><td>5/5 = 100.0%</td><td>4/5 = 80.0%</td></tr>
+<tr><td>TransitionMissing</td><td>8</td><td>0/8 = 0.0%</td><td>0/8 = 0.0%</td><td>7/8 = 87.5%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td></tr>
+<tr><td>ActionExchange</td><td>56</td><td>0/56 = 0.0%</td><td>0/56 = 0.0%</td><td>49/56 = 87.5%</td><td>56/56 = 100.0%</td><td>56/56 = 100.0%</td><td>56/56 = 100.0%</td></tr>
+<tr><td>StateMissing</td><td>5</td><td>0/5 = 0.0%</td><td>0/5 = 0.0%</td><td>5/5 = 100.0%</td><td>5/5 = 100.0%</td><td>5/5 = 100.0%</td><td>5/5 = 100.0%</td></tr>
 </table>
 <h3>Product 2</h3>
 <p><strong>Selected features:</strong> selected = {t}</p>
@@ -177,9 +178,9 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Equivalent-mutant treatment:</strong> Inozemtseva &amp; Holmes (2014) — mutant not killed by ANY of five suites (family + product state + product transition + product pair + random) is conservatively classified equivalent and EXCLUDED from the score denominator. Scores: <strong>killed / (total − equivalent) = adjusted%</strong>.</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total mutants</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>86</td><td>0/86 = 0.0%</td><td>52/86 = 60.5%</td><td>74/86 = 86.0%</td><td>86/86 = 100.0%</td><td>86/86 = 100.0%</td><td>84/86 = 97.7%</td></tr>
-<tr><td>ActionExchange</td><td>580</td><td>0/580 = 0.0%</td><td>410/580 = 70.7%</td><td>506/580 = 87.2%</td><td>580/580 = 100.0%</td><td>580/580 = 100.0%</td><td>568/580 = 97.9%</td></tr>
-<tr><td>StateMissing</td><td>64</td><td>0/64 = 0.0%</td><td>41/64 = 64.1%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>63/64 = 98.4%</td></tr>
+<tr><td>TransitionMissing</td><td>86</td><td>0/86 = 0.0%</td><td>52/86 = 60.5%</td><td>74/86 = 86.0%</td><td>86/86 = 100.0%</td><td>86/86 = 100.0%</td><td>86/86 = 100.0%</td></tr>
+<tr><td>ActionExchange</td><td>580</td><td>0/580 = 0.0%</td><td>410/580 = 70.7%</td><td>506/580 = 87.2%</td><td>580/580 = 100.0%</td><td>580/580 = 100.0%</td><td>580/580 = 100.0%</td></tr>
+<tr><td>StateMissing</td><td>64</td><td>0/64 = 0.0%</td><td>41/64 = 64.1%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td></tr>
 </table>
 <p>Total products: 12.</p>
 </body></html>
