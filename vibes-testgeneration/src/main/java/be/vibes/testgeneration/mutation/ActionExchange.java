@@ -81,14 +81,32 @@ public class ActionExchange extends MutationOperator {
     private final Sat4JSolverFacade solver;
 
     /**
-     * Per-(φ_t, action β) feature-compatibility cache. Same φ_t × β pair
-     * recurs across many transitions in large SPLs (e.g. BankAccountv2
-     * emits a few dozen distinct feature expressions over the full
-     * action set, but tens of thousands of mutant candidates) — without
-     * a cache the SAT pass dominates runtime. Cleared at the start of
-     * each {@link #generateMutants(FeaturedTransitionSystem)} call.
+     * Per-(φ_t, action β) feature-compatibility cache. The cache value
+     * is FM-determined (it only depends on the conjunction φ_t ∧ φ_β
+     * being satisfiable under the feature model) and is therefore safe
+     * to reuse across products of the same SPL — same FM, same φ pool,
+     * same β pool. The cache is NOT cleared by
+     * {@link #generateMutants(FeaturedTransitionSystem)} on purpose, so
+     * the caller can reuse a single {@code ActionExchange} instance
+     * across all projected per-product FTSs of an SPL and amortise the
+     * SAT cost over the whole product enumeration (this is the
+     * difference between a finishable SAS run and an
+     * "unable to create new native thread" thread-exhaustion crash).
+     *
+     * <p>If the operator is reused across SPLs with different feature
+     * models, call {@link #clearCompatCache()} between SPLs.
      */
     private final Map<String, Boolean> compatCache = new HashMap<>();
+
+    /**
+     * Resets the feature-compatibility cache. Call this when reusing an
+     * {@code ActionExchange} instance across multiple SPLs with different
+     * feature models. Not needed when only the projected per-product FTS
+     * changes within a single SPL.
+     */
+    public void clearCompatCache() {
+        compatCache.clear();
+    }
 
     public ActionExchange() {
         this(null);
@@ -101,7 +119,11 @@ public class ActionExchange extends MutationOperator {
 
     @Override
     public void generateMutants(FeaturedTransitionSystem fts) {
-        compatCache.clear();
+        // Note: compatCache is intentionally NOT cleared here. See the
+        // field's JavaDoc — the cache is FM-determined and is reused
+        // across per-product calls within a single SPL. Use
+        // clearCompatCache() if reusing the operator across SPLs.
+        super.mutants.clear();
         // Pre-index for O(1) lookups during the per-transition candidate
         // enumeration:
         //   outgoingActions(state)         — action set at this state

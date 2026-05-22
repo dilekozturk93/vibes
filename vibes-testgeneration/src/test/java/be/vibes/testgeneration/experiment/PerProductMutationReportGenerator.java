@@ -96,13 +96,38 @@ public final class PerProductMutationReportGenerator {
                     "cases/BankAccountv2/BAv2_ESGFx.mxe",
                     "cases/BankAccountv2/configs/BAv2.dimacs",
                     "cases/BankAccountv2/configs/BAv2_dimacsmapping.txt"),
+            new SplSpec("StudentAttendanceSystem",
+                    "cases/StudentAttendanceSystem/SAS_ESGFx.mxe",
+                    "cases/StudentAttendanceSystem/configs/SAS.dimacs",
+                    "cases/StudentAttendanceSystem/configs/SAS_dimacsmapping.txt"),
     };
 
     private PerProductMutationReportGenerator() {
     }
 
     public static void main(String[] args) throws Exception {
-        for (SplSpec spec : SPLS) run(spec);
+        // Allow CLI selection of a subset of SPLs by name; falls back to the
+        // full SPLS list when no args are supplied. Example:
+        //   mvn ... -Dexec.args="StudentAttendanceSystem"
+        if (args.length == 0) {
+            for (SplSpec spec : SPLS) run(spec);
+            return;
+        }
+        for (String wanted : args) {
+            SplSpec match = null;
+            for (SplSpec spec : SPLS) {
+                if (spec.name.equals(wanted)) {
+                    match = spec;
+                    break;
+                }
+            }
+            if (match == null) {
+                throw new IllegalArgumentException("Unknown SPL: " + wanted
+                        + ". Known: " + java.util.Arrays.stream(SPLS)
+                        .map(s -> s.name).reduce((a, b) -> a + ", " + b).orElse(""));
+            }
+            run(match);
+        }
     }
 
     private static void run(SplSpec spec) throws Exception {
@@ -111,6 +136,11 @@ public final class PerProductMutationReportGenerator {
 
         FeaturedTransitionSystem fts = loadFts(spec.mxe);
         Sat4JSolverFacade solver = loadSolver(spec.dimacs, spec.mapping);
+        // Separate solver + operator instance for ActionExchange — one per
+        // SPL, reused across all products. See writeProductSection's notes
+        // on the SAT4J thread-leak that motivated this hoisting.
+        Sat4JSolverFacade aexSolver = loadSolver(spec.dimacs, spec.mapping);
+        ActionExchange aex = new ActionExchange(aexSolver);
         Set<String> ftsFeatures = collectFeatureNames(fts);
 
         // Family-level (SPL-level) all-states baseline per Devroey 2014.
@@ -153,7 +183,7 @@ public final class PerProductMutationReportGenerator {
                 Configuration cfg = configs.next();
                 productCount++;
                 ProductScores ps = writeProductSection(md, html, spec, fts, cfg,
-                        productCount, ftsFeatures, familyBaseline);
+                        productCount, ftsFeatures, familyBaseline, aex);
                 addOpScores(aggTm, ps.tm);
                 addOpScores(aggAex, ps.aex);
                 addOpScores(aggSm, ps.sm);
@@ -309,7 +339,8 @@ public final class PerProductMutationReportGenerator {
                                                      SplSpec spec, FeaturedTransitionSystem fts,
                                                      Configuration cfg, int productIndex,
                                                      Set<String> ftsFeatures,
-                                                     List<TestCase> familyBaseline) throws Exception {
+                                                     List<TestCase> familyBaseline,
+                                                     ActionExchange aex) throws Exception {
         String featuresLine = formatFeatures(cfg, ftsFeatures);
         FeaturedTransitionSystem projected = FExpressionPreservingProjection.project(fts, cfg);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
@@ -323,13 +354,14 @@ public final class PerProductMutationReportGenerator {
 
         TransitionMissing tm = new TransitionMissing();
         tm.generateMutants(repaired);
-        // ActionExchange consumes a feature-model SAT solver to enforce
-        // the feature-compatibility filter on candidate action swaps. We
-        // build a dedicated solver per product (rather than reusing the
-        // enumeration solver) because the enumeration iterator owns its
-        // own blocking-clause state and must not be perturbed.
-        Sat4JSolverFacade aexSolver = loadSolver(spec.dimacs, spec.mapping);
-        ActionExchange aex = new ActionExchange(aexSolver);
+        // ActionExchange is supplied by the caller — one instance per
+        // SPL, reused across all products. The operator's
+        // feature-compatibility cache is FM-determined and persists
+        // across calls so cumulative SAT work stays bounded by
+        // |distinct φ| × |actions| instead of |products| × |…|.
+        // A per-product fresh solver would otherwise spawn millions of
+        // SAT4J Timer threads and crash with "unable to create new
+        // native thread" on SPLs with thousands of products (e.g. SAS).
         aex.generateMutants(repaired);
         StateMissing sm = new StateMissing();
         sm.generateMutants(repaired);
