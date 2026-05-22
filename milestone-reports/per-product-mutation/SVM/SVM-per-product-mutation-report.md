@@ -28,95 +28,15 @@
 
 **Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 8 | 0/8 = 0.0% | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% |
-| ActionExchange | 56 | 0/56 = 0.0% | 49/56 = 87.5% | 56/56 = 100.0% | 56/56 = 100.0% |
-| StateMissing (dynamic) | 5 | 0/5 = 0.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived family-level state coverage (Devroey)** (8):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state4__serveSoda__state7`
-- `TM__state5__serveTea__state7`
-- `TM__state7__take__state1`
-- `TM__state3__cancel__state6`
-- `TM__state1__free__state3`
-- `TM__state6__return__state1`
-- `TM__state3__tea__state5`
-- `TM__state3__soda__state4`
-
-**TransitionMissing — survived product state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived family-level state coverage (Devroey)** (56):
-
-- `AEX__state4__serveSoda__cancel__state7`
-- `AEX__state4__serveSoda__take__state7`
-- `AEX__state4__serveSoda__tea__state7`
-- `AEX__state4__serveSoda__serveTea__state7`
-- `AEX__state4__serveSoda__free__state7`
-- `AEX__state4__serveSoda__soda__state7`
-- `AEX__state4__serveSoda__return__state7`
-- `AEX__state5__serveTea__cancel__state7`
-- `AEX__state5__serveTea__take__state7`
-- `AEX__state5__serveTea__tea__state7`
-- `AEX__state5__serveTea__serveSoda__state7`
-- `AEX__state5__serveTea__free__state7`
-- `AEX__state5__serveTea__soda__state7`
-- `AEX__state5__serveTea__return__state7`
-- `AEX__state7__take__cancel__state1`
-- `AEX__state7__take__tea__state1`
-- `AEX__state7__take__serveTea__state1`
-- `AEX__state7__take__serveSoda__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state7__take__soda__state1`
-- `AEX__state7__take__return__state1`
-- `AEX__state3__cancel__take__state6`
-- `AEX__state3__cancel__tea__state6`
-- `AEX__state3__cancel__serveTea__state6`
-- `AEX__state3__cancel__serveSoda__state6`
-- `AEX__state3__cancel__free__state6`
-- `AEX__state3__cancel__soda__state6`
-- `AEX__state3__cancel__return__state6`
-- `AEX__state1__free__cancel__state3`
-- `AEX__state1__free__take__state3`
-- `AEX__state1__free__tea__state3`
-- `AEX__state1__free__serveTea__state3`
-- `AEX__state1__free__serveSoda__state3`
-- `AEX__state1__free__soda__state3`
-- `AEX__state1__free__return__state3`
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__free__state1`
-- `AEX__state6__return__soda__state1`
-- `AEX__state3__tea__cancel__state5`
-- `AEX__state3__tea__take__state5`
-- `AEX__state3__tea__serveTea__state5`
-- `AEX__state3__tea__serveSoda__state5`
-- `AEX__state3__tea__free__state5`
-- `AEX__state3__tea__soda__state5`
-- `AEX__state3__tea__return__state5`
-- `AEX__state3__soda__cancel__state4`
-- `AEX__state3__soda__take__state4`
-- `AEX__state3__soda__tea__state4`
-- `AEX__state3__soda__serveTea__state4`
-- `AEX__state3__soda__serveSoda__state4`
-- `AEX__state3__soda__free__state4`
-- `AEX__state3__soda__return__state4`
-
-**ActionExchange — survived product state coverage** (7):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__free__state1`
-- `AEX__state6__return__soda__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 8 | 0/8 = 0.0% | 0/8 = 0.0% | 7/8 = 87.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| ActionExchange | 56 | 0/56 = 0.0% | 0/56 = 0.0% | 49/56 = 87.5% | 56/56 = 100.0% | 56/56 = 100.0% | 56/56 = 100.0% |
+| StateMissing | 5 | 0/5 = 0.0% | 0/5 = 0.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% | 5/5 = 100.0% |
 
 ### Product 2
 
@@ -126,24 +46,15 @@
 
 **Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 11 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 7 | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% |
-| ActionExchange | 42 | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% |
-| StateMissing (dynamic) | 6 | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived product state coverage** (1):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state9__close__state1`
-
-**ActionExchange — survived product state coverage** (6):
-
-- `AEX__state9__close__take__state1`
-- `AEX__state9__close__tea__state1`
-- `AEX__state9__close__serveTea__state1`
-- `AEX__state9__close__change__state1`
-- `AEX__state9__close__pay__state1`
-- `AEX__state9__close__open__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| ActionExchange | 42 | 0/42 = 0.0% | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% | 42/42 = 100.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
 
 ### Product 3
 
@@ -153,43 +64,15 @@
 
 **Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 4 | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% |
-| ActionExchange | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% |
-| StateMissing (dynamic) | 3 | 0/3 = 0.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived family-level state coverage (Devroey)** (4):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state5__serveTea__state7`
-- `TM__state7__take__state1`
-- `TM__state1__free__state3`
-- `TM__state3__tea__state5`
-
-**TransitionMissing — survived product state coverage** (1):
-
-- `TM__state7__take__state1`
-
-**ActionExchange — survived family-level state coverage (Devroey)** (12):
-
-- `AEX__state5__serveTea__take__state7`
-- `AEX__state5__serveTea__tea__state7`
-- `AEX__state5__serveTea__free__state7`
-- `AEX__state7__take__tea__state1`
-- `AEX__state7__take__serveTea__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state1__free__take__state3`
-- `AEX__state1__free__tea__state3`
-- `AEX__state1__free__serveTea__state3`
-- `AEX__state3__tea__take__state5`
-- `AEX__state3__tea__serveTea__state5`
-- `AEX__state3__tea__free__state5`
-
-**ActionExchange — survived product state coverage** (3):
-
-- `AEX__state7__take__tea__state1`
-- `AEX__state7__take__serveTea__state1`
-- `AEX__state7__take__free__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+| ActionExchange | 12 | 0/12 = 0.0% | 0/12 = 0.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% |
+| StateMissing | 3 | 0/3 = 0.0% | 0/3 = 0.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% |
 
 ### Product 4
 
@@ -199,65 +82,15 @@
 
 **Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
-| StateMissing (dynamic) | 4 | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived family-level state coverage (Devroey)** (6):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state5__serveTea__state7`
-- `TM__state7__take__state1`
-- `TM__state3__cancel__state6`
-- `TM__state1__free__state3`
-- `TM__state6__return__state1`
-- `TM__state3__tea__state5`
-
-**TransitionMissing — survived product state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived family-level state coverage (Devroey)** (30):
-
-- `AEX__state5__serveTea__cancel__state7`
-- `AEX__state5__serveTea__take__state7`
-- `AEX__state5__serveTea__tea__state7`
-- `AEX__state5__serveTea__free__state7`
-- `AEX__state5__serveTea__return__state7`
-- `AEX__state7__take__cancel__state1`
-- `AEX__state7__take__tea__state1`
-- `AEX__state7__take__serveTea__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state7__take__return__state1`
-- `AEX__state3__cancel__take__state6`
-- `AEX__state3__cancel__tea__state6`
-- `AEX__state3__cancel__serveTea__state6`
-- `AEX__state3__cancel__free__state6`
-- `AEX__state3__cancel__return__state6`
-- `AEX__state1__free__cancel__state3`
-- `AEX__state1__free__take__state3`
-- `AEX__state1__free__tea__state3`
-- `AEX__state1__free__serveTea__state3`
-- `AEX__state1__free__return__state3`
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__free__state1`
-- `AEX__state3__tea__cancel__state5`
-- `AEX__state3__tea__take__state5`
-- `AEX__state3__tea__serveTea__state5`
-- `AEX__state3__tea__free__state5`
-- `AEX__state3__tea__return__state5`
-
-**ActionExchange — survived product state coverage** (5):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__free__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 30 | 0/30 = 0.0% | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 30/30 = 100.0% |
+| StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
 
 ### Product 5
 
@@ -267,24 +100,15 @@
 
 **Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 11 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 7 | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% |
-| ActionExchange | 42 | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% |
-| StateMissing (dynamic) | 6 | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived product state coverage** (1):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state9__close__state1`
-
-**ActionExchange — survived product state coverage** (6):
-
-- `AEX__state9__close__take__state1`
-- `AEX__state9__close__serveSoda__state1`
-- `AEX__state9__close__change__state1`
-- `AEX__state9__close__pay__state1`
-- `AEX__state9__close__soda__state1`
-- `AEX__state9__close__open__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| ActionExchange | 42 | 0/42 = 0.0% | 42/42 = 100.0% | 36/42 = 85.7% | 42/42 = 100.0% | 42/42 = 100.0% | 42/42 = 100.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
 
 ### Product 6
 
@@ -294,26 +118,15 @@
 
 **Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 16 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 9 | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
-| StateMissing (dynamic) | 7 | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived product state coverage** (1):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state5__serveTea__state7`
-
-**ActionExchange — survived product state coverage** (8):
-
-- `AEX__state5__serveTea__take__state7`
-- `AEX__state5__serveTea__tea__state7`
-- `AEX__state5__serveTea__serveSoda__state7`
-- `AEX__state5__serveTea__change__state7`
-- `AEX__state5__serveTea__pay__state7`
-- `AEX__state5__serveTea__soda__state7`
-- `AEX__state5__serveTea__close__state7`
-- `AEX__state5__serveTea__open__state7`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| ActionExchange | 72 | 0/72 = 0.0% | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% | 72/72 = 100.0% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
 
 ### Product 7
 
@@ -323,65 +136,15 @@
 
 **Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
-| StateMissing (dynamic) | 4 | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived family-level state coverage (Devroey)** (6):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state4__serveSoda__state7`
-- `TM__state7__take__state1`
-- `TM__state3__cancel__state6`
-- `TM__state1__free__state3`
-- `TM__state6__return__state1`
-- `TM__state3__soda__state4`
-
-**TransitionMissing — survived product state coverage** (1):
-
-- `TM__state6__return__state1`
-
-**ActionExchange — survived family-level state coverage (Devroey)** (30):
-
-- `AEX__state4__serveSoda__cancel__state7`
-- `AEX__state4__serveSoda__take__state7`
-- `AEX__state4__serveSoda__free__state7`
-- `AEX__state4__serveSoda__soda__state7`
-- `AEX__state4__serveSoda__return__state7`
-- `AEX__state7__take__cancel__state1`
-- `AEX__state7__take__serveSoda__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state7__take__soda__state1`
-- `AEX__state7__take__return__state1`
-- `AEX__state3__cancel__take__state6`
-- `AEX__state3__cancel__serveSoda__state6`
-- `AEX__state3__cancel__free__state6`
-- `AEX__state3__cancel__soda__state6`
-- `AEX__state3__cancel__return__state6`
-- `AEX__state1__free__cancel__state3`
-- `AEX__state1__free__take__state3`
-- `AEX__state1__free__serveSoda__state3`
-- `AEX__state1__free__soda__state3`
-- `AEX__state1__free__return__state3`
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__free__state1`
-- `AEX__state6__return__soda__state1`
-- `AEX__state3__soda__cancel__state4`
-- `AEX__state3__soda__take__state4`
-- `AEX__state3__soda__serveSoda__state4`
-- `AEX__state3__soda__free__state4`
-- `AEX__state3__soda__return__state4`
-
-**ActionExchange — survived product state coverage** (5):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__free__state1`
-- `AEX__state6__return__soda__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 30 | 0/30 = 0.0% | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 30/30 = 100.0% |
+| StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
 
 ### Product 8
 
@@ -391,26 +154,15 @@
 
 **Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 13 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 9 | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
-| StateMissing (dynamic) | 7 | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived product state coverage** (1):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state6__return__state1`
-
-**ActionExchange — survived product state coverage** (8):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__change__state1`
-- `AEX__state6__return__pay__state1`
-- `AEX__state6__return__soda__state1`
-- `AEX__state6__return__close__state1`
-- `AEX__state6__return__open__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| ActionExchange | 72 | 0/72 = 0.0% | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% | 72/72 = 100.0% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
 
 ### Product 9
 
@@ -420,43 +172,15 @@
 
 **Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 4 | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% |
-| ActionExchange | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% |
-| StateMissing (dynamic) | 3 | 0/3 = 0.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived family-level state coverage (Devroey)** (4):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state4__serveSoda__state7`
-- `TM__state7__take__state1`
-- `TM__state1__free__state3`
-- `TM__state3__soda__state4`
-
-**TransitionMissing — survived product state coverage** (1):
-
-- `TM__state7__take__state1`
-
-**ActionExchange — survived family-level state coverage (Devroey)** (12):
-
-- `AEX__state4__serveSoda__take__state7`
-- `AEX__state4__serveSoda__free__state7`
-- `AEX__state4__serveSoda__soda__state7`
-- `AEX__state7__take__serveSoda__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state7__take__soda__state1`
-- `AEX__state1__free__take__state3`
-- `AEX__state1__free__serveSoda__state3`
-- `AEX__state1__free__soda__state3`
-- `AEX__state3__soda__take__state4`
-- `AEX__state3__soda__serveSoda__state4`
-- `AEX__state3__soda__free__state4`
-
-**ActionExchange — survived product state coverage** (3):
-
-- `AEX__state7__take__serveSoda__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state7__take__soda__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 3/4 = 75.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+| ActionExchange | 12 | 0/12 = 0.0% | 0/12 = 0.0% | 9/12 = 75.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% |
+| StateMissing | 3 | 0/3 = 0.0% | 0/3 = 0.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% | 3/3 = 100.0% |
 
 ### Product 10
 
@@ -466,26 +190,15 @@
 
 **Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 13 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 9 | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% |
-| ActionExchange | 72 | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% |
-| StateMissing (dynamic) | 7 | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived product state coverage** (1):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state6__return__state1`
-
-**ActionExchange — survived product state coverage** (8):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__change__state1`
-- `AEX__state6__return__pay__state1`
-- `AEX__state6__return__close__state1`
-- `AEX__state6__return__open__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 8/9 = 88.9% | 9/9 = 100.0% | 9/9 = 100.0% | 4/9 = 44.4% |
+| ActionExchange | 72 | 0/72 = 0.0% | 72/72 = 100.0% | 64/72 = 88.9% | 72/72 = 100.0% | 72/72 = 100.0% | 33/72 = 45.8% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 3/7 = 42.9% |
 
 ### Product 11
 
@@ -495,28 +208,15 @@
 
 **Family baseline projected to this product:** 3 test case(s) (of 3 family-level), 18 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 11 | 11/11 = 100.0% | 10/11 = 90.9% | 11/11 = 100.0% | 11/11 = 100.0% |
-| ActionExchange | 110 | 110/110 = 100.0% | 100/110 = 90.9% | 110/110 = 100.0% | 110/110 = 100.0% |
-| StateMissing (dynamic) | 8 | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived product state coverage** (1):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state6__return__state1`
-
-**ActionExchange — survived product state coverage** (10):
-
-- `AEX__state6__return__cancel__state1`
-- `AEX__state6__return__take__state1`
-- `AEX__state6__return__tea__state1`
-- `AEX__state6__return__serveTea__state1`
-- `AEX__state6__return__serveSoda__state1`
-- `AEX__state6__return__change__state1`
-- `AEX__state6__return__pay__state1`
-- `AEX__state6__return__soda__state1`
-- `AEX__state6__return__close__state1`
-- `AEX__state6__return__open__state1`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 10/11 = 90.9% | 11/11 = 100.0% | 11/11 = 100.0% | 7/11 = 63.6% |
+| ActionExchange | 110 | 0/110 = 0.0% | 110/110 = 100.0% | 100/110 = 90.9% | 110/110 = 100.0% | 110/110 = 100.0% | 72/110 = 65.5% |
+| StateMissing | 8 | 0/8 = 0.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 6/8 = 75.0% |
 
 ### Product 12
 
@@ -526,75 +226,27 @@
 
 **Family baseline projected to this product:** 0 test case(s) (of 3 family-level), 0 real step(s) applicable.
 
-| Operator | Real mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% |
-| ActionExchange | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% |
-| StateMissing (dynamic) | 4 | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
+**Random baseline:** 5 test case(s).
 
-**TransitionMissing — survived family-level state coverage (Devroey)** (6):
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
-- `TM__state4__serveSoda__state7`
-- `TM__state5__serveTea__state7`
-- `TM__state7__take__state1`
-- `TM__state1__free__state3`
-- `TM__state3__tea__state5`
-- `TM__state3__soda__state4`
-
-**TransitionMissing — survived product state coverage** (1):
-
-- `TM__state5__serveTea__state7`
-
-**ActionExchange — survived family-level state coverage (Devroey)** (30):
-
-- `AEX__state4__serveSoda__take__state7`
-- `AEX__state4__serveSoda__tea__state7`
-- `AEX__state4__serveSoda__serveTea__state7`
-- `AEX__state4__serveSoda__free__state7`
-- `AEX__state4__serveSoda__soda__state7`
-- `AEX__state5__serveTea__take__state7`
-- `AEX__state5__serveTea__tea__state7`
-- `AEX__state5__serveTea__serveSoda__state7`
-- `AEX__state5__serveTea__free__state7`
-- `AEX__state5__serveTea__soda__state7`
-- `AEX__state7__take__tea__state1`
-- `AEX__state7__take__serveTea__state1`
-- `AEX__state7__take__serveSoda__state1`
-- `AEX__state7__take__free__state1`
-- `AEX__state7__take__soda__state1`
-- `AEX__state1__free__take__state3`
-- `AEX__state1__free__tea__state3`
-- `AEX__state1__free__serveTea__state3`
-- `AEX__state1__free__serveSoda__state3`
-- `AEX__state1__free__soda__state3`
-- `AEX__state3__tea__take__state5`
-- `AEX__state3__tea__serveTea__state5`
-- `AEX__state3__tea__serveSoda__state5`
-- `AEX__state3__tea__free__state5`
-- `AEX__state3__tea__soda__state5`
-- `AEX__state3__soda__take__state4`
-- `AEX__state3__soda__tea__state4`
-- `AEX__state3__soda__serveTea__state4`
-- `AEX__state3__soda__serveSoda__state4`
-- `AEX__state3__soda__free__state4`
-
-**ActionExchange — survived product state coverage** (5):
-
-- `AEX__state5__serveTea__take__state7`
-- `AEX__state5__serveTea__tea__state7`
-- `AEX__state5__serveTea__serveSoda__state7`
-- `AEX__state5__serveTea__free__state7`
-- `AEX__state5__serveTea__soda__state7`
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 6 | 0/6 = 0.0% | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| ActionExchange | 30 | 0/30 = 0.0% | 0/30 = 0.0% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 30/30 = 100.0% |
+| StateMissing | 4 | 0/4 = 0.0% | 0/4 = 0.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% | 4/4 = 100.0% |
 ---
 
 ## SVM summary (aggregate over 12 products)
 
-**Family-level baseline** (Devroey 2014, ported from VIBeS commit f856c90): 3 test case(s) generated once for the SPL, projected per-product via fexpr-filtering before kill-checking.
+**Family-level baseline** (Devroey 2014, ported from VIBeS commit f856c90): 3 test case(s) generated once for the SPL.
 
-| Operator | Mutants | Family state-cov (Devroey) | Product state-cov | Product transition-cov | Product pair-cov |
-|---|---|---|---|---|---|
-| TransitionMissing | 86 | 52/86 = 60.5% | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% |
-| ActionExchange | 580 | 410/580 = 70.7% | 506/580 = 87.2% | 580/580 = 100.0% | 580/580 = 100.0% |
-| StateMissing (dynamic) | 64 | 41/64 = 64.1% | 64/64 = 100.0% | 64/64 = 100.0% | 64/64 = 100.0% |
+**Equivalent-mutant treatment:** Inozemtseva &amp; Holmes (2014) — mutant not killed by ANY of the five suites (family + product state + product transition + product pair + random) is conservatively classified equivalent and EXCLUDED from the score denominator. Scores below are **killed / (total &minus; equivalent) = adjusted%**.
+
+| Operator | Total mutants | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 86 | 0/86 = 0.0% | 52/86 = 60.5% | 74/86 = 86.0% | 86/86 = 100.0% | 86/86 = 100.0% | 77/86 = 89.5% |
+| ActionExchange | 580 | 0/580 = 0.0% | 410/580 = 70.7% | 506/580 = 87.2% | 580/580 = 100.0% | 580/580 = 100.0% | 503/580 = 86.7% |
+| StateMissing | 64 | 0/64 = 0.0% | 41/64 = 64.1% | 64/64 = 100.0% | 64/64 = 100.0% | 64/64 = 100.0% | 58/64 = 90.6% |
 
 Total products: 12.

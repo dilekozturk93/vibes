@@ -6,6 +6,7 @@ import be.vibes.fexpression.Feature;
 import be.vibes.fexpression.configuration.Configuration;
 import be.vibes.solver.Sat4JSolverFacade;
 import be.vibes.testgeneration.conversion.MxeToFtsConverter;
+import be.vibes.testgeneration.coverage.RandomBaselineGenerator;
 import be.vibes.testgeneration.coverage.StateCoverageGenerator;
 import be.vibes.testgeneration.coverage.TransitionCoverageGenerator;
 import be.vibes.testgeneration.coverage.TransitionPairCoverageGenerator;
@@ -37,6 +38,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -123,15 +125,10 @@ public final class PerProductMutationReportGenerator {
         Path htmlPath = outDir.resolve(spec.name + "-per-product-mutation-report.html");
 
         // Aggregate stats across all products for the summary table.
-        int totalTmReal = 0;
-        int totalTmKilled_familyState = 0;
-        int totalTmKilled_state = 0, totalTmKilled_trans = 0, totalTmKilled_pair = 0;
-        int totalAexReal = 0;
-        int totalAexKilled_familyState = 0;
-        int totalAexKilled_state = 0, totalAexKilled_trans = 0, totalAexKilled_pair = 0;
-        int totalSmReal = 0;
-        int totalSmKilled_familyState = 0;
-        int totalSmKilled_state = 0, totalSmKilled_trans = 0, totalSmKilled_pair = 0;
+        // Each operator gets a running OpScores accumulator.
+        OpScores aggTm = new OpScores();
+        OpScores aggAex = new OpScores();
+        OpScores aggSm = new OpScores();
         int productCount = 0;
 
         try (BufferedWriter md = new BufferedWriter(new FileWriter(mdPath.toFile()));
@@ -153,76 +150,50 @@ public final class PerProductMutationReportGenerator {
                 productCount++;
                 ProductScores ps = writeProductSection(md, html, spec, fts, cfg,
                         productCount, ftsFeatures, familyBaseline);
-                totalTmReal += ps.tmTotal;
-                totalTmKilled_familyState += ps.tmKilledFamilyState;
-                totalTmKilled_state += ps.tmKilledState;
-                totalTmKilled_trans += ps.tmKilledTrans;
-                totalTmKilled_pair += ps.tmKilledPair;
-                totalAexReal += ps.aexTotal;
-                totalAexKilled_familyState += ps.aexKilledFamilyState;
-                totalAexKilled_state += ps.aexKilledState;
-                totalAexKilled_trans += ps.aexKilledTrans;
-                totalAexKilled_pair += ps.aexKilledPair;
-                totalSmReal += ps.smTotal;
-                totalSmKilled_familyState += ps.smKilledFamilyState;
-                totalSmKilled_state += ps.smKilledState;
-                totalSmKilled_trans += ps.smKilledTrans;
-                totalSmKilled_pair += ps.smKilledPair;
+                addOpScores(aggTm, ps.tm);
+                addOpScores(aggAex, ps.aex);
+                addOpScores(aggSm, ps.sm);
             }
 
             md.write("---\n\n## " + spec.name + " summary (aggregate over " + productCount
                     + " products)\n\n");
             md.write("**Family-level baseline** (Devroey 2014, ported from VIBeS commit "
                     + "f856c90): " + familyBaseline.size() + " test case(s) generated once "
-                    + "for the SPL, projected per-product via fexpr-filtering before "
-                    + "kill-checking.\n\n");
-            md.write("| Operator | Mutants | Family state-cov (Devroey) | Product state-cov | "
-                    + "Product transition-cov | Product pair-cov |\n");
-            md.write("|---|---|---|---|---|---|\n");
-            md.write("| TransitionMissing | " + totalTmReal + " | "
-                    + formatScore(totalTmKilled_familyState, totalTmReal) + " | "
-                    + formatScore(totalTmKilled_state, totalTmReal) + " | "
-                    + formatScore(totalTmKilled_trans, totalTmReal) + " | "
-                    + formatScore(totalTmKilled_pair, totalTmReal) + " |\n");
-            md.write("| ActionExchange | " + totalAexReal + " | "
-                    + formatScore(totalAexKilled_familyState, totalAexReal) + " | "
-                    + formatScore(totalAexKilled_state, totalAexReal) + " | "
-                    + formatScore(totalAexKilled_trans, totalAexReal) + " | "
-                    + formatScore(totalAexKilled_pair, totalAexReal) + " |\n");
-            md.write("| StateMissing (dynamic) | " + totalSmReal + " | "
-                    + formatScore(totalSmKilled_familyState, totalSmReal) + " | "
-                    + formatScore(totalSmKilled_state, totalSmReal) + " | "
-                    + formatScore(totalSmKilled_trans, totalSmReal) + " | "
-                    + formatScore(totalSmKilled_pair, totalSmReal) + " |\n");
+                    + "for the SPL.\n\n");
+            md.write("**Equivalent-mutant treatment:** Inozemtseva &amp; Holmes (2014) — "
+                    + "mutant not killed by ANY of the five suites (family + product state + "
+                    + "product transition + product pair + random) is conservatively "
+                    + "classified equivalent and EXCLUDED from the score denominator. Scores "
+                    + "below are **killed / (total &minus; equivalent) = adjusted%**.\n\n");
+            md.write("| Operator | Total mutants | Equivalent | Family (Devroey) | "
+                    + "Product state-cov | Product transition-cov | Product pair-cov | Random |\n");
+            md.write("|---|---|---|---|---|---|---|---|\n");
+            writeAggregateRow(md, "TransitionMissing", aggTm);
+            writeAggregateRow(md, "ActionExchange", aggAex);
+            writeAggregateRow(md, "StateMissing", aggSm);
             md.write("\nTotal products: " + productCount + ".\n");
 
             html.write("<hr/>\n<h2>" + escapeHtml(spec.name)
                     + " summary (aggregate over " + productCount + " products)</h2>\n");
             html.write("<p><strong>Family-level baseline</strong> (Devroey 2014, ported from "
                     + "VIBeS commit f856c90): " + familyBaseline.size() + " test case(s) "
-                    + "generated once for the SPL, projected per-product via fexpr-filtering "
-                    + "before kill-checking.</p>\n");
+                    + "generated once for the SPL.</p>\n");
+            html.write("<p><strong>Equivalent-mutant treatment:</strong> Inozemtseva &amp; "
+                    + "Holmes (2014) — mutant not killed by ANY of five suites (family + "
+                    + "product state + product transition + product pair + random) is "
+                    + "conservatively classified equivalent and EXCLUDED from the score "
+                    + "denominator. Scores: <strong>killed / (total − equivalent) = adjusted%"
+                    + "</strong>.</p>\n");
             html.write("<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\">\n");
-            html.write("<tr><th>Operator</th><th>Mutants</th>"
-                    + "<th>Family state-cov (Devroey)</th>"
+            html.write("<tr><th>Operator</th><th>Total mutants</th><th>Equivalent</th>"
+                    + "<th>Family (Devroey)</th>"
                     + "<th>Product state-cov</th>"
                     + "<th>Product transition-cov</th>"
-                    + "<th>Product pair-cov</th></tr>\n");
-            html.write("<tr><td>TransitionMissing</td><td>" + totalTmReal + "</td><td>"
-                    + formatScore(totalTmKilled_familyState, totalTmReal) + "</td><td>"
-                    + formatScore(totalTmKilled_state, totalTmReal) + "</td><td>"
-                    + formatScore(totalTmKilled_trans, totalTmReal) + "</td><td>"
-                    + formatScore(totalTmKilled_pair, totalTmReal) + "</td></tr>\n");
-            html.write("<tr><td>ActionExchange</td><td>" + totalAexReal + "</td><td>"
-                    + formatScore(totalAexKilled_familyState, totalAexReal) + "</td><td>"
-                    + formatScore(totalAexKilled_state, totalAexReal) + "</td><td>"
-                    + formatScore(totalAexKilled_trans, totalAexReal) + "</td><td>"
-                    + formatScore(totalAexKilled_pair, totalAexReal) + "</td></tr>\n");
-            html.write("<tr><td>StateMissing (dynamic)</td><td>" + totalSmReal + "</td><td>"
-                    + formatScore(totalSmKilled_familyState, totalSmReal) + "</td><td>"
-                    + formatScore(totalSmKilled_state, totalSmReal) + "</td><td>"
-                    + formatScore(totalSmKilled_trans, totalSmReal) + "</td><td>"
-                    + formatScore(totalSmKilled_pair, totalSmReal) + "</td></tr>\n");
+                    + "<th>Product pair-cov</th>"
+                    + "<th>Random</th></tr>\n");
+            writeAggregateRowHtml(html, "TransitionMissing", aggTm);
+            writeAggregateRowHtml(html, "ActionExchange", aggAex);
+            writeAggregateRowHtml(html, "StateMissing", aggSm);
             html.write("</table>\n");
             html.write("<p>Total products: " + productCount + ".</p>\n");
             writeHtmlFooter(html);
@@ -348,19 +319,42 @@ public final class PerProductMutationReportGenerator {
         // applicable steps execute".
         List<TestCase> projectedFamily = projectFamilySuite(familyBaseline, fts, cfg);
 
-        FaultDetector.KillResult tmFamilyState = FaultDetector.scoreSuite(projectedFamily, tmMutants);
-        FaultDetector.KillResult tmState = FaultDetector.scoreSuite(stateSuite, tmMutants);
-        FaultDetector.KillResult tmTrans = FaultDetector.scoreSuite(transSuite, tmMutants);
-        FaultDetector.KillResult tmPair = FaultDetector.scoreSuite(pairSuite, tmMutants);
-        FaultDetector.KillResult aexFamilyState = FaultDetector.scoreSuite(projectedFamily, aexMutants);
-        FaultDetector.KillResult aexState = FaultDetector.scoreSuite(stateSuite, aexMutants);
-        FaultDetector.KillResult aexTrans = FaultDetector.scoreSuite(transSuite, aexMutants);
-        FaultDetector.KillResult aexPair = FaultDetector.scoreSuite(pairSuite, aexMutants);
-        // StateMissing changes execution semantics — use dynamic replay.
+        // Generate the random baseline once per product. Default suite size
+        // matches Devroey 2014's r-5 baseline; max length matches VIBeS
+        // RandomTestCaseSelector's default.
+        List<TestCase> randomSuite = RandomBaselineGenerator.generate(
+                repaired, spec.name + "_p" + productIndex);
+
+        // Uniform execution-based kill check via dynamic replay for every
+        // (operator × suite) combination — Parça 1 methodology decision
+        // (2026-05-22): consistent kill semantic regardless of operator
+        // structure. Earlier static-set check is retained in FaultDetector
+        // for sanity-check use only.
+        FaultDetector.KillResult tmFamilyState = FaultDetector.scoreSuiteDynamic(projectedFamily, tmMutants);
+        FaultDetector.KillResult tmState = FaultDetector.scoreSuiteDynamic(stateSuite, tmMutants);
+        FaultDetector.KillResult tmTrans = FaultDetector.scoreSuiteDynamic(transSuite, tmMutants);
+        FaultDetector.KillResult tmPair = FaultDetector.scoreSuiteDynamic(pairSuite, tmMutants);
+        FaultDetector.KillResult tmRandom = FaultDetector.scoreSuiteDynamic(randomSuite, tmMutants);
+        FaultDetector.KillResult aexFamilyState = FaultDetector.scoreSuiteDynamic(projectedFamily, aexMutants);
+        FaultDetector.KillResult aexState = FaultDetector.scoreSuiteDynamic(stateSuite, aexMutants);
+        FaultDetector.KillResult aexTrans = FaultDetector.scoreSuiteDynamic(transSuite, aexMutants);
+        FaultDetector.KillResult aexPair = FaultDetector.scoreSuiteDynamic(pairSuite, aexMutants);
+        FaultDetector.KillResult aexRandom = FaultDetector.scoreSuiteDynamic(randomSuite, aexMutants);
         FaultDetector.KillResult smFamilyState = FaultDetector.scoreSuiteDynamic(projectedFamily, smMutants);
         FaultDetector.KillResult smState = FaultDetector.scoreSuiteDynamic(stateSuite, smMutants);
         FaultDetector.KillResult smTrans = FaultDetector.scoreSuiteDynamic(transSuite, smMutants);
         FaultDetector.KillResult smPair = FaultDetector.scoreSuiteDynamic(pairSuite, smMutants);
+        FaultDetector.KillResult smRandom = FaultDetector.scoreSuiteDynamic(randomSuite, smMutants);
+
+        // Inozemtseva & Holmes (2014) equivalent-mutant treatment: a
+        // mutant not killed by ANY of the five suites is conservatively
+        // classified equivalent and excluded from the denominator.
+        Set<String> tmEquivalent = equivalentMutantKeys(tmMutants,
+                tmFamilyState, tmState, tmTrans, tmPair, tmRandom);
+        Set<String> aexEquivalent = equivalentMutantKeys(aexMutants,
+                aexFamilyState, aexState, aexTrans, aexPair, aexRandom);
+        Set<String> smEquivalent = equivalentMutantKeys(smMutants,
+                smFamilyState, smState, smTrans, smPair, smRandom);
 
         md.write("\n### Product " + productIndex + "\n\n");
         md.write("**Selected features:** " + featuresLine + "\n\n");
@@ -372,35 +366,40 @@ public final class PerProductMutationReportGenerator {
                 + projectedFamily.size() + " test case(s) (of "
                 + familyBaseline.size() + " family-level), "
                 + countTestSuiteTransitions(projectedFamily) + " real step(s) applicable.\n\n");
-        md.write("| Operator | Real mutants | Family state-cov (Devroey) | "
-                + "Product state-cov | Product transition-cov | Product pair-cov |\n");
-        md.write("|---|---|---|---|---|---|\n");
+        md.write("**Random baseline:** " + randomSuite.size() + " test case(s).\n\n");
+        md.write("Scores below: **killed / non-equivalent = adjusted%** "
+                + "(Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of "
+                + "five suites is equivalent and excluded from denominator).\n\n");
+        md.write("| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |\n");
+        md.write("|---|---|---|---|---|---|---|---|\n");
         md.write("| TransitionMissing | " + tmMutants.size() + " | "
-                + formatScore(tmFamilyState.getKilled(), tmMutants.size()) + " | "
-                + formatScore(tmState.getKilled(), tmMutants.size()) + " | "
-                + formatScore(tmTrans.getKilled(), tmMutants.size()) + " | "
-                + formatScore(tmPair.getKilled(), tmMutants.size()) + " |\n");
+                + formatEquivalent(tmEquivalent.size(), tmMutants.size()) + " | "
+                + formatAdjusted(tmFamilyState.getKilled(), tmMutants.size(), tmEquivalent.size()) + " | "
+                + formatAdjusted(tmState.getKilled(), tmMutants.size(), tmEquivalent.size()) + " | "
+                + formatAdjusted(tmTrans.getKilled(), tmMutants.size(), tmEquivalent.size()) + " | "
+                + formatAdjusted(tmPair.getKilled(), tmMutants.size(), tmEquivalent.size()) + " | "
+                + formatAdjusted(tmRandom.getKilled(), tmMutants.size(), tmEquivalent.size()) + " |\n");
         md.write("| ActionExchange | " + aexMutants.size() + " | "
-                + formatScore(aexFamilyState.getKilled(), aexMutants.size()) + " | "
-                + formatScore(aexState.getKilled(), aexMutants.size()) + " | "
-                + formatScore(aexTrans.getKilled(), aexMutants.size()) + " | "
-                + formatScore(aexPair.getKilled(), aexMutants.size()) + " |\n");
-        md.write("| StateMissing (dynamic) | " + smMutants.size() + " | "
-                + formatScore(smFamilyState.getKilled(), smMutants.size()) + " | "
-                + formatScore(smState.getKilled(), smMutants.size()) + " | "
-                + formatScore(smTrans.getKilled(), smMutants.size()) + " | "
-                + formatScore(smPair.getKilled(), smMutants.size()) + " |\n");
+                + formatEquivalent(aexEquivalent.size(), aexMutants.size()) + " | "
+                + formatAdjusted(aexFamilyState.getKilled(), aexMutants.size(), aexEquivalent.size()) + " | "
+                + formatAdjusted(aexState.getKilled(), aexMutants.size(), aexEquivalent.size()) + " | "
+                + formatAdjusted(aexTrans.getKilled(), aexMutants.size(), aexEquivalent.size()) + " | "
+                + formatAdjusted(aexPair.getKilled(), aexMutants.size(), aexEquivalent.size()) + " | "
+                + formatAdjusted(aexRandom.getKilled(), aexMutants.size(), aexEquivalent.size()) + " |\n");
+        md.write("| StateMissing | " + smMutants.size() + " | "
+                + formatEquivalent(smEquivalent.size(), smMutants.size()) + " | "
+                + formatAdjusted(smFamilyState.getKilled(), smMutants.size(), smEquivalent.size()) + " | "
+                + formatAdjusted(smState.getKilled(), smMutants.size(), smEquivalent.size()) + " | "
+                + formatAdjusted(smTrans.getKilled(), smMutants.size(), smEquivalent.size()) + " | "
+                + formatAdjusted(smPair.getKilled(), smMutants.size(), smEquivalent.size()) + " | "
+                + formatAdjusted(smRandom.getKilled(), smMutants.size(), smEquivalent.size()) + " |\n");
 
-        // Surviving mutants (escaped detection by any criterion) — these are
-        // the interesting ones for paper analysis.
-        appendSurvivors(md, "TransitionMissing — survived family-level state coverage (Devroey)", tmFamilyState.getSurvivors());
-        appendSurvivors(md, "TransitionMissing — survived product state coverage", tmState.getSurvivors());
-        appendSurvivors(md, "TransitionMissing — survived product transition coverage", tmTrans.getSurvivors());
-        appendSurvivors(md, "TransitionMissing — survived product pair coverage", tmPair.getSurvivors());
-        appendSurvivors(md, "ActionExchange — survived family-level state coverage (Devroey)", aexFamilyState.getSurvivors());
-        appendSurvivors(md, "ActionExchange — survived product state coverage", aexState.getSurvivors());
-        appendSurvivors(md, "ActionExchange — survived product transition coverage", aexTrans.getSurvivors());
-        appendSurvivors(md, "ActionExchange — survived product pair coverage", aexPair.getSurvivors());
+        if (!tmEquivalent.isEmpty() || !aexEquivalent.isEmpty() || !smEquivalent.isEmpty()) {
+            md.write("\n**Equivalent mutants (not killed by any of the five suites):**\n");
+            appendKeyList(md, "TransitionMissing", tmEquivalent);
+            appendKeyList(md, "ActionExchange", aexEquivalent);
+            appendKeyList(md, "StateMissing", smEquivalent);
+        }
 
         // HTML
         html.write("<h3>Product " + productIndex + "</h3>\n");
@@ -414,54 +413,174 @@ public final class PerProductMutationReportGenerator {
                 + projectedFamily.size() + " test case(s) (of "
                 + familyBaseline.size() + " family-level), "
                 + countTestSuiteTransitions(projectedFamily) + " real step(s) applicable.</p>\n");
+        html.write("<p><strong>Random baseline:</strong> " + randomSuite.size()
+                + " test case(s).</p>\n");
+        html.write("<p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. "
+                + "Equivalent = mutant not killed by ANY of five suites "
+                + "(Inozemtseva &amp; Holmes 2014).</p>\n");
         html.write("<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\">\n");
-        html.write("<tr><th>Operator</th><th>Real mutants</th>"
-                + "<th>Family state-cov (Devroey)</th>"
+        html.write("<tr><th>Operator</th><th>Total</th><th>Equivalent</th>"
+                + "<th>Family (Devroey)</th>"
                 + "<th>Product state-cov</th>"
                 + "<th>Product transition-cov</th>"
-                + "<th>Product pair-cov</th></tr>\n");
+                + "<th>Product pair-cov</th>"
+                + "<th>Random</th></tr>\n");
         html.write("<tr><td>TransitionMissing</td><td>" + tmMutants.size() + "</td><td>"
-                + formatScore(tmFamilyState.getKilled(), tmMutants.size()) + "</td><td>"
-                + formatScore(tmState.getKilled(), tmMutants.size()) + "</td><td>"
-                + formatScore(tmTrans.getKilled(), tmMutants.size()) + "</td><td>"
-                + formatScore(tmPair.getKilled(), tmMutants.size()) + "</td></tr>\n");
+                + formatEquivalent(tmEquivalent.size(), tmMutants.size()) + "</td><td>"
+                + formatAdjusted(tmFamilyState.getKilled(), tmMutants.size(), tmEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tmState.getKilled(), tmMutants.size(), tmEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tmTrans.getKilled(), tmMutants.size(), tmEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tmPair.getKilled(), tmMutants.size(), tmEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tmRandom.getKilled(), tmMutants.size(), tmEquivalent.size()) + "</td></tr>\n");
         html.write("<tr><td>ActionExchange</td><td>" + aexMutants.size() + "</td><td>"
-                + formatScore(aexFamilyState.getKilled(), aexMutants.size()) + "</td><td>"
-                + formatScore(aexState.getKilled(), aexMutants.size()) + "</td><td>"
-                + formatScore(aexTrans.getKilled(), aexMutants.size()) + "</td><td>"
-                + formatScore(aexPair.getKilled(), aexMutants.size()) + "</td></tr>\n");
-        html.write("<tr><td>StateMissing (dynamic)</td><td>" + smMutants.size() + "</td><td>"
-                + formatScore(smFamilyState.getKilled(), smMutants.size()) + "</td><td>"
-                + formatScore(smState.getKilled(), smMutants.size()) + "</td><td>"
-                + formatScore(smTrans.getKilled(), smMutants.size()) + "</td><td>"
-                + formatScore(smPair.getKilled(), smMutants.size()) + "</td></tr>\n");
+                + formatEquivalent(aexEquivalent.size(), aexMutants.size()) + "</td><td>"
+                + formatAdjusted(aexFamilyState.getKilled(), aexMutants.size(), aexEquivalent.size()) + "</td><td>"
+                + formatAdjusted(aexState.getKilled(), aexMutants.size(), aexEquivalent.size()) + "</td><td>"
+                + formatAdjusted(aexTrans.getKilled(), aexMutants.size(), aexEquivalent.size()) + "</td><td>"
+                + formatAdjusted(aexPair.getKilled(), aexMutants.size(), aexEquivalent.size()) + "</td><td>"
+                + formatAdjusted(aexRandom.getKilled(), aexMutants.size(), aexEquivalent.size()) + "</td></tr>\n");
+        html.write("<tr><td>StateMissing</td><td>" + smMutants.size() + "</td><td>"
+                + formatEquivalent(smEquivalent.size(), smMutants.size()) + "</td><td>"
+                + formatAdjusted(smFamilyState.getKilled(), smMutants.size(), smEquivalent.size()) + "</td><td>"
+                + formatAdjusted(smState.getKilled(), smMutants.size(), smEquivalent.size()) + "</td><td>"
+                + formatAdjusted(smTrans.getKilled(), smMutants.size(), smEquivalent.size()) + "</td><td>"
+                + formatAdjusted(smPair.getKilled(), smMutants.size(), smEquivalent.size()) + "</td><td>"
+                + formatAdjusted(smRandom.getKilled(), smMutants.size(), smEquivalent.size()) + "</td></tr>\n");
         html.write("</table>\n");
-        appendSurvivorsHtml(html, "TransitionMissing — survived family-level state coverage (Devroey)", tmFamilyState.getSurvivors());
-        appendSurvivorsHtml(html, "TransitionMissing — survived product state coverage", tmState.getSurvivors());
-        appendSurvivorsHtml(html, "TransitionMissing — survived product transition coverage", tmTrans.getSurvivors());
-        appendSurvivorsHtml(html, "TransitionMissing — survived product pair coverage", tmPair.getSurvivors());
-        appendSurvivorsHtml(html, "ActionExchange — survived family-level state coverage (Devroey)", aexFamilyState.getSurvivors());
-        appendSurvivorsHtml(html, "ActionExchange — survived product state coverage", aexState.getSurvivors());
-        appendSurvivorsHtml(html, "ActionExchange — survived product transition coverage", aexTrans.getSurvivors());
-        appendSurvivorsHtml(html, "ActionExchange — survived product pair coverage", aexPair.getSurvivors());
+        if (!tmEquivalent.isEmpty() || !aexEquivalent.isEmpty() || !smEquivalent.isEmpty()) {
+            html.write("<details><summary>Equivalent mutants (not killed by any of the five suites)</summary>\n");
+            appendKeyListHtml(html, "TransitionMissing", tmEquivalent);
+            appendKeyListHtml(html, "ActionExchange", aexEquivalent);
+            appendKeyListHtml(html, "StateMissing", smEquivalent);
+            html.write("</details>\n");
+        }
 
         ProductScores ps = new ProductScores();
-        ps.tmTotal = tmMutants.size();
-        ps.tmKilledFamilyState = tmFamilyState.getKilled();
-        ps.tmKilledState = tmState.getKilled();
-        ps.tmKilledTrans = tmTrans.getKilled();
-        ps.tmKilledPair = tmPair.getKilled();
-        ps.aexTotal = aexMutants.size();
-        ps.aexKilledFamilyState = aexFamilyState.getKilled();
-        ps.aexKilledState = aexState.getKilled();
-        ps.aexKilledTrans = aexTrans.getKilled();
-        ps.aexKilledPair = aexPair.getKilled();
-        ps.smTotal = smMutants.size();
-        ps.smKilledFamilyState = smFamilyState.getKilled();
-        ps.smKilledState = smState.getKilled();
-        ps.smKilledTrans = smTrans.getKilled();
-        ps.smKilledPair = smPair.getKilled();
+        fillOpScores(ps.tm, tmMutants.size(), tmEquivalent.size(),
+                tmFamilyState, tmState, tmTrans, tmPair, tmRandom);
+        fillOpScores(ps.aex, aexMutants.size(), aexEquivalent.size(),
+                aexFamilyState, aexState, aexTrans, aexPair, aexRandom);
+        fillOpScores(ps.sm, smMutants.size(), smEquivalent.size(),
+                smFamilyState, smState, smTrans, smPair, smRandom);
         return ps;
+    }
+
+    private static void addOpScores(OpScores acc, OpScores delta) {
+        acc.total += delta.total;
+        acc.equivalent += delta.equivalent;
+        acc.killedFamilyState += delta.killedFamilyState;
+        acc.killedProductState += delta.killedProductState;
+        acc.killedProductTrans += delta.killedProductTrans;
+        acc.killedProductPair += delta.killedProductPair;
+        acc.killedRandom += delta.killedRandom;
+    }
+
+    private static void writeAggregateRow(BufferedWriter md, String label, OpScores agg)
+            throws IOException {
+        md.write("| " + label + " | " + agg.total + " | "
+                + formatEquivalent(agg.equivalent, agg.total) + " | "
+                + formatAdjusted(agg.killedFamilyState, agg.total, agg.equivalent) + " | "
+                + formatAdjusted(agg.killedProductState, agg.total, agg.equivalent) + " | "
+                + formatAdjusted(agg.killedProductTrans, agg.total, agg.equivalent) + " | "
+                + formatAdjusted(agg.killedProductPair, agg.total, agg.equivalent) + " | "
+                + formatAdjusted(agg.killedRandom, agg.total, agg.equivalent) + " |\n");
+    }
+
+    private static void writeAggregateRowHtml(BufferedWriter html, String label, OpScores agg)
+            throws IOException {
+        html.write("<tr><td>" + label + "</td><td>" + agg.total + "</td><td>"
+                + formatEquivalent(agg.equivalent, agg.total) + "</td><td>"
+                + formatAdjusted(agg.killedFamilyState, agg.total, agg.equivalent) + "</td><td>"
+                + formatAdjusted(agg.killedProductState, agg.total, agg.equivalent) + "</td><td>"
+                + formatAdjusted(agg.killedProductTrans, agg.total, agg.equivalent) + "</td><td>"
+                + formatAdjusted(agg.killedProductPair, agg.total, agg.equivalent) + "</td><td>"
+                + formatAdjusted(agg.killedRandom, agg.total, agg.equivalent) + "</td></tr>\n");
+    }
+
+    private static void fillOpScores(OpScores out, int total, int equivalent,
+                                     FaultDetector.KillResult family,
+                                     FaultDetector.KillResult state,
+                                     FaultDetector.KillResult trans,
+                                     FaultDetector.KillResult pair,
+                                     FaultDetector.KillResult random) {
+        out.total = total;
+        out.equivalent = equivalent;
+        out.killedFamilyState = family.getKilled();
+        out.killedProductState = state.getKilled();
+        out.killedProductTrans = trans.getKilled();
+        out.killedProductPair = pair.getKilled();
+        out.killedRandom = random.getKilled();
+    }
+
+    /**
+     * Returns the set of mutant keys not killed by any of the five suites.
+     * A mutant is killed by a suite iff its key does NOT appear in that
+     * suite's survivor list. Equivalent set = mutants surviving ALL five.
+     */
+    private static Set<String> equivalentMutantKeys(
+            Map<String, FeaturedTransitionSystem> mutants,
+            FaultDetector.KillResult family,
+            FaultDetector.KillResult state,
+            FaultDetector.KillResult trans,
+            FaultDetector.KillResult pair,
+            FaultDetector.KillResult random) {
+        Set<String> survivedFamily = new HashSet<>(family.getSurvivors());
+        Set<String> survivedState = new HashSet<>(state.getSurvivors());
+        Set<String> survivedTrans = new HashSet<>(trans.getSurvivors());
+        Set<String> survivedPair = new HashSet<>(pair.getSurvivors());
+        Set<String> survivedRandom = new HashSet<>(random.getSurvivors());
+        Set<String> equivalent = new LinkedHashSet<>();
+        for (String key : mutants.keySet()) {
+            if (survivedFamily.contains(key)
+                    && survivedState.contains(key)
+                    && survivedTrans.contains(key)
+                    && survivedPair.contains(key)
+                    && survivedRandom.contains(key)) {
+                equivalent.add(key);
+            }
+        }
+        return equivalent;
+    }
+
+    /**
+     * Formats killed-by-suite as "killed / (total - equivalent) = pct%"
+     * per Inozemtseva &amp; Holmes (2014). When (total - equivalent) is
+     * zero (every mutant equivalent), returns "n/a".
+     */
+    private static String formatAdjusted(int killed, int total, int equivalent) {
+        int denom = total - equivalent;
+        if (denom <= 0) {
+            return "0/0 = n/a";
+        }
+        return killed + "/" + denom + " = "
+                + String.format("%.1f", 100.0 * killed / denom) + "%";
+    }
+
+    private static String formatEquivalent(int equivalent, int total) {
+        if (total == 0) {
+            return "0/0";
+        }
+        return equivalent + "/" + total + " = "
+                + String.format("%.1f", 100.0 * equivalent / total) + "%";
+    }
+
+    private static void appendKeyList(BufferedWriter md, String label, Set<String> keys)
+            throws IOException {
+        if (keys.isEmpty()) return;
+        md.write("\n_" + label + "_ (" + keys.size() + "):\n\n");
+        for (String key : keys) {
+            md.write("- `" + key + "`\n");
+        }
+    }
+
+    private static void appendKeyListHtml(BufferedWriter html, String label, Set<String> keys)
+            throws IOException {
+        if (keys.isEmpty()) return;
+        html.write("<p><em>" + escapeHtml(label) + "</em> (" + keys.size() + "):</p>\n<ul>\n");
+        for (String key : keys) {
+            html.write("<li><code>" + escapeHtml(key) + "</code></li>\n");
+        }
+        html.write("</ul>\n");
     }
 
     /**
@@ -578,10 +697,32 @@ public final class PerProductMutationReportGenerator {
                 + String.format("%.1f", 100.0 * killed / total) + "%";
     }
 
+    /**
+     * Per-product per-operator score record. All kill counts are
+     * execution-based (FaultDetector.scoreSuiteDynamic) for uniform
+     * methodology across operators. {@code equivalent} is the count of
+     * mutants not killed by ANY of the five suites — these are
+     * conservatively classified as equivalent per Inozemtseva &amp;
+     * Holmes (2014) and excluded from the score denominator.
+     */
+    private static final class OpScores {
+        int total;
+        int equivalent;
+        int killedFamilyState;
+        int killedProductState;
+        int killedProductTrans;
+        int killedProductPair;
+        int killedRandom;
+
+        int nonEquivalentDenominator() {
+            return total - equivalent;
+        }
+    }
+
     private static final class ProductScores {
-        int tmTotal, tmKilledFamilyState, tmKilledState, tmKilledTrans, tmKilledPair;
-        int aexTotal, aexKilledFamilyState, aexKilledState, aexKilledTrans, aexKilledPair;
-        int smTotal, smKilledFamilyState, smKilledState, smKilledTrans, smKilledPair;
+        OpScores tm = new OpScores();
+        OpScores aex = new OpScores();
+        OpScores sm = new OpScores();
     }
 
     // ---------- Helpers (shared with other generators) ----------

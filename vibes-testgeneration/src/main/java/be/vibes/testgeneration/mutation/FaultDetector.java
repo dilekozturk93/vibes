@@ -1,11 +1,14 @@
 package be.vibes.testgeneration.mutation;
 
 import be.vibes.testgeneration.graph.EulerianBalancer;
+import be.vibes.ts.Action;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.TestCase;
 import be.vibes.ts.Transition;
 import be.vibes.ts.execution.TransitionSystemExecutor;
 import be.vibes.ts.exception.TransitionSystenExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +19,26 @@ import java.util.Set;
 
 /**
  * Decides whether a test suite kills a mutant.
+ *
+ * <h3>Which method to use</h3>
+ *
+ * <p>For paper experiments and per-product mutation reports use
+ * {@link #killsDynamic(List, FeaturedTransitionSystem)} or
+ * {@link #scoreSuiteDynamic(List, java.util.Map)} on EVERY operator —
+ * uniform execution-based replay via {@link TransitionSystemExecutor}.
+ * This is the methodology agreed for Parça 1 (2026-05-22 decision):
+ * uniform replay-based detection across all operators ensures a
+ * consistent kill semantic regardless of operator structure.
+ *
+ * <p>The static set-based variants ({@link #kills(List, FeaturedTransitionSystem)}
+ * and {@link #scoreSuite(List, java.util.Map)}) are retained for
+ * sanity-checking and microbenchmarks only. They are provably
+ * equivalent to dynamic replay for {@link TransitionMissing} and
+ * {@link ActionExchange} (neither operator changes execution
+ * semantics) but NOT for {@link StateMissing} or any future operator
+ * that perturbs the executor's reachable state space. Calling them
+ * from per-product reports is no longer recommended — prefer the
+ * Dynamic suffix for methodological uniformity.
  *
  * <h3>Kill criterion</h3>
  *
@@ -68,6 +91,8 @@ import java.util.Set;
  */
 public final class FaultDetector {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FaultDetector.class);
+
     private FaultDetector() {
     }
 
@@ -96,24 +121,61 @@ public final class FaultDetector {
             try {
                 executor.reset();
             } catch (TransitionSystenExecutionException e) {
-                // Mutant's initial state cannot be reset → killed.
                 return true;
             }
             for (Transition t : tc) {
-                if (EulerianBalancer.isSyntheticAction(t.getAction())) {
+                String actionName = t.getAction().getName();
+                String effectiveActionName;
+
+                if (actionName.startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)) {
+                    // __balance__N — pair-graph balancing fallback synthetic.
+                    // Pair-coverage's splitAtSyntheticEdges strips these
+                    // before they enter executable suites, so encountering
+                    // one here means an upstream invariant was violated.
+                    // Skip with a warn — neither advance nor kill.
+                    LOG.warn("Unexpected __balance__ action in dynamic replay: {} "
+                            + "(this should not occur in executable test cases)",
+                            actionName);
                     continue;
+                } else if (actionName.contains(EulerianBalancer.DUPLICATE_ACTION_INFIX)) {
+                    // __dup__N — duplicate of a real transition (same source /
+                    // target / fexpr, only the label is synthetic to survive
+                    // VIBeS' dedup). Execute the BASE action so the executor
+                    // advances through the real path.
+                    effectiveActionName = EulerianBalancer.stripDuplicateSuffix(actionName);
+                } else {
+                    // Plain real action OR __end__ (which is also a real FTS
+                    // transition added by MxeToFtsConverter for mixed-terminal
+                    // states; target is the initial state). Either way the
+                    // mutant should still carry it (synthetic-site mutants
+                    // are filtered upstream), so execute normally.
+                    effectiveActionName = actionName;
+                }
+
+                Action mutantAction;
+                try {
+                    mutantAction = mutant.getAction(effectiveActionName);
+                } catch (RuntimeException e) {
+                    mutantAction = null;
+                }
+                if (mutantAction == null) {
+                    // The action does not exist in the mutant at all (the
+                    // entire action was dropped — possible with TM when it
+                    // was the action's sole transition, or with SM when the
+                    // sole user of the action was the removed state).
+                    return true;
                 }
                 try {
-                    if (!executor.canExecute(t.getAction())) {
-                        return true; // suite step refused on mutant
+                    if (!executor.canExecute(mutantAction)) {
+                        return true;
                     }
-                    executor.execute(t.getAction());
+                    executor.execute(mutantAction);
                 } catch (TransitionSystenExecutionException e) {
-                    return true; // executor error mid-replay = mutant detected
+                    return true;
                 }
             }
         }
-        return false; // every test case replayed without refusal
+        return false;
     }
 
     /**

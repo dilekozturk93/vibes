@@ -39,6 +39,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>be.unamur.info</groupId>
+            <artifactId>vibes-selection</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
