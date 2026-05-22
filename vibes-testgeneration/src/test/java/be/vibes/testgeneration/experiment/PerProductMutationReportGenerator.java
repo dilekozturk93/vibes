@@ -423,18 +423,26 @@ public final class PerProductMutationReportGenerator {
     }
 
     /**
-     * Projects a family-level test suite onto a product configuration by
-     * keeping only those transitions whose feature expression is satisfied
-     * by the configuration. The result is a per-product suite that
-     * represents "the executable steps of the family-level suite on this
-     * product" — the realistic semantic for RQ2's family-vs-product
-     * comparison.
+     * STRICT projection of a family-level test suite onto a product
+     * configuration: stop at the first transition whose feature
+     * expression is NOT satisfied by the configuration, keep only the
+     * prefix up to (not including) that drop, discard the entire suffix.
+     *
+     * <p>Semantic: "a tester runs Devroey's SPL-level suite on this
+     * specific product — execution halts at the first refused step;
+     * subsequent steps would not run regardless of their feasibility
+     * because the SUT is in an undefined state after a failed transition".
+     *
+     * <p>This is the realistic family-vs-product comparison for RQ2.
+     * The earlier "lenient" variant (split-and-keep-suffix) over-credited
+     * the family-level baseline by salvaging post-drop suffixes that
+     * could not have actually executed without a fresh test-case reset
+     * the family-level pipeline does not provide.
      */
     private static List<TestCase> projectFamilySuite(List<TestCase> familySuite,
                                                      FeaturedTransitionSystem fts,
                                                      be.vibes.fexpression.configuration.Configuration cfg) {
         List<TestCase> projected = new java.util.ArrayList<>(familySuite.size());
-        int idx = 0;
         for (TestCase familyTc : familySuite) {
             TestCase projectedTc = new TestCase(familyTc.getId() + "_proj");
             int kept = 0;
@@ -445,25 +453,15 @@ public final class PerProductMutationReportGenerator {
                         projectedTc.enqueue(t);
                         kept++;
                     } else {
-                        // Step is not executable on this product — drop.
-                        // Resetting the projected TC because subsequent
-                        // transitions may not be contiguous with the kept
-                        // prefix; we record the prefix as a separate test
-                        // case and start a fresh one.
-                        if (kept > 0) {
-                            projected.add(projectedTc);
-                            idx++;
-                            projectedTc = new TestCase(familyTc.getId() + "_proj_" + idx);
-                            kept = 0;
-                        }
+                        // STRICT: stop at first drop. Discard the suffix.
+                        break;
                     }
                 }
             } catch (be.vibes.ts.exception.TransitionSystenExecutionException e) {
-                // Suite step not contiguous — split here.
+                // Contiguity violation while replaying — also a halt.
             }
             if (kept > 0) {
                 projected.add(projectedTc);
-                idx++;
             }
         }
         return projected;
