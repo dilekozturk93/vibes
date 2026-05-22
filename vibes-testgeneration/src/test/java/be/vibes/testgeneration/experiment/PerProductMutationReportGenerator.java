@@ -242,17 +242,19 @@ public final class PerProductMutationReportGenerator {
                 + "the suite traverses the removed transition; for ActionExchange whenever "
                 + "the suite traverses the mutated transition (the original `(s, a_orig, t)` "
                 + "triple is gone — replaced by `(s, a_new, t)`).\n");
-        md.write("6. **Mutation score per criterion** = killed mutants / total real mutants. "
-                + "Higher is better. The central RQ2 claim is that the score monotonically "
-                + "increases with the coverage criterion's strictness (state &le; transition "
-                + "&le; transition-pair).\n\n");
-        md.write("**Note on kill semantics.** Strict definition: the test suite kills the "
-                + "mutant iff running the suite on the mutant produces a different observable "
-                + "behaviour from running it on the original (e.g. a transition refused mid-"
-                + "execution, or an extra transition fired). For both operators, this is "
-                + "equivalent to the cheaper static check used here — \"some real transition "
-                + "in the test case is not in the mutant\" — because both operators only "
-                + "modify the FTS's transition set, not its execution semantics.\n\n");
+        md.write("6. **Mutation score per criterion** = killed mutants / (total &minus; "
+                + "equivalent), per Inozemtseva &amp; Holmes (2014). The equivalent set "
+                + "is conservatively defined as mutants surviving all five suites in this "
+                + "study (family + product state + product transition + product pair + "
+                + "random).\n\n");
+        md.write("**Note on coverage saturation.** TransitionMissing and ActionExchange "
+                + "mutants on a deterministic FTS are killed precisely when the mutated "
+                + "transition is traversed; transition coverage therefore detects them by "
+                + "construction. Stronger criteria such as transition-pair coverage cannot "
+                + "improve detection for this operator set, though they do increase "
+                + "execution cost. This is an inherent property of these mutation operators "
+                + "on deterministic models. RQ3 is reframed around the cost dimension under "
+                + "this saturation property.\n\n");
 
         html.write("<h2>How mutation scores are computed</h2>\n");
         html.write("<p><strong>Why a fresh mutation module, not <code>vibes-mutation</code>"
@@ -276,10 +278,18 @@ public final class PerProductMutationReportGenerator {
         html.write("<li><strong>Replay each suite on each mutant</strong> — a TestCase kills "
                 + "a mutant iff at least one of its non-synthetic transitions "
                 + "<code>(source, action, target)</code> is absent in the mutant.</li>\n");
-        html.write("<li><strong>Mutation score</strong> = killed / total. RQ2 claim: score "
-                + "increases with the coverage criterion's strictness (state &le; transition "
-                + "&le; pair).</li>\n");
+        html.write("<li><strong>Mutation score</strong> = killed / (total &minus; equivalent), "
+                + "per Inozemtseva &amp; Holmes (2014). Equivalent set is mutants surviving all "
+                + "five suites (family + product state + product transition + product pair + "
+                + "random).</li>\n");
         html.write("</ol>\n");
+        html.write("<p><strong>Note on coverage saturation.</strong> TransitionMissing and "
+                + "ActionExchange mutants on a deterministic FTS are killed precisely when "
+                + "the mutated transition is traversed; transition coverage therefore detects "
+                + "them by construction. Stronger criteria such as transition-pair coverage "
+                + "cannot improve detection for this operator set, though they do increase "
+                + "execution cost. This is an inherent property of these mutation operators "
+                + "on deterministic models.</p>\n");
     }
 
     private static ProductScores writeProductSection(BufferedWriter md, BufferedWriter html,
