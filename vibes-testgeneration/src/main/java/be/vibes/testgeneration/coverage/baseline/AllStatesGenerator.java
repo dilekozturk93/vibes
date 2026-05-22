@@ -216,13 +216,27 @@ public final class AllStatesGenerator {
     private static int scoreOf(BaselineWalk walk,
                                WarshallAccessibility accessibility,
                                Set<State> toVisit) {
-        // Paper Algorithm 2: score = number of toVisit states reachable from
-        // the walk's last state. We add the number of toVisit states ALREADY
-        // covered by the walk (Devroey's `Sets.intersection` enhancement in
-        // AllStatesTestCaseGenerator.computeScore): this rewards walks that
-        // have already gathered uncovered states, biasing the priority queue
-        // toward completing productive walks rather than starting new ones.
-        int reachable = accessibility.countAccessible(walk.getLastState(), toVisit);
+        // Paper Algorithm 2 + Devroey's enhancement in
+        // AllStatesTestCaseGenerator.computeScore (f856c90 lines 146-181):
+        //
+        //   Set<State> visited = new HashSet<>(tc.getVisitedStates());
+        //   int score = scoreComputor.computeScore(tr,
+        //       Sets.difference(this.toVisit, visited));
+        //   Set<State> covered = Sets.intersection(visited, this.toVisit);
+        //   score = score + covered.size();
+        //
+        // The first term is "states reachable from the walk's last state,
+        // restricted to (toVisit minus what THIS walk already visited)" —
+        // NOT plain toVisit. The earlier port passed plain toVisit, which
+        // double-counted any state the walk had already covered (once via
+        // reachability, once via alreadyCovered). On SVM the Warshall
+        // matrix excludes back-edges to initial, so forward-only reach
+        // from a late state rarely re-includes earlier visited states —
+        // the practical impact was small but the semantic was off.
+        Set<State> uncoveredAfterWalk = new HashSet<>(toVisit);
+        uncoveredAfterWalk.removeAll(walk.getVisitedStates());
+        int reachable = accessibility.countAccessible(
+                walk.getLastState(), uncoveredAfterWalk);
         int alreadyCovered = 0;
         for (State s : walk.getVisitedStates()) {
             if (toVisit.contains(s)) {
