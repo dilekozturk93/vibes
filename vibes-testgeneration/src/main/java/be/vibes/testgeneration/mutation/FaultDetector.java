@@ -4,6 +4,8 @@ import be.vibes.testgeneration.graph.EulerianBalancer;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.TestCase;
 import be.vibes.ts.Transition;
+import be.vibes.ts.execution.TransitionSystemExecutor;
+import be.vibes.ts.exception.TransitionSystenExecutionException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,6 +69,70 @@ import java.util.Set;
 public final class FaultDetector {
 
     private FaultDetector() {
+    }
+
+    /**
+     * Dynamic kill check via {@link TransitionSystemExecutor} replay.
+     * Required for operators whose mutation changes the execution semantics
+     * of the FTS, not just its transition set: {@link StateMissing}
+     * (removed state cannot be reached), {@code WrongInitialState}
+     * (replay diverges from step 1), {@code TransitionAdd} (non-determinism
+     * in the executor), {@code TransitionDestinationExchange} (executor
+     * advances to a different state).
+     *
+     * <p>Algorithm: for each TestCase in the suite, instantiate a fresh
+     * executor on {@code mutant}, walk the test case action by action
+     * via {@code canExecute(action)} + {@code execute(action)}. If any
+     * step is refused (cannot execute) the mutant is killed. If the
+     * executor reaches an end state different from what the original
+     * would have, that is also a divergence and kills.
+     *
+     * <p>Synthetic actions in the test case are SKIPPED (treated as
+     * test-case boundary markers, not real SUT events).
+     */
+    public static boolean killsDynamic(List<TestCase> suite, FeaturedTransitionSystem mutant) {
+        for (TestCase tc : suite) {
+            TransitionSystemExecutor executor = new TransitionSystemExecutor(mutant);
+            try {
+                executor.reset();
+            } catch (TransitionSystenExecutionException e) {
+                // Mutant's initial state cannot be reset → killed.
+                return true;
+            }
+            for (Transition t : tc) {
+                if (EulerianBalancer.isSyntheticAction(t.getAction())) {
+                    continue;
+                }
+                try {
+                    if (!executor.canExecute(t.getAction())) {
+                        return true; // suite step refused on mutant
+                    }
+                    executor.execute(t.getAction());
+                } catch (TransitionSystenExecutionException e) {
+                    return true; // executor error mid-replay = mutant detected
+                }
+            }
+        }
+        return false; // every test case replayed without refusal
+    }
+
+    /**
+     * Same as {@link #scoreSuite(List, java.util.Map)} but uses the
+     * dynamic replay check. Use this overload for operators that change
+     * execution semantics.
+     */
+    public static KillResult scoreSuiteDynamic(List<TestCase> suite,
+                                               java.util.Map<String, FeaturedTransitionSystem> mutants) {
+        int killed = 0;
+        java.util.List<String> survivors = new java.util.ArrayList<>();
+        for (java.util.Map.Entry<String, FeaturedTransitionSystem> e : mutants.entrySet()) {
+            if (killsDynamic(suite, e.getValue())) {
+                killed++;
+            } else {
+                survivors.add(e.getKey());
+            }
+        }
+        return new KillResult(killed, mutants.size(), survivors);
     }
 
     /**

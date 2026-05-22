@@ -32,7 +32,7 @@ public final class FtsCloning {
      * Returns a deep copy of the given FTS.
      */
     public static FeaturedTransitionSystem copy(FeaturedTransitionSystem fts) {
-        return rebuild(fts, t -> true, null);
+        return rebuild(fts, t -> true, null, null);
     }
 
     /**
@@ -44,7 +44,7 @@ public final class FtsCloning {
     public static FeaturedTransitionSystem withoutTransition(FeaturedTransitionSystem fts,
                                                              Transition transitionToOmit) {
         checkNotNull(transitionToOmit, "Transition to omit may not be null");
-        return rebuild(fts, t -> !t.equals(transitionToOmit), null);
+        return rebuild(fts, t -> !t.equals(transitionToOmit), null, null);
     }
 
     /**
@@ -62,27 +62,58 @@ public final class FtsCloning {
         checkNotNull(target, "Target transition may not be null");
         checkNotNull(replacementAction, "Replacement action may not be null");
         return rebuild(fts, t -> !t.equals(target),
-                new InsertionSpec(target, replacementAction));
+                new InsertionSpec(target, replacementAction), null);
+    }
+
+    /**
+     * Returns a copy of the given FTS in which one specific state and all
+     * transitions incident to it (incoming + outgoing) are removed. The
+     * state must not be the initial state — removing the initial state
+     * would leave the FTS structurally invalid.
+     *
+     * @param fts the original FTS
+     * @param stateToRemove the state (by reference equality) to drop
+     * @throws IllegalArgumentException if {@code stateToRemove} is the
+     *         initial state
+     */
+    public static FeaturedTransitionSystem withoutState(FeaturedTransitionSystem fts,
+                                                        State stateToRemove) {
+        checkNotNull(stateToRemove, "State to remove may not be null");
+        if (stateToRemove.equals(fts.getInitialState())) {
+            throw new IllegalArgumentException(
+                    "Cannot remove the initial state; use WrongInitialState operator for that fault class");
+        }
+        return rebuild(fts,
+                t -> !t.getSource().equals(stateToRemove) && !t.getTarget().equals(stateToRemove),
+                null,
+                stateToRemove);
     }
 
     /**
      * Shared rebuild kernel: walks every state / action / transition of the
      * source, applies {@code keep} to decide whether each transition should
      * be carried over verbatim, and finally inserts the (optional) extra
-     * transition described by {@code insertion}.
+     * transition described by {@code insertion}. The {@code stateToOmit}
+     * is excluded from the state set if non-null (used by
+     * {@link #withoutState}).
      */
     private static FeaturedTransitionSystem rebuild(FeaturedTransitionSystem fts,
                                                     Predicate<Transition> keep,
-                                                    InsertionSpec insertion) {
+                                                    InsertionSpec insertion,
+                                                    State stateToOmit) {
         FeaturedTransitionSystemFactory factory =
                 new FeaturedTransitionSystemFactory(fts.getInitialState().getName());
 
         // Replay state declarations so the initial-state name is registered
         // and all isolated states (those without outgoing transitions) are
-        // also preserved.
+        // also preserved. Skip the omitted state if any.
         Iterator<State> stateIt = fts.states();
         while (stateIt.hasNext()) {
-            factory.addState(stateIt.next().getName());
+            State s = stateIt.next();
+            if (stateToOmit != null && s.equals(stateToOmit)) {
+                continue;
+            }
+            factory.addState(s.getName());
         }
         Iterator<Action> actionIt = fts.actions();
         while (actionIt.hasNext()) {

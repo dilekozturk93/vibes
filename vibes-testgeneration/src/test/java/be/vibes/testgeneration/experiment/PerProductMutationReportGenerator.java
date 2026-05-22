@@ -14,6 +14,7 @@ import be.vibes.testgeneration.graph.InitialSccFilter;
 import be.vibes.testgeneration.mutation.ActionExchange;
 import be.vibes.testgeneration.mutation.FaultDetector;
 import be.vibes.testgeneration.mutation.MutationOperator;
+import be.vibes.testgeneration.mutation.StateMissing;
 import be.vibes.testgeneration.mutation.TransitionMissing;
 import be.vibes.testgeneration.coverage.baseline.AllStatesGenerator;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
@@ -128,6 +129,9 @@ public final class PerProductMutationReportGenerator {
         int totalAexReal = 0;
         int totalAexKilled_familyState = 0;
         int totalAexKilled_state = 0, totalAexKilled_trans = 0, totalAexKilled_pair = 0;
+        int totalSmReal = 0;
+        int totalSmKilled_familyState = 0;
+        int totalSmKilled_state = 0, totalSmKilled_trans = 0, totalSmKilled_pair = 0;
         int productCount = 0;
 
         try (BufferedWriter md = new BufferedWriter(new FileWriter(mdPath.toFile()));
@@ -159,6 +163,11 @@ public final class PerProductMutationReportGenerator {
                 totalAexKilled_state += ps.aexKilledState;
                 totalAexKilled_trans += ps.aexKilledTrans;
                 totalAexKilled_pair += ps.aexKilledPair;
+                totalSmReal += ps.smTotal;
+                totalSmKilled_familyState += ps.smKilledFamilyState;
+                totalSmKilled_state += ps.smKilledState;
+                totalSmKilled_trans += ps.smKilledTrans;
+                totalSmKilled_pair += ps.smKilledPair;
             }
 
             md.write("---\n\n## " + spec.name + " summary (aggregate over " + productCount
@@ -180,6 +189,11 @@ public final class PerProductMutationReportGenerator {
                     + formatScore(totalAexKilled_state, totalAexReal) + " | "
                     + formatScore(totalAexKilled_trans, totalAexReal) + " | "
                     + formatScore(totalAexKilled_pair, totalAexReal) + " |\n");
+            md.write("| StateMissing (dynamic) | " + totalSmReal + " | "
+                    + formatScore(totalSmKilled_familyState, totalSmReal) + " | "
+                    + formatScore(totalSmKilled_state, totalSmReal) + " | "
+                    + formatScore(totalSmKilled_trans, totalSmReal) + " | "
+                    + formatScore(totalSmKilled_pair, totalSmReal) + " |\n");
             md.write("\nTotal products: " + productCount + ".\n");
 
             html.write("<hr/>\n<h2>" + escapeHtml(spec.name)
@@ -204,6 +218,11 @@ public final class PerProductMutationReportGenerator {
                     + formatScore(totalAexKilled_state, totalAexReal) + "</td><td>"
                     + formatScore(totalAexKilled_trans, totalAexReal) + "</td><td>"
                     + formatScore(totalAexKilled_pair, totalAexReal) + "</td></tr>\n");
+            html.write("<tr><td>StateMissing (dynamic)</td><td>" + totalSmReal + "</td><td>"
+                    + formatScore(totalSmKilled_familyState, totalSmReal) + "</td><td>"
+                    + formatScore(totalSmKilled_state, totalSmReal) + "</td><td>"
+                    + formatScore(totalSmKilled_trans, totalSmReal) + "</td><td>"
+                    + formatScore(totalSmKilled_pair, totalSmReal) + "</td></tr>\n");
             html.write("</table>\n");
             html.write("<p>Total products: " + productCount + ".</p>\n");
             writeHtmlFooter(html);
@@ -312,9 +331,12 @@ public final class PerProductMutationReportGenerator {
         tm.generateMutants(repaired);
         ActionExchange aex = new ActionExchange();
         aex.generateMutants(repaired);
+        StateMissing sm = new StateMissing();
+        sm.generateMutants(repaired);
 
         Map<String, FeaturedTransitionSystem> tmMutants = filterRealMutants(tm.getMutants(), "TM");
         Map<String, FeaturedTransitionSystem> aexMutants = filterRealMutants(aex.getMutants(), "AEX");
+        Map<String, FeaturedTransitionSystem> smMutants = filterRealMutants(sm.getMutants(), "SM");
 
         List<TestCase> stateSuite = Collections.singletonList(stateTc);
         List<TestCase> transSuite = Collections.singletonList(transTc);
@@ -334,6 +356,11 @@ public final class PerProductMutationReportGenerator {
         FaultDetector.KillResult aexState = FaultDetector.scoreSuite(stateSuite, aexMutants);
         FaultDetector.KillResult aexTrans = FaultDetector.scoreSuite(transSuite, aexMutants);
         FaultDetector.KillResult aexPair = FaultDetector.scoreSuite(pairSuite, aexMutants);
+        // StateMissing changes execution semantics — use dynamic replay.
+        FaultDetector.KillResult smFamilyState = FaultDetector.scoreSuiteDynamic(projectedFamily, smMutants);
+        FaultDetector.KillResult smState = FaultDetector.scoreSuiteDynamic(stateSuite, smMutants);
+        FaultDetector.KillResult smTrans = FaultDetector.scoreSuiteDynamic(transSuite, smMutants);
+        FaultDetector.KillResult smPair = FaultDetector.scoreSuiteDynamic(pairSuite, smMutants);
 
         md.write("\n### Product " + productIndex + "\n\n");
         md.write("**Selected features:** " + featuresLine + "\n\n");
@@ -358,6 +385,11 @@ public final class PerProductMutationReportGenerator {
                 + formatScore(aexState.getKilled(), aexMutants.size()) + " | "
                 + formatScore(aexTrans.getKilled(), aexMutants.size()) + " | "
                 + formatScore(aexPair.getKilled(), aexMutants.size()) + " |\n");
+        md.write("| StateMissing (dynamic) | " + smMutants.size() + " | "
+                + formatScore(smFamilyState.getKilled(), smMutants.size()) + " | "
+                + formatScore(smState.getKilled(), smMutants.size()) + " | "
+                + formatScore(smTrans.getKilled(), smMutants.size()) + " | "
+                + formatScore(smPair.getKilled(), smMutants.size()) + " |\n");
 
         // Surviving mutants (escaped detection by any criterion) — these are
         // the interesting ones for paper analysis.
@@ -398,6 +430,11 @@ public final class PerProductMutationReportGenerator {
                 + formatScore(aexState.getKilled(), aexMutants.size()) + "</td><td>"
                 + formatScore(aexTrans.getKilled(), aexMutants.size()) + "</td><td>"
                 + formatScore(aexPair.getKilled(), aexMutants.size()) + "</td></tr>\n");
+        html.write("<tr><td>StateMissing (dynamic)</td><td>" + smMutants.size() + "</td><td>"
+                + formatScore(smFamilyState.getKilled(), smMutants.size()) + "</td><td>"
+                + formatScore(smState.getKilled(), smMutants.size()) + "</td><td>"
+                + formatScore(smTrans.getKilled(), smMutants.size()) + "</td><td>"
+                + formatScore(smPair.getKilled(), smMutants.size()) + "</td></tr>\n");
         html.write("</table>\n");
         appendSurvivorsHtml(html, "TransitionMissing — survived family-level state coverage (Devroey)", tmFamilyState.getSurvivors());
         appendSurvivorsHtml(html, "TransitionMissing — survived product state coverage", tmState.getSurvivors());
@@ -419,6 +456,11 @@ public final class PerProductMutationReportGenerator {
         ps.aexKilledState = aexState.getKilled();
         ps.aexKilledTrans = aexTrans.getKilled();
         ps.aexKilledPair = aexPair.getKilled();
+        ps.smTotal = smMutants.size();
+        ps.smKilledFamilyState = smFamilyState.getKilled();
+        ps.smKilledState = smState.getKilled();
+        ps.smKilledTrans = smTrans.getKilled();
+        ps.smKilledPair = smPair.getKilled();
         return ps;
     }
 
@@ -539,6 +581,7 @@ public final class PerProductMutationReportGenerator {
     private static final class ProductScores {
         int tmTotal, tmKilledFamilyState, tmKilledState, tmKilledTrans, tmKilledPair;
         int aexTotal, aexKilledFamilyState, aexKilledState, aexKilledTrans, aexKilledPair;
+        int smTotal, smKilledFamilyState, smKilledState, smKilledTrans, smKilledPair;
     }
 
     // ---------- Helpers (shared with other generators) ----------
