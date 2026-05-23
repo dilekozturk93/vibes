@@ -24,7 +24,6 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <li><strong>Filter synthetic mutants</strong> — drop mutants whose mutation site is on an <code>__end__</code> transition (no SUT meaning).</li>
 <li><strong>Replay each suite on each mutant</strong> — a TestCase kills a mutant iff at least one of its non-synthetic transitions <code>(source, action, target)</code> is absent in the mutant.</li>
 <li><strong>Mutation score</strong> = killed / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). Equivalent set is mutants surviving all five suites (family + product state + product transition + product pair + random).</li>
-<p><strong>Random baseline column.</strong> The &quot;Random&quot; column shows one representative random suite (seed 0, action budget matched to the transition-coverage suite, step ceiling 2&nbsp;&times;&nbsp;|T_repaired|, cut-and-include semantics — see <code>RandomBaselineGenerator</code> JavaDoc). The full 100-seed &times;&nbsp;3-budget distribution per (product &times; operator) — with median / quartiles / extremes / aborted-walk count — is in <code>milestone-reports/metrics/rq2-random-baseline.csv</code>.</p>
 </ol>
 <p><strong>Note on coverage saturation.</strong> TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models.</p>
 <hr/>
@@ -45,13 +44,13 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {c, f, s}</p>
 <p><strong>Repaired FTS:</strong> 5 states, 6 transitions (6 real / 0 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 0 test case(s) (of 3 family-level), 0 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 3 test case(s).</p>
+<p><strong>Random baseline:</strong> 2 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>6</td><td>0/6 = 0.0%</td><td>0/6 = 0.0%</td><td>5/6 = 83.3%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
-<tr><td>ActionExchange</td><td>9</td><td>0/9 = 0.0%</td><td>0/9 = 0.0%</td><td>8/9 = 88.9%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td></tr>
-<tr><td>StateMissing</td><td>4</td><td>0/4 = 0.0%</td><td>0/4 = 0.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>6</td><td>0/6 = 0.0%</td><td>0/6 = 0.0%</td><td>5/6 = 83.3%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>3/6 = 50.0%</td></tr>
+<tr><td>ActionExchange</td><td>9</td><td>0/9 = 0.0%</td><td>0/9 = 0.0%</td><td>8/9 = 88.9%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>6/9 = 66.7%</td></tr>
+<tr><td>StateMissing</td><td>4</td><td>0/4 = 0.0%</td><td>0/4 = 0.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>2/4 = 50.0%</td></tr>
 </table>
 <h3>Product 3</h3>
 <p><strong>Selected features:</strong> selected = {s}</p>
@@ -105,7 +104,7 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {c, s, t}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 11 transitions (11 real / 0 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 3 test case(s) (of 3 family-level), 18 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 3 test case(s).</p>
+<p><strong>Random baseline:</strong> 2 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -165,13 +164,13 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {c, f, t}</p>
 <p><strong>Repaired FTS:</strong> 5 states, 6 transitions (6 real / 0 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 0 test case(s) (of 3 family-level), 0 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 3 test case(s).</p>
+<p><strong>Random baseline:</strong> 2 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>6</td><td>0/6 = 0.0%</td><td>0/6 = 0.0%</td><td>5/6 = 83.3%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
-<tr><td>ActionExchange</td><td>9</td><td>0/9 = 0.0%</td><td>0/9 = 0.0%</td><td>8/9 = 88.9%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td></tr>
-<tr><td>StateMissing</td><td>4</td><td>0/4 = 0.0%</td><td>0/4 = 0.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>6</td><td>0/6 = 0.0%</td><td>0/6 = 0.0%</td><td>5/6 = 83.3%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>3/6 = 50.0%</td></tr>
+<tr><td>ActionExchange</td><td>9</td><td>0/9 = 0.0%</td><td>0/9 = 0.0%</td><td>8/9 = 88.9%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>6/9 = 66.7%</td></tr>
+<tr><td>StateMissing</td><td>4</td><td>0/4 = 0.0%</td><td>0/4 = 0.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>4/4 = 100.0%</td><td>2/4 = 50.0%</td></tr>
 </table>
 <hr/>
 <h2>SVM summary (aggregate over 12 products)</h2>
@@ -179,9 +178,9 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Equivalent-mutant treatment:</strong> Inozemtseva &amp; Holmes (2014) — mutant not killed by ANY of five suites (family + product state + product transition + product pair + random) is conservatively classified equivalent and EXCLUDED from the score denominator. Scores: <strong>killed / (total − equivalent) = adjusted%</strong>.</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total mutants</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>86</td><td>0/86 = 0.0%</td><td>52/86 = 60.5%</td><td>74/86 = 86.0%</td><td>86/86 = 100.0%</td><td>86/86 = 100.0%</td><td>84/86 = 97.7%</td></tr>
-<tr><td>ActionExchange</td><td>120</td><td>0/120 = 0.0%</td><td>69/120 = 57.5%</td><td>108/120 = 90.0%</td><td>120/120 = 100.0%</td><td>120/120 = 100.0%</td><td>118/120 = 98.3%</td></tr>
-<tr><td>StateMissing</td><td>64</td><td>0/64 = 0.0%</td><td>41/64 = 64.1%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>63/64 = 98.4%</td></tr>
+<tr><td>TransitionMissing</td><td>86</td><td>0/86 = 0.0%</td><td>52/86 = 60.5%</td><td>74/86 = 86.0%</td><td>86/86 = 100.0%</td><td>86/86 = 100.0%</td><td>78/86 = 90.7%</td></tr>
+<tr><td>ActionExchange</td><td>120</td><td>0/120 = 0.0%</td><td>69/120 = 57.5%</td><td>108/120 = 90.0%</td><td>120/120 = 100.0%</td><td>120/120 = 100.0%</td><td>112/120 = 93.3%</td></tr>
+<tr><td>StateMissing</td><td>64</td><td>0/64 = 0.0%</td><td>41/64 = 64.1%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>64/64 = 100.0%</td><td>59/64 = 92.2%</td></tr>
 </table>
 <p>Total products: 12.</p>
 </body></html>

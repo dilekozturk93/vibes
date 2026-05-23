@@ -24,7 +24,6 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <li><strong>Filter synthetic mutants</strong> — drop mutants whose mutation site is on an <code>__end__</code> transition (no SUT meaning).</li>
 <li><strong>Replay each suite on each mutant</strong> — a TestCase kills a mutant iff at least one of its non-synthetic transitions <code>(source, action, target)</code> is absent in the mutant.</li>
 <li><strong>Mutation score</strong> = killed / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). Equivalent set is mutants surviving all five suites (family + product state + product transition + product pair + random).</li>
-<p><strong>Random baseline column.</strong> The &quot;Random&quot; column shows one representative random suite (seed 0, action budget matched to the transition-coverage suite, step ceiling 2&nbsp;&times;&nbsp;|T_repaired|, cut-and-include semantics — see <code>RandomBaselineGenerator</code> JavaDoc). The full 100-seed &times;&nbsp;3-budget distribution per (product &times; operator) — with median / quartiles / extremes / aborted-walk count — is in <code>milestone-reports/metrics/rq2-random-baseline.csv</code>.</p>
 </ol>
 <p><strong>Note on coverage saturation.</strong> TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models.</p>
 <hr/>
@@ -33,7 +32,7 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ManualDoorControl, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 17 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -45,79 +44,79 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>8/18 = 44.4%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>12/18 = 66.7%</td></tr>
-<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>27/50 = 54.0%</td><td>28/50 = 56.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>42/50 = 84.0%</td></tr>
+<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>8/18 = 44.4%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>10/18 = 55.6%</td></tr>
+<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>27/50 = 54.0%</td><td>28/50 = 56.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>38/50 = 76.0%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <h3>Product 3</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 10 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>22</td><td>0/22 = 0.0%</td><td>8/22 = 36.4%</td><td>7/22 = 31.8%</td><td>22/22 = 100.0%</td><td>22/22 = 100.0%</td><td>15/22 = 68.2%</td></tr>
-<tr><td>ActionExchange</td><td>71</td><td>0/71 = 0.0%</td><td>32/71 = 45.1%</td><td>32/71 = 45.1%</td><td>71/71 = 100.0%</td><td>71/71 = 100.0%</td><td>54/71 = 76.1%</td></tr>
+<tr><td>TransitionMissing</td><td>22</td><td>0/22 = 0.0%</td><td>8/22 = 36.4%</td><td>7/22 = 31.8%</td><td>22/22 = 100.0%</td><td>22/22 = 100.0%</td><td>13/22 = 59.1%</td></tr>
+<tr><td>ActionExchange</td><td>71</td><td>0/71 = 0.0%</td><td>32/71 = 45.1%</td><td>32/71 = 45.1%</td><td>71/71 = 100.0%</td><td>71/71 = 100.0%</td><td>51/71 = 71.8%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>6/7 = 85.7%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 4</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 30 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 11 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>28</td><td>0/28 = 0.0%</td><td>12/28 = 42.9%</td><td>9/28 = 32.1%</td><td>28/28 = 100.0%</td><td>28/28 = 100.0%</td><td>19/28 = 67.9%</td></tr>
-<tr><td>ActionExchange</td><td>115</td><td>0/115 = 0.0%</td><td>56/115 = 48.7%</td><td>46/115 = 40.0%</td><td>115/115 = 100.0%</td><td>115/115 = 100.0%</td><td>85/115 = 73.9%</td></tr>
-<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>28</td><td>0/28 = 0.0%</td><td>12/28 = 42.9%</td><td>9/28 = 32.1%</td><td>28/28 = 100.0%</td><td>28/28 = 100.0%</td><td>15/28 = 53.6%</td></tr>
+<tr><td>ActionExchange</td><td>115</td><td>0/115 = 0.0%</td><td>56/115 = 48.7%</td><td>46/115 = 40.0%</td><td>115/115 = 100.0%</td><td>115/115 = 100.0%</td><td>68/115 = 59.1%</td></tr>
+<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>8/9 = 88.9%</td></tr>
 </table>
 <h3>Product 5</h3>
 <p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>7/20 = 35.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>16/20 = 80.0%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>28/60 = 46.7%</td><td>32/60 = 53.3%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>53/60 = 88.3%</td></tr>
+<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>7/20 = 35.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>13/20 = 65.0%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>28/60 = 46.7%</td><td>32/60 = 53.3%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>48/60 = 80.0%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>5/7 = 71.4%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 6</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 12 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>6/18 = 33.3%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>14/18 = 77.8%</td></tr>
-<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>25/50 = 50.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>44/50 = 88.0%</td></tr>
+<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>6/18 = 33.3%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>12/18 = 66.7%</td></tr>
+<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>25/50 = 50.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>41/50 = 82.0%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>5/6 = 83.3%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <h3>Product 7</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 11 test case(s).</p>
+<p><strong>Random baseline:</strong> 7 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>28</td><td>0/28 = 0.0%</td><td>8/28 = 28.6%</td><td>11/28 = 39.3%</td><td>28/28 = 100.0%</td><td>28/28 = 100.0%</td><td>21/28 = 75.0%</td></tr>
-<tr><td>ActionExchange</td><td>115</td><td>0/115 = 0.0%</td><td>42/115 = 36.5%</td><td>53/115 = 46.1%</td><td>115/115 = 100.0%</td><td>115/115 = 100.0%</td><td>88/115 = 76.5%</td></tr>
+<tr><td>TransitionMissing</td><td>28</td><td>0/28 = 0.0%</td><td>8/28 = 28.6%</td><td>11/28 = 39.3%</td><td>28/28 = 100.0%</td><td>28/28 = 100.0%</td><td>18/28 = 64.3%</td></tr>
+<tr><td>ActionExchange</td><td>115</td><td>0/115 = 0.0%</td><td>42/115 = 36.5%</td><td>53/115 = 46.1%</td><td>115/115 = 100.0%</td><td>115/115 = 100.0%</td><td>78/115 = 67.8%</td></tr>
 <tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>7/9 = 77.8%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>8/9 = 88.9%</td></tr>
 </table>
 <h3>Product 8</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, FirefighterService, Intercom}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -129,55 +128,55 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 17 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>8/18 = 44.4%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>12/18 = 66.7%</td></tr>
-<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>28/50 = 56.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>41/50 = 82.0%</td></tr>
+<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>8/18 = 44.4%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>10/18 = 55.6%</td></tr>
+<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>28/50 = 56.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>37/50 = 74.0%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <h3>Product 10</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 28 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 10 test case(s).</p>
+<p><strong>Random baseline:</strong> 7 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>11/26 = 42.3%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>16/26 = 61.5%</td></tr>
-<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>49/96 = 51.0%</td><td>43/96 = 44.8%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>64/96 = 66.7%</td></tr>
-<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>11/26 = 42.3%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>11/26 = 42.3%</td></tr>
+<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>49/96 = 51.0%</td><td>43/96 = 44.8%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>45/96 = 46.9%</td></tr>
+<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>7/9 = 77.8%</td></tr>
 </table>
 <h3>Product 11</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>8/20 = 40.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>16/20 = 80.0%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>29/60 = 48.3%</td><td>32/60 = 53.3%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>53/60 = 88.3%</td></tr>
+<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>8/20 = 40.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>13/20 = 65.0%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>29/60 = 48.3%</td><td>32/60 = 53.3%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>48/60 = 80.0%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>6/7 = 85.7%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 12</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, FirefighterService, Intercom, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>24</td><td>0/24 = 0.0%</td><td>7/24 = 29.2%</td><td>13/24 = 54.2%</td><td>24/24 = 100.0%</td><td>24/24 = 100.0%</td><td>17/24 = 70.8%</td></tr>
-<tr><td>ActionExchange</td><td>87</td><td>0/87 = 0.0%</td><td>35/87 = 40.2%</td><td>55/87 = 63.2%</td><td>87/87 = 100.0%</td><td>87/87 = 100.0%</td><td>66/87 = 75.9%</td></tr>
-<tr><td>StateMissing</td><td>11</td><td>0/11 = 0.0%</td><td>6/11 = 54.5%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>10/11 = 90.9%</td></tr>
+<tr><td>TransitionMissing</td><td>24</td><td>0/24 = 0.0%</td><td>7/24 = 29.2%</td><td>13/24 = 54.2%</td><td>24/24 = 100.0%</td><td>24/24 = 100.0%</td><td>14/24 = 58.3%</td></tr>
+<tr><td>ActionExchange</td><td>87</td><td>0/87 = 0.0%</td><td>35/87 = 40.2%</td><td>55/87 = 63.2%</td><td>87/87 = 100.0%</td><td>87/87 = 100.0%</td><td>61/87 = 70.1%</td></tr>
+<tr><td>StateMissing</td><td>11</td><td>0/11 = 0.0%</td><td>6/11 = 54.5%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>8/11 = 72.7%</td></tr>
 </table>
 <h3>Product 13</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 5 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -189,43 +188,43 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>7/20 = 35.0%</td><td>8/20 = 40.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>16/20 = 80.0%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>30/60 = 50.0%</td><td>36/60 = 60.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>51/60 = 85.0%</td></tr>
+<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>7/20 = 35.0%</td><td>8/20 = 40.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>14/20 = 70.0%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>30/60 = 50.0%</td><td>36/60 = 60.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>49/60 = 81.7%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>6/7 = 85.7%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 15</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, Intercom}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>19</td><td>0/19 = 0.0%</td><td>8/19 = 42.1%</td><td>7/19 = 36.8%</td><td>19/19 = 100.0%</td><td>19/19 = 100.0%</td><td>13/19 = 68.4%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>30/60 = 50.0%</td><td>30/60 = 50.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>45/60 = 75.0%</td></tr>
+<tr><td>TransitionMissing</td><td>19</td><td>0/19 = 0.0%</td><td>8/19 = 42.1%</td><td>7/19 = 36.8%</td><td>19/19 = 100.0%</td><td>19/19 = 100.0%</td><td>12/19 = 63.2%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>30/60 = 50.0%</td><td>30/60 = 50.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>43/60 = 71.7%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <h3>Product 16</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, Intercom}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 25 transitions (21 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 18 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>21</td><td>0/21 = 0.0%</td><td>10/21 = 47.6%</td><td>10/21 = 47.6%</td><td>21/21 = 100.0%</td><td>21/21 = 100.0%</td><td>15/21 = 71.4%</td></tr>
-<tr><td>ActionExchange</td><td>68</td><td>0/68 = 0.0%</td><td>36/68 = 52.9%</td><td>36/68 = 52.9%</td><td>68/68 = 100.0%</td><td>68/68 = 100.0%</td><td>51/68 = 75.0%</td></tr>
+<tr><td>TransitionMissing</td><td>21</td><td>0/21 = 0.0%</td><td>10/21 = 47.6%</td><td>10/21 = 47.6%</td><td>21/21 = 100.0%</td><td>21/21 = 100.0%</td><td>12/21 = 57.1%</td></tr>
+<tr><td>ActionExchange</td><td>68</td><td>0/68 = 0.0%</td><td>36/68 = 52.9%</td><td>36/68 = 52.9%</td><td>68/68 = 100.0%</td><td>68/68 = 100.0%</td><td>45/68 = 66.2%</td></tr>
 <tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>8/9 = 88.9%</td></tr>
 </table>
 <h3>Product 17</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 24 transitions (20 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 18 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -237,7 +236,7 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ManualDoorControl, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 13 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 5 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -249,139 +248,139 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 24 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>9/20 = 45.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>14/20 = 70.0%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>37/60 = 61.7%</td><td>30/60 = 50.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>48/60 = 80.0%</td></tr>
+<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>9/20 = 45.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>12/20 = 60.0%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>37/60 = 61.7%</td><td>30/60 = 50.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>44/60 = 73.3%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 20</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>8/26 = 30.8%</td><td>11/26 = 42.3%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>18/26 = 69.2%</td></tr>
-<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>39/96 = 40.6%</td><td>49/96 = 51.0%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>70/96 = 72.9%</td></tr>
+<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>8/26 = 30.8%</td><td>11/26 = 42.3%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>16/26 = 61.5%</td></tr>
+<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>39/96 = 40.6%</td><td>49/96 = 51.0%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>62/96 = 64.6%</td></tr>
 <tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>7/9 = 77.8%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td></tr>
 </table>
 <h3>Product 21</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>8/26 = 30.8%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>18/26 = 69.2%</td></tr>
-<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>37/96 = 38.5%</td><td>41/96 = 42.7%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>70/96 = 72.9%</td></tr>
+<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>8/26 = 30.8%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>16/26 = 61.5%</td></tr>
+<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>37/96 = 38.5%</td><td>41/96 = 42.7%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>62/96 = 64.6%</td></tr>
 <tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>6/9 = 66.7%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td></tr>
 </table>
 <h3>Product 22</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 25 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>9/20 = 45.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>14/20 = 70.0%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>37/60 = 61.7%</td><td>30/60 = 50.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>48/60 = 80.0%</td></tr>
+<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>9/20 = 45.0%</td><td>7/20 = 35.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>12/20 = 60.0%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>37/60 = 61.7%</td><td>30/60 = 50.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>44/60 = 73.3%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 23</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 12 states, 30 transitions (24 real / 6 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 18 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>24</td><td>0/24 = 0.0%</td><td>10/24 = 41.7%</td><td>13/24 = 54.2%</td><td>24/24 = 100.0%</td><td>24/24 = 100.0%</td><td>17/24 = 70.8%</td></tr>
-<tr><td>ActionExchange</td><td>87</td><td>0/87 = 0.0%</td><td>45/87 = 51.7%</td><td>55/87 = 63.2%</td><td>87/87 = 100.0%</td><td>87/87 = 100.0%</td><td>66/87 = 75.9%</td></tr>
-<tr><td>StateMissing</td><td>11</td><td>0/11 = 0.0%</td><td>9/11 = 81.8%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>10/11 = 90.9%</td></tr>
+<tr><td>TransitionMissing</td><td>24</td><td>0/24 = 0.0%</td><td>10/24 = 41.7%</td><td>13/24 = 54.2%</td><td>24/24 = 100.0%</td><td>24/24 = 100.0%</td><td>14/24 = 58.3%</td></tr>
+<tr><td>ActionExchange</td><td>87</td><td>0/87 = 0.0%</td><td>45/87 = 51.7%</td><td>55/87 = 63.2%</td><td>87/87 = 100.0%</td><td>87/87 = 100.0%</td><td>61/87 = 70.1%</td></tr>
+<tr><td>StateMissing</td><td>11</td><td>0/11 = 0.0%</td><td>9/11 = 81.8%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>8/11 = 72.7%</td></tr>
 </table>
 <h3>Product 24</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 29 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 11 test case(s).</p>
+<p><strong>Random baseline:</strong> 7 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>11/26 = 42.3%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>16/26 = 61.5%</td></tr>
-<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>49/96 = 51.0%</td><td>43/96 = 44.8%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>65/96 = 67.7%</td></tr>
-<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>11/26 = 42.3%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>11/26 = 42.3%</td></tr>
+<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>49/96 = 51.0%</td><td>43/96 = 44.8%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>45/96 = 46.9%</td></tr>
+<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>7/9 = 77.8%</td></tr>
 </table>
 <h3>Product 25</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 33 transitions (28 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 11 test case(s).</p>
+<p><strong>Random baseline:</strong> 7 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>28</td><td>0/28 = 0.0%</td><td>8/28 = 28.6%</td><td>9/28 = 32.1%</td><td>28/28 = 100.0%</td><td>28/28 = 100.0%</td><td>22/28 = 78.6%</td></tr>
-<tr><td>ActionExchange</td><td>115</td><td>0/115 = 0.0%</td><td>40/115 = 34.8%</td><td>44/115 = 38.3%</td><td>115/115 = 100.0%</td><td>115/115 = 100.0%</td><td>93/115 = 80.9%</td></tr>
+<tr><td>TransitionMissing</td><td>28</td><td>0/28 = 0.0%</td><td>8/28 = 28.6%</td><td>9/28 = 32.1%</td><td>28/28 = 100.0%</td><td>28/28 = 100.0%</td><td>18/28 = 64.3%</td></tr>
+<tr><td>ActionExchange</td><td>115</td><td>0/115 = 0.0%</td><td>40/115 = 34.8%</td><td>44/115 = 38.3%</td><td>115/115 = 100.0%</td><td>115/115 = 100.0%</td><td>80/115 = 69.6%</td></tr>
 <tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>6/9 = 66.7%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>8/9 = 88.9%</td></tr>
 </table>
 <h3>Product 26</h3>
 <p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, Intercom}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>7/18 = 38.9%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>12/18 = 66.7%</td></tr>
-<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>26/50 = 52.0%</td><td>28/50 = 56.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>42/50 = 84.0%</td></tr>
+<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>7/18 = 38.9%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>10/18 = 55.6%</td></tr>
+<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>26/50 = 52.0%</td><td>28/50 = 56.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>38/50 = 76.0%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>5/6 = 83.3%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <h3>Product 27</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, FirefighterService, Intercom, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 12 states, 31 transitions (25 real / 6 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 18 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>25</td><td>0/25 = 0.0%</td><td>10/25 = 40.0%</td><td>13/25 = 52.0%</td><td>25/25 = 100.0%</td><td>25/25 = 100.0%</td><td>17/25 = 68.0%</td></tr>
-<tr><td>ActionExchange</td><td>102</td><td>0/102 = 0.0%</td><td>48/102 = 47.1%</td><td>60/102 = 58.8%</td><td>102/102 = 100.0%</td><td>102/102 = 100.0%</td><td>82/102 = 80.4%</td></tr>
+<tr><td>TransitionMissing</td><td>25</td><td>0/25 = 0.0%</td><td>10/25 = 40.0%</td><td>13/25 = 52.0%</td><td>25/25 = 100.0%</td><td>25/25 = 100.0%</td><td>15/25 = 60.0%</td></tr>
+<tr><td>ActionExchange</td><td>102</td><td>0/102 = 0.0%</td><td>48/102 = 47.1%</td><td>60/102 = 58.8%</td><td>102/102 = 100.0%</td><td>102/102 = 100.0%</td><td>71/102 = 69.6%</td></tr>
 <tr><td>StateMissing</td><td>11</td><td>0/11 = 0.0%</td><td>9/11 = 81.8%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>11/11 = 100.0%</td><td>9/11 = 81.8%</td></tr>
 </table>
 <h3>Product 28</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, CardReader, ControlButtons, Intercom, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>23</td><td>0/23 = 0.0%</td><td>8/23 = 34.8%</td><td>9/23 = 39.1%</td><td>23/23 = 100.0%</td><td>23/23 = 100.0%</td><td>18/23 = 78.3%</td></tr>
-<tr><td>ActionExchange</td><td>92</td><td>0/92 = 0.0%</td><td>38/92 = 41.3%</td><td>39/92 = 42.4%</td><td>92/92 = 100.0%</td><td>92/92 = 100.0%</td><td>76/92 = 82.6%</td></tr>
+<tr><td>TransitionMissing</td><td>23</td><td>0/23 = 0.0%</td><td>8/23 = 34.8%</td><td>9/23 = 39.1%</td><td>23/23 = 100.0%</td><td>23/23 = 100.0%</td><td>16/23 = 69.6%</td></tr>
+<tr><td>ActionExchange</td><td>92</td><td>0/92 = 0.0%</td><td>38/92 = 41.3%</td><td>39/92 = 42.4%</td><td>92/92 = 100.0%</td><td>92/92 = 100.0%</td><td>65/92 = 70.7%</td></tr>
 <tr><td>StateMissing</td><td>8</td><td>0/8 = 0.0%</td><td>6/8 = 75.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td></tr>
 </table>
 <h3>Product 29</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>7/26 = 26.9%</td><td>11/26 = 42.3%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>16/26 = 61.5%</td></tr>
-<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>36/96 = 37.5%</td><td>49/96 = 51.0%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>62/96 = 64.6%</td></tr>
-<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>6/9 = 66.7%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>8/9 = 88.9%</td></tr>
+<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>7/26 = 26.9%</td><td>11/26 = 42.3%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>14/26 = 53.8%</td></tr>
+<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>36/96 = 37.5%</td><td>49/96 = 51.0%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>58/96 = 60.4%</td></tr>
+<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>6/9 = 66.7%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>7/9 = 77.8%</td></tr>
 </table>
 <h3>Product 30</h3>
 <p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, Intercom, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 5 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -393,19 +392,19 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 13 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>19</td><td>0/19 = 0.0%</td><td>7/19 = 36.8%</td><td>7/19 = 36.8%</td><td>19/19 = 100.0%</td><td>19/19 = 100.0%</td><td>14/19 = 73.7%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>28/60 = 46.7%</td><td>28/60 = 46.7%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>49/60 = 81.7%</td></tr>
+<tr><td>TransitionMissing</td><td>19</td><td>0/19 = 0.0%</td><td>7/19 = 36.8%</td><td>7/19 = 36.8%</td><td>19/19 = 100.0%</td><td>19/19 = 100.0%</td><td>12/19 = 63.2%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>28/60 = 46.7%</td><td>28/60 = 46.7%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>44/60 = 73.3%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <h3>Product 32</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, ManualDoorControl, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 16 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -417,67 +416,67 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}</p>
 <p><strong>Repaired FTS:</strong> 10 states, 31 transitions (26 real / 5 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 14 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>7/26 = 26.9%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>16/26 = 61.5%</td></tr>
-<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>34/96 = 35.4%</td><td>41/96 = 42.7%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>62/96 = 64.6%</td></tr>
-<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>5/9 = 55.6%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>8/9 = 88.9%</td></tr>
+<tr><td>TransitionMissing</td><td>26</td><td>0/26 = 0.0%</td><td>7/26 = 26.9%</td><td>9/26 = 34.6%</td><td>26/26 = 100.0%</td><td>26/26 = 100.0%</td><td>14/26 = 53.8%</td></tr>
+<tr><td>ActionExchange</td><td>96</td><td>0/96 = 0.0%</td><td>34/96 = 35.4%</td><td>41/96 = 42.7%</td><td>96/96 = 100.0%</td><td>96/96 = 100.0%</td><td>58/96 = 60.4%</td></tr>
+<tr><td>StateMissing</td><td>9</td><td>0/9 = 0.0%</td><td>5/9 = 55.6%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>9/9 = 100.0%</td><td>7/9 = 77.8%</td></tr>
 </table>
 <h3>Product 34</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 26 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 10 test case(s).</p>
+<p><strong>Random baseline:</strong> 7 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>22</td><td>0/22 = 0.0%</td><td>10/22 = 45.5%</td><td>7/22 = 31.8%</td><td>22/22 = 100.0%</td><td>22/22 = 100.0%</td><td>15/22 = 68.2%</td></tr>
-<tr><td>ActionExchange</td><td>71</td><td>0/71 = 0.0%</td><td>40/71 = 56.3%</td><td>34/71 = 47.9%</td><td>71/71 = 100.0%</td><td>71/71 = 100.0%</td><td>57/71 = 80.3%</td></tr>
-<tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>22</td><td>0/22 = 0.0%</td><td>10/22 = 45.5%</td><td>7/22 = 31.8%</td><td>22/22 = 100.0%</td><td>22/22 = 100.0%</td><td>11/22 = 50.0%</td></tr>
+<tr><td>ActionExchange</td><td>71</td><td>0/71 = 0.0%</td><td>40/71 = 56.3%</td><td>34/71 = 47.9%</td><td>71/71 = 100.0%</td><td>71/71 = 100.0%</td><td>44/71 = 62.0%</td></tr>
+<tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>5/7 = 71.4%</td></tr>
 </table>
 <h3>Product 35</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 23 transitions (20 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 9 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>8/20 = 40.0%</td><td>8/20 = 40.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>16/20 = 80.0%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>31/60 = 51.7%</td><td>36/60 = 60.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>51/60 = 85.0%</td></tr>
+<tr><td>TransitionMissing</td><td>20</td><td>0/20 = 0.0%</td><td>8/20 = 40.0%</td><td>8/20 = 40.0%</td><td>20/20 = 100.0%</td><td>20/20 = 100.0%</td><td>14/20 = 70.0%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>31/60 = 51.7%</td><td>36/60 = 60.0%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>49/60 = 81.7%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 36</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 13 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>7/18 = 38.9%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>14/18 = 77.8%</td></tr>
-<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>26/50 = 52.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>44/50 = 88.0%</td></tr>
+<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>7/18 = 38.9%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>12/18 = 66.7%</td></tr>
+<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>26/50 = 52.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>41/50 = 82.0%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <h3>Product 37</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 8 states, 25 transitions (22 real / 3 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 15 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 10 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>22</td><td>0/22 = 0.0%</td><td>8/22 = 36.4%</td><td>8/22 = 36.4%</td><td>22/22 = 100.0%</td><td>22/22 = 100.0%</td><td>14/22 = 63.6%</td></tr>
-<tr><td>ActionExchange</td><td>71</td><td>0/71 = 0.0%</td><td>34/71 = 47.9%</td><td>37/71 = 52.1%</td><td>71/71 = 100.0%</td><td>71/71 = 100.0%</td><td>55/71 = 77.5%</td></tr>
+<tr><td>TransitionMissing</td><td>22</td><td>0/22 = 0.0%</td><td>8/22 = 36.4%</td><td>8/22 = 36.4%</td><td>22/22 = 100.0%</td><td>22/22 = 100.0%</td><td>13/22 = 59.1%</td></tr>
+<tr><td>ActionExchange</td><td>71</td><td>0/71 = 0.0%</td><td>34/71 = 47.9%</td><td>37/71 = 52.1%</td><td>71/71 = 100.0%</td><td>71/71 = 100.0%</td><td>52/71 = 73.2%</td></tr>
 <tr><td>StateMissing</td><td>7</td><td>0/7 = 0.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td><td>7/7 = 100.0%</td></tr>
 </table>
 <h3>Product 38</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, ManualDoorControl, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 26 transitions (22 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 12 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 5 test case(s).</p>
+<p><strong>Random baseline:</strong> 4 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
@@ -489,48 +488,48 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 21 transitions (19 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 17 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 8 test case(s).</p>
+<p><strong>Random baseline:</strong> 6 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>19</td><td>0/19 = 0.0%</td><td>8/19 = 42.1%</td><td>7/19 = 36.8%</td><td>19/19 = 100.0%</td><td>19/19 = 100.0%</td><td>13/19 = 68.4%</td></tr>
-<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>30/60 = 50.0%</td><td>28/60 = 46.7%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>47/60 = 78.3%</td></tr>
-<tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>19</td><td>0/19 = 0.0%</td><td>8/19 = 42.1%</td><td>7/19 = 36.8%</td><td>19/19 = 100.0%</td><td>19/19 = 100.0%</td><td>9/19 = 47.4%</td></tr>
+<tr><td>ActionExchange</td><td>60</td><td>0/60 = 0.0%</td><td>30/60 = 50.0%</td><td>28/60 = 46.7%</td><td>60/60 = 100.0%</td><td>60/60 = 100.0%</td><td>40/60 = 66.7%</td></tr>
+<tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>5/6 = 83.3%</td></tr>
 </table>
 <h3>Product 40</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, PinPad}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 13 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>23</td><td>0/23 = 0.0%</td><td>7/23 = 30.4%</td><td>9/23 = 39.1%</td><td>23/23 = 100.0%</td><td>23/23 = 100.0%</td><td>18/23 = 78.3%</td></tr>
-<tr><td>ActionExchange</td><td>92</td><td>0/92 = 0.0%</td><td>34/92 = 37.0%</td><td>40/92 = 43.5%</td><td>92/92 = 100.0%</td><td>92/92 = 100.0%</td><td>73/92 = 79.3%</td></tr>
+<tr><td>TransitionMissing</td><td>23</td><td>0/23 = 0.0%</td><td>7/23 = 30.4%</td><td>9/23 = 39.1%</td><td>23/23 = 100.0%</td><td>23/23 = 100.0%</td><td>16/23 = 69.6%</td></tr>
+<tr><td>ActionExchange</td><td>92</td><td>0/92 = 0.0%</td><td>34/92 = 37.0%</td><td>40/92 = 43.5%</td><td>92/92 = 100.0%</td><td>92/92 = 100.0%</td><td>65/92 = 70.7%</td></tr>
 <tr><td>StateMissing</td><td>8</td><td>0/8 = 0.0%</td><td>6/8 = 75.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td></tr>
 </table>
 <h3>Product 41</h3>
 <p><strong>Selected features:</strong> selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 9 states, 27 transitions (23 real / 4 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 17 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>23</td><td>0/23 = 0.0%</td><td>8/23 = 34.8%</td><td>9/23 = 39.1%</td><td>23/23 = 100.0%</td><td>23/23 = 100.0%</td><td>16/23 = 69.6%</td></tr>
-<tr><td>ActionExchange</td><td>92</td><td>0/92 = 0.0%</td><td>36/92 = 39.1%</td><td>41/92 = 44.6%</td><td>92/92 = 100.0%</td><td>92/92 = 100.0%</td><td>70/92 = 76.1%</td></tr>
-<tr><td>StateMissing</td><td>8</td><td>0/8 = 0.0%</td><td>6/8 = 75.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td></tr>
+<tr><td>TransitionMissing</td><td>23</td><td>0/23 = 0.0%</td><td>8/23 = 34.8%</td><td>9/23 = 39.1%</td><td>23/23 = 100.0%</td><td>23/23 = 100.0%</td><td>13/23 = 56.5%</td></tr>
+<tr><td>ActionExchange</td><td>92</td><td>0/92 = 0.0%</td><td>36/92 = 39.1%</td><td>41/92 = 44.6%</td><td>92/92 = 100.0%</td><td>92/92 = 100.0%</td><td>62/92 = 67.4%</td></tr>
+<tr><td>StateMissing</td><td>8</td><td>0/8 = 0.0%</td><td>6/8 = 75.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>8/8 = 100.0%</td><td>7/8 = 87.5%</td></tr>
 </table>
 <h3>Product 42</h3>
 <p><strong>Selected features:</strong> selected = {ControlButtons, Intercom, MobileKey}</p>
 <p><strong>Repaired FTS:</strong> 7 states, 20 transitions (18 real / 2 <code>__end__</code>).</p>
 <p><strong>Family baseline projected to this product:</strong> 9 test case(s) (of 9 family-level), 16 real step(s) applicable.</p>
-<p><strong>Random baseline:</strong> 7 test case(s).</p>
+<p><strong>Random baseline:</strong> 5 test case(s).</p>
 <p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>7/18 = 38.9%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>12/18 = 66.7%</td></tr>
-<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>28/50 = 56.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>41/50 = 82.0%</td></tr>
+<tr><td>TransitionMissing</td><td>18</td><td>0/18 = 0.0%</td><td>7/18 = 38.9%</td><td>7/18 = 38.9%</td><td>18/18 = 100.0%</td><td>18/18 = 100.0%</td><td>10/18 = 55.6%</td></tr>
+<tr><td>ActionExchange</td><td>50</td><td>0/50 = 0.0%</td><td>28/50 = 56.0%</td><td>26/50 = 52.0%</td><td>50/50 = 100.0%</td><td>50/50 = 100.0%</td><td>37/50 = 74.0%</td></tr>
 <tr><td>StateMissing</td><td>6</td><td>0/6 = 0.0%</td><td>5/6 = 83.3%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td><td>6/6 = 100.0%</td></tr>
 </table>
 <hr/>
@@ -539,9 +538,9 @@ ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 
 <p><strong>Equivalent-mutant treatment:</strong> Inozemtseva &amp; Holmes (2014) — mutant not killed by ANY of five suites (family + product state + product transition + product pair + random) is conservatively classified equivalent and EXCLUDED from the score denominator. Scores: <strong>killed / (total − equivalent) = adjusted%</strong>.</p>
 <table border="1" cellpadding="6" cellspacing="0">
 <tr><th>Operator</th><th>Total mutants</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
-<tr><td>TransitionMissing</td><td>926</td><td>0/926 = 0.0%</td><td>340/926 = 36.7%</td><td>366/926 = 39.5%</td><td>926/926 = 100.0%</td><td>926/926 = 100.0%</td><td>634/926 = 68.5%</td></tr>
-<tr><td>ActionExchange</td><td>3176</td><td>0/3176 = 0.0%</td><td>1454/3176 = 45.8%</td><td>1568/3176 = 49.4%</td><td>3176/3176 = 100.0%</td><td>3176/3176 = 100.0%</td><td>2376/3176 = 74.8%</td></tr>
-<tr><td>StateMissing</td><td>330</td><td>0/330 = 0.0%</td><td>272/330 = 82.4%</td><td>330/330 = 100.0%</td><td>330/330 = 100.0%</td><td>330/330 = 100.0%</td><td>317/330 = 96.1%</td></tr>
+<tr><td>TransitionMissing</td><td>926</td><td>0/926 = 0.0%</td><td>340/926 = 36.7%</td><td>366/926 = 39.5%</td><td>926/926 = 100.0%</td><td>926/926 = 100.0%</td><td>547/926 = 59.1%</td></tr>
+<tr><td>ActionExchange</td><td>3176</td><td>0/3176 = 0.0%</td><td>1454/3176 = 45.8%</td><td>1568/3176 = 49.4%</td><td>3176/3176 = 100.0%</td><td>3176/3176 = 100.0%</td><td>2142/3176 = 67.4%</td></tr>
+<tr><td>StateMissing</td><td>330</td><td>0/330 = 0.0%</td><td>272/330 = 82.4%</td><td>330/330 = 100.0%</td><td>330/330 = 100.0%</td><td>330/330 = 100.0%</td><td>302/330 = 91.5%</td></tr>
 </table>
 <p>Total products: 42.</p>
 </body></html>
