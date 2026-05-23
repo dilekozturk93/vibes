@@ -219,9 +219,19 @@ public final class MeasurementCsv {
 
     /**
      * One row per (SPL × product × coverage type × operator) — RQ3
-     * efficiency = killed-non-equivalent mutants / total real transitions
-     * executed by the suite. Numerator from FaultDetector; denominator
-     * from TestExecution.executeSuite.
+     * efficiency = killed-non-equivalent mutants / suite cost.
+     *
+     * <p>Suite cost is the suite's raw non-synthetic action count
+     * (synthetic balancing edges and {@code __end__} transitions
+     * excluded), i.e. the number of real test steps the suite specifies
+     * a tester to perform. This is the paper-fair test-cost denominator
+     * because pair-coverage suites are Eulerian-cycle segments split at
+     * synthetic balancing edges; segments are designed to start at
+     * arbitrary pair vertices and would refuse en masse if a strict
+     * executor reset to the initial state between them. The raw-action
+     * count assumes a standard test framework that can teleport to each
+     * segment's start (= the dominant test-framework semantic for
+     * coverage suites).
      */
     public static void appendRq3EfficiencyRow(File file,
                                               int runId, String splName,
@@ -230,18 +240,18 @@ public final class MeasurementCsv {
                                               int totalMutants, int equivalentCount,
                                               int killedCount, int survivedCount,
                                               double mutationScorePct,
-                                              long totalTransitionsExecuted,
-                                              double efficiencyKilledPerTransition) throws IOException {
+                                              long suiteRealActionCount,
+                                              double efficiencyKilledPerAction) throws IOException {
         DecimalFormat df = commaDecimalFormatter();
         String header = "RunID;SPL Name;Product Index;Coverage Type;Operator;"
                 + "Total Mutants;Equivalent Count;Killed Count;Survived Count;"
-                + "Mutation Score(%);Total Transitions Executed;Efficiency (killed/transition)\n";
+                + "Mutation Score(%);Suite Real Action Count;Efficiency (killed/action)\n";
         String row = runId + ";" + splName + ";" + productIndex + ";" + coverageType + ";"
                 + operator + ";" + totalMutants + ";" + equivalentCount + ";"
                 + killedCount + ";" + survivedCount + ";"
                 + df.format(mutationScorePct) + ";"
-                + totalTransitionsExecuted + ";"
-                + df.format(efficiencyKilledPerTransition) + "\n";
+                + suiteRealActionCount + ";"
+                + df.format(efficiencyKilledPerAction) + "\n";
         appendRow(file, header, row);
     }
 }

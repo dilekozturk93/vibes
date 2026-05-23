@@ -448,13 +448,18 @@ public final class PerProductMutationReportGenerator {
         //     paper's baseline);
         //   - reproducible via explicit seed.
         //
-        // For the equivalence treatment + MD/HTML "Random" column we use a
-        // single representative random suite (seed 0, transition-coverage
-        // budget). The 100-seed aggregation for RQ2 random baseline
-        // happens separately below and is written into rq2-random-baseline.csv.
+        // The MD/HTML "Random" column shows a single representative random
+        // suite (seed 0, transition-coverage budget). The full 100-seed
+        // × 3-budget ensemble is computed below; its UNION of killed
+        // mutants per operator feeds the Inozemtseva equivalence
+        // treatment (a mutant is equivalent only if it survives ALL 300
+        // random suites in addition to the 4 coverage-directed suites),
+        // and the per-seed killed counts feed the rq2-random-baseline.csv
+        // median/quartile aggregation.
         int stateSuiteActions = countTestSuiteRealActions(Collections.singletonList(stateTc));
         int transSuiteActions = countTestSuiteRealActions(Collections.singletonList(transTc));
         int pairSuiteActions = countTestSuiteRealActions(pairSuite);
+        int familySuiteActions = countTestSuiteRealActions(projectedFamily);
         int repairedTransitions = countTransitions(repaired);
         int randomMaxSteps = RandomBaselineGenerator.modelRelativeMaxSteps(
                 repairedTransitions, RANDOM_MAX_STEPS_MULTIPLIER);
@@ -464,6 +469,51 @@ public final class PerProductMutationReportGenerator {
                         Math.max(1, transSuiteActions),
                         randomMaxSteps, 0L);
         List<TestCase> randomSuite = representativeRandomResult.getSuite();
+
+        // 100-seed × 3-budget random-baseline ensemble. Two outputs:
+        //   (a) per-(operator × budget) per-seed killed-count arrays for
+        //       the rq2-random-baseline.csv median/quartile rows;
+        //   (b) per-operator UNION of killed mutant keys across all 300
+        //       random suites — feeds the equivalence treatment below.
+        // The loop is hoisted before equivalence so the equivalent set
+        // can be the strict definition: a mutant is equivalent iff it
+        // survives every one of the 300 random suites in addition to the
+        // four coverage-directed suites.
+        int[] randomBudgets = new int[] {
+                Math.max(1, stateSuiteActions),
+                Math.max(1, transSuiteActions),
+                Math.max(1, pairSuiteActions)
+        };
+        String[] budgetSources = new String[] {"state", "transition", "pair"};
+        int[][] tmKilledMatrix = new int[randomBudgets.length][RANDOM_SEED_COUNT];
+        int[][] aexKilledMatrix = new int[randomBudgets.length][RANDOM_SEED_COUNT];
+        int[][] smKilledMatrix = new int[randomBudgets.length][RANDOM_SEED_COUNT];
+        int[] abortedTotals = new int[randomBudgets.length];
+        Set<String> tmRandomUnionKilled = new HashSet<>();
+        Set<String> aexRandomUnionKilled = new HashSet<>();
+        Set<String> smRandomUnionKilled = new HashSet<>();
+        for (int bi = 0; bi < randomBudgets.length; bi++) {
+            int budget = randomBudgets[bi];
+            String src = budgetSources[bi];
+            for (int seed = 0; seed < RANDOM_SEED_COUNT; seed++) {
+                RandomBaselineGenerator.Result rr = RandomBaselineGenerator.generate(
+                        repaired,
+                        spec.name + "_p" + productIndex + "_rb_" + src,
+                        budget, randomMaxSteps, (long) seed);
+                abortedTotals[bi] += rr.getAbortedWalks();
+                List<TestCase> rs = rr.getSuite();
+                FaultDetector.KillResult tmKr = FaultDetector.scoreSuiteDynamic(rs, tmMutants);
+                FaultDetector.KillResult aexKr = FaultDetector.scoreSuiteDynamic(rs, aexMutants);
+                FaultDetector.KillResult smKr = FaultDetector.scoreSuiteDynamic(rs, smMutants);
+                tmKilledMatrix[bi][seed] = tmKr.getKilled();
+                aexKilledMatrix[bi][seed] = aexKr.getKilled();
+                smKilledMatrix[bi][seed] = smKr.getKilled();
+                // Union-of-killed = mutants NOT in survivors.
+                addKilledKeys(tmMutants.keySet(), tmKr.getSurvivors(), tmRandomUnionKilled);
+                addKilledKeys(aexMutants.keySet(), aexKr.getSurvivors(), aexRandomUnionKilled);
+                addKilledKeys(smMutants.keySet(), smKr.getSurvivors(), smRandomUnionKilled);
+            }
+        }
 
         // Uniform execution-based kill check via dynamic replay for every
         // (operator × suite) combination — Parça 1 methodology decision
@@ -486,15 +536,20 @@ public final class PerProductMutationReportGenerator {
         FaultDetector.KillResult smPair = FaultDetector.scoreSuiteDynamic(pairSuite, smMutants);
         FaultDetector.KillResult smRandom = FaultDetector.scoreSuiteDynamic(randomSuite, smMutants);
 
-        // Inozemtseva & Holmes (2014) equivalent-mutant treatment: a
-        // mutant not killed by ANY of the five suites is conservatively
-        // classified equivalent and excluded from the denominator.
+        // Inozemtseva & Holmes (2014) equivalent-mutant treatment with the
+        // random axis upgraded to the 100-seed × 3-budget ensemble's
+        // union-of-killed (computed above). A mutant is equivalent iff it
+        // survives every coverage-directed suite AND every one of the
+        // 300 random suites. This is strictly more inclusive of
+        // "non-equivalent" than the legacy single-representative random
+        // — fewer mutants classified equivalent, denser equivalence
+        // signal, paper-fair under the user-agreed definition.
         Set<String> tmEquivalent = equivalentMutantKeys(tmMutants,
-                tmFamilyState, tmState, tmTrans, tmPair, tmRandom);
+                tmFamilyState, tmState, tmTrans, tmPair, tmRandomUnionKilled);
         Set<String> aexEquivalent = equivalentMutantKeys(aexMutants,
-                aexFamilyState, aexState, aexTrans, aexPair, aexRandom);
+                aexFamilyState, aexState, aexTrans, aexPair, aexRandomUnionKilled);
         Set<String> smEquivalent = equivalentMutantKeys(smMutants,
-                smFamilyState, smState, smTrans, smPair, smRandom);
+                smFamilyState, smState, smTrans, smPair, smRandomUnionKilled);
 
         md.write("\n### Product " + productIndex + "\n\n");
         md.write("**Selected features:** " + featuresLine + "\n\n");
@@ -614,89 +669,78 @@ public final class PerProductMutationReportGenerator {
                 smMutants.size(), smEquivalent.size(),
                 smState, smTrans, smPair, smFamilyState);
 
-        // ---- RQ2 CSV: random baseline (100-seed aggregation per budget × operator) ----
-        // Three budgets: state-suite actions, transition-suite actions, pair-suite actions.
-        int[] budgets = new int[] {
-                Math.max(1, stateSuiteActions),
-                Math.max(1, transSuiteActions),
-                Math.max(1, pairSuiteActions)
-        };
-        String[] budgetSources = new String[] {"state", "transition", "pair"};
-        for (int bi = 0; bi < budgets.length; bi++) {
-            int budget = budgets[bi];
+        // ---- RQ2 CSV: random baseline (writes from the hoisted 100-seed
+        // × 3-budget ensemble computed above for the equivalence union).
+        // Both writes reuse the same per-seed killed-count matrices; no
+        // additional kill checks here.
+        for (int bi = 0; bi < randomBudgets.length; bi++) {
+            int budget = randomBudgets[bi];
             String src = budgetSources[bi];
-            // Per-operator score arrays across seeds.
-            int[] tmKilled = new int[RANDOM_SEED_COUNT];
-            int[] aexKilled = new int[RANDOM_SEED_COUNT];
-            int[] smKilled = new int[RANDOM_SEED_COUNT];
-            int abortedTotal = 0;
-            for (int seed = 0; seed < RANDOM_SEED_COUNT; seed++) {
-                RandomBaselineGenerator.Result rr = RandomBaselineGenerator.generate(
-                        repaired,
-                        spec.name + "_p" + productIndex + "_rb_" + src,
-                        budget, randomMaxSteps, (long) seed);
-                abortedTotal += rr.getAbortedWalks();
-                List<TestCase> rs = rr.getSuite();
-                tmKilled[seed] = FaultDetector.scoreSuiteDynamic(rs, tmMutants).getKilled();
-                aexKilled[seed] = FaultDetector.scoreSuiteDynamic(rs, aexMutants).getKilled();
-                smKilled[seed] = FaultDetector.scoreSuiteDynamic(rs, smMutants).getKilled();
-            }
             writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "TransitionMissing",
                     tmMutants.size(), tmEquivalent.size(),
-                    budget, randomMaxSteps, abortedTotal, tmKilled);
+                    budget, randomMaxSteps, abortedTotals[bi], tmKilledMatrix[bi]);
             writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "ActionExchange",
                     aexMutants.size(), aexEquivalent.size(),
-                    budget, randomMaxSteps, abortedTotal, aexKilled);
+                    budget, randomMaxSteps, abortedTotals[bi], aexKilledMatrix[bi]);
             writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "StateMissing",
                     smMutants.size(), smEquivalent.size(),
-                    budget, randomMaxSteps, abortedTotal, smKilled);
+                    budget, randomMaxSteps, abortedTotals[bi], smKilledMatrix[bi]);
         }
 
-        // ---- RQ3 CSV: efficiency = killed / total transitions executed ----
-        long stateExecTransitions = TestExecution.executeSuite(
-                Collections.singletonList(stateTc), repaired).getTotalRealTransitions();
-        long transExecTransitions = TestExecution.executeSuite(
-                Collections.singletonList(transTc), repaired).getTotalRealTransitions();
-        long pairExecTransitions = TestExecution.executeSuite(
-                pairSuite, repaired).getTotalRealTransitions();
-        long familyExecTransitions = TestExecution.executeSuite(
-                projectedFamily, repaired).getTotalRealTransitions();
+        // ---- RQ3 CSV: efficiency = killed / total transitions in the
+        // suite. Denominator is the SUITE'S raw non-synthetic action count
+        // (countTestSuiteRealActions), not TestExecution.executeSuite's
+        // post-replay total. Reason: TestExecution resets the executor to
+        // the initial state between TestCases, but pair-coverage suites
+        // are Eulerian-cycle SEGMENTS designed to start at arbitrary
+        // pair vertices (split at the pair-graph's synthetic balancing
+        // edges). Replaying segments from initial refuses most of them on
+        // SPLs with rich pair-graph asymmetry (e.g. SAS: 38/46 pair TCs
+        // refused at step 0 on a representative product). The suite's
+        // raw action count is the paper-fair test-cost denominator:
+        // "transitions the suite would execute under a test framework
+        // that can teleport to each segment's start" — standard coverage
+        // suite semantic.
+        long stateSuiteCost = stateSuiteActions;
+        long transSuiteCost = transSuiteActions;
+        long pairSuiteCost = pairSuiteActions;
+        long familySuiteCost = familySuiteActions;
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
                 "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
-                tmState.getKilled(), stateExecTransitions);
+                tmState.getKilled(), stateSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "transition",
                 "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
-                tmTrans.getKilled(), transExecTransitions);
+                tmTrans.getKilled(), transSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "pair",
                 "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
-                tmPair.getKilled(), pairExecTransitions);
+                tmPair.getKilled(), pairSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
                 "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
-                tmFamilyState.getKilled(), familyExecTransitions);
+                tmFamilyState.getKilled(), familySuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
                 "ActionExchange", aexMutants.size(), aexEquivalent.size(),
-                aexState.getKilled(), stateExecTransitions);
+                aexState.getKilled(), stateSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "transition",
                 "ActionExchange", aexMutants.size(), aexEquivalent.size(),
-                aexTrans.getKilled(), transExecTransitions);
+                aexTrans.getKilled(), transSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "pair",
                 "ActionExchange", aexMutants.size(), aexEquivalent.size(),
-                aexPair.getKilled(), pairExecTransitions);
+                aexPair.getKilled(), pairSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
                 "ActionExchange", aexMutants.size(), aexEquivalent.size(),
-                aexFamilyState.getKilled(), familyExecTransitions);
+                aexFamilyState.getKilled(), familySuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
                 "StateMissing", smMutants.size(), smEquivalent.size(),
-                smState.getKilled(), stateExecTransitions);
+                smState.getKilled(), stateSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "transition",
                 "StateMissing", smMutants.size(), smEquivalent.size(),
-                smTrans.getKilled(), transExecTransitions);
+                smTrans.getKilled(), transSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "pair",
                 "StateMissing", smMutants.size(), smEquivalent.size(),
-                smPair.getKilled(), pairExecTransitions);
+                smPair.getKilled(), pairSuiteCost);
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
                 "StateMissing", smMutants.size(), smEquivalent.size(),
-                smFamilyState.getKilled(), familyExecTransitions);
+                smFamilyState.getKilled(), familySuiteCost);
 
         return ps;
     }
@@ -775,20 +819,35 @@ public final class PerProductMutationReportGenerator {
     }
 
     /**
-     * Total real-action count of a TestCase suite — synthetic transitions
-     * ({@code __balance__N}, {@code __end__}) and {@code __dup__N}-suffix
-     * traversals do NOT count, matching the user's "test event"
-     * definition. Used to derive paper-fair random-walk budgets at each
-     * coverage level.
+     * Total real-action count of a TestCase suite. Counted:
+     * <ul>
+     *   <li>Normal action-labelled transitions;</li>
+     *   <li>{@code __dup__N}-suffixed transitions — these are Chinese-Postman
+     *       edge-doubling labels around a REAL underlying action; executing
+     *       one IS a real test step (matches
+     *       {@link TestExecution#execute}'s {@code countsAsReal=true}
+     *       branch for {@code __dup__}).</li>
+     * </ul>
+     * Not counted:
+     * <ul>
+     *   <li>{@code __balance__N} synthetic balancing edges
+     *       ({@link EulerianBalancer#SYNTHETIC_ACTION_PREFIX});</li>
+     *   <li>{@code __end__} transitions — back-to-INIT synthetic edges
+     *       added during ESG→FTS conversion, with no SUT meaning.</li>
+     * </ul>
+     * Used both as the action budget for the random-baseline ensemble
+     * (per coverage level) AND as the RQ3 efficiency denominator
+     * (paper-fair "test cost of the suite under a teleport-capable test
+     * framework", which is the standard semantic for coverage suites).
      */
     private static int countTestSuiteRealActions(List<TestCase> suite) {
         int n = 0;
         for (TestCase tc : suite) {
             for (Transition t : tc) {
                 String name = t.getAction().getName();
-                if (EulerianBalancer.isSyntheticAction(t.getAction())) continue;
+                if (name.startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)) continue;
                 if (name.startsWith("__end__")) continue;
-                // __dup__ traversals ARE real executions of the underlying action
+                // Normal action OR __dup__N-suffix (real action doubled) — both count.
                 n++;
             }
         }
@@ -843,9 +902,18 @@ public final class PerProductMutationReportGenerator {
     }
 
     /**
-     * Returns the set of mutant keys not killed by any of the five suites.
-     * A mutant is killed by a suite iff its key does NOT appear in that
-     * suite's survivor list. Equivalent set = mutants surviving ALL five.
+     * Returns the set of mutant keys not killed by any of the coverage-
+     * directed suites AND not killed by any of the random-baseline
+     * ensemble's suites. Inozemtseva &amp; Holmes (2014) equivalent
+     * treatment, with the random axis upgraded from a single
+     * representative seed to the 100-seed × 3-budget ensemble: a mutant
+     * is equivalent iff every one of the 300 random suites failed to
+     * kill it (in addition to all four coverage-directed suites failing).
+     *
+     * @param randomEnsembleKilled  union of mutant keys killed by any
+     *                              random suite in the 100-seed × 3-budget
+     *                              ensemble. A mutant key OUTSIDE this set
+     *                              is therefore surviving the random axis.
      */
     private static Set<String> equivalentMutantKeys(
             Map<String, FeaturedTransitionSystem> mutants,
@@ -853,23 +921,38 @@ public final class PerProductMutationReportGenerator {
             FaultDetector.KillResult state,
             FaultDetector.KillResult trans,
             FaultDetector.KillResult pair,
-            FaultDetector.KillResult random) {
+            Set<String> randomEnsembleKilled) {
         Set<String> survivedFamily = new HashSet<>(family.getSurvivors());
         Set<String> survivedState = new HashSet<>(state.getSurvivors());
         Set<String> survivedTrans = new HashSet<>(trans.getSurvivors());
         Set<String> survivedPair = new HashSet<>(pair.getSurvivors());
-        Set<String> survivedRandom = new HashSet<>(random.getSurvivors());
         Set<String> equivalent = new LinkedHashSet<>();
         for (String key : mutants.keySet()) {
             if (survivedFamily.contains(key)
                     && survivedState.contains(key)
                     && survivedTrans.contains(key)
                     && survivedPair.contains(key)
-                    && survivedRandom.contains(key)) {
+                    && !randomEnsembleKilled.contains(key)) {
                 equivalent.add(key);
             }
         }
         return equivalent;
+    }
+
+    /**
+     * Accumulates the killed mutant keys for a given suite's KillResult
+     * into {@code unionTarget}. Killed = total mutant keys minus the
+     * suite's survivor list.
+     */
+    private static void addKilledKeys(Set<String> allMutantKeys,
+                                      List<String> survivors,
+                                      Set<String> unionTarget) {
+        Set<String> survivorSet = new HashSet<>(survivors);
+        for (String key : allMutantKeys) {
+            if (!survivorSet.contains(key)) {
+                unionTarget.add(key);
+            }
+        }
     }
 
     /**

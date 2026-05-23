@@ -21,8 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * "Action Exchange" mutation operator (scope-restricted variant,
- * 2026-05-22 decision).
+ * "Action Exchange" mutation operator.
  *
  * <p>For each transition {@code t = (s, α, d)} the operator produces
  * mutants {@code (s, β, d)} — same source, same target, same feature
