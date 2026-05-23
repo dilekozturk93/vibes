@@ -1,0 +1,15 @@
+repairedStates=31
+repairedTransitions=63
+repairedEnd=1
+repairedReal=62
+repairedSCC=true
+pairGraphStates=63
+pairGraphEdges=130
+pgInitIn=0
+pgInitOut=2
+pgSccCount=4
+balReal=130
+balDup=159
+balBalance=3
+balToInit=2
+balToOther=1

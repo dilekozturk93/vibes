@@ -26,57 +26,73 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * study for triple-coverage. The construction here is the L=2 case
  * (pairs); higher coverage levels would iterate the same construction.
  *
- * <p>Pair-graph construction rules:
+ * <p>Pair-graph construction rules (INIT-less variant, 2026-05-23):
  * <ul>
- *   <li>A distinguished state {@code INIT} represents "no transition
- *       executed yet" — the starting point of any test case.</li>
  *   <li>For each NON-SYNTHETIC transition {@code t} of the original FTS,
  *       the pair graph has a state named {@code "p_<source>_<action>_<target>"}.
  *       Synthetic transitions ({@code __end__}, {@code __balance__N},
  *       {@code __dup__N}) are SKIPPED at this stage — see the rationale
  *       below.</li>
- *   <li>For each non-synthetic original transition {@code t} whose source
- *       is the original initial state, the pair graph has an edge
- *       {@code INIT -> p(t)} labelled with {@code action(t)}.</li>
  *   <li>For each ordered pair of non-synthetic original transitions
  *       {@code (t1, t2)} with {@code target(t1) == source(t2)}, the pair
  *       graph has an edge {@code p(t1) -> p(t2)} labelled with
  *       {@code action(t2)}.</li>
+ *   <li><strong>No separate INIT vertex.</strong> Instead, the pair
+ *       graph's initial state is the <em>canonical initial-pair-vertex</em>
+ *       — the lexicographically-first pair-vertex {@code p(t_init)}
+ *       where {@code t_init.source == originalFTS.initialState}. The
+ *       canonical-start choice is deterministic so re-running the
+ *       pipeline on the same input produces the same output.</li>
  * </ul>
+ *
+ * <p><strong>Why INIT was removed.</strong> The previous design used a
+ * dedicated {@code INIT} vertex with edges {@code INIT -> p(t)} for every
+ * initial-outgoing transition. That vertex had in-degree 0 by construction
+ * (no edges pointing TO {@code INIT}), so in the
+ * {@link EulerianBalancer} it always appeared as an unsatisfiable
+ * excessIn target — every pairing attempt fell through to a synthetic
+ * {@code __balance__} edge. With INIT removed, the role of "where the
+ * test starts" is played by a regular pair-vertex {@code p(t_init)},
+ * which already has in-edges from {@code p(t')} for every {@code t'}
+ * whose target is the FTS initial state. The structural source of every
+ * INIT-bound {@code __balance__} disappears; balance is mostly handled
+ * via {@code __dup__} (real-path edge doubling).
+ *
+ * <p>Downstream consumers translate the Hierholzer cycle to an FTS action
+ * sequence by:
+ * <ol>
+ *   <li>PREPENDING the canonical start's underlying transition (the
+ *       first transition the tester must execute to reach the cycle's
+ *       starting pair-vertex);</li>
+ *   <li>For each pair-graph cycle edge, emitting the underlying
+ *       transition pointed to by the edge's {@code target} pair-vertex
+ *       (via the {@link Result#pairStateToOriginalTransition} side-map).
+ *       {@code __dup__N} edges' targets resolve to the underlying real
+ *       transition (the same transition the un-suffixed pair-vertex
+ *       represents). {@code __balance__N} edges have no target
+ *       pair-vertex and are dropped at translation, producing a
+ *       discontinuity in the action sequence that downstream splitters
+ *       must handle.</li>
+ * </ol>
  *
  * <p><strong>Why synthetic transitions are excluded from pair-graph
  * construction.</strong> The coverage metric
  * ({@link be.vibes.testgeneration.experiment.MetricsCollector
  * #pairCoveragePercentageOfSuite}) drops synthetic actions from each
  * test case's walk before forming consecutive pairs. Pairs involving an
- * {@code __end__} (e.g. {@code (real, __end__)} or
- * {@code (__end__, real)}) are therefore worth zero in the denominator,
- * yet the un-filtered pair-graph construction would generate pair-graph
- * edges for them. Translating those edges back produces TestCases like
- * {@code [__end__, real]} that contribute nothing to pair coverage but
- * still cost a test case slot and a setup/teardown — visible in early
- * reports as repeated single-action test cases like "open mailbox" alone,
- * each coming from a {@code p(__end___from_X) -> p(open_mailbox)} edge.
- * Skipping synthetic transitions at construction time aligns the graph
- * with the metric.</p>
+ * {@code __end__} would otherwise produce TestCases that contribute
+ * nothing to pair coverage; skipping synthetic transitions at
+ * construction time aligns the graph with the metric.
  *
- * <p>A Hierholzer Euler cycle on the (balanced, SCC-repaired) pair graph
- * visits every pair-graph edge exactly once. By construction, the
- * sequence of labels along that cycle is a sequence of original-FTS
- * transitions that covers every contiguous transition pair, which is
- * exactly the all-transition-pairs coverage criterion of RQ3.
- *
- * <p>The {@link Result#pairStateToOriginalTransition} side-map lets
- * downstream code translate a pair-graph cycle back into the
- * corresponding sequence of original-FTS transitions: the
- * {@link Transition#getTarget()} of each pair-graph cycle edge is the
- * pair-graph state whose {@link Transition} we executed.
+ * <p>A Hierholzer Euler cycle on the (balanced) pair graph visits every
+ * pair-graph edge exactly once. By construction, the sequence of labels
+ * along that cycle is a sequence of original-FTS transitions that covers
+ * every contiguous transition pair, which is exactly the
+ * all-transition-pairs coverage criterion.
  */
 public final class PairGraphTransformer {
 
     private static final Logger LOG = LoggerFactory.getLogger(PairGraphTransformer.class);
-
-    private static final String INIT_NAME = "INIT";
 
     private PairGraphTransformer() {
         // Utility class.
@@ -89,6 +105,11 @@ public final class PairGraphTransformer {
     public static final class Result {
         public final FeaturedTransitionSystem pairGraph;
         public final Map<State, Transition> pairStateToOriginalTransition;
+        /**
+         * Name of the canonical initial pair-vertex (the lexicographically
+         * first {@code p(t_init)} for {@code t_init.source == FTS_initial}).
+         * Also {@code pairGraph.getInitialState().getName()}.
+         */
         public final String initialStateName;
 
         Result(FeaturedTransitionSystem pairGraph,
@@ -105,11 +126,13 @@ public final class PairGraphTransformer {
      * Builds the pair graph of the given (post-projection, SCC-repaired)
      * FTS and returns it along with the side-map used to translate
      * pair-graph traversals back into original-FTS transition sequences.
+     *
+     * @throws IllegalArgumentException if the FTS has no non-synthetic
+     *         transition starting at the initial state (no candidate for
+     *         the canonical initial pair-vertex)
      */
     public static Result transform(FeaturedTransitionSystem original) {
         checkNotNull(original, "Original FTS may not be null");
-
-        FeaturedTransitionSystemFactory factory = new FeaturedTransitionSystemFactory(INIT_NAME);
 
         // Index NON-SYNTHETIC original transitions by source state. Synthetic
         // transitions (__end__ et al.) are filtered out at construction time
@@ -127,6 +150,35 @@ public final class PairGraphTransformer {
                     k -> new java.util.ArrayList<>()).add(t);
         }
 
+        // Pick the canonical initial pair-vertex deterministically: the
+        // lexicographically-smallest pair-state name among non-synthetic
+        // transitions starting at the FTS initial state. This becomes the
+        // pair-graph's initial state. If the FTS initial state has
+        // multiple outgoings, the other initial-pair-vertices still get
+        // their own pair-vertices and are visited naturally by the
+        // Hierholzer cycle — they become starts of subsequent test cases
+        // after splitAtInitialReturns. Only the canonical one needs the
+        // pair-graph's "initial state" marker.
+        State originalInitial = original.getInitialState();
+        String canonicalStart = null;
+        for (Transition t : allOriginalTransitions) {
+            if (!t.getSource().equals(originalInitial)) continue;
+            String name = pairStateName(t);
+            if (canonicalStart == null || name.compareTo(canonicalStart) < 0) {
+                canonicalStart = name;
+            }
+        }
+        if (canonicalStart == null) {
+            throw new IllegalArgumentException(
+                    "FTS initial state '" + originalInitial.getName()
+                            + "' has no non-synthetic outgoing transition; "
+                            + "cannot construct INIT-less pair graph (no candidate for "
+                            + "canonical initial pair-vertex).");
+        }
+
+        FeaturedTransitionSystemFactory factory =
+                new FeaturedTransitionSystemFactory(canonicalStart);
+
         // Pre-declare a pair-graph state for every original transition so
         // factory.addTransition can name-resolve them. Also build the
         // pair-state -> original-transition side-map.
@@ -134,21 +186,12 @@ public final class PairGraphTransformer {
         Map<Transition, String> originalToPairName = new HashMap<>();
         for (Transition t : allOriginalTransitions) {
             String name = pairStateName(t);
-            factory.addState(name);
-            originalToPairName.put(t, name);
-        }
-
-        // INIT -> p(t) edges for every original transition starting at the
-        // original initial state.
-        State originalInitial = original.getInitialState();
-        for (Transition t : allOriginalTransitions) {
-            if (!t.getSource().equals(originalInitial)) {
-                continue;
+            // canonicalStart was added implicitly via the factory constructor;
+            // skip re-adding it to avoid a duplicate-state exception.
+            if (!name.equals(canonicalStart)) {
+                factory.addState(name);
             }
-            String actionName = t.getAction().getName();
-            factory.addAction(actionName);
-            factory.addTransition(INIT_NAME, actionName, FExpression.trueValue(),
-                    originalToPairName.get(t));
+            originalToPairName.put(t, name);
         }
 
         // p(t1) -> p(t2) edges for every contiguous transition pair.
@@ -174,11 +217,10 @@ public final class PairGraphTransformer {
             pairStateToOriginalTransition.put(pairState, t);
         }
 
-        LOG.info("Pair graph: {} states ({} transitions + INIT), {} edges (pairs)",
-                allOriginalTransitions.size() + 1, allOriginalTransitions.size(),
-                countTransitions(pairGraph));
+        LOG.info("Pair graph (INIT-less): {} vertices, {} edges; canonical start = {}",
+                allOriginalTransitions.size(), countTransitions(pairGraph), canonicalStart);
 
-        return new Result(pairGraph, pairStateToOriginalTransition, INIT_NAME);
+        return new Result(pairGraph, pairStateToOriginalTransition, canonicalStart);
     }
 
     /**

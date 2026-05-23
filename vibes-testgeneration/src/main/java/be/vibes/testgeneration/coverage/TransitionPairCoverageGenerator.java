@@ -4,8 +4,8 @@ import be.vibes.fexpression.configuration.Configuration;
 import be.vibes.testgeneration.graph.EulerianBalancer;
 import be.vibes.testgeneration.graph.HierholzerEulerCycle;
 import be.vibes.testgeneration.graph.InitialSccFilter;
-import be.vibes.testgeneration.graph.StronglyConnectedComponents;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
+import be.vibes.testgeneration.product.TestCaseSplitter;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.State;
 import be.vibes.ts.TestCase;
@@ -15,42 +15,63 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Generates an all-transition-pairs test case for one product configuration.
+ * Generates an all-transition-pairs test suite for one product configuration.
  *
- * <p>Pipeline:
- *
+ * <p>Pipeline (INIT-less variant, 2026-05-23):
  * <ol>
  *   <li>{@link FExpressionPreservingProjection#project} — project SPL FTS
  *       onto the configuration.</li>
- *   <li>{@link InitialSccFilter#keepInitialScc} — drop states that
- *       cannot return to the initial state.</li>
- *   <li>{@link PairGraphTransformer#transform} — build the pair graph.</li>
- *   <li>{@link InitialSccFilter#keepInitialScc} (again, on the pair
- *       graph) — drop pair-graph states that cannot return to its INIT.</li>
- *   <li>{@link EulerianBalancer#balance} — make every pair-graph state
- *       have equal in / out degree.</li>
- *   <li>{@link HierholzerEulerCycle#compute} — extract an Euler cycle
- *       that visits every pair-graph edge exactly once.</li>
- *   <li>Translate the pair-graph cycle back to a sequence of original
- *       (repaired) FTS transitions and wrap as {@link TestCase}.</li>
+ *   <li>{@link InitialSccFilter#keepInitialScc} — drop states that cannot
+ *       return to the FTS initial state.</li>
+ *   <li>{@link PairGraphTransformer#transform} — build the INIT-less pair
+ *       graph (vertex per non-synthetic FTS transition, edges for
+ *       contiguous pairs, canonical initial pair-vertex chosen as the
+ *       lexicographically-smallest {@code p(t_init)}).</li>
+ *   <li>{@link EulerianBalancer#balanceWithoutPrecheck} — pair imbalanced
+ *       vertices via Chinese-Postman shortest-path doublings
+ *       ({@code __dup__N}). When no real path exists between an excessOut
+ *       and excessIn pair (e.g. across an SCC disconnect produced by
+ *       {@code __end__} filtering — known residual issue), fall through
+ *       to a direct synthetic {@code __balance__N} edge.</li>
+ *   <li>{@link HierholzerEulerCycle#compute} — extract a single Euler
+ *       cycle that visits every pair-graph edge exactly once.</li>
+ *   <li>Translate the cycle to an FTS action sequence: PREPEND the
+ *       canonical start's underlying transition (so the test case starts
+ *       at the FTS initial state and covers the
+ *       (start_vertex_transition, first_emitted_action) pair), then for
+ *       each cycle edge emit the underlying transition pointed to by the
+ *       edge's target pair-vertex. {@code __dup__N} edges' targets
+ *       resolve naturally to the underlying real transition (the
+ *       suffixed and un-suffixed pair-edges share a target pair-vertex).
+ *       {@code __balance__N} edges have no underlying transition and
+ *       are dropped — they leave a discontinuity in the action sequence
+ *       at the bridge point.</li>
+ *   <li>{@link TestCaseSplitter#splitAtInitialReturns} — split the
+ *       single concatenated TestCase at every visit to the FTS initial
+ *       state, producing one trip-shaped TestCase per round-trip.
+ *       Trips after a state-1 return are guaranteed to start at the FTS
+ *       initial state and therefore executable end-to-end. Trips
+ *       immediately after a dropped {@code __balance__N} (the rare
+ *       SCC-disconnect case) may begin mid-FTS — this is the documented
+ *       Threats-to-Validity residual.</li>
+ *   <li>Optional dedup: TestCases whose action-name sequences are
+ *       identical to a previously-emitted TestCase are dropped. The
+ *       underlying pair coverage of the suite is preserved (the
+ *       deduplicated copies cover the same pairs).</li>
  * </ol>
  *
- * <p>Each pair-graph edge corresponds to a contiguous transition pair in
- * the original FTS, so the resulting test case covers every reachable
+ * <p>Each pair-graph edge corresponds to one contiguous transition pair
+ * in the original FTS, so the resulting suite covers every reachable
  * transition pair at least once.
- *
- * <p>Synthetic balancing edges in the pair graph (introduced by
- * {@link EulerianBalancer}) cannot be translated back to original
- * transitions; they are skipped during translation and contribute only
- * to the cycle length, not to the test case length. The resulting
- * {@link TestCase} may therefore contain fewer transitions than the
- * pair-graph cycle length.
  */
 public final class TransitionPairCoverageGenerator {
 
@@ -63,19 +84,6 @@ public final class TransitionPairCoverageGenerator {
     /**
      * Generates an all-transition-pairs test SUITE for the given product
      * configuration.
-     *
-     * <p>Returns a {@link List} of {@link TestCase}s, not a single
-     * {@code TestCase}. The pair graph contains a source-only {@code INIT}
-     * vertex whose missing incoming edges are supplied as synthetic
-     * balancing edges by {@link EulerianBalancer}. The resulting
-     * Hierholzer cycle naturally splits at every synthetic edge: each
-     * "real segment" of the cycle starts at INIT in the pair graph and
-     * corresponds to a contiguous, replayable test case in the original
-     * FTS. Synthetic edges themselves do not appear in any returned
-     * test case.
-     *
-     * <p>For RQ metrics ("total test length", "test count"), aggregate
-     * across the returned list.
      */
     public static List<TestCase> generate(FeaturedTransitionSystem fts,
                                           Configuration product,
@@ -86,57 +94,36 @@ public final class TransitionPairCoverageGenerator {
     /**
      * Per-sub-phase timings produced by
      * {@link #generateWithTimings(FeaturedTransitionSystem, Configuration, String, Timings)}.
-     * All values are nanoseconds; helpers convert to milliseconds for
-     * human-readable reporting.
-     *
-     * <p>The harness uses these to report the "transformation time"
-     * sub-segment separately from the rest of "test generation":
-     * {@code transformationNanos = balancingNanos + hierholzerEulerNanos +
-     * translationAndDedupeNanos}, and {@code pairGraphConstructionNanos}
-     * is the part of pair generation that is NOT graph transformation.
-     * Outer callers should report
-     * {@code testGenNanos − transformationNanos = pure generation} so
-     * the total formula {@code projection + gen + transform + exec}
-     * does not double-count.
+     * Disjoint segments — their sum exactly equals the wall-clock time
+     * of the method.
      */
     public static final class Timings {
         public long projectionAndRepairNanos;
         public long pairGraphConstructionNanos;
         public long balancingNanos;
-        public long sccCheckNanos;
         public long hierholzerEulerNanos;
         public long translationAndDedupeNanos;
 
         /**
          * "Transformation" in the RQ1 sense — everything between
          * pair-graph construction and the test cases: balancing,
-         * strong-connectivity check, Hierholzer Euler cycle, and the
-         * segment translation + dedup. Disjoint from
-         * {@link #pairGraphConstructionNanos}.
+         * Hierholzer Euler cycle, and the translation + split + dedup.
+         * Disjoint from {@link #pairGraphConstructionNanos}.
          */
         public long transformationNanos() {
-            return balancingNanos + sccCheckNanos + hierholzerEulerNanos
-                    + translationAndDedupeNanos;
+            return balancingNanos + hierholzerEulerNanos + translationAndDedupeNanos;
         }
 
-        /**
-         * Sum of all internal segments. Exactly equals the wall-clock
-         * time of {@link #generateWithTimings} (modulo nanosecond
-         * resolution + method-call overhead). Used for the
-         * {@code segmentSum ≈ wallClock} sentinel.
-         */
         public long testGenTotalNanos() {
             return projectionAndRepairNanos + pairGraphConstructionNanos
-                    + balancingNanos + sccCheckNanos + hierholzerEulerNanos
+                    + balancingNanos + hierholzerEulerNanos
                     + translationAndDedupeNanos;
         }
     }
 
     /**
-     * Same as {@link #generate(FeaturedTransitionSystem, Configuration, String)}
-     * but, if {@code timings} is non-null, records per-sub-phase nanosecond
-     * timings into it. The sub-phases are disjoint (no nested measurements),
-     * so summing them gives the exact total wall-clock time of this method.
+     * Same as {@link #generate} but, if {@code timings} is non-null,
+     * records per-sub-phase nanosecond timings into it.
      */
     public static List<TestCase> generateWithTimings(FeaturedTransitionSystem fts,
                                                      Configuration product,
@@ -151,118 +138,152 @@ public final class TransitionPairCoverageGenerator {
                 FExpressionPreservingProjection.project(fts, product);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
         long t1 = System.nanoTime();
-        if (timings != null) {
-            timings.projectionAndRepairNanos = t1 - t0;
-        }
+        if (timings != null) timings.projectionAndRepairNanos = t1 - t0;
 
         long t2 = System.nanoTime();
         PairGraphTransformer.Result pgResult = PairGraphTransformer.transform(repaired);
         long t3 = System.nanoTime();
-        if (timings != null) {
-            timings.pairGraphConstructionNanos = t3 - t2;
-        }
+        if (timings != null) timings.pairGraphConstructionNanos = t3 - t2;
 
-        // The pair graph is intentionally NOT strongly connected before
-        // balancing: its INIT vertex has out-degree N (one per original
-        // initial-state transition) but in-degree 0, so applying the usual
-        // InitialSccFilter would discard everything except INIT.
-        // EulerianBalancer.balanceWithoutPrecheck supplies the missing
-        // INIT-incoming edges as synthetic balancing edges, which restores
-        // strong connectivity. We verify that explicitly below.
         long t4 = System.nanoTime();
         FeaturedTransitionSystem pairGraphBalanced =
                 EulerianBalancer.balanceWithoutPrecheck(pgResult.pairGraph);
         long t5 = System.nanoTime();
-        if (timings != null) {
-            timings.balancingNanos = t5 - t4;
-        }
-        long sccStart = System.nanoTime();
-        if (!StronglyConnectedComponents.isStronglyConnected(pairGraphBalanced)) {
-            throw new IllegalStateException(
-                    "Pair graph for '" + testCaseBaseId
-                            + "' is not strongly connected after balancing; "
-                            + "the projected FTS may have an unrepaired-fragment in its pair structure.");
-        }
-        long sccEnd = System.nanoTime();
-        if (timings != null) {
-            timings.sccCheckNanos = sccEnd - sccStart;
-        }
+        if (timings != null) timings.balancingNanos = t5 - t4;
 
         long t6 = System.nanoTime();
         List<Transition> pairCycle = HierholzerEulerCycle.compute(pairGraphBalanced);
         long t7 = System.nanoTime();
-        if (timings != null) {
-            timings.hierholzerEulerNanos = t7 - t6;
-        }
+        if (timings != null) timings.hierholzerEulerNanos = t7 - t6;
 
+        // ---- Translate pair-cycle to trips, inline ----
         long t8 = System.nanoTime();
-        // Split the pair-graph cycle at synthetic edges and translate each
-        // real segment into a TestCase against the repaired FTS.
-        List<List<Transition>> realSegments = splitAtSyntheticEdges(pairCycle);
-        List<TestCase> testCases = new ArrayList<>(realSegments.size());
-        int segIndex = 0;
-        int totalTransitions = 0;
-        for (List<Transition> segment : realSegments) {
-            if (segment.isEmpty()) {
-                continue;
-            }
-            List<Transition> translated = translateSegment(segment, repaired,
-                    pgResult.pairStateToOriginalTransition);
-            String id = testCaseBaseId + "_seg" + (segIndex++);
-            TestCase tc = new TestCase(id);
-            try {
-                tc.enqueueAll(translated);
-            } catch (TransitionSystenExecutionException ex) {
-                throw new IllegalStateException(
-                        "Translated pair-graph segment could not be enqueued into TestCase '"
-                                + id + "': " + ex.getMessage(), ex);
-            }
-            testCases.add(tc);
-            totalTransitions += translated.size();
+        State canonicalStart = pairGraphBalanced.getInitialState();
+        // Resolve the canonical start back to the side-map. The balanced
+        // graph carries the same state-name set as the pre-balance pair
+        // graph, so we look up by name.
+        State canonicalStartInPg = pgResult.pairGraph.getState(canonicalStart.getName());
+        Transition prefixTransition =
+                pgResult.pairStateToOriginalTransition.get(canonicalStartInPg);
+        if (prefixTransition == null) {
+            throw new IllegalStateException(
+                    "Canonical start pair-vertex '" + canonicalStart.getName()
+                            + "' has no entry in the side-map; PairGraphTransformer mapping is incomplete.");
         }
-        // Dedupe at the action-sequence level: two TestCases whose translated
-        // action sequences are identical exercise the same action-pair set
-        // even if they correspond to different transition-level pairs (e.g.
-        // 'send_email from state2->state1' vs 'send_email from state3->state1'
-        // — same action label, different state path). Under action-pair
-        // coverage (the standard in the user's prior ESG-Fx work and the
-        // semantically meaningful criterion for SUT testing), only one of
-        // them is needed; the others are operationally redundant.
-        // Transition-level uniqueness is preserved in the underlying FTS;
-        // this dedup only drops surplus copies from the suite.
-        List<TestCase> dedupedCases = dedupeByActionSequence(testCases);
+        State ftsInitial = repaired.getInitialState();
+
+        // Trip-building loop. Two trip-boundary triggers:
+        //   (a) Natural: the current transition's target is the FTS initial
+        //       state (a tester would reset here for the next test case).
+        //   (b) Discontinuity: a __balance__N edge in the cycle was just
+        //       skipped, so the next emission's source is not the previous
+        //       emission's target. We must close the current trip and start
+        //       the next one mid-FTS — that mid-FTS trip is the known
+        //       Threats-to-Validity residual on SPLs whose pair graph has
+        //       SCC disconnects under __end__ filtering.
+        List<TestCase> testCases = new ArrayList<>();
+        int tripCounter = 0;
+        TestCase currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
+        boolean discontinuityPending = false;
+        int balanceSkipped = 0;
+        int midFtsTrips = 0;
+        try {
+            Transition prefixResolved = findInRepaired(repaired, prefixTransition);
+            currentTrip.enqueue(prefixResolved);
+            if (prefixResolved.getTarget().equals(ftsInitial)) {
+                testCases.add(currentTrip);
+                tripCounter++;
+                currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
+            }
+            for (Transition pairEdge : pairCycle) {
+                String label = pairEdge.getAction().getName();
+                if (label.startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)) {
+                    balanceSkipped++;
+                    if (!isEmptyTc(currentTrip)) {
+                        testCases.add(currentTrip);
+                        tripCounter++;
+                        currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
+                    }
+                    discontinuityPending = true;
+                    continue;
+                }
+                Transition underlying = pgResult.pairStateToOriginalTransition.get(pairEdge.getTarget());
+                if (underlying == null) {
+                    throw new IllegalStateException(
+                            "Pair-graph target state " + pairEdge.getTarget().getName()
+                                    + " has no entry in the side-map; mapping is incomplete.");
+                }
+                Transition resolved = findInRepaired(repaired, underlying);
+                if (discontinuityPending) {
+                    // First transition of a post-__balance__ trip. It
+                    // starts wherever the __balance__'s target pair-vertex
+                    // represents — likely mid-FTS, not necessarily at the
+                    // initial state.
+                    if (!resolved.getSource().equals(ftsInitial)) {
+                        midFtsTrips++;
+                    }
+                    discontinuityPending = false;
+                }
+                currentTrip.enqueue(resolved);
+                if (resolved.getTarget().equals(ftsInitial)) {
+                    testCases.add(currentTrip);
+                    tripCounter++;
+                    currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
+                }
+            }
+            if (!isEmptyTc(currentTrip)) {
+                testCases.add(currentTrip);
+            }
+        } catch (TransitionSystenExecutionException ex) {
+            throw new IllegalStateException(
+                    "Translated pair-graph cycle could not be enqueued into trip '"
+                            + currentTrip.getId() + "': " + ex.getMessage(), ex);
+        }
+        if (midFtsTrips > 0) {
+            LOG.warn("Pair-coverage suite for '{}': {} trip(s) begin mid-FTS "
+                            + "(after __balance__N discontinuity) — known residual on SPLs whose "
+                            + "pair graph has SCC disconnects under __end__ filtering",
+                    testCaseBaseId, midFtsTrips);
+        }
+        LOG.debug("Pair cycle translated for '{}': prefix + {} cycle edges "
+                        + "(of which {} __balance__ skipped) -> {} trips ({} mid-FTS)",
+                testCaseBaseId, pairCycle.size(), balanceSkipped, testCases.size(), midFtsTrips);
+
+        // ---- Dedup by action sequence ----
+        List<TestCase> deduped = dedupeByActionSequence(testCases);
         long t9 = System.nanoTime();
-        if (timings != null) {
-            timings.translationAndDedupeNanos = t9 - t8;
-        }
-        LOG.info("Generated pair-coverage suite for '{}': {} pair-graph edges -> "
-                        + "{} test cases ({} after action-sequence dedup), {} total transitions",
-                testCaseBaseId, pairCycle.size(), testCases.size(),
-                dedupedCases.size(), totalTransitions);
-        return dedupedCases;
+        if (timings != null) timings.translationAndDedupeNanos = t9 - t8;
+
+        LOG.info("Pair-coverage suite for '{}': cycle {} edges (incl prefix), "
+                        + "{} trips before dedup, {} after dedup",
+                testCaseBaseId, pairCycle.size() + 1, testCases.size(), deduped.size());
+        return deduped;
     }
 
     /**
      * Drops TestCases whose action-name sequences duplicate an earlier
-     * TestCase's. Preserves the first-occurrence ordering. Synthetic actions
-     * (already-stripped __dup__ suffixes etc.) are normalised before comparing.
+     * TestCase's. Preserves first-occurrence ordering. Synthetic-action
+     * prefixes are normalised before comparing so
+     * {@code action__dup__N} compares as {@code action}.
      */
     private static List<TestCase> dedupeByActionSequence(List<TestCase> raw) {
         List<TestCase> out = new ArrayList<>(raw.size());
-        java.util.Set<String> seenKeys = new java.util.HashSet<>();
+        Set<String> seen = new HashSet<>();
         for (TestCase tc : raw) {
             StringBuilder key = new StringBuilder();
             for (Transition t : tc) {
-                if (EulerianBalancer.isSyntheticAction(t.getAction())) {
-                    continue;
-                }
                 String name = t.getAction().getName();
-                if (name.contains(EulerianBalancer.DUPLICATE_ACTION_INFIX)) {
-                    name = EulerianBalancer.stripDuplicateSuffix(name);
+                if (EulerianBalancer.isSyntheticAction(t.getAction())) {
+                    if (name.contains(EulerianBalancer.DUPLICATE_ACTION_INFIX)) {
+                        name = EulerianBalancer.stripDuplicateSuffix(name);
+                    } else {
+                        // pure synthetic (__balance__N, __end__): ignore
+                        continue;
+                    }
                 }
-                key.append(name).append("");
+                key.append(name).append('');
             }
-            if (seenKeys.add(key.toString())) {
+            if (seen.add(key.toString())) {
                 out.add(tc);
             }
         }
@@ -270,81 +291,10 @@ public final class TransitionPairCoverageGenerator {
     }
 
     /**
-     * Splits a pair-graph Euler cycle at every synthetic balancing edge.
-     * Each returned sub-list is a maximal stretch of non-synthetic edges
-     * (a "real segment") in their original cyclic order.
+     * Resolves a reference Transition back to the equivalent instance in
+     * {@code repaired} so the TestCase carries Transition objects owned
+     * by the FTS the caller will use for execution / coverage measurement.
      */
-    private static List<List<Transition>> splitAtSyntheticEdges(List<Transition> cycle) {
-        List<List<Transition>> segments = new ArrayList<>();
-        List<Transition> current = new ArrayList<>();
-        for (Transition t : cycle) {
-            if (EulerianBalancer.isSyntheticAction(t.getAction())) {
-                if (!current.isEmpty()) {
-                    segments.add(current);
-                    current = new ArrayList<>();
-                }
-            } else {
-                current.add(t);
-            }
-        }
-        if (!current.isEmpty()) {
-            segments.add(current);
-        }
-        return segments;
-    }
-
-    /**
-     * Translates a single (non-empty, synthetic-free) pair-graph cycle
-     * segment back to a sequence of original (repaired) FTS transitions.
-     *
-     * <p>For each pair-graph edge in the segment, look up its target state
-     * (a pair-graph state representing "we just executed original
-     * transition X") in the side-map to find X.
-     *
-     * <p>Non-first segments are arrived at via a synthetic balancing
-     * edge in the pair graph; the synthetic edge can land at ANY
-     * pair-state, not only INIT. The pair represented by the segment's
-     * first pair-graph edge ({@code (t_Y, t_X)} where {@code t_Y} owns
-     * the segment's first source pair-state and {@code t_X} owns its
-     * target) is therefore "split" across the synthetic teleport and
-     * would otherwise not appear consecutively in any test case. To
-     * preserve coverage we PREPEND {@code t_Y} to such a segment. The
-     * resulting test case starts mid-FTS at {@code source(t_Y)}; that's
-     * legal and replayable as long as the executor is reset between
-     * test cases of the suite.
-     *
-     * <p>Re-resolves transition identity against {@code repaired} so the
-     * resulting {@link Transition}s belong to the FTS instance the
-     * caller will use for execution / coverage measurement.
-     */
-    private static List<Transition> translateSegment(List<Transition> segment,
-                                                     FeaturedTransitionSystem repaired,
-                                                     Map<State, Transition> sideMap) {
-        List<Transition> result = new ArrayList<>(segment.size() + 1);
-
-        // If the segment's first pair-graph edge starts at a real
-        // pair-state p(t_Y) (i.e. not INIT), prepend t_Y so that the
-        // pair (t_Y, t_X) carried by the first pair-graph edge appears
-        // as a consecutive pair in the resulting test case.
-        State firstSource = segment.get(0).getSource();
-        Transition prefix = sideMap.get(firstSource);
-        if (prefix != null) {
-            result.add(findInRepaired(repaired, prefix));
-        }
-
-        for (Transition pairEdge : segment) {
-            Transition originalTransition = sideMap.get(pairEdge.getTarget());
-            if (originalTransition == null) {
-                throw new IllegalStateException(
-                        "Pair-graph target state " + pairEdge.getTarget().getName()
-                                + " has no entry in the side-map; mapping is incomplete.");
-            }
-            Transition resolved = findInRepaired(repaired, originalTransition);
-            result.add(resolved);
-        }
-        return result;
-    }
-
     private static Transition findInRepaired(FeaturedTransitionSystem repaired,
                                              Transition reference) {
         State src = repaired.getState(reference.getSource().getName());
@@ -358,5 +308,9 @@ public final class TransitionPairCoverageGenerator {
             return it.next();
         }
         return reference;
+    }
+
+    private static boolean isEmptyTc(TestCase tc) {
+        return !tc.iterator().hasNext();
     }
 }

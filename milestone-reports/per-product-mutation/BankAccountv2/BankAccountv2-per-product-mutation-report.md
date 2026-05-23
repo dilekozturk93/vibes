@@ -13,6 +13,8 @@
 5. **Replay test suite on each mutant.** A TestCase **kills** a mutant iff at least one of its non-synthetic transitions `(source, action, target)` is NOT present in the mutant. For TransitionMissing this happens whenever the suite traverses the removed transition; for ActionExchange whenever the suite traverses the mutated transition (the original `(s, a_orig, t)` triple is gone — replaced by `(s, a_new, t)`).
 6. **Mutation score per criterion** = killed mutants / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). The equivalent set is conservatively defined as mutants surviving all five suites in this study (family + product state + product transition + product pair + random).
 
+**Random baseline column.** The "Random" column shows a single representative random suite (seed 0, action budget matched to the product's transition-coverage suite, per-walk step ceiling 2 × |T_repaired|, cut-and-include semantics — see `RandomBaselineGenerator` JavaDoc). The full 100-seed × 3-budget random-baseline distribution per (product × operator) — with median / quartiles / extremes and aborted-walk counts — lives in `milestone-reports/metrics/rq2-random-baseline.csv` (per-coverage-level budget; this column is the legacy display only).
+
 **Note on coverage saturation.** TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models. RQ3 is reframed around the cost dimension under this saturation property.
 
 ---
@@ -28,14 +30,14 @@
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 22/25 = 88.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
-| ActionExchange | 89 | 0/89 = 0.0% | 82/89 = 92.1% | 77/89 = 86.5% | 89/89 = 100.0% | 89/89 = 100.0% | 68/89 = 76.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 22/25 = 88.0% | 25/25 = 100.0% | 25/25 = 100.0% | 20/25 = 80.0% |
+| ActionExchange | 89 | 0/89 = 0.0% | 82/89 = 92.1% | 77/89 = 86.5% | 89/89 = 100.0% | 89/89 = 100.0% | 70/89 = 78.7% |
 | StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 2
@@ -46,15 +48,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 39/54 = 72.2% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
+| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 44/54 = 81.5% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 3
 
@@ -64,15 +66,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
-| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 38/49 = 77.6% |
-| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
+| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 44/49 = 89.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 9/10 = 90.0% |
 
 ### Product 4
 
@@ -82,15 +84,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 48/68 = 70.6% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 56/68 = 82.4% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 5
 
@@ -100,15 +102,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 16/29 = 55.2% |
-| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 69/107 = 64.5% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 18/29 = 62.1% |
+| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 76/107 = 71.0% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 11/18 = 61.1% |
 
 ### Product 6
 
@@ -118,15 +120,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 15/19 = 78.9% | 15/19 = 78.9% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
-| ActionExchange | 64 | 0/64 = 0.0% | 56/64 = 87.5% | 51/64 = 79.7% | 64/64 = 100.0% | 64/64 = 100.0% | 51/64 = 79.7% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 10/11 = 90.9% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 15/19 = 78.9% | 15/19 = 78.9% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
+| ActionExchange | 64 | 0/64 = 0.0% | 56/64 = 87.5% | 51/64 = 79.7% | 64/64 = 100.0% | 64/64 = 100.0% | 56/64 = 87.5% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% |
 
 ### Product 7
 
@@ -136,7 +138,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -154,15 +156,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
-| ActionExchange | 69 | 0/69 = 0.0% | 63/69 = 91.3% | 57/69 = 82.6% | 69/69 = 100.0% | 69/69 = 100.0% | 45/69 = 65.2% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 69 | 0/69 = 0.0% | 63/69 = 91.3% | 57/69 = 82.6% | 69/69 = 100.0% | 69/69 = 100.0% | 56/69 = 81.2% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
 
 ### Product 9
 
@@ -172,15 +174,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 24/27 = 88.9% | 27/27 = 100.0% | 27/27 = 100.0% | 19/27 = 70.4% |
-| ActionExchange | 93 | 0/93 = 0.0% | 81/93 = 87.1% | 78/93 = 83.9% | 93/93 = 100.0% | 93/93 = 100.0% | 68/93 = 73.1% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 24/27 = 88.9% | 27/27 = 100.0% | 27/27 = 100.0% | 22/27 = 81.5% |
+| ActionExchange | 93 | 0/93 = 0.0% | 81/93 = 87.1% | 78/93 = 83.9% | 93/93 = 100.0% | 93/93 = 100.0% | 75/93 = 80.6% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 16/18 = 88.9% |
 
 ### Product 10
 
@@ -208,15 +210,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 34/54 = 63.0% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 7/12 = 58.3% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 13/18 = 72.2% |
+| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 40/54 = 74.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 12
 
@@ -226,14 +228,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 21/30 = 70.0% |
-| ActionExchange | 131 | 0/131 = 0.0% | 115/131 = 87.8% | 100/131 = 76.3% | 131/131 = 100.0% | 131/131 = 100.0% | 95/131 = 72.5% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 22/30 = 73.3% |
+| ActionExchange | 131 | 0/131 = 0.0% | 115/131 = 87.8% | 100/131 = 76.3% | 131/131 = 100.0% | 131/131 = 100.0% | 101/131 = 77.1% |
 | StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
 
 ### Product 13
@@ -244,14 +246,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 63/91 = 69.2% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 68/91 = 74.7% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
 
 ### Product 14
@@ -262,15 +264,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 61/84 = 72.6% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 68/84 = 81.0% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 12/17 = 70.6% |
 
 ### Product 15
 
@@ -280,15 +282,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 40/54 = 74.1% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 9/14 = 64.3% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 19/20 = 95.0% |
+| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 50/54 = 92.6% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% |
 
 ### Product 16
 
@@ -298,15 +300,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 20/22 = 90.9% | 22/22 = 100.0% | 22/22 = 100.0% | 19/22 = 86.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 62/74 = 83.8% | 64/74 = 86.5% | 74/74 = 100.0% | 74/74 = 100.0% | 63/74 = 85.1% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 20/22 = 90.9% | 22/22 = 100.0% | 22/22 = 100.0% | 21/22 = 95.5% |
+| ActionExchange | 74 | 0/74 = 0.0% | 62/74 = 83.8% | 64/74 = 86.5% | 74/74 = 100.0% | 74/74 = 100.0% | 69/74 = 93.2% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% |
 
 ### Product 17
 
@@ -316,15 +318,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 46 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 19/33 = 57.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 118/144 = 81.9% | 144/144 = 100.0% | 144/144 = 100.0% | 94/144 = 65.3% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 25/33 = 75.8% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 118/144 = 81.9% | 144/144 = 100.0% | 144/144 = 100.0% | 108/144 = 75.0% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 17/20 = 85.0% |
 
 ### Product 18
 
@@ -334,7 +336,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -352,7 +354,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -388,7 +390,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -406,15 +408,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 68/101 = 67.3% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 24/28 = 85.7% |
+| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 84/101 = 83.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 23
 
@@ -424,15 +426,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 34/54 = 63.0% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 7/12 = 58.3% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 13/18 = 72.2% |
+| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 40/54 = 74.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 24
 
@@ -442,15 +444,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 53/74 = 71.6% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 25
 
@@ -460,15 +462,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 26/31 = 83.9% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 18/31 = 58.1% |
-| ActionExchange | 132 | 0/132 = 0.0% | 116/132 = 87.9% | 107/132 = 81.1% | 132/132 = 100.0% | 132/132 = 100.0% | 82/132 = 62.1% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 26/31 = 83.9% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 20/31 = 64.5% |
+| ActionExchange | 132 | 0/132 = 0.0% | 116/132 = 87.9% | 107/132 = 81.1% | 132/132 = 100.0% | 132/132 = 100.0% | 89/132 = 67.4% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 13/19 = 68.4% |
 
 ### Product 26
 
@@ -496,15 +498,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 48/83 = 57.8% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 63/83 = 75.9% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 28
 
@@ -514,14 +516,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 20/24 = 83.3% |
-| ActionExchange | 70 | 0/70 = 0.0% | 60/70 = 85.7% | 58/70 = 82.9% | 70/70 = 100.0% | 70/70 = 100.0% | 57/70 = 81.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 21/24 = 87.5% |
+| ActionExchange | 70 | 0/70 = 0.0% | 60/70 = 85.7% | 58/70 = 82.9% | 70/70 = 100.0% | 70/70 = 100.0% | 61/70 = 87.1% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 15/16 = 93.8% |
 
 ### Product 29
@@ -532,7 +534,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -550,15 +552,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 34 | 0/34 = 0.0% | 31/34 = 91.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 20/34 = 58.8% |
-| ActionExchange | 148 | 0/148 = 0.0% | 138/148 = 93.2% | 123/148 = 83.1% | 148/148 = 100.0% | 148/148 = 100.0% | 88/148 = 59.5% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 34 | 0/34 = 0.0% | 31/34 = 91.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 25/34 = 73.5% |
+| ActionExchange | 148 | 0/148 = 0.0% | 138/148 = 93.2% | 123/148 = 83.1% | 148/148 = 100.0% | 148/148 = 100.0% | 112/148 = 75.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
 
 ### Product 31
 
@@ -568,15 +570,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 51/91 = 56.0% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 22/25 = 88.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 76/91 = 83.5% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% |
 
 ### Product 32
 
@@ -586,14 +588,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 71/83 = 85.5% | 68/83 = 81.9% | 83/83 = 100.0% | 83/83 = 100.0% | 55/83 = 66.3% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 16/24 = 66.7% |
+| ActionExchange | 83 | 0/83 = 0.0% | 71/83 = 85.5% | 68/83 = 81.9% | 83/83 = 100.0% | 83/83 = 100.0% | 60/83 = 72.3% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
 
 ### Product 33
@@ -604,15 +606,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 61/84 = 72.6% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 68/84 = 81.0% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 12/17 = 70.6% |
 
 ### Product 34
 
@@ -622,15 +624,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 21/23 = 91.3% | 23/23 = 100.0% | 23/23 = 100.0% | 17/23 = 73.9% |
-| ActionExchange | 63 | 0/63 = 0.0% | 53/63 = 84.1% | 55/63 = 87.3% | 63/63 = 100.0% | 63/63 = 100.0% | 48/63 = 76.2% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 21/23 = 91.3% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 63 | 0/63 = 0.0% | 53/63 = 84.1% | 55/63 = 87.3% | 63/63 = 100.0% | 63/63 = 100.0% | 53/63 = 84.1% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 35
 
@@ -640,15 +642,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 27/32 = 84.4% | 32/32 = 100.0% | 32/32 = 100.0% | 16/32 = 50.0% |
-| ActionExchange | 138 | 0/138 = 0.0% | 124/138 = 89.9% | 108/138 = 78.3% | 138/138 = 100.0% | 138/138 = 100.0% | 87/138 = 63.0% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 27/32 = 84.4% | 32/32 = 100.0% | 32/32 = 100.0% | 22/32 = 68.8% |
+| ActionExchange | 138 | 0/138 = 0.0% | 124/138 = 89.9% | 108/138 = 78.3% | 138/138 = 100.0% | 138/138 = 100.0% | 99/138 = 71.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
 
 ### Product 36
 
@@ -658,15 +660,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 19/20 = 95.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 74 | 0/74 = 0.0% | 67/74 = 90.5% | 69/74 = 93.2% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 19/20 = 95.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 67/74 = 90.5% | 69/74 = 93.2% | 74/74 = 100.0% | 74/74 = 100.0% | 68/74 = 91.9% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 37
 
@@ -676,15 +678,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 28/33 = 84.8% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 21/33 = 63.6% |
-| ActionExchange | 163 | 0/163 = 0.0% | 145/163 = 89.0% | 134/163 = 82.2% | 163/163 = 100.0% | 163/163 = 100.0% | 123/163 = 75.5% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 28/33 = 84.8% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 25/33 = 75.8% |
+| ActionExchange | 163 | 0/163 = 0.0% | 145/163 = 89.0% | 134/163 = 82.2% | 163/163 = 100.0% | 163/163 = 100.0% | 142/163 = 87.1% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
 
 ### Product 38
 
@@ -694,15 +696,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 66/101 = 65.3% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 80/101 = 79.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 39
 
@@ -712,15 +714,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 53/75 = 70.7% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
+| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 58/75 = 77.3% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 40
 
@@ -730,15 +732,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 62 | 0/62 = 0.0% | 56/62 = 90.3% | 54/62 = 87.1% | 62/62 = 100.0% | 62/62 = 100.0% | 45/62 = 72.6% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| ActionExchange | 62 | 0/62 = 0.0% | 56/62 = 90.3% | 54/62 = 87.1% | 62/62 = 100.0% | 62/62 = 100.0% | 50/62 = 80.6% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 41
 
@@ -748,7 +750,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -766,7 +768,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -784,15 +786,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
-| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 66/84 = 78.6% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 22/25 = 88.0% |
+| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 73/84 = 86.9% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 44
 
@@ -802,7 +804,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -820,7 +822,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -856,15 +858,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 82 | 0/82 = 0.0% | 70/82 = 85.4% | 67/82 = 81.7% | 82/82 = 100.0% | 82/82 = 100.0% | 51/82 = 62.2% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 10/15 = 66.7% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 82 | 0/82 = 0.0% | 70/82 = 85.4% | 67/82 = 81.7% | 82/82 = 100.0% | 82/82 = 100.0% | 65/82 = 79.3% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
 
 ### Product 48
 
@@ -874,15 +876,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 24/27 = 88.9% | 27/27 = 100.0% | 27/27 = 100.0% | 19/27 = 70.4% |
-| ActionExchange | 93 | 0/93 = 0.0% | 81/93 = 87.1% | 78/93 = 83.9% | 93/93 = 100.0% | 93/93 = 100.0% | 68/93 = 73.1% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 24/27 = 88.9% | 27/27 = 100.0% | 27/27 = 100.0% | 22/27 = 81.5% |
+| ActionExchange | 93 | 0/93 = 0.0% | 81/93 = 87.1% | 78/93 = 83.9% | 93/93 = 100.0% | 93/93 = 100.0% | 75/93 = 80.6% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 16/18 = 88.9% |
 
 ### Product 49
 
@@ -892,14 +894,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 27/31 = 87.1% | 31/31 = 100.0% | 31/31 = 100.0% | 23/31 = 74.2% |
-| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 96/116 = 82.8% | 116/116 = 100.0% | 116/116 = 100.0% | 87/116 = 75.0% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 27/31 = 87.1% | 31/31 = 100.0% | 31/31 = 100.0% | 24/31 = 77.4% |
+| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 96/116 = 82.8% | 116/116 = 100.0% | 116/116 = 100.0% | 92/116 = 79.3% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
 
 ### Product 50
@@ -910,15 +912,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 26/31 = 83.9% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 18/31 = 58.1% |
-| ActionExchange | 132 | 0/132 = 0.0% | 116/132 = 87.9% | 107/132 = 81.1% | 132/132 = 100.0% | 132/132 = 100.0% | 82/132 = 62.1% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 26/31 = 83.9% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 20/31 = 64.5% |
+| ActionExchange | 132 | 0/132 = 0.0% | 116/132 = 87.9% | 107/132 = 81.1% | 132/132 = 100.0% | 132/132 = 100.0% | 89/132 = 67.4% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 13/19 = 68.4% |
 
 ### Product 51
 
@@ -928,14 +930,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 25/28 = 89.3% | 28/28 = 100.0% | 28/28 = 100.0% | 22/28 = 78.6% |
-| ActionExchange | 133 | 0/133 = 0.0% | 131/133 = 98.5% | 115/133 = 86.5% | 133/133 = 100.0% | 133/133 = 100.0% | 106/133 = 79.7% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 25/28 = 89.3% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 133 | 0/133 = 0.0% | 131/133 = 98.5% | 115/133 = 86.5% | 133/133 = 100.0% | 133/133 = 100.0% | 112/133 = 84.2% |
 | StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 15/16 = 93.8% |
 
 ### Product 52
@@ -946,15 +948,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 24/27 = 88.9% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 14/27 = 51.9% |
-| ActionExchange | 127 | 0/127 = 0.0% | 119/127 = 93.7% | 103/127 = 81.1% | 127/127 = 100.0% | 127/127 = 100.0% | 79/127 = 62.2% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 9/16 = 56.3% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 24/27 = 88.9% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 16/27 = 59.3% |
+| ActionExchange | 127 | 0/127 = 0.0% | 119/127 = 93.7% | 103/127 = 81.1% | 127/127 = 100.0% | 127/127 = 100.0% | 87/127 = 68.5% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
 
 ### Product 53
 
@@ -964,7 +966,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -982,15 +984,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 40/54 = 74.1% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 9/14 = 64.3% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 19/20 = 95.0% |
+| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 50/54 = 92.6% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% |
 
 ### Product 55
 
@@ -1000,15 +1002,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 76 | 0/76 = 0.0% | 70/76 = 92.1% | 62/76 = 81.6% | 76/76 = 100.0% | 76/76 = 100.0% | 42/76 = 55.3% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
+| ActionExchange | 76 | 0/76 = 0.0% | 70/76 = 92.1% | 62/76 = 81.6% | 76/76 = 100.0% | 76/76 = 100.0% | 58/76 = 76.3% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 56
 
@@ -1018,14 +1020,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 21/30 = 70.0% |
-| ActionExchange | 131 | 0/131 = 0.0% | 115/131 = 87.8% | 100/131 = 76.3% | 131/131 = 100.0% | 131/131 = 100.0% | 95/131 = 72.5% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 22/30 = 73.3% |
+| ActionExchange | 131 | 0/131 = 0.0% | 115/131 = 87.8% | 100/131 = 76.3% | 131/131 = 100.0% | 131/131 = 100.0% | 101/131 = 77.1% |
 | StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
 
 ### Product 57
@@ -1036,7 +1038,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1054,7 +1056,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1072,15 +1074,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 26/29 = 89.7% | 23/29 = 79.3% | 29/29 = 100.0% | 29/29 = 100.0% | 19/29 = 65.5% |
-| ActionExchange | 110 | 0/110 = 0.0% | 101/110 = 91.8% | 87/110 = 79.1% | 110/110 = 100.0% | 110/110 = 100.0% | 77/110 = 70.0% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 26/29 = 89.7% | 23/29 = 79.3% | 29/29 = 100.0% | 29/29 = 100.0% | 24/29 = 82.8% |
+| ActionExchange | 110 | 0/110 = 0.0% | 101/110 = 91.8% | 87/110 = 79.1% | 110/110 = 100.0% | 110/110 = 100.0% | 92/110 = 83.6% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 60
 
@@ -1090,7 +1092,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1126,7 +1128,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1144,7 +1146,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1162,7 +1164,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1180,14 +1182,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 63/91 = 69.2% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 68/91 = 74.7% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
 
 ### Product 66
@@ -1198,15 +1200,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 25/27 = 92.6% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 20/27 = 74.1% |
-| ActionExchange | 98 | 0/98 = 0.0% | 91/98 = 92.9% | 81/98 = 82.7% | 98/98 = 100.0% | 98/98 = 100.0% | 70/98 = 71.4% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 25/27 = 92.6% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 23/27 = 85.2% |
+| ActionExchange | 98 | 0/98 = 0.0% | 91/98 = 92.9% | 81/98 = 82.7% | 98/98 = 100.0% | 98/98 = 100.0% | 82/98 = 83.7% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 67
 
@@ -1234,15 +1236,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 21/23 = 91.3% | 23/23 = 100.0% | 23/23 = 100.0% | 17/23 = 73.9% |
-| ActionExchange | 63 | 0/63 = 0.0% | 53/63 = 84.1% | 55/63 = 87.3% | 63/63 = 100.0% | 63/63 = 100.0% | 48/63 = 76.2% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 21/23 = 91.3% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 63 | 0/63 = 0.0% | 53/63 = 84.1% | 55/63 = 87.3% | 63/63 = 100.0% | 63/63 = 100.0% | 53/63 = 84.1% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 69
 
@@ -1270,15 +1272,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 26/29 = 89.7% | 23/29 = 79.3% | 29/29 = 100.0% | 29/29 = 100.0% | 19/29 = 65.5% |
-| ActionExchange | 110 | 0/110 = 0.0% | 101/110 = 91.8% | 87/110 = 79.1% | 110/110 = 100.0% | 110/110 = 100.0% | 77/110 = 70.0% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 26/29 = 89.7% | 23/29 = 79.3% | 29/29 = 100.0% | 29/29 = 100.0% | 24/29 = 82.8% |
+| ActionExchange | 110 | 0/110 = 0.0% | 101/110 = 91.8% | 87/110 = 79.1% | 110/110 = 100.0% | 110/110 = 100.0% | 92/110 = 83.6% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 71
 
@@ -1288,15 +1290,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 35 | 0/35 = 0.0% | 33/35 = 94.3% | 30/35 = 85.7% | 35/35 = 100.0% | 35/35 = 100.0% | 20/35 = 57.1% |
-| ActionExchange | 154 | 0/154 = 0.0% | 146/154 = 94.8% | 124/154 = 80.5% | 154/154 = 100.0% | 154/154 = 100.0% | 86/154 = 55.8% |
-| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| TransitionMissing | 35 | 0/35 = 0.0% | 33/35 = 94.3% | 30/35 = 85.7% | 35/35 = 100.0% | 35/35 = 100.0% | 26/35 = 74.3% |
+| ActionExchange | 154 | 0/154 = 0.0% | 146/154 = 94.8% | 124/154 = 80.5% | 154/154 = 100.0% | 154/154 = 100.0% | 114/154 = 74.0% |
+| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
 
 ### Product 72
 
@@ -1306,7 +1308,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1324,15 +1326,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 26/29 = 89.7% | 23/29 = 79.3% | 29/29 = 100.0% | 29/29 = 100.0% | 19/29 = 65.5% |
-| ActionExchange | 110 | 0/110 = 0.0% | 101/110 = 91.8% | 87/110 = 79.1% | 110/110 = 100.0% | 110/110 = 100.0% | 77/110 = 70.0% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 26/29 = 89.7% | 23/29 = 79.3% | 29/29 = 100.0% | 29/29 = 100.0% | 24/29 = 82.8% |
+| ActionExchange | 110 | 0/110 = 0.0% | 101/110 = 91.8% | 87/110 = 79.1% | 110/110 = 100.0% | 110/110 = 100.0% | 92/110 = 83.6% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 74
 
@@ -1342,7 +1344,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1360,7 +1362,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1378,15 +1380,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 62 | 0/62 = 0.0% | 56/62 = 90.3% | 54/62 = 87.1% | 62/62 = 100.0% | 62/62 = 100.0% | 45/62 = 72.6% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| ActionExchange | 62 | 0/62 = 0.0% | 56/62 = 90.3% | 54/62 = 87.1% | 62/62 = 100.0% | 62/62 = 100.0% | 50/62 = 80.6% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 77
 
@@ -1396,15 +1398,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
-| ActionExchange | 78 | 0/78 = 0.0% | 74/78 = 94.9% | 63/78 = 80.8% | 78/78 = 100.0% | 78/78 = 100.0% | 53/78 = 67.9% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 17/22 = 77.3% |
+| ActionExchange | 78 | 0/78 = 0.0% | 74/78 = 94.9% | 63/78 = 80.8% | 78/78 = 100.0% | 78/78 = 100.0% | 60/78 = 76.9% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 78
 
@@ -1414,14 +1416,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 94 | 0/94 = 0.0% | 85/94 = 90.4% | 73/94 = 77.7% | 94/94 = 100.0% | 94/94 = 100.0% | 62/94 = 66.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 15/23 = 65.2% |
+| ActionExchange | 94 | 0/94 = 0.0% | 85/94 = 90.4% | 73/94 = 77.7% | 94/94 = 100.0% | 94/94 = 100.0% | 67/94 = 71.3% |
 | StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
 
 ### Product 79
@@ -1432,7 +1434,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1450,15 +1452,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 19/22 = 86.4% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
-| ActionExchange | 62 | 0/62 = 0.0% | 52/62 = 83.9% | 50/62 = 80.6% | 62/62 = 100.0% | 62/62 = 100.0% | 39/62 = 62.9% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 11/15 = 73.3% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 19/22 = 86.4% | 22/22 = 100.0% | 22/22 = 100.0% | 18/22 = 81.8% |
+| ActionExchange | 62 | 0/62 = 0.0% | 52/62 = 83.9% | 50/62 = 80.6% | 62/62 = 100.0% | 62/62 = 100.0% | 52/62 = 83.9% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
 
 ### Product 81
 
@@ -1468,14 +1470,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 49/68 = 72.1% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 53/68 = 77.9% |
 | StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 82
@@ -1504,15 +1506,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 14/17 = 82.4% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
-| ActionExchange | 53 | 0/53 = 0.0% | 47/53 = 88.7% | 45/53 = 84.9% | 53/53 = 100.0% | 53/53 = 100.0% | 34/53 = 64.2% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 7/11 = 63.6% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 14/17 = 82.4% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
+| ActionExchange | 53 | 0/53 = 0.0% | 47/53 = 88.7% | 45/53 = 84.9% | 53/53 = 100.0% | 53/53 = 100.0% | 40/53 = 75.5% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 9/11 = 81.8% |
 
 ### Product 84
 
@@ -1522,7 +1524,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 13 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1540,15 +1542,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 11/18 = 61.1% |
-| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 38/54 = 70.4% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 13/18 = 72.2% |
+| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 43/54 = 79.6% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 86
 
@@ -1558,15 +1560,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
-| ActionExchange | 78 | 0/78 = 0.0% | 74/78 = 94.9% | 63/78 = 80.8% | 78/78 = 100.0% | 78/78 = 100.0% | 53/78 = 67.9% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 17/22 = 77.3% |
+| ActionExchange | 78 | 0/78 = 0.0% | 74/78 = 94.9% | 63/78 = 80.8% | 78/78 = 100.0% | 78/78 = 100.0% | 60/78 = 76.9% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 87
 
@@ -1576,14 +1578,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 49/68 = 72.1% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 53/68 = 77.9% |
 | StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 88
@@ -1594,15 +1596,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 62 | 0/62 = 0.0% | 56/62 = 90.3% | 54/62 = 87.1% | 62/62 = 100.0% | 62/62 = 100.0% | 45/62 = 72.6% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| ActionExchange | 62 | 0/62 = 0.0% | 56/62 = 90.3% | 54/62 = 87.1% | 62/62 = 100.0% | 62/62 = 100.0% | 50/62 = 80.6% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 89
 
@@ -1612,15 +1614,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 82 | 0/82 = 0.0% | 70/82 = 85.4% | 67/82 = 81.7% | 82/82 = 100.0% | 82/82 = 100.0% | 51/82 = 62.2% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 10/15 = 66.7% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 82 | 0/82 = 0.0% | 70/82 = 85.4% | 67/82 = 81.7% | 82/82 = 100.0% | 82/82 = 100.0% | 65/82 = 79.3% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
 
 ### Product 90
 
@@ -1630,15 +1632,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 19/29 = 65.5% |
-| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 70/107 = 65.4% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 21/29 = 72.4% |
+| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 77/107 = 72.0% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 15/18 = 83.3% |
 
 ### Product 91
 
@@ -1648,14 +1650,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 71/83 = 85.5% | 68/83 = 81.9% | 83/83 = 100.0% | 83/83 = 100.0% | 55/83 = 66.3% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 16/24 = 66.7% |
+| ActionExchange | 83 | 0/83 = 0.0% | 71/83 = 85.5% | 68/83 = 81.9% | 83/83 = 100.0% | 83/83 = 100.0% | 60/83 = 72.3% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
 
 ### Product 92
@@ -1684,14 +1686,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 51 | 0/51 = 0.0% | 46/51 = 90.2% | 43/51 = 84.3% | 51/51 = 100.0% | 51/51 = 100.0% | 33/51 = 64.7% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 51 | 0/51 = 0.0% | 46/51 = 90.2% | 43/51 = 84.3% | 51/51 = 100.0% | 51/51 = 100.0% | 36/51 = 70.6% |
 | StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 94
@@ -1720,7 +1722,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1738,15 +1740,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 39/54 = 72.2% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
+| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 44/54 = 81.5% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 97
 
@@ -1756,15 +1758,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 28/31 = 90.3% | 25/31 = 80.6% | 31/31 = 100.0% | 31/31 = 100.0% | 21/31 = 67.7% |
-| ActionExchange | 137 | 0/137 = 0.0% | 127/137 = 92.7% | 110/137 = 80.3% | 137/137 = 100.0% | 137/137 = 100.0% | 103/137 = 75.2% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 28/31 = 90.3% | 25/31 = 80.6% | 31/31 = 100.0% | 31/31 = 100.0% | 25/31 = 80.6% |
+| ActionExchange | 137 | 0/137 = 0.0% | 127/137 = 92.7% | 110/137 = 80.3% | 137/137 = 100.0% | 137/137 = 100.0% | 114/137 = 83.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 98
 
@@ -1774,7 +1776,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1792,14 +1794,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 71/83 = 85.5% | 68/83 = 81.9% | 83/83 = 100.0% | 83/83 = 100.0% | 55/83 = 66.3% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 16/24 = 66.7% |
+| ActionExchange | 83 | 0/83 = 0.0% | 71/83 = 85.5% | 68/83 = 81.9% | 83/83 = 100.0% | 83/83 = 100.0% | 60/83 = 72.3% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
 
 ### Product 100
@@ -1810,15 +1812,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 11/18 = 61.1% |
-| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 38/54 = 70.4% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 13/18 = 72.2% |
+| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 43/54 = 79.6% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 101
 
@@ -1828,15 +1830,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 75/106 = 70.8% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 21/28 = 75.0% |
+| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 83/106 = 78.3% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 102
 
@@ -1846,15 +1848,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 19/22 = 86.4% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
-| ActionExchange | 62 | 0/62 = 0.0% | 52/62 = 83.9% | 50/62 = 80.6% | 62/62 = 100.0% | 62/62 = 100.0% | 39/62 = 62.9% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 11/15 = 73.3% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 19/22 = 86.4% | 22/22 = 100.0% | 22/22 = 100.0% | 18/22 = 81.8% |
+| ActionExchange | 62 | 0/62 = 0.0% | 52/62 = 83.9% | 50/62 = 80.6% | 62/62 = 100.0% | 62/62 = 100.0% | 52/62 = 83.9% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
 
 ### Product 103
 
@@ -1882,15 +1884,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 66/101 = 65.3% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 80/101 = 79.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 105
 
@@ -1900,14 +1902,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 27/30 = 90.0% | 30/30 = 100.0% | 30/30 = 100.0% | 22/30 = 73.3% |
-| ActionExchange | 108 | 0/108 = 0.0% | 101/108 = 93.5% | 93/108 = 86.1% | 108/108 = 100.0% | 108/108 = 100.0% | 80/108 = 74.1% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 27/30 = 90.0% | 30/30 = 100.0% | 30/30 = 100.0% | 23/30 = 76.7% |
+| ActionExchange | 108 | 0/108 = 0.0% | 101/108 = 93.5% | 93/108 = 86.1% | 108/108 = 100.0% | 108/108 = 100.0% | 85/108 = 78.7% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 16/19 = 84.2% |
 
 ### Product 106
@@ -1918,7 +1920,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1936,15 +1938,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 20/25 = 80.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 105 | 0/105 = 0.0% | 103/105 = 98.1% | 83/105 = 79.0% | 105/105 = 100.0% | 105/105 = 100.0% | 70/105 = 66.7% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 20/25 = 80.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 105 | 0/105 = 0.0% | 103/105 = 98.1% | 83/105 = 79.0% | 105/105 = 100.0% | 105/105 = 100.0% | 82/105 = 78.1% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 108
 
@@ -1972,7 +1974,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -1990,7 +1992,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2008,15 +2010,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 34 | 0/34 = 0.0% | 31/34 = 91.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 20/34 = 58.8% |
-| ActionExchange | 148 | 0/148 = 0.0% | 138/148 = 93.2% | 123/148 = 83.1% | 148/148 = 100.0% | 148/148 = 100.0% | 88/148 = 59.5% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 34 | 0/34 = 0.0% | 31/34 = 91.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 25/34 = 73.5% |
+| ActionExchange | 148 | 0/148 = 0.0% | 138/148 = 93.2% | 123/148 = 83.1% | 148/148 = 100.0% | 148/148 = 100.0% | 112/148 = 75.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
 
 ### Product 112
 
@@ -2026,15 +2028,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 26/32 = 81.3% | 32/32 = 100.0% | 32/32 = 100.0% | 23/32 = 71.9% |
-| ActionExchange | 143 | 0/143 = 0.0% | 135/143 = 94.4% | 111/143 = 77.6% | 143/143 = 100.0% | 143/143 = 100.0% | 112/143 = 78.3% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 26/32 = 81.3% | 32/32 = 100.0% | 32/32 = 100.0% | 27/32 = 84.4% |
+| ActionExchange | 143 | 0/143 = 0.0% | 135/143 = 94.4% | 111/143 = 77.6% | 143/143 = 100.0% | 143/143 = 100.0% | 121/143 = 84.6% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 113
 
@@ -2044,15 +2046,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 20/22 = 90.9% | 22/22 = 100.0% | 22/22 = 100.0% | 19/22 = 86.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 62/74 = 83.8% | 64/74 = 86.5% | 74/74 = 100.0% | 74/74 = 100.0% | 63/74 = 85.1% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 20/22 = 90.9% | 22/22 = 100.0% | 22/22 = 100.0% | 21/22 = 95.5% |
+| ActionExchange | 74 | 0/74 = 0.0% | 62/74 = 83.8% | 64/74 = 86.5% | 74/74 = 100.0% | 74/74 = 100.0% | 69/74 = 93.2% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% |
 
 ### Product 114
 
@@ -2062,15 +2064,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 39/54 = 72.2% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
+| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 44/54 = 81.5% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 115
 
@@ -2080,15 +2082,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 20/33 = 60.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 86/144 = 59.7% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 22/33 = 66.7% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 97/144 = 67.4% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
 
 ### Product 116
 
@@ -2098,15 +2100,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 34/54 = 63.0% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 7/12 = 58.3% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 13/18 = 72.2% |
+| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 40/54 = 74.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 117
 
@@ -2116,15 +2118,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 50 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 38 | 0/38 = 0.0% | 35/38 = 92.1% | 32/38 = 84.2% | 38/38 = 100.0% | 38/38 = 100.0% | 26/38 = 68.4% |
-| ActionExchange | 191 | 0/191 = 0.0% | 180/191 = 94.2% | 155/191 = 81.2% | 191/191 = 100.0% | 191/191 = 100.0% | 134/191 = 70.2% |
-| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 18/22 = 81.8% |
+| TransitionMissing | 38 | 0/38 = 0.0% | 35/38 = 92.1% | 32/38 = 84.2% | 38/38 = 100.0% | 38/38 = 100.0% | 32/38 = 84.2% |
+| ActionExchange | 191 | 0/191 = 0.0% | 180/191 = 94.2% | 155/191 = 81.2% | 191/191 = 100.0% | 191/191 = 100.0% | 160/191 = 83.8% |
+| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 20/22 = 90.9% |
 
 ### Product 118
 
@@ -2134,14 +2136,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 49/68 = 72.1% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 53/68 = 77.9% |
 | StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 119
@@ -2170,15 +2172,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 28/31 = 90.3% | 25/31 = 80.6% | 31/31 = 100.0% | 31/31 = 100.0% | 21/31 = 67.7% |
-| ActionExchange | 137 | 0/137 = 0.0% | 127/137 = 92.7% | 110/137 = 80.3% | 137/137 = 100.0% | 137/137 = 100.0% | 103/137 = 75.2% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 28/31 = 90.3% | 25/31 = 80.6% | 31/31 = 100.0% | 31/31 = 100.0% | 25/31 = 80.6% |
+| ActionExchange | 137 | 0/137 = 0.0% | 127/137 = 92.7% | 110/137 = 80.3% | 137/137 = 100.0% | 137/137 = 100.0% | 114/137 = 83.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 121
 
@@ -2188,14 +2190,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 51 | 0/51 = 0.0% | 46/51 = 90.2% | 43/51 = 84.3% | 51/51 = 100.0% | 51/51 = 100.0% | 33/51 = 64.7% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 51 | 0/51 = 0.0% | 46/51 = 90.2% | 43/51 = 84.3% | 51/51 = 100.0% | 51/51 = 100.0% | 36/51 = 70.6% |
 | StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 122
@@ -2206,7 +2208,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2224,15 +2226,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 24/27 = 88.9% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 14/27 = 51.9% |
-| ActionExchange | 127 | 0/127 = 0.0% | 119/127 = 93.7% | 103/127 = 81.1% | 127/127 = 100.0% | 127/127 = 100.0% | 79/127 = 62.2% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 9/16 = 56.3% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 24/27 = 88.9% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 16/27 = 59.3% |
+| ActionExchange | 127 | 0/127 = 0.0% | 119/127 = 93.7% | 103/127 = 81.1% | 127/127 = 100.0% | 127/127 = 100.0% | 87/127 = 68.5% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
 
 ### Product 124
 
@@ -2242,7 +2244,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2260,15 +2262,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 48/68 = 70.6% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 56/68 = 82.4% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 126
 
@@ -2296,15 +2298,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 27/32 = 84.4% | 32/32 = 100.0% | 32/32 = 100.0% | 16/32 = 50.0% |
-| ActionExchange | 138 | 0/138 = 0.0% | 124/138 = 89.9% | 108/138 = 78.3% | 138/138 = 100.0% | 138/138 = 100.0% | 87/138 = 63.0% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 27/32 = 84.4% | 32/32 = 100.0% | 32/32 = 100.0% | 22/32 = 68.8% |
+| ActionExchange | 138 | 0/138 = 0.0% | 124/138 = 89.9% | 108/138 = 78.3% | 138/138 = 100.0% | 138/138 = 100.0% | 99/138 = 71.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
 
 ### Product 128
 
@@ -2314,15 +2316,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 14/17 = 82.4% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
-| ActionExchange | 53 | 0/53 = 0.0% | 47/53 = 88.7% | 45/53 = 84.9% | 53/53 = 100.0% | 53/53 = 100.0% | 34/53 = 64.2% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 7/11 = 63.6% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 14/17 = 82.4% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
+| ActionExchange | 53 | 0/53 = 0.0% | 47/53 = 88.7% | 45/53 = 84.9% | 53/53 = 100.0% | 53/53 = 100.0% | 40/53 = 75.5% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 9/11 = 81.8% |
 
 ### Product 129
 
@@ -2332,15 +2334,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 18/19 = 94.7% | 14/19 = 73.7% | 19/19 = 100.0% | 19/19 = 100.0% | 8/19 = 42.1% |
-| ActionExchange | 56 | 0/56 = 0.0% | 54/56 = 96.4% | 41/56 = 73.2% | 56/56 = 100.0% | 56/56 = 100.0% | 32/56 = 57.1% |
-| StateMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 5/11 = 45.5% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 18/19 = 94.7% | 14/19 = 73.7% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| ActionExchange | 56 | 0/56 = 0.0% | 54/56 = 96.4% | 41/56 = 73.2% | 56/56 = 100.0% | 56/56 = 100.0% | 38/56 = 67.9% |
+| StateMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
 
 ### Product 130
 
@@ -2368,15 +2370,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 19/20 = 95.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 74 | 0/74 = 0.0% | 67/74 = 90.5% | 69/74 = 93.2% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 19/20 = 95.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 67/74 = 90.5% | 69/74 = 93.2% | 74/74 = 100.0% | 74/74 = 100.0% | 68/74 = 91.9% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 132
 
@@ -2386,15 +2388,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 19/22 = 86.4% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
-| ActionExchange | 62 | 0/62 = 0.0% | 52/62 = 83.9% | 50/62 = 80.6% | 62/62 = 100.0% | 62/62 = 100.0% | 39/62 = 62.9% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 11/15 = 73.3% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 19/22 = 86.4% | 22/22 = 100.0% | 22/22 = 100.0% | 18/22 = 81.8% |
+| ActionExchange | 62 | 0/62 = 0.0% | 52/62 = 83.9% | 50/62 = 80.6% | 62/62 = 100.0% | 62/62 = 100.0% | 52/62 = 83.9% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
 
 ### Product 133
 
@@ -2404,15 +2406,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
-| ActionExchange | 82 | 0/82 = 0.0% | 75/82 = 91.5% | 72/82 = 87.8% | 82/82 = 100.0% | 82/82 = 100.0% | 70/82 = 85.4% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
+| ActionExchange | 82 | 0/82 = 0.0% | 75/82 = 91.5% | 72/82 = 87.8% | 82/82 = 100.0% | 82/82 = 100.0% | 76/82 = 92.7% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 134
 
@@ -2422,14 +2424,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 49/68 = 72.1% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 53/68 = 77.9% |
 | StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 135
@@ -2440,7 +2442,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2458,15 +2460,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 18/30 = 60.0% |
-| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 87/128 = 68.0% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 26/30 = 86.7% |
+| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 109/128 = 85.2% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 137
 
@@ -2476,15 +2478,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 50 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 38 | 0/38 = 0.0% | 35/38 = 92.1% | 32/38 = 84.2% | 38/38 = 100.0% | 38/38 = 100.0% | 26/38 = 68.4% |
-| ActionExchange | 191 | 0/191 = 0.0% | 180/191 = 94.2% | 155/191 = 81.2% | 191/191 = 100.0% | 191/191 = 100.0% | 134/191 = 70.2% |
-| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 18/22 = 81.8% |
+| TransitionMissing | 38 | 0/38 = 0.0% | 35/38 = 92.1% | 32/38 = 84.2% | 38/38 = 100.0% | 38/38 = 100.0% | 32/38 = 84.2% |
+| ActionExchange | 191 | 0/191 = 0.0% | 180/191 = 94.2% | 155/191 = 81.2% | 191/191 = 100.0% | 191/191 = 100.0% | 160/191 = 83.8% |
+| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 20/22 = 90.9% |
 
 ### Product 138
 
@@ -2494,15 +2496,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 61/84 = 72.6% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 68/84 = 81.0% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 12/17 = 70.6% |
 
 ### Product 139
 
@@ -2512,7 +2514,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2530,15 +2532,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 50 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 38 | 0/38 = 0.0% | 35/38 = 92.1% | 32/38 = 84.2% | 38/38 = 100.0% | 38/38 = 100.0% | 26/38 = 68.4% |
-| ActionExchange | 191 | 0/191 = 0.0% | 180/191 = 94.2% | 155/191 = 81.2% | 191/191 = 100.0% | 191/191 = 100.0% | 134/191 = 70.2% |
-| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 18/22 = 81.8% |
+| TransitionMissing | 38 | 0/38 = 0.0% | 35/38 = 92.1% | 32/38 = 84.2% | 38/38 = 100.0% | 38/38 = 100.0% | 32/38 = 84.2% |
+| ActionExchange | 191 | 0/191 = 0.0% | 180/191 = 94.2% | 155/191 = 81.2% | 191/191 = 100.0% | 191/191 = 100.0% | 160/191 = 83.8% |
+| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 20/22 = 90.9% |
 
 ### Product 141
 
@@ -2548,15 +2550,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 30/33 = 90.9% | 26/33 = 78.8% | 33/33 = 100.0% | 33/33 = 100.0% | 23/33 = 69.7% |
-| ActionExchange | 147 | 0/147 = 0.0% | 137/147 = 93.2% | 114/147 = 77.6% | 147/147 = 100.0% | 147/147 = 100.0% | 114/147 = 77.6% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 30/33 = 90.9% | 26/33 = 78.8% | 33/33 = 100.0% | 33/33 = 100.0% | 27/33 = 81.8% |
+| ActionExchange | 147 | 0/147 = 0.0% | 137/147 = 93.2% | 114/147 = 77.6% | 147/147 = 100.0% | 147/147 = 100.0% | 123/147 = 83.7% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 142
 
@@ -2566,7 +2568,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2584,15 +2586,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 36 | 0/36 = 0.0% | 33/36 = 91.7% | 31/36 = 86.1% | 36/36 = 100.0% | 36/36 = 100.0% | 26/36 = 72.2% |
-| ActionExchange | 180 | 0/180 = 0.0% | 169/180 = 93.9% | 151/180 = 83.9% | 180/180 = 100.0% | 180/180 = 100.0% | 132/180 = 73.3% |
-| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 18/21 = 85.7% |
+| TransitionMissing | 36 | 0/36 = 0.0% | 33/36 = 91.7% | 31/36 = 86.1% | 36/36 = 100.0% | 36/36 = 100.0% | 30/36 = 83.3% |
+| ActionExchange | 180 | 0/180 = 0.0% | 169/180 = 93.9% | 151/180 = 83.9% | 180/180 = 100.0% | 180/180 = 100.0% | 154/180 = 85.6% |
+| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
 
 ### Product 144
 
@@ -2602,15 +2604,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 28/32 = 87.5% | 32/32 = 100.0% | 32/32 = 100.0% | 16/32 = 50.0% |
-| ActionExchange | 159 | 0/159 = 0.0% | 143/159 = 89.9% | 131/159 = 82.4% | 159/159 = 100.0% | 159/159 = 100.0% | 102/159 = 64.2% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 28/32 = 87.5% | 32/32 = 100.0% | 32/32 = 100.0% | 19/32 = 59.4% |
+| ActionExchange | 159 | 0/159 = 0.0% | 143/159 = 89.9% | 131/159 = 82.4% | 159/159 = 100.0% | 159/159 = 100.0% | 115/159 = 72.3% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
 
 ### Product 145
 
@@ -2620,7 +2622,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2656,7 +2658,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2674,15 +2676,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 22/26 = 84.6% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 97 | 0/97 = 0.0% | 90/97 = 92.8% | 80/97 = 82.5% | 97/97 = 100.0% | 97/97 = 100.0% | 51/97 = 52.6% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 22/26 = 84.6% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 97 | 0/97 = 0.0% | 90/97 = 92.8% | 80/97 = 82.5% | 97/97 = 100.0% | 97/97 = 100.0% | 73/97 = 75.3% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 149
 
@@ -2692,7 +2694,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2710,14 +2712,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 49/68 = 72.1% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 53/68 = 77.9% |
 | StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 151
@@ -2728,15 +2730,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 25/27 = 92.6% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 20/27 = 74.1% |
-| ActionExchange | 98 | 0/98 = 0.0% | 91/98 = 92.9% | 81/98 = 82.7% | 98/98 = 100.0% | 98/98 = 100.0% | 70/98 = 71.4% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 25/27 = 92.6% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 23/27 = 85.2% |
+| ActionExchange | 98 | 0/98 = 0.0% | 91/98 = 92.9% | 81/98 = 82.7% | 98/98 = 100.0% | 98/98 = 100.0% | 82/98 = 83.7% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 152
 
@@ -2746,15 +2748,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 21/26 = 80.8% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 95 | 0/95 = 0.0% | 81/95 = 85.3% | 74/95 = 77.9% | 95/95 = 100.0% | 95/95 = 100.0% | 51/95 = 53.7% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 21/26 = 80.8% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 95 | 0/95 = 0.0% | 81/95 = 85.3% | 74/95 = 77.9% | 95/95 = 100.0% | 95/95 = 100.0% | 73/95 = 76.8% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 153
 
@@ -2764,15 +2766,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 18/19 = 94.7% | 14/19 = 73.7% | 19/19 = 100.0% | 19/19 = 100.0% | 8/19 = 42.1% |
-| ActionExchange | 56 | 0/56 = 0.0% | 54/56 = 96.4% | 41/56 = 73.2% | 56/56 = 100.0% | 56/56 = 100.0% | 32/56 = 57.1% |
-| StateMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 5/11 = 45.5% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 18/19 = 94.7% | 14/19 = 73.7% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| ActionExchange | 56 | 0/56 = 0.0% | 54/56 = 96.4% | 41/56 = 73.2% | 56/56 = 100.0% | 56/56 = 100.0% | 38/56 = 67.9% |
+| StateMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
 
 ### Product 154
 
@@ -2782,14 +2784,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 94 | 0/94 = 0.0% | 85/94 = 90.4% | 73/94 = 77.7% | 94/94 = 100.0% | 94/94 = 100.0% | 62/94 = 66.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 15/23 = 65.2% |
+| ActionExchange | 94 | 0/94 = 0.0% | 85/94 = 90.4% | 73/94 = 77.7% | 94/94 = 100.0% | 94/94 = 100.0% | 67/94 = 71.3% |
 | StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
 
 ### Product 155
@@ -2800,15 +2802,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 40/54 = 74.1% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 9/14 = 64.3% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 16/20 = 80.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 19/20 = 95.0% |
+| ActionExchange | 54 | 0/54 = 0.0% | 44/54 = 81.5% | 46/54 = 85.2% | 54/54 = 100.0% | 54/54 = 100.0% | 50/54 = 92.6% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% |
 
 ### Product 156
 
@@ -2836,7 +2838,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2854,7 +2856,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2872,15 +2874,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
-| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 66/84 = 78.6% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 22/25 = 88.0% |
+| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 73/84 = 86.9% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 160
 
@@ -2890,15 +2892,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 50 real step(s) applicable.
 
-**Random baseline:** 13 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 37 | 0/37 = 0.0% | 35/37 = 94.6% | 32/37 = 86.5% | 37/37 = 100.0% | 37/37 = 100.0% | 27/37 = 73.0% |
-| ActionExchange | 187 | 0/187 = 0.0% | 178/187 = 95.2% | 152/187 = 81.3% | 187/187 = 100.0% | 187/187 = 100.0% | 138/187 = 73.8% |
-| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 19/22 = 86.4% |
+| TransitionMissing | 37 | 0/37 = 0.0% | 35/37 = 94.6% | 32/37 = 86.5% | 37/37 = 100.0% | 37/37 = 100.0% | 33/37 = 89.2% |
+| ActionExchange | 187 | 0/187 = 0.0% | 178/187 = 95.2% | 152/187 = 81.3% | 187/187 = 100.0% | 187/187 = 100.0% | 164/187 = 87.7% |
+| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 21/22 = 95.5% |
 
 ### Product 161
 
@@ -2908,15 +2910,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 14/30 = 46.7% |
-| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 77/128 = 60.2% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 9/19 = 47.4% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 20/30 = 66.7% |
+| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 89/128 = 69.5% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 14/19 = 73.7% |
 
 ### Product 162
 
@@ -2926,14 +2928,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 22/25 = 88.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 100 | 0/100 = 0.0% | 93/100 = 93.0% | 80/100 = 80.0% | 100/100 = 100.0% | 100/100 = 100.0% | 60/100 = 60.0% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 22/25 = 88.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
+| ActionExchange | 100 | 0/100 = 0.0% | 93/100 = 93.0% | 80/100 = 80.0% | 100/100 = 100.0% | 100/100 = 100.0% | 65/100 = 65.0% |
 | StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 9/15 = 60.0% |
 
 ### Product 163
@@ -2944,7 +2946,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2962,7 +2964,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 15 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -2998,7 +3000,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3016,15 +3018,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 46 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 20/33 = 60.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 86/144 = 59.7% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 22/33 = 66.7% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 97/144 = 67.4% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
 
 ### Product 168
 
@@ -3034,14 +3036,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 94 | 0/94 = 0.0% | 85/94 = 90.4% | 73/94 = 77.7% | 94/94 = 100.0% | 94/94 = 100.0% | 62/94 = 66.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 15/23 = 65.2% |
+| ActionExchange | 94 | 0/94 = 0.0% | 85/94 = 90.4% | 73/94 = 77.7% | 94/94 = 100.0% | 94/94 = 100.0% | 67/94 = 71.3% |
 | StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
 
 ### Product 169
@@ -3052,7 +3054,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3070,7 +3072,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3088,14 +3090,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 27/30 = 90.0% | 30/30 = 100.0% | 30/30 = 100.0% | 22/30 = 73.3% |
-| ActionExchange | 108 | 0/108 = 0.0% | 101/108 = 93.5% | 93/108 = 86.1% | 108/108 = 100.0% | 108/108 = 100.0% | 80/108 = 74.1% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 27/30 = 90.0% | 30/30 = 100.0% | 30/30 = 100.0% | 23/30 = 76.7% |
+| ActionExchange | 108 | 0/108 = 0.0% | 101/108 = 93.5% | 93/108 = 86.1% | 108/108 = 100.0% | 108/108 = 100.0% | 85/108 = 78.7% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 16/19 = 84.2% |
 
 ### Product 172
@@ -3106,15 +3108,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 35 | 0/35 = 0.0% | 33/35 = 94.3% | 30/35 = 85.7% | 35/35 = 100.0% | 35/35 = 100.0% | 20/35 = 57.1% |
-| ActionExchange | 154 | 0/154 = 0.0% | 146/154 = 94.8% | 124/154 = 80.5% | 154/154 = 100.0% | 154/154 = 100.0% | 86/154 = 55.8% |
-| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| TransitionMissing | 35 | 0/35 = 0.0% | 33/35 = 94.3% | 30/35 = 85.7% | 35/35 = 100.0% | 35/35 = 100.0% | 26/35 = 74.3% |
+| ActionExchange | 154 | 0/154 = 0.0% | 146/154 = 94.8% | 124/154 = 80.5% | 154/154 = 100.0% | 154/154 = 100.0% | 114/154 = 74.0% |
+| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
 
 ### Product 173
 
@@ -3124,7 +3126,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3142,15 +3144,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 22/27 = 81.5% | 27/27 = 100.0% | 27/27 = 100.0% | 18/27 = 66.7% |
-| ActionExchange | 100 | 0/100 = 0.0% | 88/100 = 88.0% | 75/100 = 75.0% | 100/100 = 100.0% | 100/100 = 100.0% | 68/100 = 68.0% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 22/27 = 81.5% | 27/27 = 100.0% | 27/27 = 100.0% | 21/27 = 77.8% |
+| ActionExchange | 100 | 0/100 = 0.0% | 88/100 = 88.0% | 75/100 = 75.0% | 100/100 = 100.0% | 100/100 = 100.0% | 78/100 = 78.0% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 175
 
@@ -3160,15 +3162,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 19/20 = 95.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 74 | 0/74 = 0.0% | 67/74 = 90.5% | 69/74 = 93.2% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 19/20 = 95.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 67/74 = 90.5% | 69/74 = 93.2% | 74/74 = 100.0% | 74/74 = 100.0% | 68/74 = 91.9% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 176
 
@@ -3178,15 +3180,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 51/91 = 56.0% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 22/25 = 88.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 76/91 = 83.5% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% |
 
 ### Product 177
 
@@ -3196,15 +3198,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 29/32 = 90.6% | 32/32 = 100.0% | 32/32 = 100.0% | 24/32 = 75.0% |
-| ActionExchange | 135 | 0/135 = 0.0% | 127/135 = 94.1% | 117/135 = 86.7% | 135/135 = 100.0% | 135/135 = 100.0% | 105/135 = 77.8% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 17/20 = 85.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 29/32 = 90.6% | 32/32 = 100.0% | 32/32 = 100.0% | 26/32 = 81.3% |
+| ActionExchange | 135 | 0/135 = 0.0% | 127/135 = 94.1% | 117/135 = 86.7% | 135/135 = 100.0% | 135/135 = 100.0% | 113/135 = 83.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
 
 ### Product 178
 
@@ -3232,15 +3234,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 21/23 = 91.3% | 23/23 = 100.0% | 23/23 = 100.0% | 17/23 = 73.9% |
-| ActionExchange | 63 | 0/63 = 0.0% | 53/63 = 84.1% | 55/63 = 87.3% | 63/63 = 100.0% | 63/63 = 100.0% | 48/63 = 76.2% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 21/23 = 91.3% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 63 | 0/63 = 0.0% | 53/63 = 84.1% | 55/63 = 87.3% | 63/63 = 100.0% | 63/63 = 100.0% | 53/63 = 84.1% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 180
 
@@ -3250,15 +3252,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 19/24 = 79.2% | 24/24 = 100.0% | 24/24 = 100.0% | 16/24 = 66.7% |
-| ActionExchange | 100 | 0/100 = 0.0% | 96/100 = 96.0% | 82/100 = 82.0% | 100/100 = 100.0% | 100/100 = 100.0% | 74/100 = 74.0% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 19/24 = 79.2% | 24/24 = 100.0% | 24/24 = 100.0% | 22/24 = 91.7% |
+| ActionExchange | 100 | 0/100 = 0.0% | 96/100 = 96.0% | 82/100 = 82.0% | 100/100 = 100.0% | 100/100 = 100.0% | 93/100 = 93.0% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% |
 
 ### Product 181
 
@@ -3268,15 +3270,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 15/18 = 83.3% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 60 | 0/60 = 0.0% | 54/60 = 90.0% | 48/60 = 80.0% | 60/60 = 100.0% | 60/60 = 100.0% | 34/60 = 56.7% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 7/11 = 63.6% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 15/18 = 83.3% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
+| ActionExchange | 60 | 0/60 = 0.0% | 54/60 = 90.0% | 48/60 = 80.0% | 60/60 = 100.0% | 60/60 = 100.0% | 41/60 = 68.3% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
 
 ### Product 182
 
@@ -3286,7 +3288,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3304,15 +3306,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 20/22 = 90.9% | 22/22 = 100.0% | 22/22 = 100.0% | 19/22 = 86.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 62/74 = 83.8% | 64/74 = 86.5% | 74/74 = 100.0% | 74/74 = 100.0% | 63/74 = 85.1% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 18/22 = 81.8% | 20/22 = 90.9% | 22/22 = 100.0% | 22/22 = 100.0% | 21/22 = 95.5% |
+| ActionExchange | 74 | 0/74 = 0.0% | 62/74 = 83.8% | 64/74 = 86.5% | 74/74 = 100.0% | 74/74 = 100.0% | 69/74 = 93.2% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% |
 
 ### Product 184
 
@@ -3322,15 +3324,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 35 | 0/35 = 0.0% | 30/35 = 85.7% | 29/35 = 82.9% | 35/35 = 100.0% | 35/35 = 100.0% | 15/35 = 42.9% |
-| ActionExchange | 174 | 0/174 = 0.0% | 156/174 = 89.7% | 138/174 = 79.3% | 174/174 = 100.0% | 174/174 = 100.0% | 90/174 = 51.7% |
-| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 10/21 = 47.6% |
+| TransitionMissing | 35 | 0/35 = 0.0% | 30/35 = 85.7% | 29/35 = 82.9% | 35/35 = 100.0% | 35/35 = 100.0% | 18/35 = 51.4% |
+| ActionExchange | 174 | 0/174 = 0.0% | 156/174 = 89.7% | 138/174 = 79.3% | 174/174 = 100.0% | 174/174 = 100.0% | 99/174 = 56.9% |
+| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
 
 ### Product 185
 
@@ -3340,15 +3342,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 16/29 = 55.2% |
-| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 69/107 = 64.5% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 18/29 = 62.1% |
+| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 76/107 = 71.0% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 11/18 = 61.1% |
 
 ### Product 186
 
@@ -3376,15 +3378,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 30/33 = 90.9% | 26/33 = 78.8% | 33/33 = 100.0% | 33/33 = 100.0% | 23/33 = 69.7% |
-| ActionExchange | 147 | 0/147 = 0.0% | 137/147 = 93.2% | 114/147 = 77.6% | 147/147 = 100.0% | 147/147 = 100.0% | 114/147 = 77.6% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 30/33 = 90.9% | 26/33 = 78.8% | 33/33 = 100.0% | 33/33 = 100.0% | 27/33 = 81.8% |
+| ActionExchange | 147 | 0/147 = 0.0% | 137/147 = 93.2% | 114/147 = 77.6% | 147/147 = 100.0% | 147/147 = 100.0% | 123/147 = 83.7% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 188
 
@@ -3394,7 +3396,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3430,7 +3432,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3448,15 +3450,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 82 | 0/82 = 0.0% | 80/82 = 97.6% | 64/82 = 78.0% | 82/82 = 100.0% | 82/82 = 100.0% | 51/82 = 62.2% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 82 | 0/82 = 0.0% | 80/82 = 97.6% | 64/82 = 78.0% | 82/82 = 100.0% | 82/82 = 100.0% | 66/82 = 80.5% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
 
 ### Product 192
 
@@ -3466,15 +3468,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 18/28 = 64.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 113/115 = 98.3% | 95/115 = 82.6% | 115/115 = 100.0% | 115/115 = 100.0% | 84/115 = 73.0% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 115 | 0/115 = 0.0% | 113/115 = 98.3% | 95/115 = 82.6% | 115/115 = 100.0% | 115/115 = 100.0% | 98/115 = 85.2% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 193
 
@@ -3502,15 +3504,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 69/83 = 83.1% | 83/83 = 100.0% | 83/83 = 100.0% | 55/83 = 66.3% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 69/83 = 83.1% | 83/83 = 100.0% | 83/83 = 100.0% | 60/83 = 72.3% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 195
 
@@ -3520,15 +3522,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 15/26 = 57.7% |
-| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 61/92 = 66.3% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
+| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 71/92 = 77.2% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 12/17 = 70.6% |
 
 ### Product 196
 
@@ -3556,15 +3558,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
-| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 66/84 = 78.6% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 22/25 = 88.0% |
+| ActionExchange | 84 | 0/84 = 0.0% | 72/84 = 85.7% | 74/84 = 88.1% | 84/84 = 100.0% | 84/84 = 100.0% | 73/84 = 86.9% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 198
 
@@ -3574,15 +3576,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 19/30 = 63.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 108/115 = 93.9% | 88/115 = 76.5% | 115/115 = 100.0% | 115/115 = 100.0% | 75/115 = 65.2% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 25/30 = 83.3% |
+| ActionExchange | 115 | 0/115 = 0.0% | 108/115 = 93.9% | 88/115 = 76.5% | 115/115 = 100.0% | 115/115 = 100.0% | 94/115 = 81.7% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 199
 
@@ -3592,15 +3594,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 50 real step(s) applicable.
 
-**Random baseline:** 13 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 37 | 0/37 = 0.0% | 35/37 = 94.6% | 32/37 = 86.5% | 37/37 = 100.0% | 37/37 = 100.0% | 27/37 = 73.0% |
-| ActionExchange | 187 | 0/187 = 0.0% | 178/187 = 95.2% | 152/187 = 81.3% | 187/187 = 100.0% | 187/187 = 100.0% | 138/187 = 73.8% |
-| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 19/22 = 86.4% |
+| TransitionMissing | 37 | 0/37 = 0.0% | 35/37 = 94.6% | 32/37 = 86.5% | 37/37 = 100.0% | 37/37 = 100.0% | 33/37 = 89.2% |
+| ActionExchange | 187 | 0/187 = 0.0% | 178/187 = 95.2% | 152/187 = 81.3% | 187/187 = 100.0% | 187/187 = 100.0% | 164/187 = 87.7% |
+| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 21/22 = 95.5% |
 
 ### Product 200
 
@@ -3610,7 +3612,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3628,14 +3630,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 22/25 = 88.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 100 | 0/100 = 0.0% | 93/100 = 93.0% | 80/100 = 80.0% | 100/100 = 100.0% | 100/100 = 100.0% | 60/100 = 60.0% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 22/25 = 88.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
+| ActionExchange | 100 | 0/100 = 0.0% | 93/100 = 93.0% | 80/100 = 80.0% | 100/100 = 100.0% | 100/100 = 100.0% | 65/100 = 65.0% |
 | StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 9/15 = 60.0% |
 
 ### Product 202
@@ -3646,14 +3648,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 21/30 = 70.0% |
-| ActionExchange | 131 | 0/131 = 0.0% | 115/131 = 87.8% | 100/131 = 76.3% | 131/131 = 100.0% | 131/131 = 100.0% | 95/131 = 72.5% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 25/30 = 83.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 22/30 = 73.3% |
+| ActionExchange | 131 | 0/131 = 0.0% | 115/131 = 87.8% | 100/131 = 76.3% | 131/131 = 100.0% | 131/131 = 100.0% | 101/131 = 77.1% |
 | StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
 
 ### Product 203
@@ -3664,14 +3666,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 49/68 = 72.1% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 20/21 = 95.2% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 68 | 0/68 = 0.0% | 66/68 = 97.1% | 64/68 = 94.1% | 68/68 = 100.0% | 68/68 = 100.0% | 53/68 = 77.9% |
 | StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 204
@@ -3682,15 +3684,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 11/18 = 61.1% |
-| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 38/54 = 70.4% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 17/18 = 94.4% | 18/18 = 100.0% | 18/18 = 100.0% | 13/18 = 72.2% |
+| ActionExchange | 54 | 0/54 = 0.0% | 48/54 = 88.9% | 50/54 = 92.6% | 54/54 = 100.0% | 54/54 = 100.0% | 43/54 = 79.6% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 205
 
@@ -3700,7 +3702,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3718,15 +3720,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 71/83 = 85.5% | 83/83 = 100.0% | 83/83 = 100.0% | 53/83 = 63.9% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 71/83 = 85.5% | 83/83 = 100.0% | 83/83 = 100.0% | 62/83 = 74.7% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 207
 
@@ -3736,7 +3738,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3754,7 +3756,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3772,15 +3774,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
-| ActionExchange | 67 | 0/67 = 0.0% | 65/67 = 97.0% | 57/67 = 85.1% | 67/67 = 100.0% | 67/67 = 100.0% | 37/67 = 55.2% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 6/12 = 50.0% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 67 | 0/67 = 0.0% | 65/67 = 97.0% | 57/67 = 85.1% | 67/67 = 100.0% | 67/67 = 100.0% | 51/67 = 76.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 210
 
@@ -3790,15 +3792,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 53/74 = 71.6% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 211
 
@@ -3808,15 +3810,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 24/27 = 88.9% | 27/27 = 100.0% | 27/27 = 100.0% | 19/27 = 70.4% |
-| ActionExchange | 93 | 0/93 = 0.0% | 81/93 = 87.1% | 78/93 = 83.9% | 93/93 = 100.0% | 93/93 = 100.0% | 68/93 = 73.1% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 24/27 = 88.9% | 27/27 = 100.0% | 27/27 = 100.0% | 22/27 = 81.5% |
+| ActionExchange | 93 | 0/93 = 0.0% | 81/93 = 87.1% | 78/93 = 83.9% | 93/93 = 100.0% | 93/93 = 100.0% | 75/93 = 80.6% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 16/18 = 88.9% |
 
 ### Product 212
 
@@ -3826,14 +3828,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 55/91 = 60.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 16/25 = 64.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 60/91 = 65.9% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
 
 ### Product 213
@@ -3844,7 +3846,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3880,7 +3882,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3898,15 +3900,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 34 | 0/34 = 0.0% | 30/34 = 88.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 15/34 = 44.1% |
-| ActionExchange | 170 | 0/170 = 0.0% | 154/170 = 90.6% | 135/170 = 79.4% | 170/170 = 100.0% | 170/170 = 100.0% | 96/170 = 56.5% |
-| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 10/21 = 47.6% |
+| TransitionMissing | 34 | 0/34 = 0.0% | 30/34 = 88.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 19/34 = 55.9% |
+| ActionExchange | 170 | 0/170 = 0.0% | 154/170 = 90.6% | 135/170 = 79.4% | 170/170 = 100.0% | 170/170 = 100.0% | 116/170 = 68.2% |
+| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
 
 ### Product 217
 
@@ -3916,15 +3918,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 21/30 = 70.0% |
-| ActionExchange | 133 | 0/133 = 0.0% | 125/133 = 94.0% | 107/133 = 80.5% | 133/133 = 100.0% | 133/133 = 100.0% | 101/133 = 75.9% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 25/30 = 83.3% |
+| ActionExchange | 133 | 0/133 = 0.0% | 125/133 = 94.0% | 107/133 = 80.5% | 133/133 = 100.0% | 133/133 = 100.0% | 112/133 = 84.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 218
 
@@ -3934,7 +3936,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -3952,15 +3954,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 19/24 = 79.2% | 24/24 = 100.0% | 24/24 = 100.0% | 16/24 = 66.7% |
-| ActionExchange | 100 | 0/100 = 0.0% | 96/100 = 96.0% | 82/100 = 82.0% | 100/100 = 100.0% | 100/100 = 100.0% | 74/100 = 74.0% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 19/24 = 79.2% | 24/24 = 100.0% | 24/24 = 100.0% | 22/24 = 91.7% |
+| ActionExchange | 100 | 0/100 = 0.0% | 96/100 = 96.0% | 82/100 = 82.0% | 100/100 = 100.0% | 100/100 = 100.0% | 93/100 = 93.0% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% |
 
 ### Product 220
 
@@ -3970,15 +3972,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 14/17 = 82.4% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
-| ActionExchange | 53 | 0/53 = 0.0% | 47/53 = 88.7% | 45/53 = 84.9% | 53/53 = 100.0% | 53/53 = 100.0% | 34/53 = 64.2% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 7/11 = 63.6% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 14/17 = 82.4% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
+| ActionExchange | 53 | 0/53 = 0.0% | 47/53 = 88.7% | 45/53 = 84.9% | 53/53 = 100.0% | 53/53 = 100.0% | 40/53 = 75.5% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 9/11 = 81.8% |
 
 ### Product 221
 
@@ -3988,15 +3990,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
-| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 56/83 = 67.5% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 62/83 = 74.7% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 222
 
@@ -4024,15 +4026,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 34 | 0/34 = 0.0% | 31/34 = 91.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 20/34 = 58.8% |
-| ActionExchange | 148 | 0/148 = 0.0% | 138/148 = 93.2% | 123/148 = 83.1% | 148/148 = 100.0% | 148/148 = 100.0% | 88/148 = 59.5% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 34 | 0/34 = 0.0% | 31/34 = 91.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 25/34 = 73.5% |
+| ActionExchange | 148 | 0/148 = 0.0% | 138/148 = 93.2% | 123/148 = 83.1% | 148/148 = 100.0% | 148/148 = 100.0% | 112/148 = 75.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
 
 ### Product 224
 
@@ -4042,15 +4044,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
-| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 38/49 = 77.6% |
-| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
+| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 44/49 = 89.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 9/10 = 90.0% |
 
 ### Product 225
 
@@ -4060,7 +4062,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4078,15 +4080,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 16/20 = 80.0% | 20/20 = 100.0% | 20/20 = 100.0% | 8/20 = 40.0% |
-| ActionExchange | 57 | 0/57 = 0.0% | 55/57 = 96.5% | 45/57 = 78.9% | 57/57 = 100.0% | 57/57 = 100.0% | 32/57 = 56.1% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 5/12 = 41.7% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 16/20 = 80.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 57 | 0/57 = 0.0% | 55/57 = 96.5% | 45/57 = 78.9% | 57/57 = 100.0% | 57/57 = 100.0% | 46/57 = 80.7% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 227
 
@@ -4096,15 +4098,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 26/31 = 83.9% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 18/31 = 58.1% |
-| ActionExchange | 132 | 0/132 = 0.0% | 116/132 = 87.9% | 107/132 = 81.1% | 132/132 = 100.0% | 132/132 = 100.0% | 82/132 = 62.1% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 26/31 = 83.9% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 20/31 = 64.5% |
+| ActionExchange | 132 | 0/132 = 0.0% | 116/132 = 87.9% | 107/132 = 81.1% | 132/132 = 100.0% | 132/132 = 100.0% | 89/132 = 67.4% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 13/19 = 68.4% |
 
 ### Product 228
 
@@ -4114,7 +4116,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4132,15 +4134,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 12/22 = 54.5% |
-| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 47/75 = 62.7% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 8/13 = 61.5% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 52/75 = 69.3% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
 
 ### Product 230
 
@@ -4150,15 +4152,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 19/24 = 79.2% |
-| ActionExchange | 75 | 0/75 = 0.0% | 69/75 = 92.0% | 61/75 = 81.3% | 75/75 = 100.0% | 75/75 = 100.0% | 58/75 = 77.3% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 21/24 = 87.5% |
+| ActionExchange | 75 | 0/75 = 0.0% | 69/75 = 92.0% | 61/75 = 81.3% | 75/75 = 100.0% | 75/75 = 100.0% | 65/75 = 86.7% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 231
 
@@ -4168,7 +4170,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4186,7 +4188,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4222,15 +4224,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 29/32 = 90.6% | 32/32 = 100.0% | 32/32 = 100.0% | 24/32 = 75.0% |
-| ActionExchange | 135 | 0/135 = 0.0% | 127/135 = 94.1% | 117/135 = 86.7% | 135/135 = 100.0% | 135/135 = 100.0% | 105/135 = 77.8% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 17/20 = 85.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 29/32 = 90.6% | 32/32 = 100.0% | 32/32 = 100.0% | 26/32 = 81.3% |
+| ActionExchange | 135 | 0/135 = 0.0% | 127/135 = 94.1% | 117/135 = 86.7% | 135/135 = 100.0% | 135/135 = 100.0% | 113/135 = 83.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
 
 ### Product 235
 
@@ -4258,14 +4260,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 55/91 = 60.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 16/25 = 64.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 60/91 = 65.9% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
 
 ### Product 237
@@ -4276,7 +4278,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4294,14 +4296,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 63/91 = 69.2% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 68/91 = 74.7% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
 
 ### Product 239
@@ -4312,15 +4314,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 24 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 13/16 = 81.3% | 16/16 = 100.0% | 16/16 = 100.0% | 6/16 = 37.5% |
-| ActionExchange | 43 | 0/43 = 0.0% | 38/43 = 88.4% | 34/43 = 79.1% | 43/43 = 100.0% | 43/43 = 100.0% | 16/43 = 37.2% |
-| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 4/10 = 40.0% |
+| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 13/16 = 81.3% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
+| ActionExchange | 43 | 0/43 = 0.0% | 38/43 = 88.4% | 34/43 = 79.1% | 43/43 = 100.0% | 43/43 = 100.0% | 32/43 = 74.4% |
+| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
 
 ### Product 240
 
@@ -4330,15 +4332,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 20/33 = 60.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 86/144 = 59.7% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 22/33 = 66.7% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 97/144 = 67.4% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
 
 ### Product 241
 
@@ -4348,14 +4350,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 57 | 0/57 = 0.0% | 52/57 = 91.2% | 42/57 = 73.7% | 57/57 = 100.0% | 57/57 = 100.0% | 37/57 = 64.9% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 57 | 0/57 = 0.0% | 52/57 = 91.2% | 42/57 = 73.7% | 57/57 = 100.0% | 57/57 = 100.0% | 40/57 = 70.2% |
 | StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 9/14 = 64.3% |
 
 ### Product 242
@@ -4384,15 +4386,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 26/32 = 81.3% | 32/32 = 100.0% | 32/32 = 100.0% | 23/32 = 71.9% |
-| ActionExchange | 143 | 0/143 = 0.0% | 135/143 = 94.4% | 111/143 = 77.6% | 143/143 = 100.0% | 143/143 = 100.0% | 112/143 = 78.3% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 26/32 = 81.3% | 32/32 = 100.0% | 32/32 = 100.0% | 27/32 = 84.4% |
+| ActionExchange | 143 | 0/143 = 0.0% | 135/143 = 94.4% | 111/143 = 77.6% | 143/143 = 100.0% | 143/143 = 100.0% | 121/143 = 84.6% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 244
 
@@ -4402,15 +4404,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
-| ActionExchange | 67 | 0/67 = 0.0% | 65/67 = 97.0% | 57/67 = 85.1% | 67/67 = 100.0% | 67/67 = 100.0% | 37/67 = 55.2% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 6/12 = 50.0% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 67 | 0/67 = 0.0% | 65/67 = 97.0% | 57/67 = 85.1% | 67/67 = 100.0% | 67/67 = 100.0% | 51/67 = 76.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 245
 
@@ -4420,7 +4422,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4438,7 +4440,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4456,15 +4458,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
-| ActionExchange | 69 | 0/69 = 0.0% | 63/69 = 91.3% | 57/69 = 82.6% | 69/69 = 100.0% | 69/69 = 100.0% | 45/69 = 65.2% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 69 | 0/69 = 0.0% | 63/69 = 91.3% | 57/69 = 82.6% | 69/69 = 100.0% | 69/69 = 100.0% | 56/69 = 81.2% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
 
 ### Product 248
 
@@ -4492,7 +4494,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4510,15 +4512,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
-| ActionExchange | 78 | 0/78 = 0.0% | 74/78 = 94.9% | 63/78 = 80.8% | 78/78 = 100.0% | 78/78 = 100.0% | 53/78 = 67.9% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 17/22 = 77.3% |
+| ActionExchange | 78 | 0/78 = 0.0% | 74/78 = 94.9% | 63/78 = 80.8% | 78/78 = 100.0% | 78/78 = 100.0% | 60/78 = 76.9% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 251
 
@@ -4528,7 +4530,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4546,7 +4548,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4564,7 +4566,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4582,15 +4584,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
-| ActionExchange | 81 | 0/81 = 0.0% | 74/81 = 91.4% | 66/81 = 81.5% | 81/81 = 100.0% | 81/81 = 100.0% | 46/81 = 56.8% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 6/12 = 50.0% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
+| ActionExchange | 81 | 0/81 = 0.0% | 74/81 = 91.4% | 66/81 = 81.5% | 81/81 = 100.0% | 81/81 = 100.0% | 58/81 = 71.6% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
 
 ### Product 255
 
@@ -4600,7 +4602,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4618,15 +4620,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 20/25 = 80.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 105 | 0/105 = 0.0% | 103/105 = 98.1% | 83/105 = 79.0% | 105/105 = 100.0% | 105/105 = 100.0% | 70/105 = 66.7% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 20/25 = 80.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 105 | 0/105 = 0.0% | 103/105 = 98.1% | 83/105 = 79.0% | 105/105 = 100.0% | 105/105 = 100.0% | 82/105 = 78.1% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 257
 
@@ -4636,15 +4638,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 53/74 = 71.6% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 258
 
@@ -4654,15 +4656,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 14/30 = 46.7% |
-| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 77/128 = 60.2% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 9/19 = 47.4% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 20/30 = 66.7% |
+| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 89/128 = 69.5% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 14/19 = 73.7% |
 
 ### Product 259
 
@@ -4672,15 +4674,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 21/26 = 80.8% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 95 | 0/95 = 0.0% | 81/95 = 85.3% | 74/95 = 77.9% | 95/95 = 100.0% | 95/95 = 100.0% | 51/95 = 53.7% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 21/26 = 80.8% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 95 | 0/95 = 0.0% | 81/95 = 85.3% | 74/95 = 77.9% | 95/95 = 100.0% | 95/95 = 100.0% | 73/95 = 76.8% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 260
 
@@ -4690,7 +4692,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 15 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4708,15 +4710,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 19/24 = 79.2% | 24/24 = 100.0% | 24/24 = 100.0% | 16/24 = 66.7% |
-| ActionExchange | 100 | 0/100 = 0.0% | 96/100 = 96.0% | 82/100 = 82.0% | 100/100 = 100.0% | 100/100 = 100.0% | 74/100 = 74.0% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 19/24 = 79.2% | 24/24 = 100.0% | 24/24 = 100.0% | 22/24 = 91.7% |
+| ActionExchange | 100 | 0/100 = 0.0% | 96/100 = 96.0% | 82/100 = 82.0% | 100/100 = 100.0% | 100/100 = 100.0% | 93/100 = 93.0% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% |
 
 ### Product 262
 
@@ -4726,15 +4728,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 48/68 = 70.6% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 56/68 = 82.4% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 263
 
@@ -4744,15 +4746,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 68/101 = 67.3% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 24/28 = 85.7% |
+| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 84/101 = 83.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 264
 
@@ -4762,15 +4764,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 51/91 = 56.0% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 22/25 = 88.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 76/91 = 83.5% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% |
 
 ### Product 265
 
@@ -4780,15 +4782,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 48/68 = 70.6% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 56/68 = 82.4% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 266
 
@@ -4798,15 +4800,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 28/33 = 84.8% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 21/33 = 63.6% |
-| ActionExchange | 163 | 0/163 = 0.0% | 145/163 = 89.0% | 134/163 = 82.2% | 163/163 = 100.0% | 163/163 = 100.0% | 123/163 = 75.5% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 28/33 = 84.8% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 25/33 = 75.8% |
+| ActionExchange | 163 | 0/163 = 0.0% | 145/163 = 89.0% | 134/163 = 82.2% | 163/163 = 100.0% | 163/163 = 100.0% | 142/163 = 87.1% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
 
 ### Product 267
 
@@ -4816,7 +4818,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4834,14 +4836,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 57 | 0/57 = 0.0% | 52/57 = 91.2% | 42/57 = 73.7% | 57/57 = 100.0% | 57/57 = 100.0% | 37/57 = 64.9% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 57 | 0/57 = 0.0% | 52/57 = 91.2% | 42/57 = 73.7% | 57/57 = 100.0% | 57/57 = 100.0% | 40/57 = 70.2% |
 | StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 9/14 = 64.3% |
 
 ### Product 269
@@ -4852,7 +4854,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4870,7 +4872,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4888,15 +4890,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
-| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 56/83 = 67.5% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 62/83 = 74.7% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 272
 
@@ -4906,7 +4908,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4924,7 +4926,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4942,15 +4944,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 24 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 13/16 = 81.3% | 16/16 = 100.0% | 16/16 = 100.0% | 6/16 = 37.5% |
-| ActionExchange | 43 | 0/43 = 0.0% | 38/43 = 88.4% | 34/43 = 79.1% | 43/43 = 100.0% | 43/43 = 100.0% | 16/43 = 37.2% |
-| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 4/10 = 40.0% |
+| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 13/16 = 81.3% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
+| ActionExchange | 43 | 0/43 = 0.0% | 38/43 = 88.4% | 34/43 = 79.1% | 43/43 = 100.0% | 43/43 = 100.0% | 32/43 = 74.4% |
+| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
 
 ### Product 275
 
@@ -4960,7 +4962,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4978,7 +4980,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -4996,7 +4998,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 15 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5014,15 +5016,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 8 test case(s) (of 16 family-level), 20 real step(s) applicable.
 
-**Random baseline:** 3 test case(s).
+**Random baseline:** 4 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 7/12 = 58.3% |
-| ActionExchange | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 5/8 = 62.5% |
+| TransitionMissing | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 11/12 = 91.7% |
+| ActionExchange | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 22/24 = 91.7% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
 
 ### Product 279
 
@@ -5032,7 +5034,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5050,7 +5052,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5068,15 +5070,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 19/24 = 79.2% |
-| ActionExchange | 75 | 0/75 = 0.0% | 69/75 = 92.0% | 61/75 = 81.3% | 75/75 = 100.0% | 75/75 = 100.0% | 58/75 = 77.3% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 21/24 = 87.5% |
+| ActionExchange | 75 | 0/75 = 0.0% | 69/75 = 92.0% | 61/75 = 81.3% | 75/75 = 100.0% | 75/75 = 100.0% | 65/75 = 86.7% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 282
 
@@ -5086,14 +5088,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 14/21 = 66.7% |
-| ActionExchange | 51 | 0/51 = 0.0% | 46/51 = 90.2% | 43/51 = 84.3% | 51/51 = 100.0% | 51/51 = 100.0% | 33/51 = 64.7% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 51 | 0/51 = 0.0% | 46/51 = 90.2% | 43/51 = 84.3% | 51/51 = 100.0% | 51/51 = 100.0% | 36/51 = 70.6% |
 | StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 283
@@ -5104,7 +5106,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5122,7 +5124,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5140,7 +5142,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5176,7 +5178,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5194,7 +5196,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5212,14 +5214,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 16/21 = 76.2% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 55/74 = 74.3% | 74/74 = 100.0% | 74/74 = 100.0% | 47/74 = 63.5% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 16/21 = 76.2% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 55/74 = 74.3% | 74/74 = 100.0% | 74/74 = 100.0% | 51/74 = 68.9% |
 | StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
 
 ### Product 290
@@ -5230,14 +5232,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 55/91 = 60.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 21/25 = 84.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 16/25 = 64.0% |
+| ActionExchange | 91 | 0/91 = 0.0% | 79/91 = 86.8% | 71/91 = 78.0% | 91/91 = 100.0% | 91/91 = 100.0% | 60/91 = 65.9% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
 
 ### Product 291
@@ -5248,15 +5250,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 35 | 0/35 = 0.0% | 30/35 = 85.7% | 29/35 = 82.9% | 35/35 = 100.0% | 35/35 = 100.0% | 15/35 = 42.9% |
-| ActionExchange | 174 | 0/174 = 0.0% | 156/174 = 89.7% | 138/174 = 79.3% | 174/174 = 100.0% | 174/174 = 100.0% | 90/174 = 51.7% |
-| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 10/21 = 47.6% |
+| TransitionMissing | 35 | 0/35 = 0.0% | 30/35 = 85.7% | 29/35 = 82.9% | 35/35 = 100.0% | 35/35 = 100.0% | 18/35 = 51.4% |
+| ActionExchange | 174 | 0/174 = 0.0% | 156/174 = 89.7% | 138/174 = 79.3% | 174/174 = 100.0% | 174/174 = 100.0% | 99/174 = 56.9% |
+| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
 
 ### Product 292
 
@@ -5266,15 +5268,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 36 | 0/36 = 0.0% | 33/36 = 91.7% | 31/36 = 86.1% | 36/36 = 100.0% | 36/36 = 100.0% | 26/36 = 72.2% |
-| ActionExchange | 180 | 0/180 = 0.0% | 169/180 = 93.9% | 151/180 = 83.9% | 180/180 = 100.0% | 180/180 = 100.0% | 132/180 = 73.3% |
-| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 18/21 = 85.7% |
+| TransitionMissing | 36 | 0/36 = 0.0% | 33/36 = 91.7% | 31/36 = 86.1% | 36/36 = 100.0% | 36/36 = 100.0% | 30/36 = 83.3% |
+| ActionExchange | 180 | 0/180 = 0.0% | 169/180 = 93.9% | 151/180 = 83.9% | 180/180 = 100.0% | 180/180 = 100.0% | 154/180 = 85.6% |
+| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
 
 ### Product 293
 
@@ -5284,15 +5286,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 25/27 = 92.6% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 20/27 = 74.1% |
-| ActionExchange | 98 | 0/98 = 0.0% | 91/98 = 92.9% | 81/98 = 82.7% | 98/98 = 100.0% | 98/98 = 100.0% | 70/98 = 71.4% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 25/27 = 92.6% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 23/27 = 85.2% |
+| ActionExchange | 98 | 0/98 = 0.0% | 91/98 = 92.9% | 81/98 = 82.7% | 98/98 = 100.0% | 98/98 = 100.0% | 82/98 = 83.7% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 294
 
@@ -5302,15 +5304,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
-| ActionExchange | 67 | 0/67 = 0.0% | 65/67 = 97.0% | 57/67 = 85.1% | 67/67 = 100.0% | 67/67 = 100.0% | 37/67 = 55.2% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 6/12 = 50.0% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 67 | 0/67 = 0.0% | 65/67 = 97.0% | 57/67 = 85.1% | 67/67 = 100.0% | 67/67 = 100.0% | 51/67 = 76.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 295
 
@@ -5320,15 +5322,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 24/27 = 88.9% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 14/27 = 51.9% |
-| ActionExchange | 127 | 0/127 = 0.0% | 119/127 = 93.7% | 103/127 = 81.1% | 127/127 = 100.0% | 127/127 = 100.0% | 79/127 = 62.2% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 9/16 = 56.3% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 24/27 = 88.9% | 23/27 = 85.2% | 27/27 = 100.0% | 27/27 = 100.0% | 16/27 = 59.3% |
+| ActionExchange | 127 | 0/127 = 0.0% | 119/127 = 93.7% | 103/127 = 81.1% | 127/127 = 100.0% | 127/127 = 100.0% | 87/127 = 68.5% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
 
 ### Product 296
 
@@ -5338,14 +5340,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 28/30 = 93.3% | 30/30 = 100.0% | 30/30 = 100.0% | 23/30 = 76.7% |
-| ActionExchange | 125 | 0/125 = 0.0% | 117/125 = 93.6% | 113/125 = 90.4% | 125/125 = 100.0% | 125/125 = 100.0% | 97/125 = 77.6% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 28/30 = 93.3% | 30/30 = 100.0% | 30/30 = 100.0% | 24/30 = 80.0% |
+| ActionExchange | 125 | 0/125 = 0.0% | 117/125 = 93.6% | 113/125 = 90.4% | 125/125 = 100.0% | 125/125 = 100.0% | 103/125 = 82.4% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
 
 ### Product 297
@@ -5356,15 +5358,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 68/101 = 67.3% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 24/28 = 85.7% |
+| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 84/101 = 83.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 298
 
@@ -5374,7 +5376,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5392,15 +5394,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 26/32 = 81.3% | 32/32 = 100.0% | 32/32 = 100.0% | 23/32 = 71.9% |
-| ActionExchange | 143 | 0/143 = 0.0% | 135/143 = 94.4% | 111/143 = 77.6% | 143/143 = 100.0% | 143/143 = 100.0% | 112/143 = 78.3% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 26/32 = 81.3% | 32/32 = 100.0% | 32/32 = 100.0% | 27/32 = 84.4% |
+| ActionExchange | 143 | 0/143 = 0.0% | 135/143 = 94.4% | 111/143 = 77.6% | 143/143 = 100.0% | 143/143 = 100.0% | 121/143 = 84.6% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 300
 
@@ -5410,15 +5412,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 36 | 0/36 = 0.0% | 33/36 = 91.7% | 31/36 = 86.1% | 36/36 = 100.0% | 36/36 = 100.0% | 26/36 = 72.2% |
-| ActionExchange | 180 | 0/180 = 0.0% | 169/180 = 93.9% | 151/180 = 83.9% | 180/180 = 100.0% | 180/180 = 100.0% | 132/180 = 73.3% |
-| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 18/21 = 85.7% |
+| TransitionMissing | 36 | 0/36 = 0.0% | 33/36 = 91.7% | 31/36 = 86.1% | 36/36 = 100.0% | 36/36 = 100.0% | 30/36 = 83.3% |
+| ActionExchange | 180 | 0/180 = 0.0% | 169/180 = 93.9% | 151/180 = 83.9% | 180/180 = 100.0% | 180/180 = 100.0% | 154/180 = 85.6% |
+| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
 
 ### Product 301
 
@@ -5428,14 +5430,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 25/28 = 89.3% | 28/28 = 100.0% | 28/28 = 100.0% | 22/28 = 78.6% |
-| ActionExchange | 133 | 0/133 = 0.0% | 131/133 = 98.5% | 115/133 = 86.5% | 133/133 = 100.0% | 133/133 = 100.0% | 106/133 = 79.7% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 25/28 = 89.3% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 133 | 0/133 = 0.0% | 131/133 = 98.5% | 115/133 = 86.5% | 133/133 = 100.0% | 133/133 = 100.0% | 112/133 = 84.2% |
 | StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 15/16 = 93.8% |
 
 ### Product 302
@@ -5446,15 +5448,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 19/24 = 79.2% |
-| ActionExchange | 75 | 0/75 = 0.0% | 69/75 = 92.0% | 61/75 = 81.3% | 75/75 = 100.0% | 75/75 = 100.0% | 58/75 = 77.3% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 22/24 = 91.7% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 21/24 = 87.5% |
+| ActionExchange | 75 | 0/75 = 0.0% | 69/75 = 92.0% | 61/75 = 81.3% | 75/75 = 100.0% | 75/75 = 100.0% | 65/75 = 86.7% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 303
 
@@ -5464,7 +5466,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5482,15 +5484,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 48/83 = 57.8% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 63/83 = 75.9% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 305
 
@@ -5500,15 +5502,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 12/22 = 54.5% |
-| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 47/75 = 62.7% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 8/13 = 61.5% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 52/75 = 69.3% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
 
 ### Product 306
 
@@ -5518,15 +5520,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 27/32 = 84.4% | 32/32 = 100.0% | 32/32 = 100.0% | 16/32 = 50.0% |
-| ActionExchange | 138 | 0/138 = 0.0% | 124/138 = 89.9% | 108/138 = 78.3% | 138/138 = 100.0% | 138/138 = 100.0% | 87/138 = 63.0% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 27/32 = 84.4% | 32/32 = 100.0% | 32/32 = 100.0% | 22/32 = 68.8% |
+| ActionExchange | 138 | 0/138 = 0.0% | 124/138 = 89.9% | 108/138 = 78.3% | 138/138 = 100.0% | 138/138 = 100.0% | 99/138 = 71.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
 
 ### Product 307
 
@@ -5536,14 +5538,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 20/24 = 83.3% |
-| ActionExchange | 70 | 0/70 = 0.0% | 60/70 = 85.7% | 58/70 = 82.9% | 70/70 = 100.0% | 70/70 = 100.0% | 57/70 = 81.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 21/24 = 87.5% |
+| ActionExchange | 70 | 0/70 = 0.0% | 60/70 = 85.7% | 58/70 = 82.9% | 70/70 = 100.0% | 70/70 = 100.0% | 61/70 = 87.1% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 15/16 = 93.8% |
 
 ### Product 308
@@ -5554,7 +5556,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5572,15 +5574,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 48/83 = 57.8% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 63/83 = 75.9% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 310
 
@@ -5590,7 +5592,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5608,15 +5610,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 46 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 20/33 = 60.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 86/144 = 59.7% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 22/33 = 66.7% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 97/144 = 67.4% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
 
 ### Product 312
 
@@ -5626,7 +5628,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5644,7 +5646,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5662,7 +5664,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5680,15 +5682,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 75/106 = 70.8% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 21/28 = 75.0% |
+| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 83/106 = 78.3% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 316
 
@@ -5698,15 +5700,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 19/31 = 61.3% |
-| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 94/116 = 81.0% | 116/116 = 100.0% | 116/116 = 100.0% | 72/116 = 62.1% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 14/19 = 73.7% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 23/31 = 74.2% |
+| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 94/116 = 81.0% | 116/116 = 100.0% | 116/116 = 100.0% | 86/116 = 74.1% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 16/19 = 84.2% |
 
 ### Product 317
 
@@ -5716,7 +5718,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5734,7 +5736,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5752,7 +5754,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5770,15 +5772,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 28/31 = 90.3% | 25/31 = 80.6% | 31/31 = 100.0% | 31/31 = 100.0% | 21/31 = 67.7% |
-| ActionExchange | 137 | 0/137 = 0.0% | 127/137 = 92.7% | 110/137 = 80.3% | 137/137 = 100.0% | 137/137 = 100.0% | 103/137 = 75.2% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 28/31 = 90.3% | 25/31 = 80.6% | 31/31 = 100.0% | 31/31 = 100.0% | 25/31 = 80.6% |
+| ActionExchange | 137 | 0/137 = 0.0% | 127/137 = 92.7% | 110/137 = 80.3% | 137/137 = 100.0% | 137/137 = 100.0% | 114/137 = 83.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 321
 
@@ -5788,7 +5790,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5806,15 +5808,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 12/22 = 54.5% |
-| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 47/75 = 62.7% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 8/13 = 61.5% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 52/75 = 69.3% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
 
 ### Product 323
 
@@ -5824,15 +5826,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 20/25 = 80.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 105 | 0/105 = 0.0% | 103/105 = 98.1% | 83/105 = 79.0% | 105/105 = 100.0% | 105/105 = 100.0% | 70/105 = 66.7% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 20/25 = 80.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 105 | 0/105 = 0.0% | 103/105 = 98.1% | 83/105 = 79.0% | 105/105 = 100.0% | 105/105 = 100.0% | 82/105 = 78.1% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 324
 
@@ -5842,7 +5844,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5860,15 +5862,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 22/27 = 81.5% | 27/27 = 100.0% | 27/27 = 100.0% | 18/27 = 66.7% |
-| ActionExchange | 100 | 0/100 = 0.0% | 88/100 = 88.0% | 75/100 = 75.0% | 100/100 = 100.0% | 100/100 = 100.0% | 68/100 = 68.0% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 22/27 = 81.5% | 27/27 = 100.0% | 27/27 = 100.0% | 21/27 = 77.8% |
+| ActionExchange | 100 | 0/100 = 0.0% | 88/100 = 88.0% | 75/100 = 75.0% | 100/100 = 100.0% | 100/100 = 100.0% | 78/100 = 78.0% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 326
 
@@ -5878,14 +5880,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
-| ActionExchange | 98 | 0/98 = 0.0% | 96/98 = 98.0% | 88/98 = 89.8% | 98/98 = 100.0% | 98/98 = 100.0% | 72/98 = 73.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 98 | 0/98 = 0.0% | 96/98 = 98.0% | 88/98 = 89.8% | 98/98 = 100.0% | 98/98 = 100.0% | 74/98 = 75.5% |
 | StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
 
 ### Product 327
@@ -5896,7 +5898,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5914,7 +5916,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5932,15 +5934,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 82 | 0/82 = 0.0% | 70/82 = 85.4% | 67/82 = 81.7% | 82/82 = 100.0% | 82/82 = 100.0% | 51/82 = 62.2% |
-| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 10/15 = 66.7% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 19/23 = 82.6% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 82 | 0/82 = 0.0% | 70/82 = 85.4% | 67/82 = 81.7% | 82/82 = 100.0% | 82/82 = 100.0% | 65/82 = 79.3% |
+| StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 13/15 = 86.7% |
 
 ### Product 330
 
@@ -5950,7 +5952,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -5968,15 +5970,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 18/28 = 64.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 113/115 = 98.3% | 95/115 = 82.6% | 115/115 = 100.0% | 115/115 = 100.0% | 84/115 = 73.0% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 115 | 0/115 = 0.0% | 113/115 = 98.3% | 95/115 = 82.6% | 115/115 = 100.0% | 115/115 = 100.0% | 98/115 = 85.2% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 332
 
@@ -5986,15 +5988,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 15/19 = 78.9% | 15/19 = 78.9% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
-| ActionExchange | 64 | 0/64 = 0.0% | 56/64 = 87.5% | 51/64 = 79.7% | 64/64 = 100.0% | 64/64 = 100.0% | 51/64 = 79.7% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 10/11 = 90.9% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 15/19 = 78.9% | 15/19 = 78.9% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
+| ActionExchange | 64 | 0/64 = 0.0% | 56/64 = 87.5% | 51/64 = 79.7% | 64/64 = 100.0% | 64/64 = 100.0% | 56/64 = 87.5% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% |
 
 ### Product 333
 
@@ -6004,15 +6006,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 30/33 = 90.9% | 26/33 = 78.8% | 33/33 = 100.0% | 33/33 = 100.0% | 23/33 = 69.7% |
-| ActionExchange | 147 | 0/147 = 0.0% | 137/147 = 93.2% | 114/147 = 77.6% | 147/147 = 100.0% | 147/147 = 100.0% | 114/147 = 77.6% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 30/33 = 90.9% | 26/33 = 78.8% | 33/33 = 100.0% | 33/33 = 100.0% | 27/33 = 81.8% |
+| ActionExchange | 147 | 0/147 = 0.0% | 137/147 = 93.2% | 114/147 = 77.6% | 147/147 = 100.0% | 147/147 = 100.0% | 123/147 = 83.7% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 334
 
@@ -6022,15 +6024,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 22/23 = 95.7% | 23/23 = 100.0% | 23/23 = 100.0% | 15/23 = 65.2% |
-| ActionExchange | 89 | 0/89 = 0.0% | 87/89 = 97.8% | 84/89 = 94.4% | 89/89 = 100.0% | 89/89 = 100.0% | 62/89 = 69.7% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 22/23 = 95.7% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 89 | 0/89 = 0.0% | 87/89 = 97.8% | 84/89 = 94.4% | 89/89 = 100.0% | 89/89 = 100.0% | 72/89 = 80.9% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 335
 
@@ -6040,15 +6042,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 46 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 20/33 = 60.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 86/144 = 59.7% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 22/33 = 66.7% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 97/144 = 67.4% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
 
 ### Product 336
 
@@ -6058,15 +6060,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 75/106 = 70.8% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 21/28 = 75.0% |
+| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 83/106 = 78.3% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 337
 
@@ -6076,15 +6078,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 15/19 = 78.9% | 15/19 = 78.9% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
-| ActionExchange | 64 | 0/64 = 0.0% | 56/64 = 87.5% | 51/64 = 79.7% | 64/64 = 100.0% | 64/64 = 100.0% | 51/64 = 79.7% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 10/11 = 90.9% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 15/19 = 78.9% | 15/19 = 78.9% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
+| ActionExchange | 64 | 0/64 = 0.0% | 56/64 = 87.5% | 51/64 = 79.7% | 64/64 = 100.0% | 64/64 = 100.0% | 56/64 = 87.5% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% |
 
 ### Product 338
 
@@ -6094,7 +6096,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6112,15 +6114,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 35 | 0/35 = 0.0% | 30/35 = 85.7% | 29/35 = 82.9% | 35/35 = 100.0% | 35/35 = 100.0% | 15/35 = 42.9% |
-| ActionExchange | 174 | 0/174 = 0.0% | 156/174 = 89.7% | 138/174 = 79.3% | 174/174 = 100.0% | 174/174 = 100.0% | 90/174 = 51.7% |
-| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 10/21 = 47.6% |
+| TransitionMissing | 35 | 0/35 = 0.0% | 30/35 = 85.7% | 29/35 = 82.9% | 35/35 = 100.0% | 35/35 = 100.0% | 18/35 = 51.4% |
+| ActionExchange | 174 | 0/174 = 0.0% | 156/174 = 89.7% | 138/174 = 79.3% | 174/174 = 100.0% | 174/174 = 100.0% | 99/174 = 56.9% |
+| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
 
 ### Product 340
 
@@ -6130,14 +6132,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 28/30 = 93.3% | 30/30 = 100.0% | 30/30 = 100.0% | 23/30 = 76.7% |
-| ActionExchange | 125 | 0/125 = 0.0% | 117/125 = 93.6% | 113/125 = 90.4% | 125/125 = 100.0% | 125/125 = 100.0% | 97/125 = 77.6% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 28/30 = 93.3% | 30/30 = 100.0% | 30/30 = 100.0% | 24/30 = 80.0% |
+| ActionExchange | 125 | 0/125 = 0.0% | 117/125 = 93.6% | 113/125 = 90.4% | 125/125 = 100.0% | 125/125 = 100.0% | 103/125 = 82.4% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
 
 ### Product 341
@@ -6148,7 +6150,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6166,7 +6168,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6184,15 +6186,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 82 | 0/82 = 0.0% | 80/82 = 97.6% | 64/82 = 78.0% | 82/82 = 100.0% | 82/82 = 100.0% | 51/82 = 62.2% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 82 | 0/82 = 0.0% | 80/82 = 97.6% | 64/82 = 78.0% | 82/82 = 100.0% | 82/82 = 100.0% | 66/82 = 80.5% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
 
 ### Product 344
 
@@ -6202,15 +6204,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 15/26 = 57.7% |
-| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 61/92 = 66.3% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
+| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 71/92 = 77.2% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 12/17 = 70.6% |
 
 ### Product 345
 
@@ -6220,7 +6222,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6238,15 +6240,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 48/68 = 70.6% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 56/68 = 82.4% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 347
 
@@ -6256,15 +6258,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 22/23 = 95.7% | 23/23 = 100.0% | 23/23 = 100.0% | 15/23 = 65.2% |
-| ActionExchange | 89 | 0/89 = 0.0% | 87/89 = 97.8% | 84/89 = 94.4% | 89/89 = 100.0% | 89/89 = 100.0% | 62/89 = 69.7% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 22/23 = 95.7% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 89 | 0/89 = 0.0% | 87/89 = 97.8% | 84/89 = 94.4% | 89/89 = 100.0% | 89/89 = 100.0% | 72/89 = 80.9% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 348
 
@@ -6274,7 +6276,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6292,7 +6294,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6310,15 +6312,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 15/18 = 83.3% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 60 | 0/60 = 0.0% | 54/60 = 90.0% | 48/60 = 80.0% | 60/60 = 100.0% | 60/60 = 100.0% | 34/60 = 56.7% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 7/11 = 63.6% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 15/18 = 83.3% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
+| ActionExchange | 60 | 0/60 = 0.0% | 54/60 = 90.0% | 48/60 = 80.0% | 60/60 = 100.0% | 60/60 = 100.0% | 41/60 = 68.3% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
 
 ### Product 351
 
@@ -6328,15 +6330,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 21/26 = 80.8% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 95 | 0/95 = 0.0% | 81/95 = 85.3% | 74/95 = 77.9% | 95/95 = 100.0% | 95/95 = 100.0% | 51/95 = 53.7% |
-| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 21/26 = 80.8% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 95 | 0/95 = 0.0% | 81/95 = 85.3% | 74/95 = 77.9% | 95/95 = 100.0% | 95/95 = 100.0% | 73/95 = 76.8% |
+| StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 352
 
@@ -6346,15 +6348,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 21/30 = 70.0% |
-| ActionExchange | 133 | 0/133 = 0.0% | 125/133 = 94.0% | 107/133 = 80.5% | 133/133 = 100.0% | 133/133 = 100.0% | 101/133 = 75.9% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 25/30 = 83.3% |
+| ActionExchange | 133 | 0/133 = 0.0% | 125/133 = 94.0% | 107/133 = 80.5% | 133/133 = 100.0% | 133/133 = 100.0% | 112/133 = 84.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 353
 
@@ -6364,15 +6366,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 29/32 = 90.6% | 32/32 = 100.0% | 32/32 = 100.0% | 24/32 = 75.0% |
-| ActionExchange | 135 | 0/135 = 0.0% | 127/135 = 94.1% | 117/135 = 86.7% | 135/135 = 100.0% | 135/135 = 100.0% | 105/135 = 77.8% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 17/20 = 85.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 30/32 = 93.8% | 29/32 = 90.6% | 32/32 = 100.0% | 32/32 = 100.0% | 26/32 = 81.3% |
+| ActionExchange | 135 | 0/135 = 0.0% | 127/135 = 94.1% | 117/135 = 86.7% | 135/135 = 100.0% | 135/135 = 100.0% | 113/135 = 83.7% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 18/20 = 90.0% |
 
 ### Product 354
 
@@ -6382,7 +6384,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6400,15 +6402,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 19/26 = 73.1% |
-| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 66/92 = 71.7% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 22/26 = 84.6% |
+| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 76/92 = 82.6% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 356
 
@@ -6418,15 +6420,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
-| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 38/49 = 77.6% |
-| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
+| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 44/49 = 89.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 9/10 = 90.0% |
 
 ### Product 357
 
@@ -6454,15 +6456,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 53/74 = 71.6% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 359
 
@@ -6472,15 +6474,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
-| ActionExchange | 52 | 0/52 = 0.0% | 46/52 = 88.5% | 44/52 = 84.6% | 52/52 = 100.0% | 52/52 = 100.0% | 34/52 = 65.4% |
-| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 7/10 = 70.0% |
+| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| ActionExchange | 52 | 0/52 = 0.0% | 46/52 = 88.5% | 44/52 = 84.6% | 52/52 = 100.0% | 52/52 = 100.0% | 41/52 = 78.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
 
 ### Product 360
 
@@ -6490,7 +6492,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6508,7 +6510,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6526,7 +6528,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6544,15 +6546,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 24 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 13/16 = 81.3% | 16/16 = 100.0% | 16/16 = 100.0% | 6/16 = 37.5% |
-| ActionExchange | 43 | 0/43 = 0.0% | 38/43 = 88.4% | 34/43 = 79.1% | 43/43 = 100.0% | 43/43 = 100.0% | 16/43 = 37.2% |
-| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 4/10 = 40.0% |
+| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 13/16 = 81.3% | 16/16 = 100.0% | 16/16 = 100.0% | 11/16 = 68.8% |
+| ActionExchange | 43 | 0/43 = 0.0% | 38/43 = 88.4% | 34/43 = 79.1% | 43/43 = 100.0% | 43/43 = 100.0% | 32/43 = 74.4% |
+| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
 
 ### Product 364
 
@@ -6562,15 +6564,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 14/23 = 60.9% |
-| ActionExchange | 82 | 0/82 = 0.0% | 80/82 = 97.6% | 64/82 = 78.0% | 82/82 = 100.0% | 82/82 = 100.0% | 51/82 = 62.2% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 18/23 = 78.3% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 82 | 0/82 = 0.0% | 80/82 = 97.6% | 64/82 = 78.0% | 82/82 = 100.0% | 82/82 = 100.0% | 66/82 = 80.5% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
 
 ### Product 365
 
@@ -6580,7 +6582,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6598,7 +6600,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6616,15 +6618,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 28/33 = 84.8% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 21/33 = 63.6% |
-| ActionExchange | 163 | 0/163 = 0.0% | 145/163 = 89.0% | 134/163 = 82.2% | 163/163 = 100.0% | 163/163 = 100.0% | 123/163 = 75.5% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 28/33 = 84.8% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 25/33 = 75.8% |
+| ActionExchange | 163 | 0/163 = 0.0% | 145/163 = 89.0% | 134/163 = 82.2% | 163/163 = 100.0% | 163/163 = 100.0% | 142/163 = 87.1% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
 
 ### Product 368
 
@@ -6634,7 +6636,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6652,7 +6654,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6670,15 +6672,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 16/20 = 80.0% | 20/20 = 100.0% | 20/20 = 100.0% | 8/20 = 40.0% |
-| ActionExchange | 57 | 0/57 = 0.0% | 55/57 = 96.5% | 45/57 = 78.9% | 57/57 = 100.0% | 57/57 = 100.0% | 32/57 = 56.1% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 5/12 = 41.7% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 16/20 = 80.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 57 | 0/57 = 0.0% | 55/57 = 96.5% | 45/57 = 78.9% | 57/57 = 100.0% | 57/57 = 100.0% | 46/57 = 80.7% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 371
 
@@ -6688,15 +6690,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 19/30 = 63.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 108/115 = 93.9% | 88/115 = 76.5% | 115/115 = 100.0% | 115/115 = 100.0% | 75/115 = 65.2% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 25/30 = 83.3% |
+| ActionExchange | 115 | 0/115 = 0.0% | 108/115 = 93.9% | 88/115 = 76.5% | 115/115 = 100.0% | 115/115 = 100.0% | 94/115 = 81.7% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 372
 
@@ -6706,15 +6708,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 8 test case(s) (of 16 family-level), 20 real step(s) applicable.
 
-**Random baseline:** 3 test case(s).
+**Random baseline:** 4 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 7/12 = 58.3% |
-| ActionExchange | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 5/8 = 62.5% |
+| TransitionMissing | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 11/12 = 91.7% |
+| ActionExchange | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 22/24 = 91.7% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
 
 ### Product 373
 
@@ -6724,7 +6726,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6742,15 +6744,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 18/30 = 60.0% |
-| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 87/128 = 68.0% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 26/30 = 86.7% |
+| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 109/128 = 85.2% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 375
 
@@ -6760,15 +6762,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 71/83 = 85.5% | 83/83 = 100.0% | 83/83 = 100.0% | 53/83 = 63.9% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 71/83 = 85.5% | 83/83 = 100.0% | 83/83 = 100.0% | 62/83 = 74.7% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 376
 
@@ -6778,15 +6780,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 16/29 = 55.2% |
-| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 69/107 = 64.5% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 18/29 = 62.1% |
+| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 76/107 = 71.0% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 11/18 = 61.1% |
 
 ### Product 377
 
@@ -6796,15 +6798,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
-| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 38/49 = 77.6% |
-| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
+| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 44/49 = 89.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 9/10 = 90.0% |
 
 ### Product 378
 
@@ -6814,14 +6816,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 22/25 = 88.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
-| ActionExchange | 89 | 0/89 = 0.0% | 82/89 = 92.1% | 77/89 = 86.5% | 89/89 = 100.0% | 89/89 = 100.0% | 68/89 = 76.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 22/25 = 88.0% | 25/25 = 100.0% | 25/25 = 100.0% | 20/25 = 80.0% |
+| ActionExchange | 89 | 0/89 = 0.0% | 82/89 = 92.1% | 77/89 = 86.5% | 89/89 = 100.0% | 89/89 = 100.0% | 70/89 = 78.7% |
 | StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 379
@@ -6832,15 +6834,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 76 | 0/76 = 0.0% | 70/76 = 92.1% | 62/76 = 81.6% | 76/76 = 100.0% | 76/76 = 100.0% | 42/76 = 55.3% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
+| ActionExchange | 76 | 0/76 = 0.0% | 70/76 = 92.1% | 62/76 = 81.6% | 76/76 = 100.0% | 76/76 = 100.0% | 58/76 = 76.3% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 380
 
@@ -6850,15 +6852,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 22/27 = 81.5% | 27/27 = 100.0% | 27/27 = 100.0% | 18/27 = 66.7% |
-| ActionExchange | 100 | 0/100 = 0.0% | 88/100 = 88.0% | 75/100 = 75.0% | 100/100 = 100.0% | 100/100 = 100.0% | 68/100 = 68.0% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
+| TransitionMissing | 27 | 0/27 = 0.0% | 23/27 = 85.2% | 22/27 = 81.5% | 27/27 = 100.0% | 27/27 = 100.0% | 21/27 = 77.8% |
+| ActionExchange | 100 | 0/100 = 0.0% | 88/100 = 88.0% | 75/100 = 75.0% | 100/100 = 100.0% | 100/100 = 100.0% | 78/100 = 78.0% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 381
 
@@ -6868,7 +6870,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -6886,14 +6888,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
-| ActionExchange | 98 | 0/98 = 0.0% | 96/98 = 98.0% | 88/98 = 89.8% | 98/98 = 100.0% | 98/98 = 100.0% | 72/98 = 73.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 98 | 0/98 = 0.0% | 96/98 = 98.0% | 88/98 = 89.8% | 98/98 = 100.0% | 98/98 = 100.0% | 74/98 = 75.5% |
 | StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
 
 ### Product 383
@@ -6904,14 +6906,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
-| ActionExchange | 98 | 0/98 = 0.0% | 96/98 = 98.0% | 88/98 = 89.8% | 98/98 = 100.0% | 98/98 = 100.0% | 72/98 = 73.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 24/25 = 96.0% | 23/25 = 92.0% | 25/25 = 100.0% | 25/25 = 100.0% | 18/25 = 72.0% |
+| ActionExchange | 98 | 0/98 = 0.0% | 96/98 = 98.0% | 88/98 = 89.8% | 98/98 = 100.0% | 98/98 = 100.0% | 74/98 = 75.5% |
 | StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
 
 ### Product 384
@@ -6922,15 +6924,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 16/19 = 84.2% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 11/19 = 57.9% |
-| ActionExchange | 61 | 0/61 = 0.0% | 55/61 = 90.2% | 53/61 = 86.9% | 61/61 = 100.0% | 61/61 = 100.0% | 38/61 = 62.3% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 16/19 = 84.2% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| ActionExchange | 61 | 0/61 = 0.0% | 55/61 = 90.2% | 53/61 = 86.9% | 61/61 = 100.0% | 61/61 = 100.0% | 48/61 = 78.7% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 385
 
@@ -6940,15 +6942,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 18/19 = 94.7% | 14/19 = 73.7% | 19/19 = 100.0% | 19/19 = 100.0% | 8/19 = 42.1% |
-| ActionExchange | 56 | 0/56 = 0.0% | 54/56 = 96.4% | 41/56 = 73.2% | 56/56 = 100.0% | 56/56 = 100.0% | 32/56 = 57.1% |
-| StateMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 5/11 = 45.5% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 18/19 = 94.7% | 14/19 = 73.7% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| ActionExchange | 56 | 0/56 = 0.0% | 54/56 = 96.4% | 41/56 = 73.2% | 56/56 = 100.0% | 56/56 = 100.0% | 38/56 = 67.9% |
+| StateMissing | 11 | 0/11 = 0.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
 
 ### Product 386
 
@@ -6958,14 +6960,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 28/30 = 93.3% | 30/30 = 100.0% | 30/30 = 100.0% | 23/30 = 76.7% |
-| ActionExchange | 125 | 0/125 = 0.0% | 117/125 = 93.6% | 113/125 = 90.4% | 125/125 = 100.0% | 125/125 = 100.0% | 97/125 = 77.6% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 28/30 = 93.3% | 30/30 = 100.0% | 30/30 = 100.0% | 24/30 = 80.0% |
+| ActionExchange | 125 | 0/125 = 0.0% | 117/125 = 93.6% | 113/125 = 90.4% | 125/125 = 100.0% | 125/125 = 100.0% | 103/125 = 82.4% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
 
 ### Product 387
@@ -6976,15 +6978,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 22/23 = 95.7% | 23/23 = 100.0% | 23/23 = 100.0% | 15/23 = 65.2% |
-| ActionExchange | 89 | 0/89 = 0.0% | 87/89 = 97.8% | 84/89 = 94.4% | 89/89 = 100.0% | 89/89 = 100.0% | 62/89 = 69.7% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 22/23 = 95.7% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 89 | 0/89 = 0.0% | 87/89 = 97.8% | 84/89 = 94.4% | 89/89 = 100.0% | 89/89 = 100.0% | 72/89 = 80.9% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 12/14 = 85.7% |
 
 ### Product 388
 
@@ -6994,7 +6996,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7012,7 +7014,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 8 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7030,15 +7032,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 75/106 = 70.8% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 21/28 = 75.0% |
+| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 83/106 = 78.3% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 391
 
@@ -7048,7 +7050,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7066,7 +7068,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7084,7 +7086,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7102,15 +7104,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 16/19 = 84.2% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 11/19 = 57.9% |
-| ActionExchange | 61 | 0/61 = 0.0% | 55/61 = 90.2% | 53/61 = 86.9% | 61/61 = 100.0% | 61/61 = 100.0% | 38/61 = 62.3% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 16/19 = 84.2% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| ActionExchange | 61 | 0/61 = 0.0% | 55/61 = 90.2% | 53/61 = 86.9% | 61/61 = 100.0% | 61/61 = 100.0% | 48/61 = 78.7% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 395
 
@@ -7120,15 +7122,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 48/68 = 70.6% |
-| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 12/15 = 80.0% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 21/23 = 91.3% | 20/23 = 87.0% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 68 | 0/68 = 0.0% | 62/68 = 91.2% | 58/68 = 85.3% | 68/68 = 100.0% | 68/68 = 100.0% | 56/68 = 82.4% |
+| StateMissing | 15 | 0/15 = 0.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 14/15 = 93.3% |
 
 ### Product 396
 
@@ -7138,15 +7140,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
-| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 56/83 = 67.5% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 13/16 = 81.3% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 21/26 = 80.8% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 83 | 0/83 = 0.0% | 77/83 = 92.8% | 65/83 = 78.3% | 83/83 = 100.0% | 83/83 = 100.0% | 62/83 = 74.7% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 397
 
@@ -7156,7 +7158,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7174,15 +7176,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 34 | 0/34 = 0.0% | 30/34 = 88.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 15/34 = 44.1% |
-| ActionExchange | 170 | 0/170 = 0.0% | 154/170 = 90.6% | 135/170 = 79.4% | 170/170 = 100.0% | 170/170 = 100.0% | 96/170 = 56.5% |
-| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 10/21 = 47.6% |
+| TransitionMissing | 34 | 0/34 = 0.0% | 30/34 = 88.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 19/34 = 55.9% |
+| ActionExchange | 170 | 0/170 = 0.0% | 154/170 = 90.6% | 135/170 = 79.4% | 170/170 = 100.0% | 170/170 = 100.0% | 116/170 = 68.2% |
+| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
 
 ### Product 399
 
@@ -7192,14 +7194,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 25/28 = 89.3% | 28/28 = 100.0% | 28/28 = 100.0% | 22/28 = 78.6% |
-| ActionExchange | 133 | 0/133 = 0.0% | 131/133 = 98.5% | 115/133 = 86.5% | 133/133 = 100.0% | 133/133 = 100.0% | 106/133 = 79.7% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 25/28 = 89.3% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 133 | 0/133 = 0.0% | 131/133 = 98.5% | 115/133 = 86.5% | 133/133 = 100.0% | 133/133 = 100.0% | 112/133 = 84.2% |
 | StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 15/16 = 93.8% |
 
 ### Product 400
@@ -7210,7 +7212,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7228,7 +7230,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 28 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7246,7 +7248,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7264,15 +7266,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 15/18 = 83.3% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 60 | 0/60 = 0.0% | 54/60 = 90.0% | 48/60 = 80.0% | 60/60 = 100.0% | 60/60 = 100.0% | 34/60 = 56.7% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 7/11 = 63.6% |
+| TransitionMissing | 18 | 0/18 = 0.0% | 15/18 = 83.3% | 15/18 = 83.3% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
+| ActionExchange | 60 | 0/60 = 0.0% | 54/60 = 90.0% | 48/60 = 80.0% | 60/60 = 100.0% | 60/60 = 100.0% | 41/60 = 68.3% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
 
 ### Product 404
 
@@ -7300,7 +7302,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7318,7 +7320,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7336,7 +7338,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7354,15 +7356,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 34 | 0/34 = 0.0% | 30/34 = 88.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 15/34 = 44.1% |
-| ActionExchange | 170 | 0/170 = 0.0% | 154/170 = 90.6% | 135/170 = 79.4% | 170/170 = 100.0% | 170/170 = 100.0% | 96/170 = 56.5% |
-| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 10/21 = 47.6% |
+| TransitionMissing | 34 | 0/34 = 0.0% | 30/34 = 88.2% | 29/34 = 85.3% | 34/34 = 100.0% | 34/34 = 100.0% | 19/34 = 55.9% |
+| ActionExchange | 170 | 0/170 = 0.0% | 154/170 = 90.6% | 135/170 = 79.4% | 170/170 = 100.0% | 170/170 = 100.0% | 116/170 = 68.2% |
+| StateMissing | 21 | 0/21 = 0.0% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
 
 ### Product 409
 
@@ -7372,7 +7374,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7390,15 +7392,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 11 test case(s).
+**Random baseline:** 14 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 14/30 = 46.7% |
-| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 77/128 = 60.2% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 9/19 = 47.4% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 20/30 = 66.7% |
+| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 89/128 = 69.5% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 14/19 = 73.7% |
 
 ### Product 411
 
@@ -7408,15 +7410,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
-| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 38/49 = 77.6% |
-| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
+| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 44/49 = 89.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 9/10 = 90.0% |
 
 ### Product 412
 
@@ -7426,15 +7428,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 13/17 = 76.5% |
-| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 38/49 = 77.6% |
-| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
+| TransitionMissing | 17 | 0/17 = 0.0% | 16/17 = 94.1% | 13/17 = 76.5% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
+| ActionExchange | 49 | 0/49 = 0.0% | 47/49 = 95.9% | 37/49 = 75.5% | 49/49 = 100.0% | 49/49 = 100.0% | 44/49 = 89.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 9/10 = 90.0% |
 
 ### Product 413
 
@@ -7444,14 +7446,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 27/30 = 90.0% | 30/30 = 100.0% | 30/30 = 100.0% | 22/30 = 73.3% |
-| ActionExchange | 108 | 0/108 = 0.0% | 101/108 = 93.5% | 93/108 = 86.1% | 108/108 = 100.0% | 108/108 = 100.0% | 80/108 = 74.1% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 27/30 = 90.0% | 30/30 = 100.0% | 30/30 = 100.0% | 23/30 = 76.7% |
+| ActionExchange | 108 | 0/108 = 0.0% | 101/108 = 93.5% | 93/108 = 86.1% | 108/108 = 100.0% | 108/108 = 100.0% | 85/108 = 78.7% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 16/19 = 84.2% |
 
 ### Product 414
@@ -7462,15 +7464,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 76 | 0/76 = 0.0% | 70/76 = 92.1% | 62/76 = 81.6% | 76/76 = 100.0% | 76/76 = 100.0% | 42/76 = 55.3% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
+| ActionExchange | 76 | 0/76 = 0.0% | 70/76 = 92.1% | 62/76 = 81.6% | 76/76 = 100.0% | 76/76 = 100.0% | 58/76 = 76.3% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 415
 
@@ -7480,7 +7482,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7498,15 +7500,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 22/26 = 84.6% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 97 | 0/97 = 0.0% | 90/97 = 92.8% | 80/97 = 82.5% | 97/97 = 100.0% | 97/97 = 100.0% | 51/97 = 52.6% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 22/26 = 84.6% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 97 | 0/97 = 0.0% | 90/97 = 92.8% | 80/97 = 82.5% | 97/97 = 100.0% | 97/97 = 100.0% | 73/97 = 75.3% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 417
 
@@ -7516,14 +7518,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 16/21 = 76.2% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 55/74 = 74.3% | 74/74 = 100.0% | 74/74 = 100.0% | 47/74 = 63.5% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 16/21 = 76.2% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 55/74 = 74.3% | 74/74 = 100.0% | 74/74 = 100.0% | 51/74 = 68.9% |
 | StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
 
 ### Product 418
@@ -7534,7 +7536,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7552,14 +7554,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 22/25 = 88.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 14/25 = 56.0% |
-| ActionExchange | 100 | 0/100 = 0.0% | 93/100 = 93.0% | 80/100 = 80.0% | 100/100 = 100.0% | 100/100 = 100.0% | 60/100 = 60.0% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 22/25 = 88.0% | 21/25 = 84.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
+| ActionExchange | 100 | 0/100 = 0.0% | 93/100 = 93.0% | 80/100 = 80.0% | 100/100 = 100.0% | 100/100 = 100.0% | 65/100 = 65.0% |
 | StateMissing | 15 | 0/15 = 0.0% | 13/15 = 86.7% | 15/15 = 100.0% | 15/15 = 100.0% | 15/15 = 100.0% | 9/15 = 60.0% |
 
 ### Product 420
@@ -7570,15 +7572,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 46 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 19/33 = 57.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 118/144 = 81.9% | 144/144 = 100.0% | 144/144 = 100.0% | 94/144 = 65.3% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 25/33 = 75.8% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 118/144 = 81.9% | 144/144 = 100.0% | 144/144 = 100.0% | 108/144 = 75.0% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 17/20 = 85.0% |
 
 ### Product 421
 
@@ -7588,15 +7590,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 8 test case(s) (of 16 family-level), 20 real step(s) applicable.
 
-**Random baseline:** 3 test case(s).
+**Random baseline:** 4 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 7/12 = 58.3% |
-| ActionExchange | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 5/8 = 62.5% |
+| TransitionMissing | 12 | 0/12 = 0.0% | 9/12 = 75.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 11/12 = 91.7% |
+| ActionExchange | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 22/24 = 91.7% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
 
 ### Product 422
 
@@ -7606,15 +7608,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 50 real step(s) applicable.
 
-**Random baseline:** 13 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 37 | 0/37 = 0.0% | 35/37 = 94.6% | 32/37 = 86.5% | 37/37 = 100.0% | 37/37 = 100.0% | 27/37 = 73.0% |
-| ActionExchange | 187 | 0/187 = 0.0% | 178/187 = 95.2% | 152/187 = 81.3% | 187/187 = 100.0% | 187/187 = 100.0% | 138/187 = 73.8% |
-| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 19/22 = 86.4% |
+| TransitionMissing | 37 | 0/37 = 0.0% | 35/37 = 94.6% | 32/37 = 86.5% | 37/37 = 100.0% | 37/37 = 100.0% | 33/37 = 89.2% |
+| ActionExchange | 187 | 0/187 = 0.0% | 178/187 = 95.2% | 152/187 = 81.3% | 187/187 = 100.0% | 187/187 = 100.0% | 164/187 = 87.7% |
+| StateMissing | 22 | 0/22 = 0.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 22/22 = 100.0% | 21/22 = 95.5% |
 
 ### Product 423
 
@@ -7624,15 +7626,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 45 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 20/33 = 60.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 86/144 = 59.7% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 15/20 = 75.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 29/33 = 87.9% | 33/33 = 100.0% | 33/33 = 100.0% | 22/33 = 66.7% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 120/144 = 83.3% | 144/144 = 100.0% | 144/144 = 100.0% | 97/144 = 67.4% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
 
 ### Product 424
 
@@ -7642,7 +7644,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7660,7 +7662,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7678,15 +7680,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 46 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 19/33 = 57.6% |
-| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 118/144 = 81.9% | 144/144 = 100.0% | 144/144 = 100.0% | 94/144 = 65.3% |
-| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
+| TransitionMissing | 33 | 0/33 = 0.0% | 31/33 = 93.9% | 28/33 = 84.8% | 33/33 = 100.0% | 33/33 = 100.0% | 25/33 = 75.8% |
+| ActionExchange | 144 | 0/144 = 0.0% | 136/144 = 94.4% | 118/144 = 81.9% | 144/144 = 100.0% | 144/144 = 100.0% | 108/144 = 75.0% |
+| StateMissing | 20 | 0/20 = 0.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 17/20 = 85.0% |
 
 ### Product 427
 
@@ -7696,15 +7698,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 53/74 = 71.6% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 428
 
@@ -7714,14 +7716,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 16/21 = 76.2% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 55/74 = 74.3% | 74/74 = 100.0% | 74/74 = 100.0% | 47/74 = 63.5% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 16/21 = 76.2% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 55/74 = 74.3% | 74/74 = 100.0% | 74/74 = 100.0% | 51/74 = 68.9% |
 | StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
 
 ### Product 429
@@ -7732,7 +7734,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7750,14 +7752,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 22/25 = 88.0% | 25/25 = 100.0% | 25/25 = 100.0% | 19/25 = 76.0% |
-| ActionExchange | 89 | 0/89 = 0.0% | 82/89 = 92.1% | 77/89 = 86.5% | 89/89 = 100.0% | 89/89 = 100.0% | 68/89 = 76.4% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 23/25 = 92.0% | 22/25 = 88.0% | 25/25 = 100.0% | 25/25 = 100.0% | 20/25 = 80.0% |
+| ActionExchange | 89 | 0/89 = 0.0% | 82/89 = 92.1% | 77/89 = 86.5% | 89/89 = 100.0% | 89/89 = 100.0% | 70/89 = 78.7% |
 | StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 431
@@ -7768,15 +7770,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 28/32 = 87.5% | 32/32 = 100.0% | 32/32 = 100.0% | 16/32 = 50.0% |
-| ActionExchange | 159 | 0/159 = 0.0% | 143/159 = 89.9% | 131/159 = 82.4% | 159/159 = 100.0% | 159/159 = 100.0% | 102/159 = 64.2% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 28/32 = 87.5% | 32/32 = 100.0% | 32/32 = 100.0% | 19/32 = 59.4% |
+| ActionExchange | 159 | 0/159 = 0.0% | 143/159 = 89.9% | 131/159 = 82.4% | 159/159 = 100.0% | 159/159 = 100.0% | 115/159 = 72.3% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
 
 ### Product 432
 
@@ -7786,15 +7788,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 19/30 = 63.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 108/115 = 93.9% | 88/115 = 76.5% | 115/115 = 100.0% | 115/115 = 100.0% | 75/115 = 65.2% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 24/30 = 80.0% | 30/30 = 100.0% | 30/30 = 100.0% | 25/30 = 83.3% |
+| ActionExchange | 115 | 0/115 = 0.0% | 108/115 = 93.9% | 88/115 = 76.5% | 115/115 = 100.0% | 115/115 = 100.0% | 94/115 = 81.7% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 433
 
@@ -7804,7 +7806,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7822,7 +7824,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 13 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7840,15 +7842,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 16/20 = 80.0% | 20/20 = 100.0% | 20/20 = 100.0% | 8/20 = 40.0% |
-| ActionExchange | 57 | 0/57 = 0.0% | 55/57 = 96.5% | 45/57 = 78.9% | 57/57 = 100.0% | 57/57 = 100.0% | 32/57 = 56.1% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 5/12 = 41.7% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 19/20 = 95.0% | 16/20 = 80.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 57 | 0/57 = 0.0% | 55/57 = 96.5% | 45/57 = 78.9% | 57/57 = 100.0% | 57/57 = 100.0% | 46/57 = 80.7% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
 
 ### Product 436
 
@@ -7858,7 +7860,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 30 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7876,15 +7878,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 71/83 = 85.5% | 83/83 = 100.0% | 83/83 = 100.0% | 53/83 = 63.9% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 71/83 = 85.5% | 83/83 = 100.0% | 83/83 = 100.0% | 62/83 = 74.7% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 438
 
@@ -7894,15 +7896,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
-| ActionExchange | 82 | 0/82 = 0.0% | 75/82 = 91.5% | 72/82 = 87.8% | 82/82 = 100.0% | 82/82 = 100.0% | 70/82 = 85.4% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
+| ActionExchange | 82 | 0/82 = 0.0% | 75/82 = 91.5% | 72/82 = 87.8% | 82/82 = 100.0% | 82/82 = 100.0% | 76/82 = 92.7% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 439
 
@@ -7912,7 +7914,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7930,7 +7932,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7948,7 +7950,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7966,7 +7968,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -7984,15 +7986,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
-| ActionExchange | 52 | 0/52 = 0.0% | 46/52 = 88.5% | 44/52 = 84.6% | 52/52 = 100.0% | 52/52 = 100.0% | 34/52 = 65.4% |
-| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 7/10 = 70.0% |
+| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| ActionExchange | 52 | 0/52 = 0.0% | 46/52 = 88.5% | 44/52 = 84.6% | 52/52 = 100.0% | 52/52 = 100.0% | 41/52 = 78.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
 
 ### Product 444
 
@@ -8002,15 +8004,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 18/28 = 64.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 113/115 = 98.3% | 95/115 = 82.6% | 115/115 = 100.0% | 115/115 = 100.0% | 84/115 = 73.0% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 27/28 = 96.4% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 115 | 0/115 = 0.0% | 113/115 = 98.3% | 95/115 = 82.6% | 115/115 = 100.0% | 115/115 = 100.0% | 98/115 = 85.2% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 445
 
@@ -8020,15 +8022,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 66/101 = 65.3% |
-| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 24/28 = 85.7% | 24/28 = 85.7% | 28/28 = 100.0% | 28/28 = 100.0% | 23/28 = 82.1% |
+| ActionExchange | 101 | 0/101 = 0.0% | 89/101 = 88.1% | 81/101 = 80.2% | 101/101 = 100.0% | 101/101 = 100.0% | 80/101 = 79.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 16/18 = 88.9% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 446
 
@@ -8038,15 +8040,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 19/23 = 82.6% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 96 | 0/96 = 0.0% | 94/96 = 97.9% | 79/96 = 82.3% | 96/96 = 100.0% | 96/96 = 100.0% | 72/96 = 75.0% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 19/23 = 82.6% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 96 | 0/96 = 0.0% | 94/96 = 97.9% | 79/96 = 82.3% | 96/96 = 100.0% | 96/96 = 100.0% | 84/96 = 87.5% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 447
 
@@ -8056,7 +8058,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 10 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8074,15 +8076,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 22/26 = 84.6% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 97 | 0/97 = 0.0% | 90/97 = 92.8% | 80/97 = 82.5% | 97/97 = 100.0% | 97/97 = 100.0% | 51/97 = 52.6% |
-| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 24/26 = 92.3% | 22/26 = 84.6% | 26/26 = 100.0% | 26/26 = 100.0% | 20/26 = 76.9% |
+| ActionExchange | 97 | 0/97 = 0.0% | 90/97 = 92.8% | 80/97 = 82.5% | 97/97 = 100.0% | 97/97 = 100.0% | 73/97 = 75.3% |
+| StateMissing | 16 | 0/16 = 0.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 14/16 = 87.5% |
 
 ### Product 449
 
@@ -8092,15 +8094,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 19/23 = 82.6% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 96 | 0/96 = 0.0% | 94/96 = 97.9% | 79/96 = 82.3% | 96/96 = 100.0% | 96/96 = 100.0% | 72/96 = 75.0% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 19/23 = 82.6% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 96 | 0/96 = 0.0% | 94/96 = 97.9% | 79/96 = 82.3% | 96/96 = 100.0% | 96/96 = 100.0% | 84/96 = 87.5% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 450
 
@@ -8110,15 +8112,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
-| ActionExchange | 82 | 0/82 = 0.0% | 75/82 = 91.5% | 72/82 = 87.8% | 82/82 = 100.0% | 82/82 = 100.0% | 70/82 = 85.4% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 19/21 = 90.5% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
+| ActionExchange | 82 | 0/82 = 0.0% | 75/82 = 91.5% | 72/82 = 87.8% | 82/82 = 100.0% | 82/82 = 100.0% | 76/82 = 92.7% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 451
 
@@ -8128,15 +8130,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 19/23 = 82.6% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 96 | 0/96 = 0.0% | 94/96 = 97.9% | 79/96 = 82.3% | 96/96 = 100.0% | 96/96 = 100.0% | 72/96 = 75.0% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
+| TransitionMissing | 23 | 0/23 = 0.0% | 22/23 = 95.7% | 19/23 = 82.6% | 23/23 = 100.0% | 23/23 = 100.0% | 19/23 = 82.6% |
+| ActionExchange | 96 | 0/96 = 0.0% | 94/96 = 97.9% | 79/96 = 82.3% | 96/96 = 100.0% | 96/96 = 100.0% | 84/96 = 87.5% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 12/13 = 92.3% |
 
 ### Product 452
 
@@ -8146,7 +8148,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8182,15 +8184,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 19/31 = 61.3% |
-| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 94/116 = 81.0% | 116/116 = 100.0% | 116/116 = 100.0% | 72/116 = 62.1% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 14/19 = 73.7% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 23/31 = 74.2% |
+| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 94/116 = 81.0% | 116/116 = 100.0% | 116/116 = 100.0% | 86/116 = 74.1% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 16/19 = 84.2% |
 
 ### Product 455
 
@@ -8200,7 +8202,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8218,15 +8220,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 15/26 = 57.7% |
-| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 61/92 = 66.3% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 10/17 = 58.8% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
+| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 71/92 = 77.2% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 12/17 = 70.6% |
 
 ### Product 457
 
@@ -8236,15 +8238,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 13 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 18/30 = 60.0% |
-| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 87/128 = 68.0% |
-| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 26/30 = 86.7% | 26/30 = 86.7% | 30/30 = 100.0% | 30/30 = 100.0% | 26/30 = 86.7% |
+| ActionExchange | 128 | 0/128 = 0.0% | 114/128 = 89.1% | 104/128 = 81.3% | 128/128 = 100.0% | 128/128 = 100.0% | 109/128 = 85.2% |
+| StateMissing | 19 | 0/19 = 0.0% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 18/19 = 94.7% |
 
 ### Product 458
 
@@ -8254,15 +8256,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
-| ActionExchange | 69 | 0/69 = 0.0% | 63/69 = 91.3% | 57/69 = 82.6% | 69/69 = 100.0% | 69/69 = 100.0% | 45/69 = 65.2% |
-| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 18/21 = 85.7% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 69 | 0/69 = 0.0% | 63/69 = 91.3% | 57/69 = 82.6% | 69/69 = 100.0% | 69/69 = 100.0% | 56/69 = 81.2% |
+| StateMissing | 13 | 0/13 = 0.0% | 11/13 = 84.6% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 11/13 = 84.6% |
 
 ### Product 459
 
@@ -8272,7 +8274,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8290,7 +8292,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8308,7 +8310,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 39 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8326,14 +8328,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 32 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 20/24 = 83.3% |
-| ActionExchange | 70 | 0/70 = 0.0% | 60/70 = 85.7% | 58/70 = 82.9% | 70/70 = 100.0% | 70/70 = 100.0% | 57/70 = 81.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 20/24 = 83.3% | 21/24 = 87.5% | 24/24 = 100.0% | 24/24 = 100.0% | 21/24 = 87.5% |
+| ActionExchange | 70 | 0/70 = 0.0% | 60/70 = 85.7% | 58/70 = 82.9% | 70/70 = 100.0% | 70/70 = 100.0% | 61/70 = 87.1% |
 | StateMissing | 16 | 0/16 = 0.0% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 16/16 = 100.0% | 15/16 = 93.8% |
 
 ### Product 463
@@ -8344,7 +8346,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 13 test case(s).
+**Random baseline:** 17 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8362,14 +8364,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 27/31 = 87.1% | 31/31 = 100.0% | 31/31 = 100.0% | 23/31 = 74.2% |
-| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 96/116 = 82.8% | 116/116 = 100.0% | 116/116 = 100.0% | 87/116 = 75.0% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 27/31 = 87.1% | 31/31 = 100.0% | 31/31 = 100.0% | 24/31 = 77.4% |
+| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 96/116 = 82.8% | 116/116 = 100.0% | 116/116 = 100.0% | 92/116 = 79.3% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
 
 ### Product 465
@@ -8380,15 +8382,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 15 test case(s) (of 16 family-level), 41 real step(s) applicable.
 
-**Random baseline:** 12 test case(s).
+**Random baseline:** 16 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 28/32 = 87.5% | 32/32 = 100.0% | 32/32 = 100.0% | 16/32 = 50.0% |
-| ActionExchange | 159 | 0/159 = 0.0% | 143/159 = 89.9% | 131/159 = 82.4% | 159/159 = 100.0% | 159/159 = 100.0% | 102/159 = 64.2% |
-| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
+| TransitionMissing | 32 | 0/32 = 0.0% | 28/32 = 87.5% | 28/32 = 87.5% | 32/32 = 100.0% | 32/32 = 100.0% | 19/32 = 59.4% |
+| ActionExchange | 159 | 0/159 = 0.0% | 143/159 = 89.9% | 131/159 = 82.4% | 159/159 = 100.0% | 159/159 = 100.0% | 115/159 = 72.3% |
+| StateMissing | 20 | 0/20 = 0.0% | 18/20 = 90.0% | 20/20 = 100.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
 
 ### Product 466
 
@@ -8398,15 +8400,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 21/30 = 70.0% |
-| ActionExchange | 133 | 0/133 = 0.0% | 125/133 = 94.0% | 107/133 = 80.5% | 133/133 = 100.0% | 133/133 = 100.0% | 101/133 = 75.9% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 30 | 0/30 = 0.0% | 28/30 = 93.3% | 25/30 = 83.3% | 30/30 = 100.0% | 30/30 = 100.0% | 25/30 = 83.3% |
+| ActionExchange | 133 | 0/133 = 0.0% | 125/133 = 94.0% | 107/133 = 80.5% | 133/133 = 100.0% | 133/133 = 100.0% | 112/133 = 84.2% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 17/18 = 94.4% |
 
 ### Product 467
 
@@ -8416,15 +8418,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 19/26 = 73.1% |
-| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 66/92 = 71.7% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 22/26 = 84.6% |
+| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 76/92 = 82.6% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 468
 
@@ -8434,15 +8436,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 48 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 35 | 0/35 = 0.0% | 33/35 = 94.3% | 30/35 = 85.7% | 35/35 = 100.0% | 35/35 = 100.0% | 20/35 = 57.1% |
-| ActionExchange | 154 | 0/154 = 0.0% | 146/154 = 94.8% | 124/154 = 80.5% | 154/154 = 100.0% | 154/154 = 100.0% | 86/154 = 55.8% |
-| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| TransitionMissing | 35 | 0/35 = 0.0% | 33/35 = 94.3% | 30/35 = 85.7% | 35/35 = 100.0% | 35/35 = 100.0% | 26/35 = 74.3% |
+| ActionExchange | 154 | 0/154 = 0.0% | 146/154 = 94.8% | 124/154 = 80.5% | 154/154 = 100.0% | 154/154 = 100.0% | 114/154 = 74.0% |
+| StateMissing | 21 | 0/21 = 0.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 21/21 = 100.0% | 19/21 = 90.5% |
 
 ### Product 469
 
@@ -8452,15 +8454,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
-| ActionExchange | 81 | 0/81 = 0.0% | 74/81 = 91.4% | 66/81 = 81.5% | 81/81 = 100.0% | 81/81 = 100.0% | 46/81 = 56.8% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 6/12 = 50.0% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
+| ActionExchange | 81 | 0/81 = 0.0% | 74/81 = 91.4% | 66/81 = 81.5% | 81/81 = 100.0% | 81/81 = 100.0% | 58/81 = 71.6% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
 
 ### Product 470
 
@@ -8470,15 +8472,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 10/20 = 50.0% |
-| ActionExchange | 81 | 0/81 = 0.0% | 74/81 = 91.4% | 66/81 = 81.5% | 81/81 = 100.0% | 81/81 = 100.0% | 46/81 = 56.8% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 6/12 = 50.0% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 17/20 = 85.0% | 17/20 = 85.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
+| ActionExchange | 81 | 0/81 = 0.0% | 74/81 = 91.4% | 66/81 = 81.5% | 81/81 = 100.0% | 81/81 = 100.0% | 58/81 = 71.6% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
 
 ### Product 471
 
@@ -8488,15 +8490,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 16/19 = 84.2% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 11/19 = 57.9% |
-| ActionExchange | 61 | 0/61 = 0.0% | 55/61 = 90.2% | 53/61 = 86.9% | 61/61 = 100.0% | 61/61 = 100.0% | 38/61 = 62.3% |
-| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 8/12 = 66.7% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 16/19 = 84.2% | 17/19 = 89.5% | 19/19 = 100.0% | 19/19 = 100.0% | 15/19 = 78.9% |
+| ActionExchange | 61 | 0/61 = 0.0% | 55/61 = 90.2% | 53/61 = 86.9% | 61/61 = 100.0% | 61/61 = 100.0% | 48/61 = 78.7% |
+| StateMissing | 12 | 0/12 = 0.0% | 10/12 = 83.3% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 472
 
@@ -8506,7 +8508,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 8 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8524,7 +8526,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8542,7 +8544,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8560,7 +8562,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 14 test case(s) (of 16 family-level), 37 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8578,15 +8580,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 44 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 19/31 = 61.3% |
-| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 94/116 = 81.0% | 116/116 = 100.0% | 116/116 = 100.0% | 72/116 = 62.1% |
-| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 14/19 = 73.7% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 26/31 = 83.9% | 31/31 = 100.0% | 31/31 = 100.0% | 23/31 = 74.2% |
+| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 94/116 = 81.0% | 116/116 = 100.0% | 116/116 = 100.0% | 86/116 = 74.1% |
+| StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 16/19 = 84.2% |
 
 ### Product 477
 
@@ -8596,15 +8598,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 34 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
-| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 53/74 = 71.6% |
-| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 9/12 = 75.0% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 20/21 = 95.2% | 17/21 = 81.0% | 21/21 = 100.0% | 21/21 = 100.0% | 17/21 = 81.0% |
+| ActionExchange | 74 | 0/74 = 0.0% | 72/74 = 97.3% | 60/74 = 81.1% | 74/74 = 100.0% | 74/74 = 100.0% | 60/74 = 81.1% |
+| StateMissing | 12 | 0/12 = 0.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 12/12 = 100.0% | 10/12 = 83.3% |
 
 ### Product 478
 
@@ -8614,15 +8616,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 53/75 = 70.7% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
+| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 58/75 = 77.3% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 479
 
@@ -8632,15 +8634,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 19/29 = 65.5% |
-| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 70/107 = 65.4% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 21/29 = 72.4% |
+| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 77/107 = 72.0% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 15/18 = 83.3% |
 
 ### Product 480
 
@@ -8650,15 +8652,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 25 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 10/16 = 62.5% |
-| ActionExchange | 52 | 0/52 = 0.0% | 46/52 = 88.5% | 44/52 = 84.6% | 52/52 = 100.0% | 52/52 = 100.0% | 34/52 = 65.4% |
-| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 7/10 = 70.0% |
+| TransitionMissing | 16 | 0/16 = 0.0% | 13/16 = 81.3% | 14/16 = 87.5% | 16/16 = 100.0% | 16/16 = 100.0% | 12/16 = 75.0% |
+| ActionExchange | 52 | 0/52 = 0.0% | 46/52 = 88.5% | 44/52 = 84.6% | 52/52 = 100.0% | 52/52 = 100.0% | 41/52 = 78.8% |
+| StateMissing | 10 | 0/10 = 0.0% | 8/10 = 80.0% | 10/10 = 100.0% | 10/10 = 100.0% | 10/10 = 100.0% | 8/10 = 80.0% |
 
 ### Product 481
 
@@ -8668,15 +8670,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 17/21 = 81.0% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
-| ActionExchange | 61 | 0/61 = 0.0% | 51/61 = 83.6% | 49/61 = 80.3% | 61/61 = 100.0% | 61/61 = 100.0% | 40/61 = 65.6% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 17/21 = 81.0% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 61 | 0/61 = 0.0% | 51/61 = 83.6% | 49/61 = 80.3% | 61/61 = 100.0% | 61/61 = 100.0% | 45/61 = 73.8% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 482
 
@@ -8686,14 +8688,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 43 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 27/31 = 87.1% | 31/31 = 100.0% | 31/31 = 100.0% | 23/31 = 74.2% |
-| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 96/116 = 82.8% | 116/116 = 100.0% | 116/116 = 100.0% | 87/116 = 75.0% |
+| TransitionMissing | 31 | 0/31 = 0.0% | 29/31 = 93.5% | 27/31 = 87.1% | 31/31 = 100.0% | 31/31 = 100.0% | 24/31 = 77.4% |
+| ActionExchange | 116 | 0/116 = 0.0% | 109/116 = 94.0% | 96/116 = 82.8% | 116/116 = 100.0% | 116/116 = 100.0% | 92/116 = 79.3% |
 | StateMissing | 19 | 0/19 = 0.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 19/19 = 100.0% | 17/19 = 89.5% |
 
 ### Product 483
@@ -8704,15 +8706,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 69/83 = 83.1% | 83/83 = 100.0% | 83/83 = 100.0% | 55/83 = 66.3% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 69/83 = 83.1% | 83/83 = 100.0% | 83/83 = 100.0% | 60/83 = 72.3% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 484
 
@@ -8722,14 +8724,14 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 57 | 0/57 = 0.0% | 52/57 = 91.2% | 42/57 = 73.7% | 57/57 = 100.0% | 57/57 = 100.0% | 37/57 = 64.9% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 20/22 = 90.9% | 17/22 = 77.3% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 57 | 0/57 = 0.0% | 52/57 = 91.2% | 42/57 = 73.7% | 57/57 = 100.0% | 57/57 = 100.0% | 40/57 = 70.2% |
 | StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 9/14 = 64.3% |
 
 ### Product 485
@@ -8740,7 +8742,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 33 real step(s) applicable.
 
-**Random baseline:** 10 test case(s).
+**Random baseline:** 12 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8758,7 +8760,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8776,15 +8778,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 36 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 53/75 = 70.7% |
-| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 9/13 = 69.2% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 21/22 = 95.5% | 18/22 = 81.8% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
+| ActionExchange | 75 | 0/75 = 0.0% | 73/75 = 97.3% | 60/75 = 80.0% | 75/75 = 100.0% | 75/75 = 100.0% | 58/75 = 77.3% |
+| StateMissing | 13 | 0/13 = 0.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 13/13 = 100.0% | 10/13 = 76.9% |
 
 ### Product 488
 
@@ -8794,15 +8796,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 38 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 15/24 = 62.5% |
-| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 69/83 = 83.1% | 83/83 = 100.0% | 83/83 = 100.0% | 55/83 = 66.3% |
-| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 24 | 0/24 = 0.0% | 23/24 = 95.8% | 20/24 = 83.3% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 83 | 0/83 = 0.0% | 81/83 = 97.6% | 69/83 = 83.1% | 83/83 = 100.0% | 83/83 = 100.0% | 60/83 = 72.3% |
+| StateMissing | 14 | 0/14 = 0.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 489
 
@@ -8812,7 +8814,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8830,7 +8832,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 8 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8848,15 +8850,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 42 real step(s) applicable.
 
-**Random baseline:** 9 test case(s).
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 19/29 = 65.5% |
-| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 70/107 = 65.4% |
-| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| TransitionMissing | 29 | 0/29 = 0.0% | 27/29 = 93.1% | 25/29 = 86.2% | 29/29 = 100.0% | 29/29 = 100.0% | 21/29 = 72.4% |
+| ActionExchange | 107 | 0/107 = 0.0% | 100/107 = 93.5% | 90/107 = 84.1% | 107/107 = 100.0% | 107/107 = 100.0% | 77/107 = 72.0% |
+| StateMissing | 18 | 0/18 = 0.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 18/18 = 100.0% | 15/18 = 83.3% |
 
 ### Product 492
 
@@ -8866,7 +8868,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 8 test case(s) (of 16 family-level), 27 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 6 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8884,15 +8886,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 17/21 = 81.0% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
-| ActionExchange | 61 | 0/61 = 0.0% | 51/61 = 83.6% | 49/61 = 80.3% | 61/61 = 100.0% | 61/61 = 100.0% | 40/61 = 65.6% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 17/21 = 81.0% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 61 | 0/61 = 0.0% | 51/61 = 83.6% | 49/61 = 80.3% | 61/61 = 100.0% | 61/61 = 100.0% | 45/61 = 73.8% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 494
 
@@ -8902,15 +8904,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 13 test case(s) (of 16 family-level), 35 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 19/26 = 73.1% |
-| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 66/92 = 71.7% |
-| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 22/26 = 84.6% | 23/26 = 88.5% | 26/26 = 100.0% | 26/26 = 100.0% | 22/26 = 84.6% |
+| ActionExchange | 92 | 0/92 = 0.0% | 80/92 = 87.0% | 77/92 = 83.7% | 92/92 = 100.0% | 92/92 = 100.0% | 76/92 = 82.6% |
+| StateMissing | 17 | 0/17 = 0.0% | 15/17 = 88.2% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 16/17 = 94.1% |
 
 ### Product 495
 
@@ -8920,15 +8922,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 75/106 = 70.8% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 21/28 = 75.0% |
+| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 83/106 = 78.3% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 
 ### Product 496
 
@@ -8938,15 +8940,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 29 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 17/21 = 81.0% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 13/21 = 61.9% |
-| ActionExchange | 61 | 0/61 = 0.0% | 51/61 = 83.6% | 49/61 = 80.3% | 61/61 = 100.0% | 61/61 = 100.0% | 40/61 = 65.6% |
-| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 10/14 = 71.4% |
+| TransitionMissing | 21 | 0/21 = 0.0% | 17/21 = 81.0% | 18/21 = 85.7% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 61 | 0/61 = 0.0% | 51/61 = 83.6% | 49/61 = 80.3% | 61/61 = 100.0% | 61/61 = 100.0% | 45/61 = 73.8% |
+| StateMissing | 14 | 0/14 = 0.0% | 12/14 = 85.7% | 14/14 = 100.0% | 14/14 = 100.0% | 14/14 = 100.0% | 11/14 = 78.6% |
 
 ### Product 497
 
@@ -8956,7 +8958,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 11 test case(s) (of 16 family-level), 31 real step(s) applicable.
 
-**Random baseline:** 7 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -8974,15 +8976,15 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 12 test case(s) (of 16 family-level), 40 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
-| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 75/106 = 70.8% |
-| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 14/17 = 82.4% |
+| TransitionMissing | 28 | 0/28 = 0.0% | 26/28 = 92.9% | 23/28 = 82.1% | 28/28 = 100.0% | 28/28 = 100.0% | 21/28 = 75.0% |
+| ActionExchange | 106 | 0/106 = 0.0% | 99/106 = 93.4% | 84/106 = 79.2% | 106/106 = 100.0% | 106/106 = 100.0% | 83/106 = 78.3% |
+| StateMissing | 17 | 0/17 = 0.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 17/17 = 100.0% | 15/17 = 88.2% |
 ---
 
 ## BankAccountv2 summary (aggregate over 498 products)
@@ -8993,8 +8995,8 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total mutants | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 12132 | 0/12132 = 0.0% | 10818/12132 = 89.2% | 10374/12132 = 85.5% | 12132/12132 = 100.0% | 12132/12132 = 100.0% | 7977/12132 = 65.8% |
-| ActionExchange | 45465 | 0/45465 = 0.0% | 41862/45465 = 92.1% | 37557/45465 = 82.6% | 45465/45465 = 100.0% | 45465/45465 = 100.0% | 31671/45465 = 69.7% |
-| StateMissing | 7473 | 0/7473 = 0.0% | 6981/7473 = 93.4% | 7473/7473 = 100.0% | 7473/7473 = 100.0% | 7473/7473 = 100.0% | 5499/7473 = 73.6% |
+| TransitionMissing | 12132 | 0/12132 = 0.0% | 10818/12132 = 89.2% | 10374/12132 = 85.5% | 12132/12132 = 100.0% | 12132/12132 = 100.0% | 8946/12132 = 73.7% |
+| ActionExchange | 45465 | 0/45465 = 0.0% | 41862/45465 = 92.1% | 37557/45465 = 82.6% | 45465/45465 = 100.0% | 45465/45465 = 100.0% | 34824/45465 = 76.6% |
+| StateMissing | 7473 | 0/7473 = 0.0% | 6981/7473 = 93.4% | 7473/7473 = 100.0% | 7473/7473 = 100.0% | 7473/7473 = 100.0% | 6057/7473 = 81.1% |
 
 Total products: 498.

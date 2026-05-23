@@ -1,0 +1,519 @@
+digraph pairGraph {
+  graph [fontname="Helvetica", labelloc=t, label="Stage 3 — pair-graph SCC analysis (each colour = one SCC)", overlap=false, splines=true];
+  node [fontname="Helvetica", fontsize=9, shape=box, style="rounded,filled", margin=0.05];
+  edge [fontname="Helvetica", fontsize=8, arrowsize=0.7];
+  rankdir=LR;
+  "p_state27_update the name 
+of the class_state27" [label="p(state27,\\nupdate the name \nof the class,\\nstate27)",fillcolor="#cfe2f3"];
+  "p_state14_open class 
+records_state15" [label="p(state14,\\nopen class \nrecords,\\nstate15)",fillcolor="#cfe2f3"];
+  "p_state18_update the name 
+of the class_state27" [label="p(state18,\\nupdate the name \nof the class,\\nstate27)",fillcolor="#cfe2f3"];
+  "p_state30_update the days of
+the class_state30" [label="p(state30,\\nupdate the days of\nthe class,\\nstate30)",fillcolor="#cfe2f3"];
+  "p_state8_confirm your 
+identity_state1" [label="p(state8,\\nconfirm your \nidentity,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state27_submit the 
+class_state1" [label="p(state27,\\nsubmit the \nclass,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state30_submit the 
+class schedule_state1" [label="p(state30,\\nsubmit the \nclass schedule,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state12_add new 
+schedule_state19" [label="p(state12,\\nadd new \nschedule,\\nstate19)",fillcolor="#cfe2f3"];
+  "p_state14_monitor current 
+attendance 
+status_state1" [label="p(state14,\\nmonitor current \nattendance \nstatus,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state31_submit the 
+class schedule_state1" [label="p(state31,\\nsubmit the \nclass schedule,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state3_show 
+the barcode 
+to the 
+barcodereader_state9" [label="p(state3,\\nshow \nthe barcode \nto the \nbarcodereader,\\nstate9)",fillcolor="#cfe2f3"];
+  "p_state29_submit the 
+class schedule_state1" [label="p(state29,\\nsubmit the \nclass schedule,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state31_update the hours
+ of the class_state31" [label="p(state31,\\nupdate the hours\n of the class,\\nstate31)",fillcolor="#cfe2f3"];
+  "p_state29_enter the days of
+the class_state29" [label="p(state29,\\nenter the days of\nthe class,\\nstate29)",fillcolor="#cfe2f3"];
+  "p_state33_edit attendance 
+status_state35" [label="p(state33,\\nedit attendance \nstatus,\\nstate35)",fillcolor="#cfe2f3"];
+  "p_state15_select the 
+existing class_state24" [label="p(state15,\\nselect the \nexisting class,\\nstate24)",fillcolor="#cfe2f3"];
+  "p_state27_update the 
+class detail_state27" [label="p(state27,\\nupdate the \nclass detail,\\nstate27)",fillcolor="#cfe2f3"];
+  "p_state28_select the editable 
+schedule_state20" [label="p(state28,\\nselect the editable \nschedule,\\nstate20)",fillcolor="#cfe2f3"];
+  "p_state18_assign schedule_state28" [label="p(state18,\\nassign schedule,\\nstate28)",fillcolor="#cfe2f3"];
+  "p_state12_select the editable 
+schedule_state20" [label="p(state12,\\nselect the editable \nschedule,\\nstate20)",fillcolor="#cfe2f3"];
+  "p_state12_add 
+new class_state17" [label="p(state12,\\nadd \nnew class,\\nstate17)",fillcolor="#cfe2f3"];
+  "p_state28_add new 
+schedule_state19" [label="p(state28,\\nadd new \nschedule,\\nstate19)",fillcolor="#cfe2f3"];
+  "p_state24_view class_state1" [label="p(state24,\\nview class,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state18_update the 
+class detail_state27" [label="p(state18,\\nupdate the \nclass detail,\\nstate27)",fillcolor="#cfe2f3"];
+  "p_state16_delete class_state25" [label="p(state16,\\ndelete class,\\nstate25)",fillcolor="#f4cccc",color="#cc0000",penwidth=2.5];
+  "INIT" [label="INIT",fillcolor="#fff2cc"];
+  "p_state26_enter the 
+class detail_state26" [label="p(state26,\\nenter the \nclass detail,\\nstate26)",fillcolor="#cfe2f3"];
+  "p_state6_open my
+attendance 
+records_state14" [label="p(state6,\\nopen my\nattendance \nrecords,\\nstate14)",fillcolor="#cfe2f3",color="#cc0000",penwidth=2.5];
+  "p_state17_enter the name 
+of the class_state26" [label="p(state17,\\nenter the name \nof the class,\\nstate26)",fillcolor="#cfe2f3"];
+  "p_state1_log in_state2" [label="p(state1,\\nlog in,\\nstate2)",fillcolor="#cfe2f3"];
+  "p_state25_confirm deletion_state34" [label="p(state25,\\nconfirm deletion,\\nstate34)",fillcolor="#f4cccc"];
+  "p_state13_confirm notification 
+settings_state1" [label="p(state13,\\nconfirm notification \nsettings,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state2_access as 
+a student_state6" [label="p(state2,\\naccess as \na student,\\nstate6)",fillcolor="#cfe2f3"];
+  "p_state2_open notification 
+settings_state5" [label="p(state2,\\nopen notification \nsettings,\\nstate5)",fillcolor="#cfe2f3"];
+  "p_state26_submit the 
+class_state1" [label="p(state26,\\nsubmit the \nclass,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state4_turn editing on_state12" [label="p(state4,\\nturn editing on,\\nstate12)",fillcolor="#cfe2f3"];
+  "p_state2_access as a 
+teacher_state4" [label="p(state2,\\naccess as a \nteacher,\\nstate4)",fillcolor="#cfe2f3"];
+  "p_state34_select the 
+deletable class_state16" [label="p(state34,\\nselect the \ndeletable class,\\nstate16)",fillcolor="#f4cccc"];
+  "p_state9_show 
+the barcode 
+to the 
+barcodereader_state9" [label="p(state9,\\nshow \nthe barcode \nto the \nbarcodereader,\\nstate9)",fillcolor="#cfe2f3"];
+  "p_state35_submit attendance 
+record update_state1" [label="p(state35,\\nsubmit attendance \nrecord update,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state20_update the days of
+the class_state30" [label="p(state20,\\nupdate the days of\nthe class,\\nstate30)",fillcolor="#cfe2f3"];
+  "p_state1_submit attendance_state3" [label="p(state1,\\nsubmit attendance,\\nstate3)",fillcolor="#cfe2f3"];
+  "p_state9_enter barcode 
+manually_state8" [label="p(state9,\\nenter barcode \nmanually,\\nstate8)",fillcolor="#cfe2f3"];
+  "p_state14_select the existing 
+record_state22" [label="p(state14,\\nselect the existing \nrecord,\\nstate22)",fillcolor="#cfe2f3"];
+  "p_state29_enter the 
+hours of 
+the class_state29" [label="p(state29,\\nenter the \nhours of \nthe class,\\nstate29)",fillcolor="#cfe2f3"];
+  "p_state17_enter the 
+class detail_state26" [label="p(state17,\\nenter the \nclass detail,\\nstate26)",fillcolor="#cfe2f3"];
+  "p_state9_confirm your 
+identity_state1" [label="p(state9,\\nconfirm your \nidentity,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state12_open student 
+attendance 
+records_state21" [label="p(state12,\\nopen student \nattendance \nrecords,\\nstate21)",fillcolor="#cfe2f3"];
+  "p_state12_select the editable 
+class_state18" [label="p(state12,\\nselect the editable \nclass,\\nstate18)",fillcolor="#cfe2f3"];
+  "p_state12_open class 
+records_state15" [label="p(state12,\\nopen class \nrecords,\\nstate15)",fillcolor="#cfe2f3"];
+  "p_state19_enter the days of
+the class_state29" [label="p(state19,\\nenter the days of\nthe class,\\nstate29)",fillcolor="#cfe2f3"];
+  "p_state26_enter the name 
+of the class_state26" [label="p(state26,\\nenter the name \nof the class,\\nstate26)",fillcolor="#cfe2f3"];
+  "p_state6_open class 
+records_state15" [label="p(state6,\\nopen class \nrecords,\\nstate15)",fillcolor="#cfe2f3"];
+  "p_state20_update the hours
+ of the class_state31" [label="p(state20,\\nupdate the hours\n of the class,\\nstate31)",fillcolor="#cfe2f3"];
+  "p_state12_select the 
+deletable class_state16" [label="p(state12,\\nselect the \ndeletable class,\\nstate16)",fillcolor="#d9ead3"];
+  "p_state21_select a class-list 
+attendance 
+record_state32" [label="p(state21,\\nselect a class-list \nattendance \nrecord,\\nstate32)",fillcolor="#cfe2f3"];
+  "p_state22_view record_state1" [label="p(state22,\\nview record,\\nstate1)",fillcolor="#cfe2f3"];
+  "p_state3_enter barcode 
+manually_state8" [label="p(state3,\\nenter barcode \nmanually,\\nstate8)",fillcolor="#cfe2f3"];
+  "p_state5_receive 
+notifications 
+as SMS_state13" [label="p(state5,\\nreceive \nnotifications \nas SMS,\\nstate13)",fillcolor="#cfe2f3"];
+  "p_state19_enter the 
+hours of 
+the class_state29" [label="p(state19,\\nenter the \nhours of \nthe class,\\nstate29)",fillcolor="#cfe2f3"];
+  "p_state32_edit attendance 
+status_state35" [label="p(state32,\\nedit attendance \nstatus,\\nstate35)",fillcolor="#cfe2f3"];
+  "p_state21_open class 
+records_state15" [label="p(state21,\\nopen class \nrecords,\\nstate15)",fillcolor="#cfe2f3"];
+  "p_state21_select an editable 
+student-record_state33" [label="p(state21,\\nselect an editable \nstudent-record,\\nstate33)",fillcolor="#cfe2f3"];
+  "p_state31_submit the 
+class schedule_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state29_enter the days of
+the class_state29" -> "p_state29_enter the 
+hours of 
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state24_view class_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state12_add 
+new class_state17" -> "p_state17_enter the name 
+of the class_state26" [color="#555555", penwidth=0.7];
+  "p_state13_confirm notification 
+settings_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state8_confirm your 
+identity_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state35_submit attendance 
+record update_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state21_select an editable 
+student-record_state33" -> "p_state33_edit attendance 
+status_state35" [color="#555555", penwidth=0.7];
+  "p_state20_update the days of
+the class_state30" -> "p_state30_update the days of
+the class_state30" [color="#555555", penwidth=0.7];
+  "p_state15_select the 
+existing class_state24" -> "p_state24_view class_state1" [color="#555555", penwidth=0.7];
+  "p_state12_select the 
+deletable class_state16" -> "p_state16_delete class_state25" [color="#555555", penwidth=0.7];
+  "p_state28_add new 
+schedule_state19" -> "p_state19_enter the days of
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state19_enter the 
+hours of 
+the class_state29" -> "p_state29_enter the 
+hours of 
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state27_submit the 
+class_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state2_access as a 
+teacher_state4" -> "p_state4_turn editing on_state12" [color="#555555", penwidth=0.7];
+  "p_state2_open notification 
+settings_state5" -> "p_state5_receive 
+notifications 
+as SMS_state13" [color="#555555", penwidth=0.7];
+  "p_state27_update the name 
+of the class_state27" -> "p_state27_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state20_update the hours
+ of the class_state31" -> "p_state31_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state1_log in_state2" -> "p_state2_open notification 
+settings_state5" [color="#555555", penwidth=0.7];
+  "p_state21_select a class-list 
+attendance 
+record_state32" -> "p_state32_edit attendance 
+status_state35" [color="#555555", penwidth=0.7];
+  "p_state12_select the editable 
+class_state18" -> "p_state18_update the name 
+of the class_state27" [color="#555555", penwidth=0.7];
+  "p_state12_select the editable 
+schedule_state20" -> "p_state20_update the hours
+ of the class_state31" [color="#555555", penwidth=0.7];
+  "p_state30_submit the 
+class schedule_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state22_view record_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state1_log in_state2" -> "p_state2_access as 
+a student_state6" [color="#555555", penwidth=0.7];
+  "p_state1_submit attendance_state3" -> "p_state3_show 
+the barcode 
+to the 
+barcodereader_state9" [color="#555555", penwidth=0.7];
+  "p_state27_update the 
+class detail_state27" -> "p_state27_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state3_show 
+the barcode 
+to the 
+barcodereader_state9" -> "p_state9_enter barcode 
+manually_state8" [color="#555555", penwidth=0.7];
+  "p_state6_open my
+attendance 
+records_state14" -> "p_state14_monitor current 
+attendance 
+status_state1" [color="#555555", penwidth=0.7];
+  "p_state26_submit the 
+class_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state29_enter the days of
+the class_state29" -> "p_state29_enter the days of
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state1_submit attendance_state3" -> "p_state3_enter barcode 
+manually_state8" [color="#555555", penwidth=0.7];
+  "p_state21_open class 
+records_state15" -> "p_state15_select the 
+existing class_state24" [color="#555555", penwidth=0.7];
+  "p_state17_enter the name 
+of the class_state26" -> "p_state26_enter the name 
+of the class_state26" [color="#555555", penwidth=0.7];
+  "p_state4_turn editing on_state12" -> "p_state12_select the editable 
+schedule_state20" [color="#555555", penwidth=0.7];
+  "p_state18_assign schedule_state28" -> "p_state28_add new 
+schedule_state19" [color="#555555", penwidth=0.7];
+  "p_state26_enter the name 
+of the class_state26" -> "p_state26_enter the name 
+of the class_state26" [color="#555555", penwidth=0.7];
+  "p_state2_access as 
+a student_state6" -> "p_state6_open class 
+records_state15" [color="#555555", penwidth=0.7];
+  "p_state25_confirm deletion_state34" -> "p_state34_select the 
+deletable class_state16" [color="#555555", penwidth=0.7];
+  "p_state26_enter the 
+class detail_state26" -> "p_state26_enter the 
+class detail_state26" [color="#555555", penwidth=0.7];
+  "p_state3_enter barcode 
+manually_state8" -> "p_state8_confirm your 
+identity_state1" [color="#555555", penwidth=0.7];
+  "p_state32_edit attendance 
+status_state35" -> "p_state35_submit attendance 
+record update_state1" [color="#555555", penwidth=0.7];
+  "p_state34_select the 
+deletable class_state16" -> "p_state16_delete class_state25" [color="#555555", penwidth=0.7];
+  "p_state9_confirm your 
+identity_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state29_submit the 
+class schedule_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state33_edit attendance 
+status_state35" -> "p_state35_submit attendance 
+record update_state1" [color="#555555", penwidth=0.7];
+  "p_state14_monitor current 
+attendance 
+status_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state13_confirm notification 
+settings_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state12_select the editable 
+class_state18" -> "p_state18_assign schedule_state28" [color="#555555", penwidth=0.7];
+  "p_state17_enter the 
+class detail_state26" -> "p_state26_enter the name 
+of the class_state26" [color="#555555", penwidth=0.7];
+  "p_state12_open student 
+attendance 
+records_state21" -> "p_state21_select an editable 
+student-record_state33" [color="#555555", penwidth=0.7];
+  "p_state17_enter the name 
+of the class_state26" -> "p_state26_enter the 
+class detail_state26" [color="#555555", penwidth=0.7];
+  "p_state24_view class_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state27_update the name 
+of the class_state27" -> "p_state27_update the 
+class detail_state27" [color="#555555", penwidth=0.7];
+  "p_state3_show 
+the barcode 
+to the 
+barcodereader_state9" -> "p_state9_show 
+the barcode 
+to the 
+barcodereader_state9" [color="#555555", penwidth=0.7];
+  "p_state14_select the existing 
+record_state22" -> "p_state22_view record_state1" [color="#555555", penwidth=0.7];
+  "p_state27_update the name 
+of the class_state27" -> "p_state27_update the name 
+of the class_state27" [color="#555555", penwidth=0.7];
+  "INIT" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state26_enter the name 
+of the class_state26" -> "p_state26_enter the 
+class detail_state26" [color="#555555", penwidth=0.7];
+  "p_state29_submit the 
+class schedule_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state18_update the name 
+of the class_state27" -> "p_state27_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state17_enter the 
+class detail_state26" -> "p_state26_enter the 
+class detail_state26" [color="#555555", penwidth=0.7];
+  "p_state9_confirm your 
+identity_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state12_select the editable 
+schedule_state20" -> "p_state20_update the days of
+the class_state30" [color="#555555", penwidth=0.7];
+  "p_state12_open class 
+records_state15" -> "p_state15_select the 
+existing class_state24" [color="#555555", penwidth=0.7];
+  "p_state29_enter the days of
+the class_state29" -> "p_state29_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state5_receive 
+notifications 
+as SMS_state13" -> "p_state13_confirm notification 
+settings_state1" [color="#555555", penwidth=0.7];
+  "p_state1_log in_state2" -> "p_state2_access as a 
+teacher_state4" [color="#555555", penwidth=0.7];
+  "p_state26_enter the 
+class detail_state26" -> "p_state26_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state12_add new 
+schedule_state19" -> "p_state19_enter the 
+hours of 
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state26_enter the 
+class detail_state26" -> "p_state26_enter the name 
+of the class_state26" [color="#555555", penwidth=0.7];
+  "p_state31_update the hours
+ of the class_state31" -> "p_state31_update the hours
+ of the class_state31" [color="#555555", penwidth=0.7];
+  "p_state4_turn editing on_state12" -> "p_state12_open student 
+attendance 
+records_state21" [color="#555555", penwidth=0.7];
+  "p_state18_update the name 
+of the class_state27" -> "p_state27_update the 
+class detail_state27" [color="#555555", penwidth=0.7];
+  "p_state14_open class 
+records_state15" -> "p_state15_select the 
+existing class_state24" [color="#555555", penwidth=0.7];
+  "p_state26_submit the 
+class_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state8_confirm your 
+identity_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state9_enter barcode 
+manually_state8" -> "p_state8_confirm your 
+identity_state1" [color="#555555", penwidth=0.7];
+  "p_state30_update the days of
+the class_state30" -> "p_state30_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state20_update the hours
+ of the class_state31" -> "p_state31_update the hours
+ of the class_state31" [color="#555555", penwidth=0.7];
+  "p_state29_enter the 
+hours of 
+the class_state29" -> "p_state29_enter the days of
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state14_monitor current 
+attendance 
+status_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "INIT" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state12_add 
+new class_state17" -> "p_state17_enter the 
+class detail_state26" [color="#555555", penwidth=0.7];
+  "p_state3_show 
+the barcode 
+to the 
+barcodereader_state9" -> "p_state9_confirm your 
+identity_state1" [color="#555555", penwidth=0.7];
+  "p_state30_update the days of
+the class_state30" -> "p_state30_update the days of
+the class_state30" [color="#555555", penwidth=0.7];
+  "p_state4_turn editing on_state12" -> "p_state12_add 
+new class_state17" [color="#555555", penwidth=0.7];
+  "p_state31_submit the 
+class schedule_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state28_select the editable 
+schedule_state20" -> "p_state20_update the days of
+the class_state30" [color="#555555", penwidth=0.7];
+  "p_state19_enter the days of
+the class_state29" -> "p_state29_enter the days of
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state17_enter the 
+class detail_state26" -> "p_state26_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state18_assign schedule_state28" -> "p_state28_select the editable 
+schedule_state20" [color="#555555", penwidth=0.7];
+  "p_state19_enter the 
+hours of 
+the class_state29" -> "p_state29_enter the days of
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state19_enter the 
+hours of 
+the class_state29" -> "p_state29_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state12_select the editable 
+class_state18" -> "p_state18_update the 
+class detail_state27" [color="#555555", penwidth=0.7];
+  "p_state29_enter the 
+hours of 
+the class_state29" -> "p_state29_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state18_update the 
+class detail_state27" -> "p_state27_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state22_view record_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state17_enter the name 
+of the class_state26" -> "p_state26_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state4_turn editing on_state12" -> "p_state12_select the editable 
+class_state18" [color="#555555", penwidth=0.7];
+  "p_state28_add new 
+schedule_state19" -> "p_state19_enter the 
+hours of 
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state16_delete class_state25" -> "p_state25_confirm deletion_state34" [color="#555555", penwidth=0.7];
+  "p_state6_open class 
+records_state15" -> "p_state15_select the 
+existing class_state24" [color="#555555", penwidth=0.7];
+  "p_state6_open my
+attendance 
+records_state14" -> "p_state14_open class 
+records_state15" [color="#555555", penwidth=0.7];
+  "p_state9_show 
+the barcode 
+to the 
+barcodereader_state9" -> "p_state9_enter barcode 
+manually_state8" [color="#555555", penwidth=0.7];
+  "p_state2_access as 
+a student_state6" -> "p_state6_open my
+attendance 
+records_state14" [color="#555555", penwidth=0.7];
+  "p_state6_open my
+attendance 
+records_state14" -> "p_state14_select the existing 
+record_state22" [color="#555555", penwidth=0.7];
+  "p_state26_enter the name 
+of the class_state26" -> "p_state26_submit the 
+class_state1" [color="#555555", penwidth=0.7];
+  "p_state12_open student 
+attendance 
+records_state21" -> "p_state21_open class 
+records_state15" [color="#555555", penwidth=0.7];
+  "p_state4_turn editing on_state12" -> "p_state12_open class 
+records_state15" [color="#555555", penwidth=0.7];
+  "p_state4_turn editing on_state12" -> "p_state12_select the 
+deletable class_state16" [color="#555555", penwidth=0.7];
+  "p_state18_update the 
+class detail_state27" -> "p_state27_update the name 
+of the class_state27" [color="#555555", penwidth=0.7];
+  "p_state27_update the 
+class detail_state27" -> "p_state27_update the name 
+of the class_state27" [color="#555555", penwidth=0.7];
+  "p_state29_enter the 
+hours of 
+the class_state29" -> "p_state29_enter the 
+hours of 
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state18_update the name 
+of the class_state27" -> "p_state27_update the name 
+of the class_state27" [color="#555555", penwidth=0.7];
+  "p_state9_show 
+the barcode 
+to the 
+barcodereader_state9" -> "p_state9_show 
+the barcode 
+to the 
+barcodereader_state9" [color="#555555", penwidth=0.7];
+  "p_state9_show 
+the barcode 
+to the 
+barcodereader_state9" -> "p_state9_confirm your 
+identity_state1" [color="#555555", penwidth=0.7];
+  "p_state28_select the editable 
+schedule_state20" -> "p_state20_update the hours
+ of the class_state31" [color="#555555", penwidth=0.7];
+  "p_state20_update the days of
+the class_state30" -> "p_state30_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state4_turn editing on_state12" -> "p_state12_add new 
+schedule_state19" [color="#555555", penwidth=0.7];
+  "p_state12_add new 
+schedule_state19" -> "p_state19_enter the days of
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state35_submit attendance 
+record update_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  "p_state27_update the 
+class detail_state27" -> "p_state27_update the 
+class detail_state27" [color="#555555", penwidth=0.7];
+  "p_state30_submit the 
+class schedule_state1" -> "p_state1_log in_state2" [color="#555555", penwidth=0.7];
+  "p_state18_update the 
+class detail_state27" -> "p_state27_update the 
+class detail_state27" [color="#555555", penwidth=0.7];
+  "p_state19_enter the days of
+the class_state29" -> "p_state29_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state12_open student 
+attendance 
+records_state21" -> "p_state21_select a class-list 
+attendance 
+record_state32" [color="#555555", penwidth=0.7];
+  "p_state31_update the hours
+ of the class_state31" -> "p_state31_submit the 
+class schedule_state1" [color="#555555", penwidth=0.7];
+  "p_state19_enter the days of
+the class_state29" -> "p_state29_enter the 
+hours of 
+the class_state29" [color="#555555", penwidth=0.7];
+  "p_state27_submit the 
+class_state1" -> "p_state1_submit attendance_state3" [color="#555555", penwidth=0.7];
+  subgraph cluster_legend {
+    label="Legend"; style=dashed; fontsize=11;
+    leg_scc [label="4 SCC(s) — each colour distinct", shape=plaintext];
+    leg_crit [label="problematic pair-vertices\np(state16-delete class-state25)\np(state6-open my attendance records-state14)", shape=plaintext, color="#cc0000", fontcolor="#cc0000"];
+  }
+}

@@ -39,37 +39,37 @@ public class TransitionPairCoverageGeneratorTest {
     @Test
     public void pairGraphTransform_twoStateLoop_hasExpectedStructure() {
         // Two-state loop: a -[ab]-> b -[ba]-> a. Original has 2 transitions.
-        // Pair graph: INIT plus 2 transition-vertices, edges:
-        //   INIT -> p(ab)   (action ab)
+        // INIT-less pair graph (2026-05-23): 2 vertices (one per transition),
+        // edges:
         //   p(ab) -> p(ba)  (action ba)
         //   p(ba) -> p(ab)  (action ab)
-        // Total 3 pair-graph edges.
+        // Total 2 pair-graph edges. Canonical initial state =
+        // lexicographically-smallest p(t_init) for t_init.source = "a";
+        // here only "a -[ab]-> b" qualifies → "p_a_ab_b".
         FeaturedTransitionSystem fts = twoStateLoop();
         PairGraphTransformer.Result r = PairGraphTransformer.transform(fts);
 
-        assertEquals("pair-graph state count = |original T| + 1 (INIT)",
-                3, countStates(r.pairGraph));
-        assertEquals("pair-graph edge count = 3 (INIT->p(ab), p(ab)->p(ba), p(ba)->p(ab))",
-                3, countTransitions(r.pairGraph));
-        assertEquals("INIT", r.initialStateName);
+        assertEquals("pair-graph state count = |original T| (no separate INIT)",
+                2, countStates(r.pairGraph));
+        assertEquals("pair-graph edge count = 2 (p(ab)->p(ba), p(ba)->p(ab))",
+                2, countTransitions(r.pairGraph));
+        assertEquals("p_a_ab_b", r.initialStateName);
     }
 
     @Test
     public void pairGraphTransform_svm_hasExpectedCardinality() throws Exception {
-        // Original SVM repaired FTS has E transitions and S states. The pair
-        // graph has E + 1 states (one per transition + INIT) and the number
-        // of pair-graph edges equals:
-        //   |{t : source(t) == initialState}|   (INIT outgoing)
-        // + sum over t1 of |{t2 : source(t2) == target(t1)}|   (pair edges)
+        // Original SVM family FTS has E transitions and S states. INIT-less
+        // pair graph has E states (one per non-synthetic transition) and the
+        // number of pair-graph edges equals
+        //   sum over t1 of |{t2 : source(t2) == target(t1)}|   (pair edges)
+        // (no INIT-outgoing edges any more).
         FeaturedTransitionSystem svm = loadSvm();
         int e = countTransitions(svm);
 
         PairGraphTransformer.Result r = PairGraphTransformer.transform(svm);
-        assertEquals(e + 1, countStates(r.pairGraph));
+        assertEquals(e, countStates(r.pairGraph));
 
-        // For SVM (11 states, 18 transitions), the pair-graph edge count is
-        // empirically observable; rather than hard-coding it, assert that it
-        // matches the formula computed structurally here.
+        // Edge count matches the formula computed structurally below.
         int expectedPairEdges = expectedPairEdgeCount(svm);
         assertEquals(expectedPairEdges, countTransitions(r.pairGraph));
     }
@@ -136,12 +136,18 @@ public class TransitionPairCoverageGeneratorTest {
 
             Set<TransitionPairKey> expectedPairs = enumerateReachablePairs(repaired);
 
-            // Collect consecutive pairs across ALL test cases in the suite.
+            // The INIT-less suite is split at FTS-initial returns
+            // (TestCaseSplitter.splitAtInitialReturns inside the
+            // generator). Boundary pairs — (last action of trip k,
+            // first action of trip k+1) — are real operationally-
+            // covered pairs (after reset, the tester executes the next
+            // trip starting at initial), so pair coverage of the SUITE
+            // is computed by concatenating all trips and counting
+            // consecutive pairs in the flattened sequence.
             List<TestCase> suite = TransitionPairCoverageGenerator.generate(fts, config, testId);
-            Set<TransitionPairKey> coveredPairs = new HashSet<>();
-            for (TestCase tc : suite) {
-                coveredPairs.addAll(consecutivePairs(toList(tc)));
-            }
+            java.util.List<Transition> flattened = new java.util.ArrayList<>();
+            for (TestCase tc : suite) flattened.addAll(toList(tc));
+            Set<TransitionPairKey> coveredPairs = consecutivePairs(flattened);
 
             for (TransitionPairKey expected : expectedPairs) {
                 assertTrue("Test " + testId + " suite must cover pair "
@@ -238,22 +244,15 @@ public class TransitionPairCoverageGeneratorTest {
     }
 
     /**
-     * Counts the expected number of pair-graph edges for the given FTS:
-     * one per (transition out of initial state) + one per (t1, t2)
-     * contiguous-pair.
+     * Counts the expected number of pair-graph edges for the given FTS
+     * under the INIT-less construction: one per (t1, t2) contiguous-pair.
      */
     private static int expectedPairEdgeCount(FeaturedTransitionSystem fts) {
         int n = 0;
-        State initial = fts.getInitialState();
         Iterator<Transition> it = fts.transitions();
         java.util.List<Transition> all = new java.util.ArrayList<>();
         while (it.hasNext()) {
             all.add(it.next());
-        }
-        for (Transition t : all) {
-            if (t.getSource().equals(initial)) {
-                n++; // INIT -> p(t)
-            }
         }
         for (Transition t1 : all) {
             for (Transition t2 : all) {

@@ -1,0 +1,132 @@
+SCC 0 (1 vertex/vertices)
+  INIT
+SCC 1 (58 vertex/vertices)
+  p_state12_add 
+new class_state17
+  p_state12_add new 
+schedule_state19
+  p_state12_open class 
+records_state15
+  p_state12_open student 
+attendance 
+records_state21
+  p_state12_select the editable 
+class_state18
+  p_state12_select the editable 
+schedule_state20
+  p_state13_confirm notification 
+settings_state1
+  p_state14_monitor current 
+attendance 
+status_state1
+  p_state14_open class 
+records_state15
+  p_state14_select the existing 
+record_state22
+  p_state15_select the 
+existing class_state24
+  p_state17_enter the 
+class detail_state26
+  p_state17_enter the name 
+of the class_state26
+  p_state18_assign schedule_state28
+  p_state18_update the 
+class detail_state27
+  p_state18_update the name 
+of the class_state27
+  p_state19_enter the 
+hours of 
+the class_state29
+  p_state19_enter the days of
+the class_state29
+  p_state1_log in_state2
+  p_state1_submit attendance_state3
+  p_state20_update the days of
+the class_state30
+  p_state20_update the hours
+ of the class_state31
+  p_state21_open class 
+records_state15
+  p_state21_select a class-list 
+attendance 
+record_state32
+  p_state21_select an editable 
+student-record_state33
+  p_state22_view record_state1
+  p_state24_view class_state1
+  p_state26_enter the 
+class detail_state26
+  p_state26_enter the name 
+of the class_state26
+  p_state26_submit the 
+class_state1
+  p_state27_submit the 
+class_state1
+  p_state27_update the 
+class detail_state27
+  p_state27_update the name 
+of the class_state27
+  p_state28_add new 
+schedule_state19
+  p_state28_select the editable 
+schedule_state20
+  p_state29_enter the 
+hours of 
+the class_state29
+  p_state29_enter the days of
+the class_state29
+  p_state29_submit the 
+class schedule_state1
+  p_state2_access as 
+a student_state6
+  p_state2_access as a 
+teacher_state4
+  p_state2_open notification 
+settings_state5
+  p_state30_submit the 
+class schedule_state1
+  p_state30_update the days of
+the class_state30
+  p_state31_submit the 
+class schedule_state1
+  p_state31_update the hours
+ of the class_state31
+  p_state32_edit attendance 
+status_state35
+  p_state33_edit attendance 
+status_state35
+  p_state35_submit attendance 
+record update_state1
+  p_state3_enter barcode 
+manually_state8
+  p_state3_show 
+the barcode 
+to the 
+barcodereader_state9
+  p_state4_turn editing on_state12
+  p_state5_receive 
+notifications 
+as SMS_state13
+  p_state6_open class 
+records_state15
+  p_state6_open my
+attendance 
+records_state14
+  p_state8_confirm your 
+identity_state1
+  p_state9_confirm your 
+identity_state1
+  p_state9_enter barcode 
+manually_state8
+  p_state9_show 
+the barcode 
+to the 
+barcodereader_state9
+SCC 2 (1 vertex/vertices)
+  p_state12_select the 
+deletable class_state16
+SCC 3 (3 vertex/vertices)
+  p_state16_delete class_state25
+  p_state25_confirm deletion_state34
+  p_state34_select the 
+deletable class_state16
