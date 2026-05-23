@@ -135,12 +135,32 @@ public final class MetricsCollector {
     // ---------- Pair coverage ----------
 
     /**
-     * Fraction of reachable transition pairs (every {@code (t1, t2)} with
-     * {@code target(t1) == source(t2)} in {@code repaired}) that appear
-     * consecutively in some test case of the given suite.
+     * Fraction of reachable transition pairs that appear consecutively
+     * within a single test case of the given suite.
+     *
+     * <p>"Reachable pairs" is the operational Edge-Pair coverage target
+     * set per Ammann &amp; Offutt 2008: every {@code (t1, t2)} with
+     * {@code target(t1) == source(t2)} in {@code repaired}, EXCLUDING
+     * pairs where both {@code target(t1) == FTS_initial} and
+     * {@code source(t2) == FTS_initial}. The exclusion reflects the
+     * standard reset-per-test-case executor semantic: a {@code (t1, t2)}
+     * pair where {@code t1} returns to the initial state and {@code t2}
+     * starts a fresh walk from the initial state operationally crosses a
+     * test-case boundary — a system reset is inserted between them,
+     * breaking consecutive execution. Such pairs are not real Edge-Pair
+     * coverage targets and are excluded from both numerator and
+     * denominator.
+     *
+     * <p>Note that the pair-graph KEEPS boundary edges (they balance the
+     * graph's degree structure; removing them would recreate
+     * INIT-removal-style imbalance). The Hierholzer cycle visits them,
+     * the splitter splits at them naturally (initial-return), and the
+     * suite's TestCases reflect them as TC boundaries. This metric layer
+     * is where the operational coverage definition is enforced.
      */
     public static double pairCoveragePercentageOfSuite(FeaturedTransitionSystem repaired,
                                                        List<TestCase> suite) {
+        State initial = repaired.getInitialState();
         Set<String> covered = new HashSet<>();
         for (TestCase tc : suite) {
             List<Transition> walk = new java.util.ArrayList<>();
@@ -151,10 +171,15 @@ public final class MetricsCollector {
                 walk.add(t);
             }
             for (int i = 0; i + 1 < walk.size(); i++) {
-                covered.add(pairKey(walk.get(i), walk.get(i + 1)));
+                Transition t1 = walk.get(i);
+                Transition t2 = walk.get(i + 1);
+                if (t1.getTarget().equals(initial) && t2.getSource().equals(initial)) {
+                    continue; // boundary pair (operationally test-case-crossing)
+                }
+                covered.add(pairKey(t1, t2));
             }
         }
-        Set<String> all = reachablePairKeys(repaired);
+        Set<String> all = reachablePairKeysExcludingBoundary(repaired, initial);
         if (all.isEmpty()) {
             return 1.0;
         }
@@ -165,6 +190,38 @@ public final class MetricsCollector {
             }
         }
         return (double) hits / (double) all.size();
+    }
+
+    /**
+     * Same as {@link #reachablePairKeys} but excludes boundary pairs
+     * (target=initial AND source=initial), aligning with the operational
+     * Edge-Pair coverage definition. See
+     * {@link #pairCoveragePercentageOfSuite}.
+     */
+    private static Set<String> reachablePairKeysExcludingBoundary(
+            FeaturedTransitionSystem repaired, State initial) {
+        Set<String> result = new HashSet<>();
+        java.util.List<Transition> all = new java.util.ArrayList<>();
+        Iterator<Transition> it = repaired.transitions();
+        while (it.hasNext()) {
+            Transition t = it.next();
+            if (EulerianBalancer.isSyntheticAction(t.getAction())) {
+                continue;
+            }
+            all.add(t);
+        }
+        for (Transition t1 : all) {
+            boolean t1EndsAtInitial = t1.getTarget().equals(initial);
+            for (Transition t2 : all) {
+                if (t1.getTarget().equals(t2.getSource())) {
+                    if (t1EndsAtInitial && t2.getSource().equals(initial)) {
+                        continue; // boundary pair
+                    }
+                    result.add(pairKey(t1, t2));
+                }
+            }
+        }
+        return result;
     }
 
     /**

@@ -14,11 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -281,45 +278,19 @@ public final class TransitionPairCoverageGenerator {
                 testCaseBaseId, pairCycle.size(), balanceSkipped,
                 testCases.size(), contiguitySubsplits);
 
-        // ---- Dedup by action sequence ----
-        List<TestCase> deduped = dedupeByActionSequence(testCases);
+        // No dedup. Every Hierholzer cycle visit is unique by cycle
+        // POSITION even when two trips share the same action sequence,
+        // and the cross-TC boundary pair (TC_k_last, TC_{k+1}_first)
+        // depends on suite ORDER — dropping a duplicate-action-sequence
+        // trip would also drop the (one and only) boundary pair adjacent
+        // to it. Pair coverage measurement is sensitive to those
+        // boundaries, so the suite carries every trip the cycle produced.
         long t9 = System.nanoTime();
         if (timings != null) timings.translationAndDedupeNanos = t9 - t8;
 
-        LOG.info("Pair-coverage suite for '{}': cycle {} edges (incl prefix), "
-                        + "{} trips before dedup, {} after dedup",
-                testCaseBaseId, pairCycle.size() + 1, testCases.size(), deduped.size());
-        return deduped;
-    }
-
-    /**
-     * Drops TestCases whose action-name sequences duplicate an earlier
-     * TestCase's. Preserves first-occurrence ordering. Synthetic-action
-     * prefixes are normalised before comparing so
-     * {@code action__dup__N} compares as {@code action}.
-     */
-    private static List<TestCase> dedupeByActionSequence(List<TestCase> raw) {
-        List<TestCase> out = new ArrayList<>(raw.size());
-        Set<String> seen = new HashSet<>();
-        for (TestCase tc : raw) {
-            StringBuilder key = new StringBuilder();
-            for (Transition t : tc) {
-                String name = t.getAction().getName();
-                if (EulerianBalancer.isSyntheticAction(t.getAction())) {
-                    if (name.contains(EulerianBalancer.DUPLICATE_ACTION_INFIX)) {
-                        name = EulerianBalancer.stripDuplicateSuffix(name);
-                    } else {
-                        // pure synthetic (__balance__N, __end__): ignore
-                        continue;
-                    }
-                }
-                key.append(name).append('');
-            }
-            if (seen.add(key.toString())) {
-                out.add(tc);
-            }
-        }
-        return out;
+        LOG.info("Pair-coverage suite for '{}': cycle {} edges (incl prefix), {} trips",
+                testCaseBaseId, pairCycle.size() + 1, testCases.size());
+        return testCases;
     }
 
     /**

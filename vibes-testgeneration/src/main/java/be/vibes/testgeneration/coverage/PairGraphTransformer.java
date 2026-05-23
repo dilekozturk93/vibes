@@ -45,6 +45,38 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *       pipeline on the same input produces the same output.</li>
  * </ul>
  *
+ * <p><strong>Note — boundary pairs are KEPT in the graph but EXCLUDED
+ * from the coverage metric.</strong> Pair-graph edges where both
+ * {@code target(t1) == FTS_initial} and {@code source(t2) == FTS_initial}
+ * represent operationally test-case-crossing transition sequences (under
+ * standard reset-per-test-case executor semantic, {@code t1} ends one
+ * test case at the initial state and {@code t2} starts the next from
+ * the initial state — a reset is inserted between them). The strict
+ * Edge-Pair coverage definition (Ammann &amp; Offutt 2008) requires
+ * consecutive execution within a single test case, so these
+ * test-case-crossing pairs are NOT real Edge-Pair coverage targets.
+ * However, they CANNOT be removed from the pair-graph: doing so would
+ * leave every initial-outgoing pair-vertex with in-degree 0 and every
+ * "returns-to-initial" pair-vertex with out-degree 0, recreating the
+ * structural balance problem that the INIT removal solved. The boundary
+ * exclusion is therefore applied at the COVERAGE METRIC layer — see
+ * {@link be.vibes.testgeneration.experiment.MetricsCollector
+ * #pairCoveragePercentageOfSuite}, which subtracts boundary pairs from
+ * the denominator. Hierholzer's cycle still visits boundary edges
+ * (necessary for traversability); the splitter splits at them naturally
+ * (the splitter sees {@code target=initial}, closes the trip, starts
+ * the next); pair coverage measurement correctly ignores them in both
+ * numerator and denominator.
+ *
+ * <p><em>Edge case — initial self-loops.</em> If {@code FTS_initial}
+ * has a self-loop transition {@code t_s} (source = target = initial),
+ * the pair {@code (t_s, t_initial_outgoing)} is operationally a
+ * within-TC pair (no reset; {@code t_s} ends at initial but the test
+ * case continues), yet the metric-level boundary filter would exclude
+ * it. None of the five evaluated SPLs contain initial self-loops, so
+ * this exclusion is exact for our evaluation; a paper Threats-to-Validity
+ * note covers the general case.</p>
+ *
  * <p><strong>Why INIT was removed.</strong> The previous design used a
  * dedicated {@code INIT} vertex with edges {@code INIT -> p(t)} for every
  * initial-outgoing transition. That vertex had in-degree 0 by construction
@@ -195,6 +227,16 @@ public final class PairGraphTransformer {
         }
 
         // p(t1) -> p(t2) edges for every contiguous transition pair.
+        // Boundary pairs (t1.target=initial AND t2.source=initial) are
+        // KEPT in the graph — they balance the pair-graph's degree
+        // structure. Removing them would leave every initial-outgoing
+        // pair-vertex with in-degree 0 and every "returns-to-initial"
+        // pair-vertex with out-degree 0, recreating the unsolvable
+        // structural imbalance INIT removal solved. The boundary
+        // exclusion is applied at the COVERAGE METRIC layer
+        // (MetricsCollector.pairCoveragePercentageOfSuite) instead, where
+        // the denominator excludes boundary pairs to align with the
+        // literature Edge-Pair coverage definition (within-TC only).
         for (Transition t1 : allOriginalTransitions) {
             java.util.List<Transition> nextOptions = outgoingBySource.get(t1.getTarget());
             if (nextOptions == null) {

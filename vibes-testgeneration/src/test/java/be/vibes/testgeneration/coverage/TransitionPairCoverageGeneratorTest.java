@@ -39,10 +39,13 @@ public class TransitionPairCoverageGeneratorTest {
     @Test
     public void pairGraphTransform_twoStateLoop_hasExpectedStructure() {
         // Two-state loop: a -[ab]-> b -[ba]-> a. Original has 2 transitions.
-        // INIT-less pair graph (2026-05-23): 2 vertices (one per transition),
-        // edges:
-        //   p(ab) -> p(ba)  (action ba)
-        //   p(ba) -> p(ab)  (action ab)
+        // INIT-less pair graph: 2 vertices, edges:
+        //   p(ab) -> p(ba)  (action ba) — t1.target=b≠initial
+        //   p(ba) -> p(ab)  (action ab) — boundary (t1.target=a=initial,
+        //                                 t2.source=a=initial). KEPT in
+        //                                 the graph for degree balance;
+        //                                 excluded only at the coverage
+        //                                 metric layer.
         // Total 2 pair-graph edges. Canonical initial state =
         // lexicographically-smallest p(t_init) for t_init.source = "a";
         // here only "a -[ab]-> b" qualifies → "p_a_ab_b".
@@ -245,7 +248,11 @@ public class TransitionPairCoverageGeneratorTest {
 
     /**
      * Counts the expected number of pair-graph edges for the given FTS
-     * under the INIT-less construction: one per (t1, t2) contiguous-pair.
+     * under the INIT-less construction: one per {@code (t1, t2)}
+     * contiguous-pair. Boundary edges (both endpoints touching initial
+     * state) are KEPT in the graph — they balance the degree structure;
+     * the boundary exclusion is applied at the coverage METRIC layer
+     * (MetricsCollector), not the graph layer.
      */
     private static int expectedPairEdgeCount(FeaturedTransitionSystem fts) {
         int n = 0;
@@ -282,16 +289,27 @@ public class TransitionPairCoverageGeneratorTest {
         return pairs;
     }
 
+    /**
+     * Enumerates reachable transition pairs, EXCLUDING boundary pairs
+     * (target=initial AND source=initial) per the operational Edge-Pair
+     * coverage definition. The pair-graph itself keeps boundary edges
+     * for degree balance; this set is the test-coverage-target set.
+     */
     private static Set<TransitionPairKey> enumerateReachablePairs(FeaturedTransitionSystem fts) {
         java.util.List<Transition> all = new java.util.ArrayList<>();
         Iterator<Transition> it = fts.transitions();
         while (it.hasNext()) {
             all.add(it.next());
         }
+        State initial = fts.getInitialState();
         Set<TransitionPairKey> pairs = new HashSet<>();
         for (Transition t1 : all) {
+            boolean t1EndsAtInitial = t1.getTarget().equals(initial);
             for (Transition t2 : all) {
                 if (t1.getTarget().equals(t2.getSource())) {
+                    if (t1EndsAtInitial && t2.getSource().equals(initial)) {
+                        continue; // boundary pair: not a coverage target
+                    }
                     pairs.add(new TransitionPairKey(t1, t2));
                 }
             }
