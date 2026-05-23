@@ -687,24 +687,26 @@ public final class PerProductMutationReportGenerator {
                     budget, randomMaxSteps, abortedTotals[bi], smKilledMatrix[bi]);
         }
 
-        // ---- RQ3 CSV: efficiency = killed / total transitions in the
-        // suite. Denominator is the SUITE'S raw non-synthetic action count
-        // (countTestSuiteRealActions), not TestExecution.executeSuite's
-        // post-replay total. Reason: TestExecution resets the executor to
-        // the initial state between TestCases, but pair-coverage suites
-        // are Eulerian-cycle SEGMENTS designed to start at arbitrary
-        // pair vertices (split at the pair-graph's synthetic balancing
-        // edges). Replaying segments from initial refuses most of them on
-        // SPLs with rich pair-graph asymmetry (e.g. SAS: 38/46 pair TCs
-        // refused at step 0 on a representative product). The suite's
-        // raw action count is the paper-fair test-cost denominator:
-        // "transitions the suite would execute under a test framework
-        // that can teleport to each segment's start" — standard coverage
-        // suite semantic.
-        long stateSuiteCost = stateSuiteActions;
-        long transSuiteCost = transSuiteActions;
-        long pairSuiteCost = pairSuiteActions;
-        long familySuiteCost = familySuiteActions;
+        // ---- RQ3 CSV: efficiency = killed / total transitions actually
+        // EXECUTED by the suite under a strict reset-per-TestCase
+        // executor. Denominator is TestExecution.executeSuite(suite,
+        // repaired).getTotalRealTransitions() — the user-original RQ3
+        // definition. This was temporarily switched to a static raw-count
+        // in fc29817 because the pre-refactor pair pipeline produced
+        // suites with mass step-0 refusals (executor reset-per-TC vs.
+        // segments starting at non-INIT pair-vertices). With the
+        // INIT-less PairGraphTransformer + spec-faithful initial-return
+        // splitting, pair TCs start at the FTS initial state and execute
+        // end-to-end, so the dynamic denominator is the correct
+        // measurement again.
+        long stateSuiteCost = TestExecution.executeSuite(
+                Collections.singletonList(stateTc), repaired).getTotalRealTransitions();
+        long transSuiteCost = TestExecution.executeSuite(
+                Collections.singletonList(transTc), repaired).getTotalRealTransitions();
+        long pairSuiteCost = TestExecution.executeSuite(
+                pairSuite, repaired).getTotalRealTransitions();
+        long familySuiteCost = TestExecution.executeSuite(
+                projectedFamily, repaired).getTotalRealTransitions();
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
                 "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
                 tmState.getKilled(), stateSuiteCost);

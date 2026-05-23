@@ -5,7 +5,6 @@ import be.vibes.testgeneration.graph.EulerianBalancer;
 import be.vibes.testgeneration.graph.HierholzerEulerCycle;
 import be.vibes.testgeneration.graph.InitialSccFilter;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
-import be.vibes.testgeneration.product.TestCaseSplitter;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.State;
 import be.vibes.ts.TestCase;
@@ -55,14 +54,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *       {@code __balance__N} edges have no underlying transition and
  *       are dropped — they leave a discontinuity in the action sequence
  *       at the bridge point.</li>
- *   <li>{@link TestCaseSplitter#splitAtInitialReturns} — split the
- *       single concatenated TestCase at every visit to the FTS initial
- *       state, producing one trip-shaped TestCase per round-trip.
- *       Trips after a state-1 return are guaranteed to start at the FTS
- *       initial state and therefore executable end-to-end. Trips
- *       immediately after a dropped {@code __balance__N} (the rare
- *       SCC-disconnect case) may begin mid-FTS — this is the documented
- *       Threats-to-Validity residual.</li>
+ *   <li>Split the action sequence at every FTS-initial return, producing
+ *       one TestCase per round-trip. Trips are bounded by initial-return
+ *       transitions ONLY — synthetic-edge positions are NOT general trip
+ *       boundaries (the user-approved spec, 2026-05-24). On rare SPLs
+ *       whose pair graph contains a non-INIT {@code __balance__N} (SCC
+ *       disconnect under {@code __end__} filtering, e.g. SAS p1000) the
+ *       discontinuity may fall mid-trip; the VIBeS TestCase invariant
+ *       requires source/target contiguity, so such trips are sub-split
+ *       LOCALLY at the discontinuity. Sub-splits are counted separately
+ *       and logged at WARN — they are the documented Threats-to-Validity
+ *       residual.</li>
  *   <li>Optional dedup: TestCases whose action-name sequences are
  *       identical to a previously-emitted TestCase are dropped. The
  *       underlying pair coverage of the suite is preserved (the
@@ -156,7 +158,7 @@ public final class TransitionPairCoverageGenerator {
         long t7 = System.nanoTime();
         if (timings != null) timings.hierholzerEulerNanos = t7 - t6;
 
-        // ---- Translate pair-cycle to trips, inline ----
+        // ---- Translate pair-cycle to a flat action sequence, then split ----
         long t8 = System.nanoTime();
         State canonicalStart = pairGraphBalanced.getInitialState();
         // Resolve the canonical start back to the side-map. The balanced
@@ -172,82 +174,112 @@ public final class TransitionPairCoverageGenerator {
         }
         State ftsInitial = repaired.getInitialState();
 
-        // Trip-building loop. Two trip-boundary triggers:
-        //   (a) Natural: the current transition's target is the FTS initial
-        //       state (a tester would reset here for the next test case).
-        //   (b) Discontinuity: a __balance__N edge in the cycle was just
-        //       skipped, so the next emission's source is not the previous
-        //       emission's target. We must close the current trip and start
-        //       the next one mid-FTS — that mid-FTS trip is the known
-        //       Threats-to-Validity residual on SPLs whose pair graph has
-        //       SCC disconnects under __end__ filtering.
-        List<TestCase> testCases = new ArrayList<>();
-        int tripCounter = 0;
-        TestCase currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
-        boolean discontinuityPending = false;
+        // Phase 1 — build the flat action sequence as List<Transition>
+        // (bypasses TestCase contiguity check). __balance__N edges contribute
+        // NO entry, leaving a discontinuity in the sequence at the bridge
+        // point. __dup__N edges contribute their underlying real transition
+        // (target pair-vertex resolves via the side-map to the underlying
+        // transition, suffix is irrelevant for execution).
+        List<Transition> sequence = new ArrayList<>(pairCycle.size() + 1);
+        sequence.add(findInRepaired(repaired, prefixTransition));
         int balanceSkipped = 0;
-        int midFtsTrips = 0;
-        try {
-            Transition prefixResolved = findInRepaired(repaired, prefixTransition);
-            currentTrip.enqueue(prefixResolved);
-            if (prefixResolved.getTarget().equals(ftsInitial)) {
-                testCases.add(currentTrip);
-                tripCounter++;
-                currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
+        for (Transition pairEdge : pairCycle) {
+            String label = pairEdge.getAction().getName();
+            if (label.startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)) {
+                balanceSkipped++;
+                continue;
             }
-            for (Transition pairEdge : pairCycle) {
-                String label = pairEdge.getAction().getName();
-                if (label.startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)) {
-                    balanceSkipped++;
-                    if (!isEmptyTc(currentTrip)) {
-                        testCases.add(currentTrip);
-                        tripCounter++;
-                        currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
-                    }
-                    discontinuityPending = true;
-                    continue;
-                }
-                Transition underlying = pgResult.pairStateToOriginalTransition.get(pairEdge.getTarget());
-                if (underlying == null) {
-                    throw new IllegalStateException(
-                            "Pair-graph target state " + pairEdge.getTarget().getName()
-                                    + " has no entry in the side-map; mapping is incomplete.");
-                }
-                Transition resolved = findInRepaired(repaired, underlying);
-                if (discontinuityPending) {
-                    // First transition of a post-__balance__ trip. It
-                    // starts wherever the __balance__'s target pair-vertex
-                    // represents — likely mid-FTS, not necessarily at the
-                    // initial state.
-                    if (!resolved.getSource().equals(ftsInitial)) {
-                        midFtsTrips++;
-                    }
-                    discontinuityPending = false;
-                }
-                currentTrip.enqueue(resolved);
-                if (resolved.getTarget().equals(ftsInitial)) {
-                    testCases.add(currentTrip);
-                    tripCounter++;
-                    currentTrip = new TestCase(testCaseBaseId + "_trip" + tripCounter);
-                }
+            Transition underlying = pgResult.pairStateToOriginalTransition.get(pairEdge.getTarget());
+            if (underlying == null) {
+                throw new IllegalStateException(
+                        "Pair-graph target state " + pairEdge.getTarget().getName()
+                                + " has no entry in the side-map; mapping is incomplete.");
             }
-            if (!isEmptyTc(currentTrip)) {
-                testCases.add(currentTrip);
-            }
-        } catch (TransitionSystenExecutionException ex) {
-            throw new IllegalStateException(
-                    "Translated pair-graph cycle could not be enqueued into trip '"
-                            + currentTrip.getId() + "': " + ex.getMessage(), ex);
+            sequence.add(findInRepaired(repaired, underlying));
         }
-        if (midFtsTrips > 0) {
-            LOG.warn("Pair-coverage suite for '{}': {} trip(s) begin mid-FTS "
-                            + "(after __balance__N discontinuity) — known residual on SPLs whose "
-                            + "pair graph has SCC disconnects under __end__ filtering",
-                    testCaseBaseId, midFtsTrips);
+
+        // Phase 2 — split at FTS-initial returns ONLY (splitAtInitialReturns
+        // logic, applied directly to the List<Transition>). This is the
+        // spec-faithful trip boundary: a trip is a closed walk from initial
+        // back to initial, ending with the transition that returned the
+        // walk to initial.
+        List<List<Transition>> trips = new ArrayList<>();
+        List<Transition> current = new ArrayList<>();
+        for (Transition t : sequence) {
+            current.add(t);
+            if (t.getTarget().equals(ftsInitial)) {
+                trips.add(current);
+                current = new ArrayList<>();
+            }
+        }
+        if (!current.isEmpty()) {
+            trips.add(current); // incomplete final trip
+        }
+
+        // Phase 3 — wrap each trip in a TestCase. TestCase.enqueue enforces
+        // source/target contiguity; on rare SPLs whose pair graph contains
+        // a non-INIT __balance__N (SCC disconnect under __end__ filtering,
+        // e.g. SAS p1000), the resulting flat sequence has a discontinuity
+        // that MAY land mid-trip (between two initial returns). In that
+        // case we MUST sub-split the trip locally — not because the spec
+        // says "split at __balance__" (it doesn't), but because TestCase
+        // cannot represent a non-contiguous sequence. This is a HARDWARE
+        // CONSTRAINT of the VIBeS TestCase invariant, not a methodology
+        // choice. Sub-splits are counted separately so the rarity of the
+        // residual is observable.
+        List<TestCase> testCases = new ArrayList<>(trips.size());
+        int tripIdx = 0;
+        int contiguitySubsplits = 0;
+        int midFtsSubsplitTrips = 0;
+        for (List<Transition> trip : trips) {
+            if (trip.isEmpty()) {
+                tripIdx++;
+                continue;
+            }
+            int subIdx = 0;
+            TestCase tc = new TestCase(tripId(testCaseBaseId, tripIdx, subIdx, false));
+            Transition previous = null;
+            try {
+                for (Transition t : trip) {
+                    if (previous != null && !t.getSource().equals(previous.getTarget())) {
+                        // Sub-split forced by TestCase contiguity invariant.
+                        // Close current sub-trip, open a new one.
+                        if (!isEmptyTc(tc)) {
+                            testCases.add(tc);
+                        }
+                        subIdx++;
+                        contiguitySubsplits++;
+                        if (!t.getSource().equals(ftsInitial)) {
+                            midFtsSubsplitTrips++;
+                        }
+                        tc = new TestCase(tripId(testCaseBaseId, tripIdx, subIdx, true));
+                    }
+                    tc.enqueue(t);
+                    previous = t;
+                }
+            } catch (TransitionSystenExecutionException ex) {
+                throw new IllegalStateException(
+                        "Unexpected contiguity violation building trip '" + tc.getId()
+                                + "' (TestCase invariant) on transition with source="
+                                + (previous == null ? "<first>" : previous.getTarget().getName())
+                                + ": " + ex.getMessage(), ex);
+            }
+            if (!isEmptyTc(tc)) {
+                testCases.add(tc);
+            }
+            tripIdx++;
+        }
+        if (contiguitySubsplits > 0) {
+            LOG.warn("Pair-coverage suite for '{}': {} contiguity sub-split(s) "
+                            + "({} of which begin mid-FTS) — TestCase invariant forced sub-splitting "
+                            + "at __balance__N discontinuities mid-trip. Known residual on SPLs "
+                            + "whose pair graph has SCC disconnects under __end__ filtering.",
+                    testCaseBaseId, contiguitySubsplits, midFtsSubsplitTrips);
         }
         LOG.debug("Pair cycle translated for '{}': prefix + {} cycle edges "
-                        + "(of which {} __balance__ skipped) -> {} trips ({} mid-FTS)",
-                testCaseBaseId, pairCycle.size(), balanceSkipped, testCases.size(), midFtsTrips);
+                        + "(of which {} __balance__ skipped) -> {} trips ({} contiguity sub-splits)",
+                testCaseBaseId, pairCycle.size(), balanceSkipped,
+                testCases.size(), contiguitySubsplits);
 
         // ---- Dedup by action sequence ----
         List<TestCase> deduped = dedupeByActionSequence(testCases);
@@ -312,5 +344,19 @@ public final class TransitionPairCoverageGenerator {
 
     private static boolean isEmptyTc(TestCase tc) {
         return !tc.iterator().hasNext();
+    }
+
+    /**
+     * TestCase id with optional "_sub" suffix for contiguity-forced
+     * sub-splits. {@code subIdx == 0 && !forceSub} produces the base id
+     * (no suffix); positive {@code subIdx} or {@code forceSub} adds the
+     * sub-index suffix so traces can identify mid-trip sub-splits.
+     */
+    private static String tripId(String baseId, int tripIdx, int subIdx, boolean forceSub) {
+        String base = baseId + "_trip" + tripIdx;
+        if (subIdx == 0 && !forceSub) {
+            return base;
+        }
+        return base + "_sub" + subIdx;
     }
 }
