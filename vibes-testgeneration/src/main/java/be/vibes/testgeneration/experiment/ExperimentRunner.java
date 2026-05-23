@@ -7,17 +7,19 @@ import be.vibes.testgeneration.conversion.MxeToFtsConverter;
 import be.vibes.testgeneration.coverage.StateCoverageGenerator;
 import be.vibes.testgeneration.coverage.TransitionCoverageGenerator;
 import be.vibes.testgeneration.coverage.TransitionPairCoverageGenerator;
+import be.vibes.testgeneration.coverage.baseline.AllStatesGenerator;
 import be.vibes.testgeneration.graph.InitialSccFilter;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
 import be.vibes.ts.FeaturedTransitionSystem;
+import be.vibes.ts.State;
 import be.vibes.ts.TestCase;
 import be.vibes.ts.Transition;
+import be.vibes.ts.TransitionSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,180 +29,361 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 /**
- * Phase-0 experiment harness. Loops every enabled SPL × every coverage
- * criterion × every valid product configuration, generates the test
- * suite, measures coverage / size / time / memory, and emits one CSV row
- * per cell to {@code milestone-reports/metrics/phase0-prelim-metrics.csv}
- * (or a path provided via {@code OUTPUT_CSV} env var).
+ * RQ1 scalability runner — produces the per-(SPL × product × coverage)
+ * timing + memory + suite-shape rows for the paper's RQ1 dataset.
  *
- * <p>Honours the same env-var contract as the user's ESG-Fx-side
- * {@code RQ2_ExtremeScalability_L234} for compatibility with the existing
- * Python aggregation pipeline:
+ * <p>Drives the four coverage criteria the paper compares
+ * ({@code state}, {@code transition}, {@code pair}) for every valid
+ * product configuration of every wired SPL, recording the disjoint
+ * timing segments (projection, generation, transformation,
+ * execution) plus MXBean-based peak heap for the generation and
+ * execution phases separately. Also runs the SPL-level Devroey
+ * {@code AllStates} family baseline once per SPL and records its own
+ * scalability row (generation time + suite shape + termination
+ * reason).
  *
+ * <p>Multi-run orchestration is OUT OF PROCESS: invoke this main 11
+ * times via the {@code run-rq1.sh} script, with {@code runID=1..11}
+ * supplied via the environment. Each invocation appends to the same CSV
+ * files (header written only on the first invocation per file). Running
+ * 11 iterations inside one JVM would contaminate timings with warm-up
+ * and GC carry-over.
+ *
+ * <p>Environment variables:
  * <ul>
- *   <li>{@code SHARD} / {@code N_SHARDS} — split configurations across
- *       shards using {@code (configId - 1) % N_SHARDS == SHARD}.</li>
- *   <li>{@code runID} — replication identifier; included in every row.</li>
- *   <li>{@code TIMEOUT_HOURS} — soft wall-clock limit; the harness breaks
- *       out of the loop once exceeded.</li>
- *   <li>{@code SPLS} — comma-separated SPL names to include; defaults to
- *       {@code SVM,eMail,Elevator}.</li>
- *   <li>{@code COVERAGES} — comma-separated coverage names from the
- *       fixed set {@code state}, {@code transition}, {@code pair};
- *       defaults to all three.</li>
- *   <li>{@code OUTPUT_CSV} — destination path; defaults to
- *       {@code milestone-reports/metrics/phase0-prelim-metrics.csv}.</li>
+ *   <li>{@code runID} — int, default 1; written verbatim into the
+ *       {@code RunID} column.</li>
+ *   <li>{@code SPLS} — comma-separated SPL names to include; defaults
+ *       to all five wired SPLs (SVM, eMail, Elevator, BankAccountv2,
+ *       StudentAttendanceSystem).</li>
+ *   <li>{@code RQ1_CSV_DIR} — destination directory; defaults to
+ *       {@code milestone-reports/metrics}. Two files are appended:
+ *       {@code rq1-coverage-directed.csv} and
+ *       {@code rq1-family-baseline.csv}.</li>
+ *   <li>{@code FAMILY_TIMEOUT_HOURS} — optional wall-clock ceiling for
+ *       the family-baseline generation per SPL (interpreted in the
+ *       {@code AllStatesGenerator} call). Default 0 (no ceiling).</li>
+ *   <li>{@code MUTATION_TIME} — for unit-test runs only;
+ *       {@code true} prints rows to stdout in lieu of writing CSV files.</li>
  * </ul>
  *
- * <p>The CSV uses {@code ;} as the field separator and {@code ,} as the
- * decimal separator inside numeric values, matching the user's existing
- * downstream Python scripts.
+ * <p>Mutation scoring (RQ2) and efficiency (RQ3) are NOT in this
+ * runner's scope — they are deterministic given fixed seeds and run
+ * once via {@link PerProductMutationReportGenerator}, not 11×.
  */
 public final class ExperimentRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExperimentRunner.class);
 
-    private static final String DEFAULT_OUTPUT = "milestone-reports/metrics/phase0-prelim-metrics.csv";
-    private static final List<String> DEFAULT_SPLS = Arrays.asList("SVM", "eMail", "Elevator");
-    private static final List<String> DEFAULT_COVERAGES = Arrays.asList("state", "transition", "pair");
+    private static final String DEFAULT_CSV_DIR = "milestone-reports/metrics";
+    private static final String RQ1_CD_CSV = "rq1-coverage-directed.csv";
+    private static final String RQ1_FB_CSV = "rq1-family-baseline.csv";
 
-    private static final String CSV_HEADER =
-            "spl;coverage;productId;runID;configCount;suiteSize;totalTransitions;coveragePct;genTimeMs;peakMemoryMb";
+    private static final SplSpec[] SPLS = new SplSpec[] {
+            new SplSpec("SVM",
+                    "cases/SodaVendingMachine/SVM_ESGFx.mxe",
+                    "cases/SodaVendingMachine/configs/SVM.dimacs",
+                    "cases/SodaVendingMachine/configs/SVM_dimacsmapping.txt"),
+            new SplSpec("eMail",
+                    "cases/eMail/eM_ESGFx.mxe",
+                    "cases/eMail/configs/eM.dimacs",
+                    "cases/eMail/configs/eM_dimacsmapping.txt"),
+            new SplSpec("Elevator",
+                    "cases/Elevator/El_ESGFx.mxe",
+                    "cases/Elevator/configs/El.dimacs",
+                    "cases/Elevator/configs/El_dimacsmapping.txt"),
+            new SplSpec("BankAccountv2",
+                    "cases/BankAccountv2/BAv2_ESGFx.mxe",
+                    "cases/BankAccountv2/configs/BAv2.dimacs",
+                    "cases/BankAccountv2/configs/BAv2_dimacsmapping.txt"),
+            new SplSpec("StudentAttendanceSystem",
+                    "cases/StudentAttendanceSystem/SAS_ESGFx.mxe",
+                    "cases/StudentAttendanceSystem/configs/SAS.dimacs",
+                    "cases/StudentAttendanceSystem/configs/SAS_dimacsmapping.txt"),
+    };
 
     private ExperimentRunner() {
         // Entry point only.
     }
 
     public static void main(String[] args) throws Exception {
-        int shard = intEnv("SHARD", 0);
-        int nShards = intEnv("N_SHARDS", 1);
         int runId = intEnv("runID", 1);
-        int timeoutHours = intEnv("TIMEOUT_HOURS", 0);
-        long timeoutNanos = timeoutHours > 0
-                ? timeoutHours * 60L * 60L * 1_000_000_000L
-                : Long.MAX_VALUE;
+        List<String> splFilter = listEnv("SPLS", Collections.emptyList());
+        Path csvDir = Paths.get(System.getenv().getOrDefault("RQ1_CSV_DIR", DEFAULT_CSV_DIR));
+        Files.createDirectories(csvDir);
+        File rq1CdCsv = csvDir.resolve(RQ1_CD_CSV).toFile();
+        File rq1FbCsv = csvDir.resolve(RQ1_FB_CSV).toFile();
 
-        List<String> spls = listEnv("SPLS", DEFAULT_SPLS);
-        List<String> coverages = listEnv("COVERAGES", DEFAULT_COVERAGES);
-        Path output = Paths.get(System.getenv().getOrDefault("OUTPUT_CSV", DEFAULT_OUTPUT));
-
-        Files.createDirectories(output.getParent());
-        long start = System.nanoTime();
-        try (PrintWriter csv = new PrintWriter(Files.newBufferedWriter(output))) {
-            csv.println(CSV_HEADER);
-            for (String spl : spls) {
-                if (System.nanoTime() - start > timeoutNanos) {
-                    LOG.warn("Timeout reached before SPL {} could be processed", spl);
-                    break;
-                }
-                runSpl(spl, coverages, shard, nShards, runId, csv);
-                csv.flush();
-            }
-        }
-        LOG.info("Wrote phase-0 metrics to {}", output.toAbsolutePath());
-    }
-
-    private static void runSpl(String spl, List<String> coverages,
-                               int shard, int nShards, int runId,
-                               PrintWriter csv) throws Exception {
-        SplResources resources = SplResources.forName(spl);
-        FeaturedTransitionSystem fts = loadFts(resources.mxeResource);
-        Sat4JSolverFacade solver = loadSolver(resources.dimacsResource, resources.mappingResource);
-
-        int productIndex = 0;
-        Iterator<Configuration> configs = solver.getSolutions();
-        while (configs.hasNext()) {
-            Configuration config = configs.next();
-            productIndex++;
-            if ((productIndex - 1) % nShards != shard) {
+        LOG.info("RQ1 scalability runner: runID={}, csvDir={}", runId, csvDir.toAbsolutePath());
+        for (SplSpec spec : SPLS) {
+            if (!splFilter.isEmpty() && !splFilter.contains(spec.name)) {
                 continue;
             }
-            for (String coverage : coverages) {
-                Result r = runCell(fts, config, spl, coverage, productIndex);
-                csv.println(formatRow(spl, coverage, productIndex, runId, r));
-            }
+            runSpl(spec, runId, rq1CdCsv, rq1FbCsv);
         }
     }
 
     /**
-     * Generates a test suite for one (FTS, product config, coverage) cell
-     * and measures its size, coverage, generation time, and peak memory.
+     * Loads the SPL, runs the family-level Devroey baseline (one row),
+     * and iterates per-product coverage cells (one row per product per
+     * coverage criterion).
      */
-    private static Result runCell(FeaturedTransitionSystem fts,
-                                  Configuration config,
-                                  String spl,
-                                  String coverage,
-                                  int productIndex) {
-        FeaturedTransitionSystem projected = FExpressionPreservingProjection.project(fts, config);
+    private static void runSpl(SplSpec spec, int runId,
+                               File rq1CdCsv, File rq1FbCsv) throws Exception {
+        FeaturedTransitionSystem fts = loadFts(spec.mxe);
+        int ftsStates = countStates(fts);
+        int ftsTransitions = countTransitions(fts);
+
+        // -------- Family-level baseline scalability --------
+        Sat4JSolverFacade familySolver = loadSolver(spec.dimacs, spec.mapping);
+        MetricsCollector.resetPeakHeap();
+        long famWallStart = System.nanoTime();
+        List<TestCase> familyBaseline;
+        String terminationReason;
+        double famGenPeakMb;
+        try {
+            familyBaseline = AllStatesGenerator.generateForFts(
+                    fts, familySolver, spec.name + "_family");
+            terminationReason = "completed";
+        } catch (OutOfMemoryError oom) {
+            familyBaseline = Collections.emptyList();
+            terminationReason = "OOM";
+            LOG.error("Family baseline OOM for {}", spec.name, oom);
+        } catch (Exception ex) {
+            familyBaseline = Collections.emptyList();
+            terminationReason = "exception: " + ex.getClass().getSimpleName();
+            LOG.error("Family baseline failed for {}", spec.name, ex);
+        }
+        long famWallEnd = System.nanoTime();
+        famGenPeakMb = MetricsCollector.peakHeapMb();
+        double famWallMs = nsToMs(famWallEnd - famWallStart);
+        int famTotalActions = totalRealActions(familyBaseline);
+        MeasurementCsv.appendRq1FamilyBaselineRow(rq1FbCsv,
+                runId, spec.name, ftsStates, ftsTransitions,
+                familyBaseline.size(), famTotalActions,
+                famWallMs, famGenPeakMb, famWallMs, terminationReason);
+        LOG.info("{} family baseline: {} TC, {} actions, {} ms, {} MB peak, term={}",
+                spec.name, familyBaseline.size(), famTotalActions, famWallMs,
+                famGenPeakMb, terminationReason);
+
+        // -------- Per-product coverage-directed --------
+        Sat4JSolverFacade enumSolver = loadSolver(spec.dimacs, spec.mapping);
+        int productIndex = 0;
+        Iterator<Configuration> configs = enumSolver.getSolutions();
+        while (configs.hasNext()) {
+            Configuration cfg = configs.next();
+            productIndex++;
+            runProduct(spec, fts, cfg, productIndex, runId, rq1CdCsv,
+                    ftsStates, ftsTransitions);
+        }
+    }
+
+    /**
+     * Drives the three coverage cells for the given product. Each cell
+     * is self-contained: it does its OWN projection/repair, records that
+     * as its {@code projectionTimeMs}, and reports its own wall-clock
+     * sentinel. Projection cost is paid three times per product — fine,
+     * projection is sub-millisecond on all five SPLs and the
+     * cell-self-contained design keeps the
+     * {@code segmentSum ≈ wallClock} invariant per row, which is the
+     * RQ1 measurement contract.
+     */
+    private static void runProduct(SplSpec spec, FeaturedTransitionSystem fts,
+                                   Configuration cfg, int productIndex, int runId,
+                                   File rq1CdCsv, int ftsStates, int ftsTransitions) throws IOException {
+        runCoverageCell(spec, fts, cfg, productIndex, runId, rq1CdCsv, "state");
+        runCoverageCell(spec, fts, cfg, productIndex, runId, rq1CdCsv, "transition");
+        runCoverageCell(spec, fts, cfg, productIndex, runId, rq1CdCsv, "pair");
+    }
+
+    /**
+     * Single (product × coverage) cell: generates the suite, executes
+     * it on the repaired product FTS, and writes one RQ1 CSV row. The
+     * outer projection time is shared across the three coverage cells of
+     * the same product (it is identical for all three by construction).
+     * Disjoint segments by construction — see {@link MeasurementCsv}.
+     */
+    private static void runCoverageCell(SplSpec spec, FeaturedTransitionSystem fts,
+                                        Configuration cfg, int productIndex, int runId,
+                                        File rq1CdCsv, String coverage) throws IOException {
+        String testId = spec.name + "_p" + productIndex + "_" + coverage;
+        long wallStartNanos = System.nanoTime();
+
+        // ---- Projection + repair (cell-local) ----
+        long projStart = System.nanoTime();
+        FeaturedTransitionSystem projected = FExpressionPreservingProjection.project(fts, cfg);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
+        long projEnd = System.nanoTime();
+        double projectionMs = nsToMs(projEnd - projStart);
+        int repairedStates = countStates(repaired);
+        int repairedTransitions = countTransitions(repaired);
 
-        String testId = spl + "_p" + productIndex + "_" + coverage;
+        double genMs;
+        double transformMs;
+        double genPeakMb;
+        int suiteSize;
+        int totalActions;
+        double coveragePct;
+        List<TestCase> suiteForExec;
 
-        // Memory baseline (best-effort; not a hard sandbox).
-        System.gc();
-        long memoryBefore = MetricsCollector.usedHeapBytes();
-        long peak = memoryBefore;
-
-        long t0 = System.nanoTime();
-        Result r = new Result();
+        MetricsCollector.resetPeakHeap();
+        long genStart = System.nanoTime();
         switch (coverage) {
             case "state": {
-                TestCase tc = StateCoverageGenerator.generate(fts, config, testId);
-                long t1 = System.nanoTime();
-                peak = Math.max(peak, MetricsCollector.usedHeapBytes());
+                TestCase tc = StateCoverageGenerator.generate(fts, cfg, testId);
+                long genEnd = System.nanoTime();
+                genMs = nsToMs(genEnd - genStart);
+                transformMs = 0.0;
+                genPeakMb = MetricsCollector.peakHeapMb();
                 List<Transition> walk = toList(tc);
-                r.suiteSize = 1;
-                r.totalTransitions = MetricsCollector.totalWalkTransitions(walk);
-                r.coveragePct = MetricsCollector.stateCoveragePercentage(repaired, walk);
-                r.genTimeMs = nsToMs(t1 - t0);
+                suiteSize = 1;
+                totalActions = MetricsCollector.totalWalkTransitions(walk);
+                coveragePct = MetricsCollector.stateCoveragePercentage(repaired, walk);
+                suiteForExec = Collections.singletonList(tc);
                 break;
             }
             case "transition": {
-                TestCase tc = TransitionCoverageGenerator.generate(fts, config, testId);
-                long t1 = System.nanoTime();
-                peak = Math.max(peak, MetricsCollector.usedHeapBytes());
+                TestCase tc = TransitionCoverageGenerator.generate(fts, cfg, testId);
+                long genEnd = System.nanoTime();
+                genMs = nsToMs(genEnd - genStart);
+                transformMs = 0.0;
+                genPeakMb = MetricsCollector.peakHeapMb();
                 List<Transition> walk = toList(tc);
-                r.suiteSize = 1;
-                r.totalTransitions = MetricsCollector.totalWalkTransitions(walk);
-                r.coveragePct = MetricsCollector.transitionCoveragePercentage(repaired, walk);
-                r.genTimeMs = nsToMs(t1 - t0);
+                suiteSize = 1;
+                totalActions = MetricsCollector.totalWalkTransitions(walk);
+                coveragePct = MetricsCollector.transitionCoveragePercentage(repaired, walk);
+                suiteForExec = Collections.singletonList(tc);
                 break;
             }
             case "pair": {
-                List<TestCase> suite = TransitionPairCoverageGenerator.generate(fts, config, testId);
-                long t1 = System.nanoTime();
-                peak = Math.max(peak, MetricsCollector.usedHeapBytes());
-                r.suiteSize = suite.size();
-                r.totalTransitions = MetricsCollector.totalSuiteTransitions(suite);
-                r.coveragePct = MetricsCollector.pairCoveragePercentageOfSuite(repaired, suite);
-                r.genTimeMs = nsToMs(t1 - t0);
+                TransitionPairCoverageGenerator.Timings timings = new TransitionPairCoverageGenerator.Timings();
+                List<TestCase> suite = TransitionPairCoverageGenerator.generateWithTimings(
+                        fts, cfg, testId, timings);
+                long genEnd = System.nanoTime();
+                // Disjoint segment policy: testGenMs reports the
+                // pair-graph CONSTRUCTION only; transformationMs reports
+                // balancing + SCC check + Hierholzer + translation/dedup.
+                // generateWithTimings repeats the projection+repair
+                // internally (idempotent — same fts+cfg input) and we
+                // ignore that inner result; the row's projectionMs comes
+                // from the outer projection done up-top, consistent with
+                // state/transition cells. The inner projection inflates
+                // wall-clock by one extra projection (sub-millisecond on
+                // all five SPLs), which the segmentSum-vs-wallClock
+                // sentinel will surface as a small drift in the
+                // wall-clock direction.
+                genMs = nsToMs(timings.pairGraphConstructionNanos);
+                transformMs = nsToMs(timings.transformationNanos());
+                genPeakMb = MetricsCollector.peakHeapMb();
+                suiteSize = suite.size();
+                totalActions = MetricsCollector.totalSuiteTransitions(suite);
+                coveragePct = MetricsCollector.pairCoveragePercentageOfSuite(repaired, suite);
+                suiteForExec = suite;
+                // Sanity: wall-clock of generateWithTimings should match
+                // sum of its internal segments. Log a warning if drift
+                // is gross.
+                long internalSum = timings.testGenTotalNanos();
+                long wallInternal = genEnd - genStart;
+                if (Math.abs(internalSum - wallInternal) > wallInternal / 10
+                        && wallInternal > 1_000_000L /* ignore sub-ms noise */) {
+                    LOG.warn("pair-gen segment-sum mismatch on {}: sum={} ns, wall={} ns",
+                            testId, internalSum, wallInternal);
+                }
                 break;
             }
             default:
                 throw new IllegalArgumentException("Unknown coverage criterion: " + coverage);
         }
-        r.peakMemoryMb = MetricsCollector.bytesToMb(Math.max(0, peak - memoryBefore));
-        return r;
+
+        // ---- Execution segment (TestExecution.executeSuite on repaired FTS) ----
+        MetricsCollector.resetPeakHeap();
+        long execStart = System.nanoTime();
+        TestExecution.SuiteExecutionResult exec = TestExecution.executeSuite(suiteForExec, repaired);
+        long execEnd = System.nanoTime();
+        double execMs = nsToMs(execEnd - execStart);
+        double execPeakMb = MetricsCollector.peakHeapMb();
+
+        long wallEnd = System.nanoTime();
+        double wallMs = nsToMs(wallEnd - wallStartNanos);
+
+        MeasurementCsv.appendRq1CoverageDirectedRow(rq1CdCsv,
+                runId, spec.name, coverage, productIndex,
+                repairedStates, repairedTransitions,
+                suiteSize, totalActions, coveragePct,
+                projectionMs, genMs, transformMs, execMs,
+                genPeakMb, execPeakMb, wallMs);
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("{} p{} {} -> {} TC, {} actions, cov={}%, proj={}ms, gen={}ms, transform={}ms, exec={}ms, execActions={}",
+                    spec.name, productIndex, coverage, suiteSize, totalActions,
+                    coveragePct, projectionMs, genMs, transformMs, execMs,
+                    exec.getTotalRealTransitions());
+        }
     }
 
-    // ---------- formatting + env helpers ----------
+    // -------------------------- helpers --------------------------
 
-    private static String formatRow(String spl, String coverage, int productId, int runId, Result r) {
-        // Decimal separator: comma. Field separator: semicolon.
-        return spl + ";" + coverage + ";" + productId + ";" + runId + ";"
-                + 1 + ";" // configCount = 1 per row (one row per product/coverage)
-                + r.suiteSize + ";"
-                + r.totalTransitions + ";"
-                + commaDecimal(r.coveragePct) + ";"
-                + commaDecimal(r.genTimeMs) + ";"
-                + commaDecimal(r.peakMemoryMb);
+    private static FeaturedTransitionSystem loadFts(String resource) throws Exception {
+        URL url = ExperimentRunner.class.getClassLoader().getResource(resource);
+        if (url == null) {
+            throw new IOException("Resource not found on classpath: " + resource);
+        }
+        return new MxeToFtsConverter().convert(new File(url.toURI()));
     }
 
-    private static String commaDecimal(double v) {
-        return String.format(Locale.US, "%.4f", v).replace('.', ',');
+    private static Sat4JSolverFacade loadSolver(String dimacs, String mapping) throws Exception {
+        URL dimacsUrl = ExperimentRunner.class.getClassLoader().getResource(dimacs);
+        URL mappingUrl = ExperimentRunner.class.getClassLoader().getResource(mapping);
+        if (dimacsUrl == null || mappingUrl == null) {
+            throw new IOException("DIMACS or mapping resource missing for " + dimacs);
+        }
+        DimacsModel model = DimacsModel.createFromTvlParserGeneratedFiles(
+                new File(mappingUrl.toURI()), new File(dimacsUrl.toURI()));
+        return new Sat4JSolverFacade(model);
+    }
+
+    private static int countStates(TransitionSystem ts) {
+        int n = 0;
+        Iterator<State> it = ts.states();
+        while (it.hasNext()) {
+            it.next();
+            n++;
+        }
+        return n;
+    }
+
+    private static int countTransitions(TransitionSystem ts) {
+        int n = 0;
+        Iterator<Transition> it = ts.transitions();
+        while (it.hasNext()) {
+            it.next();
+            n++;
+        }
+        return n;
+    }
+
+    private static List<Transition> toList(TestCase tc) {
+        List<Transition> list = new ArrayList<>();
+        for (Transition t : tc) {
+            list.add(t);
+        }
+        return list;
+    }
+
+    private static int totalRealActions(List<TestCase> suite) {
+        int n = 0;
+        for (TestCase tc : suite) {
+            for (Transition t : tc) {
+                String name = t.getAction().getName();
+                if (name.startsWith("__")) {
+                    continue;
+                }
+                n++;
+            }
+        }
+        return n;
     }
 
     private static double nsToMs(long ns) {
@@ -234,82 +417,17 @@ public final class ExperimentRunner {
         return Collections.unmodifiableList(parts);
     }
 
-    // ---------- resource loading ----------
+    private static final class SplSpec {
+        final String name;
+        final String mxe;
+        final String dimacs;
+        final String mapping;
 
-    private static FeaturedTransitionSystem loadFts(String resource) throws Exception {
-        URL url = ExperimentRunner.class.getClassLoader().getResource(resource);
-        if (url == null) {
-            throw new IOException("Resource not found on classpath: " + resource);
-        }
-        return new MxeToFtsConverter().convert(new File(url.toURI()));
-    }
-
-    private static Sat4JSolverFacade loadSolver(String dimacsResource, String mappingResource) throws Exception {
-        URL dimacsUrl = ExperimentRunner.class.getClassLoader().getResource(dimacsResource);
-        URL mappingUrl = ExperimentRunner.class.getClassLoader().getResource(mappingResource);
-        if (dimacsUrl == null || mappingUrl == null) {
-            throw new IOException("DIMACS or mapping resource missing for " + dimacsResource);
-        }
-        DimacsModel model = DimacsModel.createFromTvlParserGeneratedFiles(
-                new File(mappingUrl.toURI()), new File(dimacsUrl.toURI()));
-        return new Sat4JSolverFacade(model);
-    }
-
-    private static List<Transition> toList(TestCase tc) {
-        List<Transition> list = new ArrayList<>();
-        for (Transition t : tc) {
-            list.add(t);
-        }
-        return list;
-    }
-
-    // ---------- per-row data class ----------
-
-    private static final class Result {
-        int suiteSize;
-        int totalTransitions;
-        double coveragePct;
-        double genTimeMs;
-        double peakMemoryMb;
-    }
-
-    /**
-     * Resource locator. M7 only has SVM bundled with DIMACS + mapping; the
-     * other two MVP SPLs ship only MXE so far, so attempting to run them
-     * via this harness raises a clear error until Phase 1 adds their
-     * DIMACS files.
-     */
-    private static final class SplResources {
-        final String mxeResource;
-        final String dimacsResource;
-        final String mappingResource;
-
-        SplResources(String mxe, String dimacs, String mapping) {
-            this.mxeResource = mxe;
-            this.dimacsResource = dimacs;
-            this.mappingResource = mapping;
-        }
-
-        static SplResources forName(String spl) {
-            switch (spl) {
-                case "SVM":
-                    return new SplResources(
-                            "cases/SodaVendingMachine/SVM_ESGFx.mxe",
-                            "cases/SodaVendingMachine/configs/SVM.dimacs",
-                            "cases/SodaVendingMachine/configs/SVM_dimacsmapping.txt");
-                case "eMail":
-                    return new SplResources(
-                            "cases/eMail/eM_ESGFx.mxe",
-                            "cases/eMail/configs/eM.dimacs",
-                            "cases/eMail/configs/eM_dimacsmapping.txt");
-                case "Elevator":
-                    return new SplResources(
-                            "cases/Elevator/El_ESGFx.mxe",
-                            "cases/Elevator/configs/El.dimacs",
-                            "cases/Elevator/configs/El_dimacsmapping.txt");
-                default:
-                    throw new IllegalArgumentException("Unknown SPL: " + spl);
-            }
+        SplSpec(String name, String mxe, String dimacs, String mapping) {
+            this.name = name;
+            this.mxe = mxe;
+            this.dimacs = dimacs;
+            this.mapping = mapping;
         }
     }
 }

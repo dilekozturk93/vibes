@@ -1,0 +1,4 @@
+# Per-run JVM stdout from RQ1/RQ2/RQ3 orchestration scripts.
+# These are large and reproducible by re-running; we keep only the CSVs.
+*
+!.gitignore

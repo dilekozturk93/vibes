@@ -34,6 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -130,9 +131,44 @@ public final class PerProductMutationReportGenerator {
         }
     }
 
+    /**
+     * Environment-overridable RQ2 random-baseline seed count. Default 100
+     * (paper-fair). Smoke tests can override with e.g.
+     * {@code RANDOM_SEED_COUNT=5} so a 5-SPL dry run finishes in seconds.
+     */
+    private static final int RANDOM_SEED_COUNT =
+            intEnv("RANDOM_SEED_COUNT", 100);
+
+    /**
+     * Per-random-walk step ceiling expressed as a multiple of the repaired
+     * product FTS' transition count. 2× is the user-agreed default (large
+     * enough not to truncate sensible walks, small enough to actually cut
+     * pathological cycles).
+     */
+    private static final int RANDOM_MAX_STEPS_MULTIPLIER =
+            intEnv("RANDOM_MAX_STEPS_MULTIPLIER", 2);
+
+    /** RunID for RQ2/RQ3 CSV rows. RQ2/RQ3 are deterministic — only one run. */
+    private static final int RUN_ID = intEnv("runID", 1);
+
+    /** Directory for RQ2/RQ3 CSV files. RQ1 has its own directory in ExperimentRunner. */
+    private static final Path RQ_CSV_DIR = Paths.get(
+            System.getenv().getOrDefault("RQ_CSV_DIR", "milestone-reports/metrics"));
+
+    private static int intEnv(String name, int defaultValue) {
+        String value = System.getenv(name);
+        if (value == null || value.isEmpty()) return defaultValue;
+        try { return Integer.parseInt(value); }
+        catch (NumberFormatException e) { return defaultValue; }
+    }
+
     private static void run(SplSpec spec) throws Exception {
         Path outDir = Paths.get("milestone-reports/per-product-mutation/" + spec.name);
         Files.createDirectories(outDir);
+        Files.createDirectories(RQ_CSV_DIR);
+        File rq2CdCsv = RQ_CSV_DIR.resolve("rq2-coverage-directed.csv").toFile();
+        File rq2RbCsv = RQ_CSV_DIR.resolve("rq2-random-baseline.csv").toFile();
+        File rq3EffCsv = RQ_CSV_DIR.resolve("rq3-efficiency.csv").toFile();
 
         FeaturedTransitionSystem fts = loadFts(spec.mxe);
         Sat4JSolverFacade solver = loadSolver(spec.dimacs, spec.mapping);
@@ -183,7 +219,8 @@ public final class PerProductMutationReportGenerator {
                 Configuration cfg = configs.next();
                 productCount++;
                 ProductScores ps = writeProductSection(md, html, spec, fts, cfg,
-                        productCount, ftsFeatures, familyBaseline, aex);
+                        productCount, ftsFeatures, familyBaseline, aex,
+                        rq2CdCsv, rq2RbCsv, rq3EffCsv);
                 addOpScores(aggTm, ps.tm);
                 addOpScores(aggAex, ps.aex);
                 addOpScores(aggSm, ps.sm);
@@ -287,6 +324,15 @@ public final class PerProductMutationReportGenerator {
                 + "is conservatively defined as mutants surviving all five suites in this "
                 + "study (family + product state + product transition + product pair + "
                 + "random).\n\n");
+        md.write("**Random baseline column.** The \"Random\" column shows a single "
+                + "representative random suite (seed 0, action budget matched to the "
+                + "product's transition-coverage suite, per-walk step ceiling 2 × "
+                + "|T_repaired|, cut-and-include semantics — see "
+                + "`RandomBaselineGenerator` JavaDoc). The full 100-seed × 3-budget "
+                + "random-baseline distribution per (product × operator) — with "
+                + "median / quartiles / extremes and aborted-walk counts — lives in "
+                + "`milestone-reports/metrics/rq2-random-baseline.csv` (per-coverage-level "
+                + "budget; this column is the legacy display only).\n\n");
         md.write("**Note on coverage saturation.** TransitionMissing and ActionExchange "
                 + "mutants on a deterministic FTS are killed precisely when the mutated "
                 + "transition is traversed; transition coverage therefore detects them by "
@@ -325,6 +371,14 @@ public final class PerProductMutationReportGenerator {
                 + "per Inozemtseva &amp; Holmes (2014). Equivalent set is mutants surviving all "
                 + "five suites (family + product state + product transition + product pair + "
                 + "random).</li>\n");
+        html.write("<p><strong>Random baseline column.</strong> The &quot;Random&quot; "
+                + "column shows one representative random suite (seed 0, action budget "
+                + "matched to the transition-coverage suite, step ceiling "
+                + "2&nbsp;&times;&nbsp;|T_repaired|, cut-and-include semantics — see "
+                + "<code>RandomBaselineGenerator</code> JavaDoc). The full 100-seed "
+                + "&times;&nbsp;3-budget distribution per (product &times; operator) — "
+                + "with median / quartiles / extremes / aborted-walk count — is in "
+                + "<code>milestone-reports/metrics/rq2-random-baseline.csv</code>.</p>\n");
         html.write("</ol>\n");
         html.write("<p><strong>Note on coverage saturation.</strong> TransitionMissing and "
                 + "ActionExchange mutants on a deterministic FTS are killed precisely when "
@@ -340,7 +394,9 @@ public final class PerProductMutationReportGenerator {
                                                      Configuration cfg, int productIndex,
                                                      Set<String> ftsFeatures,
                                                      List<TestCase> familyBaseline,
-                                                     ActionExchange aex) throws Exception {
+                                                     ActionExchange aex,
+                                                     File rq2CdCsv, File rq2RbCsv,
+                                                     File rq3EffCsv) throws Exception {
         String featuresLine = formatFeatures(cfg, ftsFeatures);
         FeaturedTransitionSystem projected = FExpressionPreservingProjection.project(fts, cfg);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
@@ -380,11 +436,34 @@ public final class PerProductMutationReportGenerator {
         // applicable steps execute".
         List<TestCase> projectedFamily = projectFamilySuite(familyBaseline, fts, cfg);
 
-        // Generate the random baseline once per product. Default suite size
-        // matches Devroey 2014's r-5 baseline; max length matches VIBeS
-        // RandomTestCaseSelector's default.
-        List<TestCase> randomSuite = RandomBaselineGenerator.generate(
-                repaired, spec.name + "_p" + productIndex);
+        // Random baseline — paper-fair construction:
+        //   - per-coverage-level action budget (each random suite matches
+        //     the total real-action count of the competitor suite it is
+        //     compared against);
+        //   - model-relative per-walk step ceiling (2× |T_repaired|) so
+        //     only pathological cycles are cut;
+        //   - cut-and-include semantics (a walk that hits the step ceiling
+        //     is truncated and added to the suite — the LEGACY VIBeS
+        //     "discard non-terminating walks" behaviour is wrong for this
+        //     paper's baseline);
+        //   - reproducible via explicit seed.
+        //
+        // For the equivalence treatment + MD/HTML "Random" column we use a
+        // single representative random suite (seed 0, transition-coverage
+        // budget). The 100-seed aggregation for RQ2 random baseline
+        // happens separately below and is written into rq2-random-baseline.csv.
+        int stateSuiteActions = countTestSuiteRealActions(Collections.singletonList(stateTc));
+        int transSuiteActions = countTestSuiteRealActions(Collections.singletonList(transTc));
+        int pairSuiteActions = countTestSuiteRealActions(pairSuite);
+        int repairedTransitions = countTransitions(repaired);
+        int randomMaxSteps = RandomBaselineGenerator.modelRelativeMaxSteps(
+                repairedTransitions, RANDOM_MAX_STEPS_MULTIPLIER);
+        RandomBaselineGenerator.Result representativeRandomResult =
+                RandomBaselineGenerator.generate(repaired,
+                        spec.name + "_p" + productIndex + "_repr",
+                        Math.max(1, transSuiteActions),
+                        randomMaxSteps, 0L);
+        List<TestCase> randomSuite = representativeRandomResult.getSuite();
 
         // Uniform execution-based kill check via dynamic replay for every
         // (operator × suite) combination — Parça 1 methodology decision
@@ -523,7 +602,197 @@ public final class PerProductMutationReportGenerator {
                 aexFamilyState, aexState, aexTrans, aexPair, aexRandom);
         fillOpScores(ps.sm, smMutants.size(), smEquivalent.size(),
                 smFamilyState, smState, smTrans, smPair, smRandom);
+
+        // ---- RQ2 CSV: coverage-directed mutation scores ----
+        writeRq2CoverageDirected(rq2CdCsv, spec, productIndex, "TransitionMissing",
+                tmMutants.size(), tmEquivalent.size(),
+                tmState, tmTrans, tmPair, tmFamilyState);
+        writeRq2CoverageDirected(rq2CdCsv, spec, productIndex, "ActionExchange",
+                aexMutants.size(), aexEquivalent.size(),
+                aexState, aexTrans, aexPair, aexFamilyState);
+        writeRq2CoverageDirected(rq2CdCsv, spec, productIndex, "StateMissing",
+                smMutants.size(), smEquivalent.size(),
+                smState, smTrans, smPair, smFamilyState);
+
+        // ---- RQ2 CSV: random baseline (100-seed aggregation per budget × operator) ----
+        // Three budgets: state-suite actions, transition-suite actions, pair-suite actions.
+        int[] budgets = new int[] {
+                Math.max(1, stateSuiteActions),
+                Math.max(1, transSuiteActions),
+                Math.max(1, pairSuiteActions)
+        };
+        String[] budgetSources = new String[] {"state", "transition", "pair"};
+        for (int bi = 0; bi < budgets.length; bi++) {
+            int budget = budgets[bi];
+            String src = budgetSources[bi];
+            // Per-operator score arrays across seeds.
+            int[] tmKilled = new int[RANDOM_SEED_COUNT];
+            int[] aexKilled = new int[RANDOM_SEED_COUNT];
+            int[] smKilled = new int[RANDOM_SEED_COUNT];
+            int abortedTotal = 0;
+            for (int seed = 0; seed < RANDOM_SEED_COUNT; seed++) {
+                RandomBaselineGenerator.Result rr = RandomBaselineGenerator.generate(
+                        repaired,
+                        spec.name + "_p" + productIndex + "_rb_" + src,
+                        budget, randomMaxSteps, (long) seed);
+                abortedTotal += rr.getAbortedWalks();
+                List<TestCase> rs = rr.getSuite();
+                tmKilled[seed] = FaultDetector.scoreSuiteDynamic(rs, tmMutants).getKilled();
+                aexKilled[seed] = FaultDetector.scoreSuiteDynamic(rs, aexMutants).getKilled();
+                smKilled[seed] = FaultDetector.scoreSuiteDynamic(rs, smMutants).getKilled();
+            }
+            writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "TransitionMissing",
+                    tmMutants.size(), tmEquivalent.size(),
+                    budget, randomMaxSteps, abortedTotal, tmKilled);
+            writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "ActionExchange",
+                    aexMutants.size(), aexEquivalent.size(),
+                    budget, randomMaxSteps, abortedTotal, aexKilled);
+            writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "StateMissing",
+                    smMutants.size(), smEquivalent.size(),
+                    budget, randomMaxSteps, abortedTotal, smKilled);
+        }
+
+        // ---- RQ3 CSV: efficiency = killed / total transitions executed ----
+        long stateExecTransitions = TestExecution.executeSuite(
+                Collections.singletonList(stateTc), repaired).getTotalRealTransitions();
+        long transExecTransitions = TestExecution.executeSuite(
+                Collections.singletonList(transTc), repaired).getTotalRealTransitions();
+        long pairExecTransitions = TestExecution.executeSuite(
+                pairSuite, repaired).getTotalRealTransitions();
+        long familyExecTransitions = TestExecution.executeSuite(
+                projectedFamily, repaired).getTotalRealTransitions();
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
+                "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
+                tmState.getKilled(), stateExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "transition",
+                "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
+                tmTrans.getKilled(), transExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "pair",
+                "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
+                tmPair.getKilled(), pairExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
+                "TransitionMissing", tmMutants.size(), tmEquivalent.size(),
+                tmFamilyState.getKilled(), familyExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
+                "ActionExchange", aexMutants.size(), aexEquivalent.size(),
+                aexState.getKilled(), stateExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "transition",
+                "ActionExchange", aexMutants.size(), aexEquivalent.size(),
+                aexTrans.getKilled(), transExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "pair",
+                "ActionExchange", aexMutants.size(), aexEquivalent.size(),
+                aexPair.getKilled(), pairExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
+                "ActionExchange", aexMutants.size(), aexEquivalent.size(),
+                aexFamilyState.getKilled(), familyExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
+                "StateMissing", smMutants.size(), smEquivalent.size(),
+                smState.getKilled(), stateExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "transition",
+                "StateMissing", smMutants.size(), smEquivalent.size(),
+                smTrans.getKilled(), transExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "pair",
+                "StateMissing", smMutants.size(), smEquivalent.size(),
+                smPair.getKilled(), pairExecTransitions);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
+                "StateMissing", smMutants.size(), smEquivalent.size(),
+                smFamilyState.getKilled(), familyExecTransitions);
+
         return ps;
+    }
+
+    // -------------------- RQ2/RQ3 CSV helpers --------------------
+
+    private static void writeRq2CoverageDirected(File rq2CdCsv, SplSpec spec, int productIndex,
+                                                 String operator,
+                                                 int totalMutants, int equivalent,
+                                                 FaultDetector.KillResult st,
+                                                 FaultDetector.KillResult tr,
+                                                 FaultDetector.KillResult pr,
+                                                 FaultDetector.KillResult fam) throws IOException {
+        appendRq2CdRow(rq2CdCsv, spec, productIndex, "state", operator,
+                totalMutants, equivalent, st.getKilled());
+        appendRq2CdRow(rq2CdCsv, spec, productIndex, "transition", operator,
+                totalMutants, equivalent, tr.getKilled());
+        appendRq2CdRow(rq2CdCsv, spec, productIndex, "pair", operator,
+                totalMutants, equivalent, pr.getKilled());
+        appendRq2CdRow(rq2CdCsv, spec, productIndex, "family-baseline", operator,
+                totalMutants, equivalent, fam.getKilled());
+    }
+
+    private static void appendRq2CdRow(File rq2CdCsv, SplSpec spec, int productIndex,
+                                       String coverage, String operator,
+                                       int totalMutants, int equivalent, int killed) throws IOException {
+        int adjustedDenom = totalMutants - equivalent;
+        double scorePct = adjustedDenom <= 0 ? 0.0 : 100.0 * killed / adjustedDenom;
+        int survived = adjustedDenom - killed;
+        MeasurementCsv.appendRq2CoverageDirectedRow(rq2CdCsv,
+                RUN_ID, spec.name, productIndex, coverage, operator,
+                totalMutants, equivalent, killed, survived, scorePct);
+    }
+
+    private static void writeRq2RandomBaseline(File rq2RbCsv, SplSpec spec, int productIndex,
+                                               String coverageBudgetSource, String operator,
+                                               int totalMutants, int equivalent,
+                                               int budget, int maxStepsPerCase,
+                                               int abortedTotal, int[] killed) throws IOException {
+        int adjustedDenom = totalMutants - equivalent;
+        int[] sorted = killed.clone();
+        Arrays.sort(sorted);
+        int n = sorted.length;
+        int killedMin = sorted[0];
+        int killedMax = sorted[n - 1];
+        int killedMedian = sorted[n / 2];
+        int killedP25 = sorted[Math.max(0, (int) Math.floor(n * 0.25))];
+        int killedP75 = sorted[Math.min(n - 1, (int) Math.ceil(n * 0.75) - 1)];
+        double scoreMin = adjustedDenom <= 0 ? 0.0 : 100.0 * killedMin / adjustedDenom;
+        double scoreMax = adjustedDenom <= 0 ? 0.0 : 100.0 * killedMax / adjustedDenom;
+        double scoreMedian = adjustedDenom <= 0 ? 0.0 : 100.0 * killedMedian / adjustedDenom;
+        double scoreP25 = adjustedDenom <= 0 ? 0.0 : 100.0 * killedP25 / adjustedDenom;
+        double scoreP75 = adjustedDenom <= 0 ? 0.0 : 100.0 * killedP75 / adjustedDenom;
+        MeasurementCsv.appendRq2RandomBaselineRow(rq2RbCsv,
+                RUN_ID, spec.name, productIndex, coverageBudgetSource, operator,
+                totalMutants, equivalent, budget, maxStepsPerCase,
+                n, abortedTotal,
+                killedMin, killedP25, killedMedian, killedP75, killedMax,
+                scoreMin, scoreP25, scoreMedian, scoreP75, scoreMax);
+    }
+
+    private static void writeRq3Efficiency(File rq3EffCsv, SplSpec spec, int productIndex,
+                                           String coverage, String operator,
+                                           int totalMutants, int equivalent,
+                                           int killed, long totalTransitionsExecuted) throws IOException {
+        int adjustedDenom = totalMutants - equivalent;
+        double scorePct = adjustedDenom <= 0 ? 0.0 : 100.0 * killed / adjustedDenom;
+        int survived = adjustedDenom - killed;
+        double efficiency = totalTransitionsExecuted <= 0
+                ? 0.0
+                : (double) killed / totalTransitionsExecuted;
+        MeasurementCsv.appendRq3EfficiencyRow(rq3EffCsv,
+                RUN_ID, spec.name, productIndex, coverage, operator,
+                totalMutants, equivalent, killed, survived, scorePct,
+                totalTransitionsExecuted, efficiency);
+    }
+
+    /**
+     * Total real-action count of a TestCase suite — synthetic transitions
+     * ({@code __balance__N}, {@code __end__}) and {@code __dup__N}-suffix
+     * traversals do NOT count, matching the user's "test event"
+     * definition. Used to derive paper-fair random-walk budgets at each
+     * coverage level.
+     */
+    private static int countTestSuiteRealActions(List<TestCase> suite) {
+        int n = 0;
+        for (TestCase tc : suite) {
+            for (Transition t : tc) {
+                String name = t.getAction().getName();
+                if (EulerianBalancer.isSyntheticAction(t.getAction())) continue;
+                if (name.startsWith("__end__")) continue;
+                // __dup__ traversals ARE real executions of the underlying action
+                n++;
+            }
+        }
+        return n;
     }
 
     private static void addOpScores(OpScores acc, OpScores delta) {
