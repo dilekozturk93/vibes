@@ -80,15 +80,87 @@ public final class TransitionPairCoverageGenerator {
     public static List<TestCase> generate(FeaturedTransitionSystem fts,
                                           Configuration product,
                                           String testCaseBaseId) {
+        return generateWithTimings(fts, product, testCaseBaseId, null);
+    }
+
+    /**
+     * Per-sub-phase timings produced by
+     * {@link #generateWithTimings(FeaturedTransitionSystem, Configuration, String, Timings)}.
+     * All values are nanoseconds; helpers convert to milliseconds for
+     * human-readable reporting.
+     *
+     * <p>The harness uses these to report the "transformation time"
+     * sub-segment separately from the rest of "test generation":
+     * {@code transformationNanos = balancingNanos + hierholzerEulerNanos +
+     * translationAndDedupeNanos}, and {@code pairGraphConstructionNanos}
+     * is the part of pair generation that is NOT graph transformation.
+     * Outer callers should report
+     * {@code testGenNanos − transformationNanos = pure generation} so
+     * the total formula {@code projection + gen + transform + exec}
+     * does not double-count.
+     */
+    public static final class Timings {
+        public long projectionAndRepairNanos;
+        public long pairGraphConstructionNanos;
+        public long balancingNanos;
+        public long sccCheckNanos;
+        public long hierholzerEulerNanos;
+        public long translationAndDedupeNanos;
+
+        /**
+         * "Transformation" in the RQ1 sense — everything between
+         * pair-graph construction and the test cases: balancing,
+         * strong-connectivity check, Hierholzer Euler cycle, and the
+         * segment translation + dedup. Disjoint from
+         * {@link #pairGraphConstructionNanos}.
+         */
+        public long transformationNanos() {
+            return balancingNanos + sccCheckNanos + hierholzerEulerNanos
+                    + translationAndDedupeNanos;
+        }
+
+        /**
+         * Sum of all internal segments. Exactly equals the wall-clock
+         * time of {@link #generateWithTimings} (modulo nanosecond
+         * resolution + method-call overhead). Used for the
+         * {@code segmentSum ≈ wallClock} sentinel.
+         */
+        public long testGenTotalNanos() {
+            return projectionAndRepairNanos + pairGraphConstructionNanos
+                    + balancingNanos + sccCheckNanos + hierholzerEulerNanos
+                    + translationAndDedupeNanos;
+        }
+    }
+
+    /**
+     * Same as {@link #generate(FeaturedTransitionSystem, Configuration, String)}
+     * but, if {@code timings} is non-null, records per-sub-phase nanosecond
+     * timings into it. The sub-phases are disjoint (no nested measurements),
+     * so summing them gives the exact total wall-clock time of this method.
+     */
+    public static List<TestCase> generateWithTimings(FeaturedTransitionSystem fts,
+                                                     Configuration product,
+                                                     String testCaseBaseId,
+                                                     Timings timings) {
         checkNotNull(fts, "FTS may not be null");
         checkNotNull(product, "Configuration may not be null");
         checkNotNull(testCaseBaseId, "Test case base id may not be null");
 
+        long t0 = System.nanoTime();
         FeaturedTransitionSystem projected =
                 FExpressionPreservingProjection.project(fts, product);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
+        long t1 = System.nanoTime();
+        if (timings != null) {
+            timings.projectionAndRepairNanos = t1 - t0;
+        }
 
+        long t2 = System.nanoTime();
         PairGraphTransformer.Result pgResult = PairGraphTransformer.transform(repaired);
+        long t3 = System.nanoTime();
+        if (timings != null) {
+            timings.pairGraphConstructionNanos = t3 - t2;
+        }
 
         // The pair graph is intentionally NOT strongly connected before
         // balancing: its INIT vertex has out-degree N (one per original
@@ -97,17 +169,33 @@ public final class TransitionPairCoverageGenerator {
         // EulerianBalancer.balanceWithoutPrecheck supplies the missing
         // INIT-incoming edges as synthetic balancing edges, which restores
         // strong connectivity. We verify that explicitly below.
+        long t4 = System.nanoTime();
         FeaturedTransitionSystem pairGraphBalanced =
                 EulerianBalancer.balanceWithoutPrecheck(pgResult.pairGraph);
+        long t5 = System.nanoTime();
+        if (timings != null) {
+            timings.balancingNanos = t5 - t4;
+        }
+        long sccStart = System.nanoTime();
         if (!StronglyConnectedComponents.isStronglyConnected(pairGraphBalanced)) {
             throw new IllegalStateException(
                     "Pair graph for '" + testCaseBaseId
                             + "' is not strongly connected after balancing; "
                             + "the projected FTS may have an unrepaired-fragment in its pair structure.");
         }
+        long sccEnd = System.nanoTime();
+        if (timings != null) {
+            timings.sccCheckNanos = sccEnd - sccStart;
+        }
 
+        long t6 = System.nanoTime();
         List<Transition> pairCycle = HierholzerEulerCycle.compute(pairGraphBalanced);
+        long t7 = System.nanoTime();
+        if (timings != null) {
+            timings.hierholzerEulerNanos = t7 - t6;
+        }
 
+        long t8 = System.nanoTime();
         // Split the pair-graph cycle at synthetic edges and translate each
         // real segment into a TestCase against the repaired FTS.
         List<List<Transition>> realSegments = splitAtSyntheticEdges(pairCycle);
@@ -143,6 +231,10 @@ public final class TransitionPairCoverageGenerator {
         // Transition-level uniqueness is preserved in the underlying FTS;
         // this dedup only drops surplus copies from the suite.
         List<TestCase> dedupedCases = dedupeByActionSequence(testCases);
+        long t9 = System.nanoTime();
+        if (timings != null) {
+            timings.translationAndDedupeNanos = t9 - t8;
+        }
         LOG.info("Generated pair-coverage suite for '{}': {} pair-graph edges -> "
                         + "{} test cases ({} after action-sequence dedup), {} total transitions",
                 testCaseBaseId, pairCycle.size(), testCases.size(),

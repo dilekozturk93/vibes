@@ -6,6 +6,10 @@ import be.vibes.ts.State;
 import be.vibes.ts.TestCase;
 import be.vibes.ts.Transition;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryType;
+import java.lang.management.MemoryUsage;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -242,6 +246,53 @@ public final class MetricsCollector {
 
     public static double bytesToMb(long bytes) {
         return bytes / (1024.0 * 1024.0);
+    }
+
+    // ---------- Peak heap (MXBean) ----------
+
+    /**
+     * Resets the per-memory-pool "peak usage" counter on every HEAP pool.
+     * Call this immediately BEFORE the measured phase begins. The matching
+     * read is {@link #peakHeapBytes()}, called immediately after the phase
+     * ends — the difference between the two snapshots is the peak HEAP
+     * occupancy attributable to the phase.
+     *
+     * <p>This is the same pattern used by the user's ESG-Fx-side
+     * {@code AbstractTestPipeline.resetPeakMemoryCounters} (see
+     * {@code esg-with-feature-expressions}). The MXBean peak counter
+     * survives GC events that {@code Runtime.totalMemory − freeMemory}
+     * would erase, so it is the correct primitive for per-phase
+     * "high-water-mark" memory.
+     */
+    public static void resetPeakHeap() {
+        for (MemoryPoolMXBean pool : ManagementFactory.getMemoryPoolMXBeans()) {
+            if (pool.getType() == MemoryType.HEAP) {
+                pool.resetPeakUsage();
+            }
+        }
+    }
+
+    /**
+     * Reads the cumulative peak HEAP occupancy in bytes across all heap
+     * pools since the most recent {@link #resetPeakHeap()} call. Returns
+     * the sum of {@code getPeakUsage().getUsed()} across pools.
+     */
+    public static long peakHeapBytes() {
+        long total = 0L;
+        for (MemoryPoolMXBean pool : ManagementFactory.getMemoryPoolMXBeans()) {
+            if (pool.getType() == MemoryType.HEAP) {
+                MemoryUsage peak = pool.getPeakUsage();
+                if (peak != null) {
+                    total += peak.getUsed();
+                }
+            }
+        }
+        return total;
+    }
+
+    /** Convenience: peak HEAP in megabytes since last {@link #resetPeakHeap()}. */
+    public static double peakHeapMb() {
+        return bytesToMb(peakHeapBytes());
     }
 
     // ---------- internal helpers ----------
