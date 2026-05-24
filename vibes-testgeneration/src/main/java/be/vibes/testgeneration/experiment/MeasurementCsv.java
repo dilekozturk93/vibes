@@ -106,10 +106,12 @@ public final class MeasurementCsv {
                 + "Projection Time(ms);Test Generation Time(ms);Transformation Time(ms);"
                 + "Test Execution Time(ms);Test Generation Peak Memory(MB);"
                 + "Test Execution Peak Memory(MB);Wall Clock Time(ms);Segment Sum Time(ms)\n";
+        // coveragePct is a fraction (0.0-1.0) coming from MetricsCollector;
+        // multiply by 100 so the column matches its 'Coverage(%)' header.
         String row = runId + ";" + splName + ";" + coverageType + ";" + productIndex + ";"
                 + ftsStates + ";" + ftsTransitions + ";"
                 + testCaseCount + ";" + totalRealActions + ";"
-                + df.format(coveragePct) + ";"
+                + df.format(coveragePct * 100.0) + ";"
                 + df.format(projectionTimeMs) + ";" + df.format(testGenTimeMs) + ";"
                 + df.format(transformationTimeMs) + ";" + df.format(testExecutionTimeMs) + ";"
                 + df.format(testGenPeakMemoryMb) + ";" + df.format(testExecutionPeakMemoryMb) + ";"
