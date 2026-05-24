@@ -16,6 +16,7 @@ import be.vibes.testgeneration.mutation.ActionExchange;
 import be.vibes.testgeneration.mutation.FaultDetector;
 import be.vibes.testgeneration.mutation.MutationOperator;
 import be.vibes.testgeneration.mutation.StateMissing;
+import be.vibes.testgeneration.mutation.TransitionDestinationExchange;
 import be.vibes.testgeneration.mutation.TransitionMissing;
 import be.vibes.testgeneration.coverage.baseline.AllStatesGenerator;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
@@ -172,11 +173,14 @@ public final class PerProductMutationReportGenerator {
 
         FeaturedTransitionSystem fts = loadFts(spec.mxe);
         Sat4JSolverFacade solver = loadSolver(spec.dimacs, spec.mapping);
-        // Separate solver + operator instance for ActionExchange — one per
-        // SPL, reused across all products. See writeProductSection's notes
-        // on the SAT4J thread-leak that motivated this hoisting.
+        // Separate solver + operator instance for ActionExchange and
+        // TransitionDestinationExchange — one per SPL, reused across all
+        // products. See writeProductSection's notes on the SAT4J
+        // thread-leak that motivated this hoisting.
         Sat4JSolverFacade aexSolver = loadSolver(spec.dimacs, spec.mapping);
         ActionExchange aex = new ActionExchange(aexSolver);
+        Sat4JSolverFacade tdeSolver = loadSolver(spec.dimacs, spec.mapping);
+        TransitionDestinationExchange tde = new TransitionDestinationExchange(tdeSolver);
         Set<String> ftsFeatures = collectFeatureNames(fts);
 
         // Family-level (SPL-level) all-states baseline per Devroey 2014.
@@ -199,6 +203,7 @@ public final class PerProductMutationReportGenerator {
         OpScores aggTm = new OpScores();
         OpScores aggAex = new OpScores();
         OpScores aggSm = new OpScores();
+        OpScores aggTde = new OpScores();
         int productCount = 0;
 
         try (BufferedWriter md = new BufferedWriter(new FileWriter(mdPath.toFile()));
@@ -219,11 +224,12 @@ public final class PerProductMutationReportGenerator {
                 Configuration cfg = configs.next();
                 productCount++;
                 ProductScores ps = writeProductSection(md, html, spec, fts, cfg,
-                        productCount, ftsFeatures, familyBaseline, aex,
+                        productCount, ftsFeatures, familyBaseline, aex, tde,
                         rq2CdCsv, rq2RbCsv, rq3EffCsv);
                 addOpScores(aggTm, ps.tm);
                 addOpScores(aggAex, ps.aex);
                 addOpScores(aggSm, ps.sm);
+                addOpScores(aggTde, ps.tde);
             }
 
             md.write("---\n\n## " + spec.name + " summary (aggregate over " + productCount
@@ -242,6 +248,7 @@ public final class PerProductMutationReportGenerator {
             writeAggregateRow(md, "TransitionMissing", aggTm);
             writeAggregateRow(md, "ActionExchange", aggAex);
             writeAggregateRow(md, "StateMissing", aggSm);
+            writeAggregateRow(md, "TransitionDestinationExchange", aggTde);
             md.write("\nTotal products: " + productCount + ".\n");
 
             html.write("<hr/>\n<h2>" + escapeHtml(spec.name)
@@ -265,6 +272,7 @@ public final class PerProductMutationReportGenerator {
             writeAggregateRowHtml(html, "TransitionMissing", aggTm);
             writeAggregateRowHtml(html, "ActionExchange", aggAex);
             writeAggregateRowHtml(html, "StateMissing", aggSm);
+            writeAggregateRowHtml(html, "TransitionDestinationExchange", aggTde);
             html.write("</table>\n");
             html.write("<p>Total products: " + productCount + ".</p>\n");
             writeHtmlFooter(html);
@@ -333,14 +341,39 @@ public final class PerProductMutationReportGenerator {
                 + "median / quartiles / extremes and aborted-walk counts — lives in "
                 + "`milestone-reports/metrics/rq2-random-baseline.csv` (per-coverage-level "
                 + "budget; this column is the legacy display only).\n\n");
-        md.write("**Note on coverage saturation.** TransitionMissing and ActionExchange "
-                + "mutants on a deterministic FTS are killed precisely when the mutated "
-                + "transition is traversed; transition coverage therefore detects them by "
-                + "construction. Stronger criteria such as transition-pair coverage cannot "
-                + "improve detection for this operator set, though they do increase "
-                + "execution cost. This is an inherent property of these mutation operators "
-                + "on deterministic models. RQ3 is reframed around the cost dimension under "
-                + "this saturation property.\n\n");
+        md.write("**Note on coverage saturation vs. TransitionDestinationExchange.** "
+                + "TransitionMissing, ActionExchange, and StateMissing mutants on a "
+                + "deterministic FTS are killed precisely when the mutated transition is "
+                + "traversed (mid-replay `canExecute` refusal at the mutation site); "
+                + "transition coverage therefore detects them by construction and stronger "
+                + "criteria add execution cost without detection. "
+                + "[`TransitionDestinationExchange`]"
+                + "(../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/"
+                + "TransitionDestinationExchange.java) (TDE) breaks this saturation: it "
+                + "leaves the original action label intact so replay continues past the "
+                + "mutated site, and divergence surfaces only on the SUBSEQUENT step when "
+                + "the executor — now at the wrong target state — tries to fire the "
+                + "expected next transition. Pair coverage exercises EVERY t-outgoing pair "
+                + "as a separate consecutive sequence, giving it combinatorially more "
+                + "opportunities to expose that divergence than transition coverage (which "
+                + "fixes one arbitrary follow-up to t). The detection gap on TDE is RQ3's "
+                + "primary signal that pair coverage's marginal cost buys actual detection.\n\n");
+        md.write("**Note on test-case granularity (methodology-fairness fix 2026-05-24).** "
+                + "All three coverage generators (`StateCoverageGenerator`, "
+                + "`TransitionCoverageGenerator`, `TransitionPairCoverageGenerator`) return "
+                + "`List<TestCase>` split at every initial-return of the walk. Each TC is "
+                + "one round-trip from the initial state, and the executor RESETS between "
+                + "TCs. Earlier the state and transition generators returned a single "
+                + "`TestCase` and the executor reset only once at suite start; pair "
+                + "coverage's multi-TC suite reset between every TC. That asymmetry "
+                + "inflated transition-coverage's TDE detection (a TDE mutant whose mutated "
+                + "transition has target = initial was caught mid-cycle in single-TC replay "
+                + "because the next transition tried to fire from the wrong state; in "
+                + "multi-TC replay the same mutated transition is the final step of a TC, "
+                + "the reset wipes the divergence, and the mutant survives — measured as a "
+                + "false +27pt transition-coverage advantage on SAS in the v2 pilot). "
+                + "Aligning all generators on the same TC = initial-return-trip semantic "
+                + "restores fair comparison.\n\n");
 
         html.write("<h2>How mutation scores are computed</h2>\n");
         html.write("<p><strong>Why a fresh mutation module, not <code>vibes-mutation</code>"
@@ -395,39 +428,45 @@ public final class PerProductMutationReportGenerator {
                                                      Set<String> ftsFeatures,
                                                      List<TestCase> familyBaseline,
                                                      ActionExchange aex,
+                                                     TransitionDestinationExchange tde,
                                                      File rq2CdCsv, File rq2RbCsv,
                                                      File rq3EffCsv) throws Exception {
         String featuresLine = formatFeatures(cfg, ftsFeatures);
         FeaturedTransitionSystem projected = FExpressionPreservingProjection.project(fts, cfg);
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
 
-        TestCase stateTc = StateCoverageGenerator.generate(
+        // All three coverage generators return List<TestCase> as of the
+        // methodology-fairness fix (2026-05-24): each TC = one
+        // initial-return trip, executor reset between TCs uniform across
+        // criteria. Earlier state and transition coverage returned a
+        // single TestCase, which gave them an unfair detection advantage
+        // on TDE mutants whose mutated transition had target=initial.
+        List<TestCase> stateSuite = StateCoverageGenerator.generate(
                 fts, cfg, spec.name + "_p" + productIndex + "_state");
-        TestCase transTc = TransitionCoverageGenerator.generate(
+        List<TestCase> transSuite = TransitionCoverageGenerator.generate(
                 fts, cfg, spec.name + "_p" + productIndex + "_trans");
         List<TestCase> pairSuite = TransitionPairCoverageGenerator.generate(
                 fts, cfg, spec.name + "_p" + productIndex + "_pair");
 
         TransitionMissing tm = new TransitionMissing();
         tm.generateMutants(repaired);
-        // ActionExchange is supplied by the caller — one instance per
-        // SPL, reused across all products. The operator's
-        // feature-compatibility cache is FM-determined and persists
+        // ActionExchange and TransitionDestinationExchange are supplied by
+        // the caller — one instance per SPL, reused across all products.
+        // Their feature-compatibility caches are FM-determined and persist
         // across calls so cumulative SAT work stays bounded by
-        // |distinct φ| × |actions| instead of |products| × |…|.
-        // A per-product fresh solver would otherwise spawn millions of
-        // SAT4J Timer threads and crash with "unable to create new
-        // native thread" on SPLs with thousands of products (e.g. SAS).
+        // |distinct φ| × |β/d'| instead of |products| × |…|. A per-product
+        // fresh solver would otherwise spawn millions of SAT4J Timer
+        // threads and crash with "unable to create new native thread" on
+        // SPLs with thousands of products (e.g. SAS).
         aex.generateMutants(repaired);
         StateMissing sm = new StateMissing();
         sm.generateMutants(repaired);
+        tde.generateMutants(repaired);
 
         Map<String, FeaturedTransitionSystem> tmMutants = filterRealMutants(tm.getMutants(), "TM");
         Map<String, FeaturedTransitionSystem> aexMutants = filterRealMutants(aex.getMutants(), "AEX");
         Map<String, FeaturedTransitionSystem> smMutants = filterRealMutants(sm.getMutants(), "SM");
-
-        List<TestCase> stateSuite = Collections.singletonList(stateTc);
-        List<TestCase> transSuite = Collections.singletonList(transTc);
+        Map<String, FeaturedTransitionSystem> tdeMutants = filterRealMutants(tde.getMutants(), "TDE");
 
         // Project the family-level baseline onto this product: keep family
         // test-case transitions whose SPL-level feature expression is
@@ -456,8 +495,8 @@ public final class PerProductMutationReportGenerator {
         // random suites in addition to the 4 coverage-directed suites),
         // and the per-seed killed counts feed the rq2-random-baseline.csv
         // median/quartile aggregation.
-        int stateSuiteActions = countTestSuiteRealActions(Collections.singletonList(stateTc));
-        int transSuiteActions = countTestSuiteRealActions(Collections.singletonList(transTc));
+        int stateSuiteActions = countTestSuiteRealActions(stateSuite);
+        int transSuiteActions = countTestSuiteRealActions(transSuite);
         int pairSuiteActions = countTestSuiteRealActions(pairSuite);
         int familySuiteActions = countTestSuiteRealActions(projectedFamily);
         int repairedTransitions = countTransitions(repaired);
@@ -488,10 +527,12 @@ public final class PerProductMutationReportGenerator {
         int[][] tmKilledMatrix = new int[randomBudgets.length][RANDOM_SEED_COUNT];
         int[][] aexKilledMatrix = new int[randomBudgets.length][RANDOM_SEED_COUNT];
         int[][] smKilledMatrix = new int[randomBudgets.length][RANDOM_SEED_COUNT];
+        int[][] tdeKilledMatrix = new int[randomBudgets.length][RANDOM_SEED_COUNT];
         int[] abortedTotals = new int[randomBudgets.length];
         Set<String> tmRandomUnionKilled = new HashSet<>();
         Set<String> aexRandomUnionKilled = new HashSet<>();
         Set<String> smRandomUnionKilled = new HashSet<>();
+        Set<String> tdeRandomUnionKilled = new HashSet<>();
         for (int bi = 0; bi < randomBudgets.length; bi++) {
             int budget = randomBudgets[bi];
             String src = budgetSources[bi];
@@ -505,13 +546,16 @@ public final class PerProductMutationReportGenerator {
                 FaultDetector.KillResult tmKr = FaultDetector.scoreSuiteDynamic(rs, tmMutants);
                 FaultDetector.KillResult aexKr = FaultDetector.scoreSuiteDynamic(rs, aexMutants);
                 FaultDetector.KillResult smKr = FaultDetector.scoreSuiteDynamic(rs, smMutants);
+                FaultDetector.KillResult tdeKr = FaultDetector.scoreSuiteDynamic(rs, tdeMutants);
                 tmKilledMatrix[bi][seed] = tmKr.getKilled();
                 aexKilledMatrix[bi][seed] = aexKr.getKilled();
                 smKilledMatrix[bi][seed] = smKr.getKilled();
+                tdeKilledMatrix[bi][seed] = tdeKr.getKilled();
                 // Union-of-killed = mutants NOT in survivors.
                 addKilledKeys(tmMutants.keySet(), tmKr.getSurvivors(), tmRandomUnionKilled);
                 addKilledKeys(aexMutants.keySet(), aexKr.getSurvivors(), aexRandomUnionKilled);
                 addKilledKeys(smMutants.keySet(), smKr.getSurvivors(), smRandomUnionKilled);
+                addKilledKeys(tdeMutants.keySet(), tdeKr.getSurvivors(), tdeRandomUnionKilled);
             }
         }
 
@@ -535,6 +579,11 @@ public final class PerProductMutationReportGenerator {
         FaultDetector.KillResult smTrans = FaultDetector.scoreSuiteDynamic(transSuite, smMutants);
         FaultDetector.KillResult smPair = FaultDetector.scoreSuiteDynamic(pairSuite, smMutants);
         FaultDetector.KillResult smRandom = FaultDetector.scoreSuiteDynamic(randomSuite, smMutants);
+        FaultDetector.KillResult tdeFamilyState = FaultDetector.scoreSuiteDynamic(projectedFamily, tdeMutants);
+        FaultDetector.KillResult tdeState = FaultDetector.scoreSuiteDynamic(stateSuite, tdeMutants);
+        FaultDetector.KillResult tdeTrans = FaultDetector.scoreSuiteDynamic(transSuite, tdeMutants);
+        FaultDetector.KillResult tdePair = FaultDetector.scoreSuiteDynamic(pairSuite, tdeMutants);
+        FaultDetector.KillResult tdeRandom = FaultDetector.scoreSuiteDynamic(randomSuite, tdeMutants);
 
         // Inozemtseva & Holmes (2014) equivalent-mutant treatment with the
         // random axis upgraded to the 100-seed × 3-budget ensemble's
@@ -550,6 +599,8 @@ public final class PerProductMutationReportGenerator {
                 aexFamilyState, aexState, aexTrans, aexPair, aexRandomUnionKilled);
         Set<String> smEquivalent = equivalentMutantKeys(smMutants,
                 smFamilyState, smState, smTrans, smPair, smRandomUnionKilled);
+        Set<String> tdeEquivalent = equivalentMutantKeys(tdeMutants,
+                tdeFamilyState, tdeState, tdeTrans, tdePair, tdeRandomUnionKilled);
 
         md.write("\n### Product " + productIndex + "\n\n");
         md.write("**Selected features:** " + featuresLine + "\n\n");
@@ -588,12 +639,21 @@ public final class PerProductMutationReportGenerator {
                 + formatAdjusted(smTrans.getKilled(), smMutants.size(), smEquivalent.size()) + " | "
                 + formatAdjusted(smPair.getKilled(), smMutants.size(), smEquivalent.size()) + " | "
                 + formatAdjusted(smRandom.getKilled(), smMutants.size(), smEquivalent.size()) + " |\n");
+        md.write("| TransitionDestinationExchange | " + tdeMutants.size() + " | "
+                + formatEquivalent(tdeEquivalent.size(), tdeMutants.size()) + " | "
+                + formatAdjusted(tdeFamilyState.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + " | "
+                + formatAdjusted(tdeState.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + " | "
+                + formatAdjusted(tdeTrans.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + " | "
+                + formatAdjusted(tdePair.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + " | "
+                + formatAdjusted(tdeRandom.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + " |\n");
 
-        if (!tmEquivalent.isEmpty() || !aexEquivalent.isEmpty() || !smEquivalent.isEmpty()) {
+        if (!tmEquivalent.isEmpty() || !aexEquivalent.isEmpty()
+                || !smEquivalent.isEmpty() || !tdeEquivalent.isEmpty()) {
             md.write("\n**Equivalent mutants (not killed by any of the five suites):**\n");
             appendKeyList(md, "TransitionMissing", tmEquivalent);
             appendKeyList(md, "ActionExchange", aexEquivalent);
             appendKeyList(md, "StateMissing", smEquivalent);
+            appendKeyList(md, "TransitionDestinationExchange", tdeEquivalent);
         }
 
         // HTML
@@ -641,12 +701,21 @@ public final class PerProductMutationReportGenerator {
                 + formatAdjusted(smTrans.getKilled(), smMutants.size(), smEquivalent.size()) + "</td><td>"
                 + formatAdjusted(smPair.getKilled(), smMutants.size(), smEquivalent.size()) + "</td><td>"
                 + formatAdjusted(smRandom.getKilled(), smMutants.size(), smEquivalent.size()) + "</td></tr>\n");
+        html.write("<tr><td>TransitionDestinationExchange</td><td>" + tdeMutants.size() + "</td><td>"
+                + formatEquivalent(tdeEquivalent.size(), tdeMutants.size()) + "</td><td>"
+                + formatAdjusted(tdeFamilyState.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tdeState.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tdeTrans.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tdePair.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + "</td><td>"
+                + formatAdjusted(tdeRandom.getKilled(), tdeMutants.size(), tdeEquivalent.size()) + "</td></tr>\n");
         html.write("</table>\n");
-        if (!tmEquivalent.isEmpty() || !aexEquivalent.isEmpty() || !smEquivalent.isEmpty()) {
+        if (!tmEquivalent.isEmpty() || !aexEquivalent.isEmpty()
+                || !smEquivalent.isEmpty() || !tdeEquivalent.isEmpty()) {
             html.write("<details><summary>Equivalent mutants (not killed by any of the five suites)</summary>\n");
             appendKeyListHtml(html, "TransitionMissing", tmEquivalent);
             appendKeyListHtml(html, "ActionExchange", aexEquivalent);
             appendKeyListHtml(html, "StateMissing", smEquivalent);
+            appendKeyListHtml(html, "TransitionDestinationExchange", tdeEquivalent);
             html.write("</details>\n");
         }
 
@@ -657,6 +726,8 @@ public final class PerProductMutationReportGenerator {
                 aexFamilyState, aexState, aexTrans, aexPair, aexRandom);
         fillOpScores(ps.sm, smMutants.size(), smEquivalent.size(),
                 smFamilyState, smState, smTrans, smPair, smRandom);
+        fillOpScores(ps.tde, tdeMutants.size(), tdeEquivalent.size(),
+                tdeFamilyState, tdeState, tdeTrans, tdePair, tdeRandom);
 
         // ---- RQ2 CSV: coverage-directed mutation scores ----
         writeRq2CoverageDirected(rq2CdCsv, spec, productIndex, "TransitionMissing",
@@ -668,6 +739,9 @@ public final class PerProductMutationReportGenerator {
         writeRq2CoverageDirected(rq2CdCsv, spec, productIndex, "StateMissing",
                 smMutants.size(), smEquivalent.size(),
                 smState, smTrans, smPair, smFamilyState);
+        writeRq2CoverageDirected(rq2CdCsv, spec, productIndex, "TransitionDestinationExchange",
+                tdeMutants.size(), tdeEquivalent.size(),
+                tdeState, tdeTrans, tdePair, tdeFamilyState);
 
         // ---- RQ2 CSV: random baseline (writes from the hoisted 100-seed
         // × 3-budget ensemble computed above for the equivalence union).
@@ -685,6 +759,9 @@ public final class PerProductMutationReportGenerator {
             writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "StateMissing",
                     smMutants.size(), smEquivalent.size(),
                     budget, randomMaxSteps, abortedTotals[bi], smKilledMatrix[bi]);
+            writeRq2RandomBaseline(rq2RbCsv, spec, productIndex, src, "TransitionDestinationExchange",
+                    tdeMutants.size(), tdeEquivalent.size(),
+                    budget, randomMaxSteps, abortedTotals[bi], tdeKilledMatrix[bi]);
         }
 
         // ---- RQ3 CSV: efficiency = killed / total transitions actually
@@ -700,9 +777,9 @@ public final class PerProductMutationReportGenerator {
         // end-to-end, so the dynamic denominator is the correct
         // measurement again.
         long stateSuiteCost = TestExecution.executeSuite(
-                Collections.singletonList(stateTc), repaired).getTotalRealTransitions();
+                stateSuite, repaired).getTotalRealTransitions();
         long transSuiteCost = TestExecution.executeSuite(
-                Collections.singletonList(transTc), repaired).getTotalRealTransitions();
+                transSuite, repaired).getTotalRealTransitions();
         long pairSuiteCost = TestExecution.executeSuite(
                 pairSuite, repaired).getTotalRealTransitions();
         long familySuiteCost = TestExecution.executeSuite(
@@ -743,6 +820,18 @@ public final class PerProductMutationReportGenerator {
         writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
                 "StateMissing", smMutants.size(), smEquivalent.size(),
                 smFamilyState.getKilled(), familySuiteCost);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "state",
+                "TransitionDestinationExchange", tdeMutants.size(), tdeEquivalent.size(),
+                tdeState.getKilled(), stateSuiteCost);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "transition",
+                "TransitionDestinationExchange", tdeMutants.size(), tdeEquivalent.size(),
+                tdeTrans.getKilled(), transSuiteCost);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "pair",
+                "TransitionDestinationExchange", tdeMutants.size(), tdeEquivalent.size(),
+                tdePair.getKilled(), pairSuiteCost);
+        writeRq3Efficiency(rq3EffCsv, spec, productIndex, "family-baseline",
+                "TransitionDestinationExchange", tdeMutants.size(), tdeEquivalent.size(),
+                tdeFamilyState.getKilled(), familySuiteCost);
 
         return ps;
     }
@@ -1138,6 +1227,7 @@ public final class PerProductMutationReportGenerator {
         OpScores tm = new OpScores();
         OpScores aex = new OpScores();
         OpScores sm = new OpScores();
+        OpScores tde = new OpScores();
     }
 
     // ---------- Helpers (shared with other generators) ----------

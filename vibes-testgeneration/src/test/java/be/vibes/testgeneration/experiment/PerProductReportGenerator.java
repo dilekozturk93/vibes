@@ -268,9 +268,9 @@ public final class PerProductReportGenerator {
         State initial = repaired.getInitialState();
 
         // State coverage
-        TestCase stateTc = StateCoverageGenerator.generate(fts, config,
+        List<TestCase> stateSuite = StateCoverageGenerator.generate(fts, config,
                 spec.name + "_p" + productIndex + "_state");
-        List<List<String>> stateTrips = trips(stateTc, initial);
+        List<List<String>> stateTrips = tripsFromSuite(stateSuite, initial);
         md.write("### State coverage (" + stateTrips.size() + " test case"
                 + (stateTrips.size() == 1 ? "" : "s") + ")\n\n");
         html.write("<h3>State coverage (" + stateTrips.size() + " test case"
@@ -285,9 +285,9 @@ public final class PerProductReportGenerator {
         html.write("</ul>\n");
 
         // Transition coverage
-        TestCase transitionTc = TransitionCoverageGenerator.generate(fts, config,
+        List<TestCase> transitionSuite = TransitionCoverageGenerator.generate(fts, config,
                 spec.name + "_p" + productIndex + "_trans");
-        List<List<String>> transitionTrips = trips(transitionTc, initial);
+        List<List<String>> transitionTrips = tripsFromSuite(transitionSuite, initial);
         md.write("### All-transitions coverage (" + transitionTrips.size() + " test case"
                 + (transitionTrips.size() == 1 ? "" : "s") + ")\n\n");
         html.write("<h3>All-transitions coverage (" + transitionTrips.size() + " test case"
@@ -341,6 +341,20 @@ public final class PerProductReportGenerator {
             if (!normalized.isEmpty()) {
                 out.add(normalized);
             }
+        }
+        return out;
+    }
+
+    /**
+     * Suite-aware overload: each {@link TestCase} of the multi-TC suite
+     * is itself a trip from the operational generator, but we re-split
+     * defensively (a TC may include __balance__ discontinuities that
+     * the renderer still wants to break apart).
+     */
+    private static List<List<String>> tripsFromSuite(List<TestCase> suite, State initial) {
+        List<List<String>> out = new ArrayList<>();
+        for (TestCase tc : suite) {
+            out.addAll(trips(tc, initial));
         }
         return out;
     }

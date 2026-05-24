@@ -142,12 +142,16 @@ public class StateCoverageGeneratorTest {
             FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
             int expectedStates = countStates(repaired);
 
-            TestCase tc = StateCoverageGenerator.generate(fts, config, testId);
+            List<TestCase> suite = StateCoverageGenerator.generate(fts, config, testId);
 
-            Set<State> visited = visitedStates(repaired, toList(tc));
+            List<Transition> concat = new java.util.ArrayList<>();
+            for (TestCase tc : suite) {
+                concat.addAll(toList(tc));
+            }
+            Set<State> visited = visitedStates(repaired, concat);
             // initial state is always visited (start of every walk).
             visited.add(repaired.getInitialState());
-            assertEquals("Test case " + testId
+            assertEquals("Suite " + testId
                             + " must visit every state of the repaired projected FTS",
                     expectedStates, visited.size());
         }
@@ -184,12 +188,13 @@ public class StateCoverageGeneratorTest {
             configCount++;
             String testId = "svm_p" + configCount;
 
-            TestCase stateTc = StateCoverageGenerator.generate(fts, config, testId + "_state");
-            TestCase transitionTc =
+            List<TestCase> stateSuite =
+                    StateCoverageGenerator.generate(fts, config, testId + "_state");
+            List<TestCase> transitionSuite =
                     TransitionCoverageGenerator.generate(fts, config, testId + "_trans");
 
-            int stateLen = toList(stateTc).size();
-            int transLen = toList(transitionTc).size();
+            int stateLen = totalLength(stateSuite);
+            int transLen = totalLength(transitionSuite);
             totalStateLength += stateLen;
             totalTransitionLength += transLen;
             if (stateLen < transLen) {
@@ -255,6 +260,14 @@ public class StateCoverageGeneratorTest {
             list.add(t);
         }
         return list;
+    }
+
+    private static int totalLength(List<TestCase> suite) {
+        int n = 0;
+        for (TestCase tc : suite) {
+            for (@SuppressWarnings("unused") Transition t : tc) n++;
+        }
+        return n;
     }
 
     private static Set<State> visitedStates(FeaturedTransitionSystem fts,

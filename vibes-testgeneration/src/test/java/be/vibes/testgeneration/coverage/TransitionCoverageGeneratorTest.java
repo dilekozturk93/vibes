@@ -71,23 +71,27 @@ public class TransitionCoverageGeneratorTest {
             assertThat("Repaired FTS must have at least one transition for " + testId,
                     repairedTransitions, greaterThan(0));
 
-            TestCase tc = TransitionCoverageGenerator.generate(fts, config, testId);
+            java.util.List<TestCase> suite =
+                    TransitionCoverageGenerator.generate(fts, config, testId);
 
-            // The cycle must include every non-synthetic transition exactly
-            // once. (Hierholzer also covers synthetic balancing edges, but we
-            // filter those out before computing coverage.)
+            // Concatenating every trip in the suite must cover every
+            // non-synthetic transition at least once.
             Set<Transition> nonSynthetic = new HashSet<>();
             int totalCycleLength = 0;
-            for (Transition t : tc) {
-                totalCycleLength++;
-                if (!EulerianBalancer.isSyntheticAction(t.getAction())) {
-                    nonSynthetic.add(t);
+            for (TestCase tc : suite) {
+                for (Transition t : tc) {
+                    totalCycleLength++;
+                    if (!EulerianBalancer.isSyntheticAction(t.getAction())) {
+                        nonSynthetic.add(t);
+                    }
                 }
             }
-            assertEquals("Test case " + testId
+            assertEquals("Suite " + testId
                             + " must cover every reachable transition (size mismatch)",
                     repairedTransitions, nonSynthetic.size());
-            assertThat("TestCase " + testId + " must contain at least the repaired-FTS transitions",
+            assertThat("Suite " + testId + " must contain at least one TestCase",
+                    suite.size(), greaterThan(0));
+            assertThat("Suite " + testId + " total transitions must be positive",
                     totalCycleLength, greaterThan(0));
         }
         assertEquals("SVM should expose 12 valid configurations", 12, configCount);

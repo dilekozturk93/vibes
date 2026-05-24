@@ -66,6 +66,23 @@ public final class FtsCloning {
     }
 
     /**
+     * Returns a copy of the given FTS in which one specific transition is
+     * replaced by a transition with the same source / action / feature
+     * expression but a different target state. Used by the
+     * {@code TransitionDestinationExchange} operator.
+     *
+     * <p>The replacement target state must already exist in the source FTS.
+     */
+    public static FeaturedTransitionSystem withReplacedTarget(FeaturedTransitionSystem fts,
+                                                              Transition target,
+                                                              State replacementTarget) {
+        checkNotNull(target, "Target transition may not be null");
+        checkNotNull(replacementTarget, "Replacement target state may not be null");
+        return rebuild(fts, t -> !t.equals(target),
+                new InsertionSpec(target, null, replacementTarget), null);
+    }
+
+    /**
      * Returns a copy of the given FTS in which one specific state and all
      * transitions incident to it (incoming + outgoing) are removed. The
      * state must not be the initial state — removing the initial state
@@ -140,9 +157,14 @@ public final class FtsCloning {
             if (fexpr == null) {
                 fexpr = FExpression.trueValue();
             }
+            String actionName = insertion.replacementAction != null
+                    ? insertion.replacementAction.getName()
+                    : origin.getAction().getName();
+            String targetName = insertion.replacementTarget != null
+                    ? insertion.replacementTarget.getName()
+                    : origin.getTarget().getName();
             factory.addTransition(origin.getSource().getName(),
-                    insertion.replacementAction.getName(), fexpr,
-                    origin.getTarget().getName());
+                    actionName, fexpr, targetName);
         }
 
         return factory.build();
@@ -151,10 +173,16 @@ public final class FtsCloning {
     private static final class InsertionSpec {
         final Transition original;
         final Action replacementAction;
+        final State replacementTarget;
 
         InsertionSpec(Transition original, Action replacementAction) {
+            this(original, replacementAction, null);
+        }
+
+        InsertionSpec(Transition original, Action replacementAction, State replacementTarget) {
             this.original = original;
             this.replacementAction = replacementAction;
+            this.replacementTarget = replacementTarget;
         }
     }
 }

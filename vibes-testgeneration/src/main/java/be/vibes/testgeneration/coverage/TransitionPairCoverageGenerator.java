@@ -22,22 +22,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Generates an all-transition-pairs test suite for one product configuration.
  *
- * <p>Pipeline (INIT-less variant, 2026-05-23):
+ * <p>Pipeline (INIT-less, __end__-aware variant, 2026-05-24):
  * <ol>
  *   <li>{@link FExpressionPreservingProjection#project} — project SPL FTS
  *       onto the configuration.</li>
  *   <li>{@link InitialSccFilter#keepInitialScc} — drop states that cannot
  *       return to the FTS initial state.</li>
  *   <li>{@link PairGraphTransformer#transform} — build the INIT-less pair
- *       graph (vertex per non-synthetic FTS transition, edges for
- *       contiguous pairs, canonical initial pair-vertex chosen as the
- *       lexicographically-smallest {@code p(t_init)}).</li>
+ *       graph. Vertices include {@code __end__} transitions (the
+ *       MxeToFtsConverter back-to-INIT rewiring for mixed-terminal ESG
+ *       vertices); only balancer artefacts ({@code __balance__N},
+ *       {@code __dup__N}) are filtered. Canonical initial pair-vertex is
+ *       the lexicographically-smallest {@code p(t_init)}.</li>
  *   <li>{@link EulerianBalancer#balanceWithoutPrecheck} — pair imbalanced
  *       vertices via Chinese-Postman shortest-path doublings
- *       ({@code __dup__N}). When no real path exists between an excessOut
- *       and excessIn pair (e.g. across an SCC disconnect produced by
- *       {@code __end__} filtering — known residual issue), fall through
- *       to a direct synthetic {@code __balance__N} edge.</li>
+ *       ({@code __dup__N}). With {@code __end__} now in the pair graph,
+ *       every "returns-to-initial" pair-vertex has at least one outgoing
+ *       edge (to some {@code p(t_initial_outgoing)}) and every
+ *       "initial-outgoing" pair-vertex has at least one incoming edge
+ *       (from some {@code p(t_*_end)}), so the structural imbalance that
+ *       previously forced {@code __balance__N} bridges on
+ *       all-mixed-terminal SPLs (Elevator) disappears.</li>
  *   <li>{@link HierholzerEulerCycle#compute} — extract a single Euler
  *       cycle that visits every pair-graph edge exactly once.</li>
  *   <li>Translate the cycle to an FTS action sequence: PREPEND the
@@ -53,15 +58,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *       at the bridge point.</li>
  *   <li>Split the action sequence at every FTS-initial return, producing
  *       one TestCase per round-trip. Trips are bounded by initial-return
- *       transitions ONLY — synthetic-edge positions are NOT general trip
- *       boundaries (the user-approved spec, 2026-05-24). On rare SPLs
- *       whose pair graph contains a non-INIT {@code __balance__N} (SCC
- *       disconnect under {@code __end__} filtering, e.g. SAS p1000) the
- *       discontinuity may fall mid-trip; the VIBeS TestCase invariant
- *       requires source/target contiguity, so such trips are sub-split
- *       LOCALLY at the discontinuity. Sub-splits are counted separately
- *       and logged at WARN — they are the documented Threats-to-Validity
- *       residual.</li>
+ *       transitions ONLY — including {@code __end__} (whose target is
+ *       always the FTS initial state), which is therefore a natural
+ *       split point. Mid-trip {@code __balance__N} discontinuities are
+ *       extremely rare now that {@code __end__} is in the pair graph;
+ *       any residual is sub-split LOCALLY per the VIBeS TestCase
+ *       contiguity invariant. Sub-splits are counted separately and
+ *       logged at WARN.</li>
  *   <li>Optional dedup: TestCases whose action-name sequences are
  *       identical to a previously-emitted TestCase are dropped. The
  *       underlying pair coverage of the suite is preserved (the
@@ -176,7 +179,10 @@ public final class TransitionPairCoverageGenerator {
         // NO entry, leaving a discontinuity in the sequence at the bridge
         // point. __dup__N edges contribute their underlying real transition
         // (target pair-vertex resolves via the side-map to the underlying
-        // transition, suffix is irrelevant for execution).
+        // transition, suffix is irrelevant for execution). __end__ edges
+        // contribute the __end__ transition itself — a real FTS transition
+        // whose target is the initial state, which Phase 2 then uses as a
+        // trip-boundary split point.
         List<Transition> sequence = new ArrayList<>(pairCycle.size() + 1);
         sequence.add(findInRepaired(repaired, prefixTransition));
         int balanceSkipped = 0;
@@ -214,16 +220,14 @@ public final class TransitionPairCoverageGenerator {
         }
 
         // Phase 3 — wrap each trip in a TestCase. TestCase.enqueue enforces
-        // source/target contiguity; on rare SPLs whose pair graph contains
-        // a non-INIT __balance__N (SCC disconnect under __end__ filtering,
-        // e.g. SAS p1000), the resulting flat sequence has a discontinuity
-        // that MAY land mid-trip (between two initial returns). In that
-        // case we MUST sub-split the trip locally — not because the spec
-        // says "split at __balance__" (it doesn't), but because TestCase
-        // cannot represent a non-contiguous sequence. This is a HARDWARE
-        // CONSTRAINT of the VIBeS TestCase invariant, not a methodology
-        // choice. Sub-splits are counted separately so the rarity of the
-        // residual is observable.
+        // source/target contiguity; with __end__ now in the pair graph,
+        // the only remaining source of mid-trip __balance__N discontinuity
+        // is a pair-graph SCC partition unrelated to mixed-terminal
+        // structure (extremely rare; not yet observed on the 5 evaluated
+        // SPLs). If a discontinuity does land mid-trip, the TestCase
+        // invariant requires source/target contiguity, so we sub-split
+        // locally. Sub-splits are counted separately so any residual is
+        // observable.
         List<TestCase> testCases = new ArrayList<>(trips.size());
         int tripIdx = 0;
         int contiguitySubsplits = 0;

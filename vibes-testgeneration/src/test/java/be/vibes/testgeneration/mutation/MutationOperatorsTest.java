@@ -197,6 +197,165 @@ public class MutationOperatorsTest {
                 intersection.isEmpty());
     }
 
+    // ---- TransitionDestinationExchange (TDE) ----
+
+    @Test
+    public void tde_toyGraph_underAdjacencyScope_yieldsExpectedCount() {
+        FeaturedTransitionSystem fts = twoStateLoop();
+        TransitionDestinationExchange op = new TransitionDestinationExchange();
+        op.generateMutants(fts);
+
+        // Adjacency scope on the toy two-state loop:
+        //   t1 = (a, ab, b): outgoingTargets(a) ∪ outgoingTargets(b) \ {b}
+        //                    = {b, a} \ {b} = {a}
+        //                    (a, ab, a) is not in the FTS → 1 mutant
+        //   t2 = (b, ba, a): outgoingTargets(b) ∪ outgoingTargets(a) \ {a}
+        //                    = {a, b} \ {a} = {b}
+        //                    (b, ba, b) is not in the FTS → 1 mutant
+        assertEquals(2, op.getMutantCount());
+        for (FeaturedTransitionSystem mutant : op.getMutants().values()) {
+            assertEquals("TDE preserves transition count (target swap, not removal)",
+                    countTransitions(fts), countTransitions(mutant));
+        }
+    }
+
+    @Test
+    public void tde_keysAreStableAndUnique() {
+        FeaturedTransitionSystem fts = twoStateLoop();
+        TransitionDestinationExchange op = new TransitionDestinationExchange();
+        op.generateMutants(fts);
+        Set<String> keys = op.getMutants().keySet();
+        assertEquals("Keys must be unique", keys.size(), op.getMutantCount());
+        for (String key : keys) {
+            assertTrue("Key '" + key + "' should start with TDE__", key.startsWith("TDE__"));
+        }
+    }
+
+    @Test
+    public void tde_svm_mutantCountMatchesAdjacencyScope() throws Exception {
+        FeaturedTransitionSystem svm = loadSvm();
+        int transitions = countTransitions(svm);
+        int expectedAdjacency = expectedTdeAdjacencyCount(svm);
+
+        TransitionDestinationExchange op = new TransitionDestinationExchange(); // no solver
+        op.generateMutants(svm);
+
+        assertEquals("SVM TDE mutant count must equal the adjacency-scope expectation",
+                expectedAdjacency, op.getMutantCount());
+
+        for (FeaturedTransitionSystem mutant : op.getMutants().values()) {
+            assertEquals("TDE preserves transition count",
+                    transitions, countTransitions(mutant));
+        }
+    }
+
+    @Test
+    public void tde_mutants_disjoint_from_tm_and_aex() throws Exception {
+        FeaturedTransitionSystem svm = loadSvm();
+
+        TransitionMissing tm = new TransitionMissing();
+        tm.generateMutants(svm);
+        Set<String> tmSignatures = new HashSet<>();
+        for (FeaturedTransitionSystem m : tm.getMutants().values()) {
+            tmSignatures.add(transitionSignature(m));
+        }
+
+        ActionExchange ae = new ActionExchange();
+        ae.generateMutants(svm);
+        Set<String> aeSignatures = new HashSet<>();
+        for (FeaturedTransitionSystem m : ae.getMutants().values()) {
+            aeSignatures.add(transitionSignature(m));
+        }
+
+        TransitionDestinationExchange tde = new TransitionDestinationExchange();
+        tde.generateMutants(svm);
+        Set<String> tdeSignatures = new HashSet<>();
+        for (FeaturedTransitionSystem m : tde.getMutants().values()) {
+            tdeSignatures.add(transitionSignature(m));
+        }
+        assertEquals("Every TDE mutant must be structurally distinct",
+                tde.getMutantCount(), tdeSignatures.size());
+
+        Set<String> tmTde = new HashSet<>(tmSignatures);
+        tmTde.retainAll(tdeSignatures);
+        assertTrue("TM and TDE mutants must not overlap (TM removes one transition; "
+                        + "TDE preserves count via target redirect)",
+                tmTde.isEmpty());
+
+        Set<String> aeTde = new HashSet<>(aeSignatures);
+        aeTde.retainAll(tdeSignatures);
+        assertTrue("AEX and TDE mutants must not overlap (AEX swaps action; TDE swaps "
+                        + "target — both preserve count but along orthogonal axes)",
+                aeTde.isEmpty());
+    }
+
+    /**
+     * Mirrors the adjacency-scope counting logic of
+     * {@link TransitionDestinationExchange} with the feature-compatibility
+     * filter disabled (matching the no-solver constructor):
+     *
+     * <pre>
+     *   for each t = (s, α, d):
+     *     candidates = OutgoingTargets(s) ∪ OutgoingTargets(d) \ {d}
+     *     skip d' with (s, α, d') already in the FTS
+     *     count remaining d'
+     * </pre>
+     */
+    private static int expectedTdeAdjacencyCount(FeaturedTransitionSystem fts) {
+        Map<State, Set<State>> outgoingTargets = new HashMap<>();
+        Set<String> existing = new HashSet<>();
+        List<Transition> all = new ArrayList<>();
+        Iterator<Transition> it = fts.transitions();
+        while (it.hasNext()) {
+            Transition t = it.next();
+            all.add(t);
+            outgoingTargets.computeIfAbsent(t.getSource(), k -> new HashSet<>())
+                    .add(t.getTarget());
+            existing.add(tripleKey(t.getSource().getName(), t.getAction().getName(),
+                    t.getTarget().getName()));
+        }
+        int count = 0;
+        for (Transition t : all) {
+            Set<State> cand = new HashSet<>();
+            cand.addAll(outgoingTargets.getOrDefault(t.getSource(), Collections.emptySet()));
+            cand.addAll(outgoingTargets.getOrDefault(t.getTarget(), Collections.emptySet()));
+            cand.remove(t.getTarget());
+            for (State dPrime : cand) {
+                if (!existing.contains(tripleKey(t.getSource().getName(),
+                        t.getAction().getName(), dPrime.getName()))) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    @Test
+    public void ftsCloning_withReplacedTargetRedirectsOnlyThatOne() {
+        FeaturedTransitionSystem original = twoStateLoop();
+        Transition target = original.transitions().next();
+        State newTarget = original.getInitialState(); // any valid state ≠ target.target
+
+        FeaturedTransitionSystem redirected =
+                FtsCloning.withReplacedTarget(original, target, newTarget);
+        assertEquals("Redirect preserves transition count",
+                countTransitions(original), countTransitions(redirected));
+
+        // Exactly one transition has been redirected; the rest are verbatim.
+        int matchingRedirected = 0;
+        Iterator<Transition> it = redirected.transitions();
+        while (it.hasNext()) {
+            Transition t = it.next();
+            if (t.getSource().getName().equals(target.getSource().getName())
+                    && t.getAction().getName().equals(target.getAction().getName())
+                    && t.getTarget().getName().equals(newTarget.getName())) {
+                matchingRedirected++;
+            }
+        }
+        assertEquals("Exactly one redirected transition must appear in the rebuilt FTS",
+                1, matchingRedirected);
+    }
+
     @Test
     public void ftsCloning_copyIsStructurallyEqual() {
         FeaturedTransitionSystem original = twoStateLoop();

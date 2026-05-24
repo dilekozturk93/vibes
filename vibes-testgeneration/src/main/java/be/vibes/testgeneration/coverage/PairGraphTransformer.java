@@ -26,17 +26,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * study for triple-coverage. The construction here is the L=2 case
  * (pairs); higher coverage levels would iterate the same construction.
  *
- * <p>Pair-graph construction rules (INIT-less variant, 2026-05-23):
+ * <p>Pair-graph construction rules (INIT-less variant, __end__-aware,
+ * 2026-05-24):
  * <ul>
- *   <li>For each NON-SYNTHETIC transition {@code t} of the original FTS,
- *       the pair graph has a state named {@code "p_<source>_<action>_<target>"}.
- *       Synthetic transitions ({@code __end__}, {@code __balance__N},
- *       {@code __dup__N}) are SKIPPED at this stage — see the rationale
- *       below.</li>
- *   <li>For each ordered pair of non-synthetic original transitions
- *       {@code (t1, t2)} with {@code target(t1) == source(t2)}, the pair
- *       graph has an edge {@code p(t1) -> p(t2)} labelled with
- *       {@code action(t2)}.</li>
+ *   <li>For each transition {@code t} of the original FTS that is NOT a
+ *       balancer artefact ({@code __balance__N} / {@code __dup__N}), the
+ *       pair graph has a state named
+ *       {@code "p_<source>_<action>_<target>"}. {@code __end__}
+ *       transitions ARE kept — they represent {@link
+ *       be.vibes.testgeneration.conversion.MxeToFtsConverter}'s
+ *       back-to-INIT rewiring for mixed-terminal ESG vertices and are
+ *       real FTS transitions for pair-graph traversal purposes.</li>
+ *   <li>For each ordered pair of such transitions {@code (t1, t2)} with
+ *       {@code target(t1) == source(t2)}, the pair graph has an edge
+ *       {@code p(t1) -> p(t2)} labelled with {@code action(t2)}.</li>
  *   <li><strong>No separate INIT vertex.</strong> Instead, the pair
  *       graph's initial state is the <em>canonical initial-pair-vertex</em>
  *       — the lexicographically-first pair-vertex {@code p(t_init)}
@@ -107,14 +110,32 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *       must handle.</li>
  * </ol>
  *
- * <p><strong>Why synthetic transitions are excluded from pair-graph
- * construction.</strong> The coverage metric
+ * <p><strong>Why balancer artefacts (__balance__N / __dup__N) are
+ * excluded but __end__ is kept.</strong> The raw input FTS should never
+ * contain {@code __balance__N} / {@code __dup__N} — those labels belong
+ * exclusively to {@link EulerianBalancer}'s OUTPUT — but the defensive
+ * filter rejects them in case a malformed input slips through. The
+ * {@code __end__} label, by contrast, is part of the raw FTS produced by
+ * {@link be.vibes.testgeneration.conversion.MxeToFtsConverter} as the
+ * FTS-side counterpart of the ESG-Fx-side {@code "]" -> "["} rewiring
+ * (see {@code SequenceESGFxTransformer.transformIncludingShorterSequences}
+ * in the user's prior ESG-Fx codebase, where pseudo {@code "]"} is
+ * preserved as an edge endpoint via two split edges {@code (start, r)}
+ * and {@code (r, end)} so the back-to-start structure remains
+ * traversable). Without keeping {@code __end__}, SPLs whose every event
+ * is mixed-terminal (notably {@code Elevator}: all 10 event vertices
+ * are mixed-terminal, zero pure-terminal) have zero real
+ * return-to-initial transitions in the pair graph, leaving every
+ * initial-outgoing pair-vertex with in-degree 0 and forcing the
+ * balancer to fill with {@code __balance__N} bridges mid-FTS — which
+ * then sub-split test cases at non-initial states and break within-TC
+ * pair coverage. Keeping {@code __end__} in the pair graph removes that
+ * structural source of imbalance. The coverage metric
  * ({@link be.vibes.testgeneration.experiment.MetricsCollector
- * #pairCoveragePercentageOfSuite}) drops synthetic actions from each
- * test case's walk before forming consecutive pairs. Pairs involving an
- * {@code __end__} would otherwise produce TestCases that contribute
- * nothing to pair coverage; skipping synthetic transitions at
- * construction time aligns the graph with the metric.
+ * #pairCoveragePercentageOfSuite}) still drops {@code __end__} from
+ * each test case's walk before forming consecutive pairs, so the
+ * literature Edge-Pair definition (real FTS transitions only) is
+ * preserved on the measurement side.
  *
  * <p>A Hierholzer Euler cycle on the (balanced) pair graph visits every
  * pair-graph edge exactly once. By construction, the sequence of labels
@@ -166,15 +187,21 @@ public final class PairGraphTransformer {
     public static Result transform(FeaturedTransitionSystem original) {
         checkNotNull(original, "Original FTS may not be null");
 
-        // Index NON-SYNTHETIC original transitions by source state. Synthetic
-        // transitions (__end__ et al.) are filtered out at construction time
-        // — see the class JavaDoc for the rationale.
+        // Index original transitions by source state. Reject only balancer
+        // artefacts (__balance__N / __dup__N) — those should not appear in
+        // raw input but are filtered defensively. KEEP __end__: it is the
+        // back-to-INIT rewiring MxeToFtsConverter inserts for
+        // mixed-terminal ESG vertices and is a real FTS transition for
+        // pair-graph traversal. See class JavaDoc for the rationale and the
+        // ESG-Fx-side analogue.
         Map<State, java.util.List<Transition>> outgoingBySource = new HashMap<>();
         Iterator<Transition> tIt = original.transitions();
         java.util.List<Transition> allOriginalTransitions = new java.util.ArrayList<>();
         while (tIt.hasNext()) {
             Transition t = tIt.next();
-            if (EulerianBalancer.isSyntheticAction(t.getAction())) {
+            String actionName = t.getAction().getName();
+            if (actionName.startsWith(EulerianBalancer.SYNTHETIC_ACTION_PREFIX)
+                    || actionName.contains(EulerianBalancer.DUPLICATE_ACTION_INFIX)) {
                 continue;
             }
             allOriginalTransitions.add(t);
@@ -259,8 +286,14 @@ public final class PairGraphTransformer {
             pairStateToOriginalTransition.put(pairState, t);
         }
 
-        LOG.info("Pair graph (INIT-less): {} vertices, {} edges; canonical start = {}",
-                allOriginalTransitions.size(), countTransitions(pairGraph), canonicalStart);
+        int endCount = 0;
+        for (Transition t : allOriginalTransitions) {
+            if (t.getAction().getName().startsWith("__end__")) endCount++;
+        }
+        LOG.info("Pair graph (INIT-less, __end__-aware): {} vertices ({} __end__), "
+                        + "{} edges; canonical start = {}",
+                allOriginalTransitions.size(), endCount, countTransitions(pairGraph),
+                canonicalStart);
 
         return new Result(pairGraph, pairStateToOriginalTransition, canonicalStart);
     }

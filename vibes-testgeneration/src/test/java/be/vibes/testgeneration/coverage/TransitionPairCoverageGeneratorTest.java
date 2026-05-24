@@ -34,6 +34,10 @@ public class TransitionPairCoverageGeneratorTest {
     private static final String SVM_DIMACS = "cases/SodaVendingMachine/configs/SVM.dimacs";
     private static final String SVM_MAPPING = "cases/SodaVendingMachine/configs/SVM_dimacsmapping.txt";
 
+    private static final String EL_MXE = "cases/Elevator/El_ESGFx.mxe";
+    private static final String EL_DIMACS = "cases/Elevator/configs/El.dimacs";
+    private static final String EL_MAPPING = "cases/Elevator/configs/El_dimacsmapping.txt";
+
     // ---- PairGraphTransformer structural properties ----
 
     @Test
@@ -186,16 +190,74 @@ public class TransitionPairCoverageGeneratorTest {
             for (TestCase tc : pairSuite) {
                 pairLen += toList(tc).size();
             }
-            TestCase transTc =
+            List<TestCase> transSuite =
                     TransitionCoverageGenerator.generate(fts, config, testId + "_trans");
+            int transLen = 0;
+            for (TestCase tc : transSuite) {
+                transLen += toList(tc).size();
+            }
             totalPair += pairLen;
-            totalTrans += toList(transTc).size();
+            totalTrans += transLen;
         }
         assertEquals(12, configCount);
         assertTrue("Average pair-coverage total length should be >= average transition-coverage length "
                         + "(avg pair=" + (totalPair / configCount)
                         + ", avg trans=" + (totalTrans / configCount) + ")",
                 totalPair >= totalTrans);
+    }
+
+    // ---- Elevator: all-mixed-terminal regression (E2) ----
+
+    /**
+     * Elevator's ESG-Fx has 10 mixed-terminal event vertices and 0
+     * pure-terminal vertices, so every back-to-initial transition in the
+     * resulting FTS uses the synthetic {@code __end__} action that
+     * {@link MxeToFtsConverter} inserts. Pre-E2, the pair-graph filtered
+     * {@code __end__} out, leaving every initial-outgoing pair-vertex
+     * with in-degree 0 — the balancer then filled with non-INIT
+     * {@code __balance__N} bridges that forced TestCase contiguity
+     * sub-splits mid-FTS, capping within-TC pair coverage at 40-51%.
+     *
+     * <p>Post-E2 ({@link PairGraphTransformer} keeps {@code __end__}),
+     * every Elevator product must reach 100% within-TC pair coverage
+     * with zero contiguity sub-splits. This test asserts that property
+     * holds for ALL 42 Elevator products — it is the regression guard
+     * for the E2 fix.
+     */
+    @Test
+    public void elevator_pairCoverage_isFullWithoutContiguitySubsplits() throws Exception {
+        FeaturedTransitionSystem fts = loadCase(EL_MXE);
+        Sat4JSolverFacade solver = loadSolver(EL_DIMACS, EL_MAPPING);
+
+        int configCount = 0;
+        Iterator<Configuration> configs = solver.getSolutions();
+        while (configs.hasNext()) {
+            Configuration config = configs.next();
+            configCount++;
+            String testId = "el_p" + configCount;
+
+            FeaturedTransitionSystem projected =
+                    FExpressionPreservingProjection.project(fts, config);
+            FeaturedTransitionSystem repaired =
+                    InitialSccFilter.keepInitialScc(projected);
+
+            List<TestCase> suite =
+                    TransitionPairCoverageGenerator.generate(fts, config, testId);
+            double cov = be.vibes.testgeneration.experiment.MetricsCollector
+                    .pairCoveragePercentageOfSuite(repaired, suite);
+            assertEquals("Elevator product " + testId
+                            + " must reach 100% within-TC pair coverage post-E2",
+                    1.0, cov, 1e-9);
+
+            int subsplitCount = 0;
+            for (TestCase tc : suite) {
+                if (tc.getId().contains("_sub")) subsplitCount++;
+            }
+            assertEquals("Elevator product " + testId
+                            + " must have zero contiguity sub-splits post-E2",
+                    0, subsplitCount);
+        }
+        assertEquals(42, configCount);
     }
 
     // ---- helpers ----
@@ -211,14 +273,23 @@ public class TransitionPairCoverageGeneratorTest {
     }
 
     private static FeaturedTransitionSystem loadSvm() throws Exception {
-        URL url = TransitionPairCoverageGeneratorTest.class.getClassLoader().getResource(SVM_MXE);
+        return loadCase(SVM_MXE);
+    }
+
+    private static Sat4JSolverFacade loadSolver() throws Exception {
+        return loadSolver(SVM_DIMACS, SVM_MAPPING);
+    }
+
+    private static FeaturedTransitionSystem loadCase(String mxeResource) throws Exception {
+        URL url = TransitionPairCoverageGeneratorTest.class.getClassLoader().getResource(mxeResource);
         assertThat(url, is(notNullValue()));
         return new MxeToFtsConverter().convert(new File(url.toURI()));
     }
 
-    private static Sat4JSolverFacade loadSolver() throws Exception {
-        URL dimacsUrl = TransitionPairCoverageGeneratorTest.class.getClassLoader().getResource(SVM_DIMACS);
-        URL mappingUrl = TransitionPairCoverageGeneratorTest.class.getClassLoader().getResource(SVM_MAPPING);
+    private static Sat4JSolverFacade loadSolver(String dimacsResource, String mappingResource)
+            throws Exception {
+        URL dimacsUrl = TransitionPairCoverageGeneratorTest.class.getClassLoader().getResource(dimacsResource);
+        URL mappingUrl = TransitionPairCoverageGeneratorTest.class.getClassLoader().getResource(mappingResource);
         assertThat(dimacsUrl, is(notNullValue()));
         assertThat(mappingUrl, is(notNullValue()));
         DimacsModel model = DimacsModel.createFromTvlParserGeneratedFiles(

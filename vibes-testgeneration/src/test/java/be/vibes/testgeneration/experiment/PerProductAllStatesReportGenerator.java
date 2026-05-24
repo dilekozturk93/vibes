@@ -263,7 +263,7 @@ public final class PerProductAllStatesReportGenerator {
         FeaturedTransitionSystem repaired = InitialSccFilter.keepInitialScc(projected);
 
         AnnotatedWalk annotated = retraceWalk(repaired);
-        TestCase tc = StateCoverageGenerator.generate(
+        List<TestCase> suite = StateCoverageGenerator.generate(
                 fts, cfg, spec.name + "_p" + productIndex + "_state");
 
         Set<String> greedyKeys = transitionKeys(annotated, WalkRole.GREEDY);
@@ -292,7 +292,10 @@ public final class PerProductAllStatesReportGenerator {
         md.write("![Walk overlay — product " + productIndex + "]("
                 + pngPath.getFileName() + ")\n\n");
 
-        List<List<String>> trips = renderTrips(tc, repaired.getInitialState());
+        List<List<String>> trips = new ArrayList<>();
+        for (TestCase tc : suite) {
+            trips.addAll(renderTrips(tc, repaired.getInitialState()));
+        }
         md.write("**Generated test cases** (" + trips.size()
                 + " trip(s) from initial back to initial, hidden synthetics removed):\n\n");
         for (int i = 0; i < trips.size(); i++) {

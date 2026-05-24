@@ -4,6 +4,7 @@ import be.vibes.fexpression.configuration.Configuration;
 import be.vibes.testgeneration.graph.InitialSccFilter;
 import be.vibes.testgeneration.graph.ShortestPaths;
 import be.vibes.testgeneration.product.FExpressionPreservingProjection;
+import be.vibes.testgeneration.product.TestCaseSplitter;
 import be.vibes.ts.FeaturedTransitionSystem;
 import be.vibes.ts.State;
 import be.vibes.ts.TestCase;
@@ -58,14 +59,25 @@ public final class StateCoverageGenerator {
     }
 
     /**
-     * Generates an all-states test case for the given product configuration.
+     * Generates an all-states test suite for the given product configuration.
+     *
+     * <p>Returns {@code List<TestCase>} split at every initial-return of
+     * the walk. State-coverage walks usually do not transit the initial
+     * state mid-walk (the greedy phase prefers unvisited targets), so the
+     * resulting list is typically singleton. The split is applied
+     * unconditionally to align replay semantic with
+     * {@link TransitionCoverageGenerator} and
+     * {@link TransitionPairCoverageGenerator} — every coverage suite uses
+     * the same "TC = initial-return trip" semantic and the same
+     * executor-reset boundaries, eliminating the methodology asymmetry
+     * documented in 2026-05-24's TDE pilot.
      */
-    public static TestCase generate(FeaturedTransitionSystem fts,
-                                    Configuration product,
-                                    String testCaseId) {
+    public static List<TestCase> generate(FeaturedTransitionSystem fts,
+                                          Configuration product,
+                                          String testCaseBaseId) {
         checkNotNull(fts, "FTS may not be null");
         checkNotNull(product, "Configuration may not be null");
-        checkNotNull(testCaseId, "Test case id may not be null");
+        checkNotNull(testCaseBaseId, "Test case base id may not be null");
 
         FeaturedTransitionSystem projected =
                 FExpressionPreservingProjection.project(fts, product);
@@ -73,18 +85,40 @@ public final class StateCoverageGenerator {
 
         List<Transition> walk = computeStateCoverageWalk(repaired);
 
-        TestCase testCase = new TestCase(testCaseId);
+        TestCase fullWalk = new TestCase(testCaseBaseId + "_walk");
         try {
-            testCase.enqueueAll(walk);
+            fullWalk.enqueueAll(walk);
         } catch (TransitionSystenExecutionException ex) {
             throw new IllegalStateException(
-                    "Walk could not be enqueued into TestCase '" + testCaseId
-                            + "' — non-contiguous walk?",
+                    "Walk could not be enqueued into transient TestCase '"
+                            + testCaseBaseId + "_walk' — non-contiguous walk?",
                     ex);
         }
-        LOG.info("Generated state-coverage TestCase '{}': {} transitions",
-                testCaseId, walk.size());
-        return testCase;
+        List<List<Transition>> trips =
+                TestCaseSplitter.splitAtInitialReturns(fullWalk, repaired.getInitialState());
+
+        List<TestCase> suite = new ArrayList<>(trips.size());
+        int idx = 0;
+        for (List<Transition> trip : trips) {
+            if (trip.isEmpty()) {
+                idx++;
+                continue;
+            }
+            TestCase tc = new TestCase(testCaseBaseId + "_trip" + idx);
+            try {
+                tc.enqueueAll(trip);
+            } catch (TransitionSystenExecutionException ex) {
+                throw new IllegalStateException(
+                        "Trip " + idx + " could not be enqueued for suite '"
+                                + testCaseBaseId + "'.",
+                        ex);
+            }
+            suite.add(tc);
+            idx++;
+        }
+        LOG.info("Generated state-coverage suite '{}': {} TestCase(s), {} walk transitions",
+                testCaseBaseId, suite.size(), walk.size());
+        return suite;
     }
 
     /**

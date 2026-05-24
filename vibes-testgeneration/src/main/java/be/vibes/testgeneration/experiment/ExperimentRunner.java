@@ -232,29 +232,27 @@ public final class ExperimentRunner {
         long genStart = System.nanoTime();
         switch (coverage) {
             case "state": {
-                TestCase tc = StateCoverageGenerator.generate(fts, cfg, testId);
+                List<TestCase> suite = StateCoverageGenerator.generate(fts, cfg, testId);
                 long genEnd = System.nanoTime();
                 genMs = nsToMs(genEnd - genStart);
                 transformMs = 0.0;
                 genPeakMb = MetricsCollector.peakHeapMb();
-                List<Transition> walk = toList(tc);
-                suiteSize = 1;
-                totalActions = MetricsCollector.totalWalkTransitions(walk);
-                coveragePct = MetricsCollector.stateCoveragePercentage(repaired, walk);
-                suiteForExec = Collections.singletonList(tc);
+                suiteSize = suite.size();
+                totalActions = MetricsCollector.totalSuiteTransitions(suite);
+                coveragePct = MetricsCollector.stateCoveragePercentageOfSuite(repaired, suite);
+                suiteForExec = suite;
                 break;
             }
             case "transition": {
-                TestCase tc = TransitionCoverageGenerator.generate(fts, cfg, testId);
+                List<TestCase> suite = TransitionCoverageGenerator.generate(fts, cfg, testId);
                 long genEnd = System.nanoTime();
                 genMs = nsToMs(genEnd - genStart);
                 transformMs = 0.0;
                 genPeakMb = MetricsCollector.peakHeapMb();
-                List<Transition> walk = toList(tc);
-                suiteSize = 1;
-                totalActions = MetricsCollector.totalWalkTransitions(walk);
-                coveragePct = MetricsCollector.transitionCoveragePercentage(repaired, walk);
-                suiteForExec = Collections.singletonList(tc);
+                suiteSize = suite.size();
+                totalActions = MetricsCollector.totalSuiteTransitions(suite);
+                coveragePct = MetricsCollector.transitionCoveragePercentageOfSuite(repaired, suite);
+                suiteForExec = suite;
                 break;
             }
             case "pair": {
@@ -362,14 +360,6 @@ public final class ExperimentRunner {
             n++;
         }
         return n;
-    }
-
-    private static List<Transition> toList(TestCase tc) {
-        List<Transition> list = new ArrayList<>();
-        for (Transition t : tc) {
-            list.add(t);
-        }
-        return list;
     }
 
     private static int totalRealActions(List<TestCase> suite) {

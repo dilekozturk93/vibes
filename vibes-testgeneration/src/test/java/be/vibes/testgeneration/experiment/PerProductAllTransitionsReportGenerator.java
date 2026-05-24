@@ -269,12 +269,20 @@ public final class PerProductAllTransitionsReportGenerator {
                 ? renderStyled(balanced, outDir, balBase, true)
                 : null;
 
-        // Generate the all-transitions test case via the M4 orchestrator.
+        // Generate the all-transitions suite via the M4 orchestrator.
+        // The generator now returns List<TestCase>; for this legacy
+        // display-only report we flatten back into one TestCase so the
+        // existing counters / rendering helpers (which want a single TC)
+        // continue to work without restructuring.
         TestCase tc;
         Exception genError = null;
         try {
-            tc = TransitionCoverageGenerator.generate(
+            List<TestCase> suite = TransitionCoverageGenerator.generate(
                     fts, cfg, spec.name + "_p" + productIndex + "_trans");
+            tc = new TestCase(spec.name + "_p" + productIndex + "_trans_flat");
+            for (TestCase trip : suite) {
+                for (Transition t : trip) tc.enqueue(t);
+            }
         } catch (Exception ex) {
             tc = null;
             genError = ex;
