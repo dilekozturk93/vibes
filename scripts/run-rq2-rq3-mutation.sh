@@ -21,6 +21,11 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 XMX="${XMX:-4g}"
+# Explicit guard: if RANDOM_SEED_COUNT isn't set in the environment, lock
+# to the paper-fair default 100 here so it is unambiguously propagated to
+# the java child process (env var inheritance is the only signalling
+# channel for PerProductMutationReportGenerator).
+export RANDOM_SEED_COUNT="${RANDOM_SEED_COUNT:-100}"
 LOG_DIR="milestone-reports/metrics/logs/rq2-rq3"
 mkdir -p "$LOG_DIR"
 
