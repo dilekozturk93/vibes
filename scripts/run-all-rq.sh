@@ -74,7 +74,15 @@ echo ""
 echo "--- Step 1: RQ2 + RQ3 single-pass (5 SPLs × ${RANDOM_SEED_COUNT} seeds) ---"
 STEP1_START=$(date +%s)
 # Run; on failure, set -e aborts the orchestrator before Step 2.
-scripts/run-rq2-rq3-mutation.sh
+# SPLS env var (comma-separated) → space-separated positional args
+# for the mutation script (which iterates PerProductMutationReportGenerator
+# with each SPL name as a positional argument).
+if [ -n "${SPLS:-}" ]; then
+    IFS=',' read -ra SPL_ARRAY <<< "$SPLS"
+    scripts/run-rq2-rq3-mutation.sh "${SPL_ARRAY[@]}"
+else
+    scripts/run-rq2-rq3-mutation.sh
+fi
 STEP1_END=$(date +%s)
 STEP1_MIN=$(( (STEP1_END - STEP1_START) / 60 ))
 echo "Step 1 PASS (${STEP1_MIN} min)."
@@ -88,7 +96,14 @@ echo "--- Step 2: RQ1 scalability sweep (${N_RUNS} runs × 5 SPLs) ---"
 STEP2_START=$(date +%s)
 # run-rq1-scalability.sh loops runID=1..N_RUNS internally, each a
 # fresh JVM. Family OOM is caught in Java; the script does NOT die.
-scripts/run-rq1-scalability.sh
+# SPLS env var → first positional arg (run-rq1-scalability.sh accepts
+# a single comma-separated SPL list and exports it as SPLS for the
+# ExperimentRunner's listEnv("SPLS", ...) reader).
+if [ -n "${SPLS:-}" ]; then
+    scripts/run-rq1-scalability.sh "$SPLS"
+else
+    scripts/run-rq1-scalability.sh
+fi
 STEP2_END=$(date +%s)
 STEP2_MIN=$(( (STEP2_END - STEP2_START) / 60 ))
 echo "Step 2 PASS (${STEP2_MIN} min)."
