@@ -76,8 +76,24 @@ public final class PerProductMutationReportGenerator {
         final String mxe;
         final String dimacs;
         final String mapping;
+        /**
+         * Optional UniGen samples resource path. When non-null, the
+         * configuration source for this SPL becomes
+         * {@link SamplesConfigurationLoader} instead of
+         * {@link be.vibes.solver.Sat4JSolverFacade#getSolutions()}. Used
+         * for SPLs whose feature-model is too large for exhaustive
+         * enumeration (Syngovia, Tesla, HockertyShirts in the user's
+         * prior published study).
+         */
+        final String samples;
+
         SplSpec(String n, String m, String d, String map) {
+            this(n, m, d, map, null);
+        }
+
+        SplSpec(String n, String m, String d, String map, String samples) {
             this.name = n; this.mxe = m; this.dimacs = d; this.mapping = map;
+            this.samples = samples;
         }
     }
 
@@ -102,6 +118,22 @@ public final class PerProductMutationReportGenerator {
                     "cases/StudentAttendanceSystem/SAS_ESGFx.mxe",
                     "cases/StudentAttendanceSystem/configs/SAS.dimacs",
                     "cases/StudentAttendanceSystem/configs/SAS_dimacsmapping.txt"),
+            // Samples-mode SPLs (FM too large for exhaustive enumeration).
+            new SplSpec("Syngovia",
+                    "cases/Syngovia/Svia_ESGFx.mxe",
+                    "cases/Syngovia/configs/Svia.dimacs",
+                    "cases/Syngovia/configs/Svia_dimacsmapping.txt",
+                    "cases/Syngovia/configs/Svia_400.samples"),
+            new SplSpec("Tesla",
+                    "cases/Tesla/Te_ESGFx.mxe",
+                    "cases/Tesla/configs/Te.dimacs",
+                    "cases/Tesla/configs/Te_dimacsmapping.txt",
+                    "cases/Tesla/configs/Te_400.samples"),
+            new SplSpec("HockertyShirts",
+                    "cases/HockertyShirts/HS_ESGFx.mxe",
+                    "cases/HockertyShirts/configs/HS.dimacs",
+                    "cases/HockertyShirts/configs/HS_dimacsmapping.txt",
+                    "cases/HockertyShirts/configs/HS_400.samples"),
     };
 
     private PerProductMutationReportGenerator() {
@@ -184,16 +216,28 @@ public final class PerProductMutationReportGenerator {
         Set<String> ftsFeatures = collectFeatureNames(fts);
 
         // Family-level (SPL-level) all-states baseline per Devroey 2014.
-        // Computed ONCE per SPL; per-product kill check filters each
-        // family-level test case's transitions to those whose feature
-        // expression is satisfied by the product configuration.
-        // Reload the solver afterwards because AllStatesGenerator adds
-        // and removes SAT constraints during walk validation.
-        System.out.println("Running family-level baseline for " + spec.name + "...");
-        Sat4JSolverFacade baselineSolver = loadSolver(spec.dimacs, spec.mapping);
-        List<TestCase> familyBaseline = AllStatesGenerator.generateForFts(
-                fts, baselineSolver, spec.name + "_family");
-        System.out.println("  -> " + familyBaseline.size() + " family-level test case(s)");
+        // Computed ONCE per SPL for SPLs whose feature model is small
+        // enough for SAT-driven walk enumeration. For samples-mode SPLs
+        // (Syngovia/Tesla/HockertyShirts in the user's prior published
+        // study) the Devroey AllStates algorithm is intractable —
+        // 60+ feature-model variables produce SAT-satisfiability walks
+        // that the priority-queue search cannot exhaust in any reasonable
+        // wall time. We drop the family-baseline comparison for those
+        // SPLs and document the Threat-to-Validity in the paper. The
+        // product-level coverage comparison (state vs transition vs pair)
+        // is unaffected.
+        List<TestCase> familyBaseline;
+        if (spec.samples != null) {
+            System.out.println("Skipping family-level baseline for " + spec.name
+                    + " (samples-mode SPL — Devroey AllStates intractable on this FM).");
+            familyBaseline = java.util.Collections.emptyList();
+        } else {
+            System.out.println("Running family-level baseline for " + spec.name + "...");
+            Sat4JSolverFacade baselineSolver = loadSolver(spec.dimacs, spec.mapping);
+            familyBaseline = AllStatesGenerator.generateForFts(
+                    fts, baselineSolver, spec.name + "_family");
+            System.out.println("  -> " + familyBaseline.size() + " family-level test case(s)");
+        }
 
         Path mdPath = outDir.resolve(spec.name + "-per-product-mutation-report.md");
         Path htmlPath = outDir.resolve(spec.name + "-per-product-mutation-report.html");
@@ -219,7 +263,7 @@ public final class PerProductMutationReportGenerator {
             md.write("---\n\n## Products\n\n");
             html.write("<hr/>\n<h2>Products</h2>\n");
 
-            Iterator<Configuration> configs = solver.getSolutions();
+            Iterator<Configuration> configs = configurationIterator(spec, solver);
             while (configs.hasNext()) {
                 Configuration cfg = configs.next();
                 productCount++;
@@ -1291,6 +1335,29 @@ public final class PerProductMutationReportGenerator {
         URL mu = PerProductMutationReportGenerator.class.getClassLoader().getResource(m);
         return new Sat4JSolverFacade(DimacsModel.createFromTvlParserGeneratedFiles(
                 new File(mu.toURI()), new File(du.toURI())));
+    }
+
+    /**
+     * Returns the per-product configuration iterator for an SPL. If
+     * {@code spec.samples} is set the configurations come from the
+     * UniGen sample file via {@link SamplesConfigurationLoader}; otherwise
+     * the solver enumerates the full feature-model solution space.
+     */
+    private static Iterator<Configuration> configurationIterator(SplSpec spec,
+                                                                 Sat4JSolverFacade solver) throws Exception {
+        if (spec.samples == null) {
+            return solver.getSolutions();
+        }
+        URL su = PerProductMutationReportGenerator.class.getClassLoader().getResource(spec.samples);
+        URL mu = PerProductMutationReportGenerator.class.getClassLoader().getResource(spec.mapping);
+        if (su == null) {
+            throw new IllegalStateException("Samples file not found on classpath: " + spec.samples);
+        }
+        if (mu == null) {
+            throw new IllegalStateException("DIMACS mapping not found on classpath: " + spec.mapping);
+        }
+        return SamplesConfigurationLoader.loadAsIterator(
+                new File(su.toURI()), new File(mu.toURI()));
     }
 
     private static void writeHtmlHeader(BufferedWriter out, String name) throws IOException {

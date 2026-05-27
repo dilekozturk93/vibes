@@ -90,6 +90,21 @@ public final class ExperimentRunner {
                     "cases/eMail/eM_ESGFx.mxe",
                     "cases/eMail/configs/eM.dimacs",
                     "cases/eMail/configs/eM_dimacsmapping.txt"),
+            new SplSpec("Syngovia",
+                    "cases/Syngovia/Svia_ESGFx.mxe",
+                    "cases/Syngovia/configs/Svia.dimacs",
+                    "cases/Syngovia/configs/Svia_dimacsmapping.txt",
+                    "cases/Syngovia/configs/Svia_400.samples"),
+            new SplSpec("Tesla",
+                    "cases/Tesla/Te_ESGFx.mxe",
+                    "cases/Tesla/configs/Te.dimacs",
+                    "cases/Tesla/configs/Te_dimacsmapping.txt",
+                    "cases/Tesla/configs/Te_400.samples"),
+            new SplSpec("HockertyShirts",
+                    "cases/HockertyShirts/HS_ESGFx.mxe",
+                    "cases/HockertyShirts/configs/HS.dimacs",
+                    "cases/HockertyShirts/configs/HS_dimacsmapping.txt",
+                    "cases/HockertyShirts/configs/HS_400.samples"),
             new SplSpec("Elevator",
                     "cases/Elevator/El_ESGFx.mxe",
                     "cases/Elevator/configs/El.dimacs",
@@ -137,24 +152,33 @@ public final class ExperimentRunner {
         int ftsTransitions = countTransitions(fts);
 
         // -------- Family-level baseline scalability --------
-        Sat4JSolverFacade familySolver = loadSolver(spec.dimacs, spec.mapping);
+        // Samples-mode SPLs skip the family baseline — Devroey AllStates
+        // is intractable on 60+ feature-variable models (see
+        // PerProductMutationReportGenerator for the same rationale).
         MetricsCollector.resetPeakHeap();
         long famWallStart = System.nanoTime();
         List<TestCase> familyBaseline;
         String terminationReason;
         double famGenPeakMb;
-        try {
-            familyBaseline = AllStatesGenerator.generateForFts(
-                    fts, familySolver, spec.name + "_family");
-            terminationReason = "completed";
-        } catch (OutOfMemoryError oom) {
+        if (spec.samples != null) {
             familyBaseline = Collections.emptyList();
-            terminationReason = "OOM";
-            LOG.error("Family baseline OOM for {}", spec.name, oom);
-        } catch (Exception ex) {
-            familyBaseline = Collections.emptyList();
-            terminationReason = "exception: " + ex.getClass().getSimpleName();
-            LOG.error("Family baseline failed for {}", spec.name, ex);
+            terminationReason = "skipped-samples-mode";
+            LOG.info("Skipping family baseline for {} (samples-mode SPL)", spec.name);
+        } else {
+            Sat4JSolverFacade familySolver = loadSolver(spec.dimacs, spec.mapping);
+            try {
+                familyBaseline = AllStatesGenerator.generateForFts(
+                        fts, familySolver, spec.name + "_family");
+                terminationReason = "completed";
+            } catch (OutOfMemoryError oom) {
+                familyBaseline = Collections.emptyList();
+                terminationReason = "OOM";
+                LOG.error("Family baseline OOM for {}", spec.name, oom);
+            } catch (Exception ex) {
+                familyBaseline = Collections.emptyList();
+                terminationReason = "exception: " + ex.getClass().getSimpleName();
+                LOG.error("Family baseline failed for {}", spec.name, ex);
+            }
         }
         long famWallEnd = System.nanoTime();
         famGenPeakMb = MetricsCollector.peakHeapMb();
@@ -171,7 +195,7 @@ public final class ExperimentRunner {
         // -------- Per-product coverage-directed --------
         Sat4JSolverFacade enumSolver = loadSolver(spec.dimacs, spec.mapping);
         int productIndex = 0;
-        Iterator<Configuration> configs = enumSolver.getSolutions();
+        Iterator<Configuration> configs = configurationIterator(spec, enumSolver);
         while (configs.hasNext()) {
             Configuration cfg = configs.next();
             productIndex++;
@@ -342,6 +366,28 @@ public final class ExperimentRunner {
         return new Sat4JSolverFacade(model);
     }
 
+    /**
+     * Per-product configuration iterator. Samples-mode SPLs use
+     * {@link SamplesConfigurationLoader}; everything else uses the
+     * solver's exhaustive enumeration. See {@code SplSpec.samples}.
+     */
+    private static Iterator<Configuration> configurationIterator(SplSpec spec,
+                                                                 Sat4JSolverFacade solver) throws Exception {
+        if (spec.samples == null) {
+            return solver.getSolutions();
+        }
+        URL su = ExperimentRunner.class.getClassLoader().getResource(spec.samples);
+        URL mu = ExperimentRunner.class.getClassLoader().getResource(spec.mapping);
+        if (su == null) {
+            throw new IOException("Samples resource missing: " + spec.samples);
+        }
+        if (mu == null) {
+            throw new IOException("Mapping resource missing: " + spec.mapping);
+        }
+        return SamplesConfigurationLoader.loadAsIterator(
+                new File(su.toURI()), new File(mu.toURI()));
+    }
+
     private static int countStates(TransitionSystem ts) {
         int n = 0;
         Iterator<State> it = ts.states();
@@ -412,12 +458,19 @@ public final class ExperimentRunner {
         final String mxe;
         final String dimacs;
         final String mapping;
+        /** Optional UniGen samples resource path (null = exhaustive enumeration). */
+        final String samples;
 
         SplSpec(String name, String mxe, String dimacs, String mapping) {
+            this(name, mxe, dimacs, mapping, null);
+        }
+
+        SplSpec(String name, String mxe, String dimacs, String mapping, String samples) {
             this.name = name;
             this.mxe = mxe;
             this.dimacs = dimacs;
             this.mapping = mapping;
+            this.samples = samples;
         }
     }
 }
