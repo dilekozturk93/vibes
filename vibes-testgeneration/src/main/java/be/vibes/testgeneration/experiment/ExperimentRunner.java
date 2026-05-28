@@ -123,21 +123,47 @@ public final class ExperimentRunner {
         // Entry point only.
     }
 
+    /**
+     * Sharding parameters (cloud-cluster mode). When SHARD_ID is set,
+     * each worker processes only products in
+     * [PRODUCT_START_IDX, PRODUCT_END_IDX] (1-based, inclusive end) and
+     * writes RQ1 CSVs to per-shard filenames so concurrent workers do
+     * not collide.
+     */
+    private static final String SHARD_ID = System.getenv().getOrDefault("SHARD_ID", "");
+    private static final int PRODUCT_START_IDX = intEnv("PRODUCT_START_IDX", 0);
+    private static final int PRODUCT_END_IDX = intEnv("PRODUCT_END_IDX", Integer.MAX_VALUE);
+
     public static void main(String[] args) throws Exception {
         int runId = intEnv("runID", 1);
-        List<String> splFilter = listEnv("SPLS", Collections.emptyList());
+        List<String> splFilter = (args != null && args.length > 0)
+                ? java.util.Arrays.asList(args)
+                : listEnv("SPLS", Collections.emptyList());
         Path csvDir = Paths.get(System.getenv().getOrDefault("RQ1_CSV_DIR", DEFAULT_CSV_DIR));
         Files.createDirectories(csvDir);
-        File rq1CdCsv = csvDir.resolve(RQ1_CD_CSV).toFile();
-        File rq1FbCsv = csvDir.resolve(RQ1_FB_CSV).toFile();
 
-        LOG.info("RQ1 scalability runner: runID={}, csvDir={}", runId, csvDir.toAbsolutePath());
+        LOG.info("RQ1 scalability runner: runID={}, csvDir={}{}",
+                runId, csvDir.toAbsolutePath(),
+                SHARD_ID.isEmpty() ? "" : ", SHARD_ID=" + SHARD_ID);
         for (SplSpec spec : SPLS) {
             if (!splFilter.isEmpty() && !splFilter.contains(spec.name)) {
                 continue;
             }
+            File rq1CdCsv = shardCsv(csvDir, "rq1-coverage-directed", spec.name);
+            File rq1FbCsv = shardCsv(csvDir, "rq1-family-baseline", spec.name);
             runSpl(spec, runId, rq1CdCsv, rq1FbCsv);
         }
+    }
+
+    /**
+     * Per-shard CSV file. When SHARD_ID is empty (legacy local mode),
+     * returns the unified path; otherwise a shard-suffixed filename.
+     */
+    private static File shardCsv(Path baseDir, String task, String splName) {
+        if (SHARD_ID.isEmpty()) {
+            return baseDir.resolve(task + ".csv").toFile();
+        }
+        return baseDir.resolve(task + "_" + splName + "_shard" + SHARD_ID + ".csv").toFile();
     }
 
     /**
@@ -199,6 +225,9 @@ public final class ExperimentRunner {
         while (configs.hasNext()) {
             Configuration cfg = configs.next();
             productIndex++;
+            // Sharding: same range semantics as PerProductMutationReportGenerator.
+            if (productIndex <= PRODUCT_START_IDX) continue;
+            if (productIndex > PRODUCT_END_IDX) break;
             runProduct(spec, fts, cfg, productIndex, runId, rq1CdCsv,
                     ftsStates, ftsTransitions);
         }

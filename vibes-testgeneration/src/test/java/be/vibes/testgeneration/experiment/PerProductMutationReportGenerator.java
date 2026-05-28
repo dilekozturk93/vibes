@@ -188,6 +188,21 @@ public final class PerProductMutationReportGenerator {
     private static final Path RQ_CSV_DIR = Paths.get(
             System.getenv().getOrDefault("RQ_CSV_DIR", "milestone-reports/metrics"));
 
+    /**
+     * Sharding parameters for cloud-cluster parallel execution. When SHARD_ID
+     * is set, each worker processes only products in
+     * [PRODUCT_START_IDX, PRODUCT_END_IDX) (exclusive end), and writes CSVs
+     * to per-shard filenames so multiple workers can run concurrently
+     * without race conditions. Defaults: full sweep, no suffix.
+     *
+     * <p>Naming pattern: {@code <task>_<SPL>_shard<NN>.csv} (e.g.
+     * {@code rq2-coverage-directed_Syngovia_shard07.csv}). Aggregation
+     * happens at the collect-results step.
+     */
+    private static final String SHARD_ID = System.getenv().getOrDefault("SHARD_ID", "");
+    private static final int PRODUCT_START_IDX = intEnv("PRODUCT_START_IDX", 0);
+    private static final int PRODUCT_END_IDX = intEnv("PRODUCT_END_IDX", Integer.MAX_VALUE);
+
     private static int intEnv(String name, int defaultValue) {
         String value = System.getenv(name);
         if (value == null || value.isEmpty()) return defaultValue;
@@ -195,13 +210,27 @@ public final class PerProductMutationReportGenerator {
         catch (NumberFormatException e) { return defaultValue; }
     }
 
+    /**
+     * Returns the per-shard CSV file for the given task. When sharding is
+     * inactive (SHARD_ID empty), returns the legacy unified filename so
+     * existing local pipelines continue to work without changes.
+     */
+    private static File shardCsv(String task, String splName) {
+        if (SHARD_ID.isEmpty()) {
+            return RQ_CSV_DIR.resolve(task + ".csv").toFile();
+        }
+        return RQ_CSV_DIR.resolve(task + "_" + splName + "_shard" + SHARD_ID + ".csv").toFile();
+    }
+
     private static void run(SplSpec spec) throws Exception {
         Path outDir = Paths.get("milestone-reports/per-product-mutation/" + spec.name);
         Files.createDirectories(outDir);
         Files.createDirectories(RQ_CSV_DIR);
-        File rq2CdCsv = RQ_CSV_DIR.resolve("rq2-coverage-directed.csv").toFile();
-        File rq2RbCsv = RQ_CSV_DIR.resolve("rq2-random-baseline.csv").toFile();
-        File rq3EffCsv = RQ_CSV_DIR.resolve("rq3-efficiency.csv").toFile();
+        // Per-shard CSV outputs when SHARD_ID is set (cloud-cluster mode);
+        // unified filename otherwise (legacy local mode).
+        File rq2CdCsv = shardCsv("rq2-coverage-directed", spec.name);
+        File rq2RbCsv = shardCsv("rq2-random-baseline", spec.name);
+        File rq3EffCsv = shardCsv("rq3-efficiency", spec.name);
 
         FeaturedTransitionSystem fts = loadFts(spec.mxe);
         Sat4JSolverFacade solver = loadSolver(spec.dimacs, spec.mapping);
@@ -239,8 +268,12 @@ public final class PerProductMutationReportGenerator {
             System.out.println("  -> " + familyBaseline.size() + " family-level test case(s)");
         }
 
-        Path mdPath = outDir.resolve(spec.name + "-per-product-mutation-report.md");
-        Path htmlPath = outDir.resolve(spec.name + "-per-product-mutation-report.html");
+        // MD/HTML reports also get shard suffix so concurrent workers don't
+        // collide. Final aggregation regenerates a unified report from the
+        // combined CSVs (Python aggregation script — out of scope here).
+        String shardSuffix = SHARD_ID.isEmpty() ? "" : "-shard" + SHARD_ID;
+        Path mdPath = outDir.resolve(spec.name + "-per-product-mutation-report" + shardSuffix + ".md");
+        Path htmlPath = outDir.resolve(spec.name + "-per-product-mutation-report" + shardSuffix + ".html");
 
         // Aggregate stats across all products for the summary table.
         // Each operator gets a running OpScores accumulator.
@@ -264,11 +297,19 @@ public final class PerProductMutationReportGenerator {
             html.write("<hr/>\n<h2>Products</h2>\n");
 
             Iterator<Configuration> configs = configurationIterator(spec, solver);
+            int globalIdx = 0;
             while (configs.hasNext()) {
                 Configuration cfg = configs.next();
+                globalIdx++;
+                // Sharding: skip products outside this worker's assigned
+                // range. globalIdx is 1-based (first product = 1) so the
+                // half-open range [start, end) translates to
+                // globalIdx > start && globalIdx <= end.
+                if (globalIdx <= PRODUCT_START_IDX) continue;
+                if (globalIdx > PRODUCT_END_IDX) break;
                 productCount++;
                 ProductScores ps = writeProductSection(md, html, spec, fts, cfg,
-                        productCount, ftsFeatures, familyBaseline, aex, tde,
+                        globalIdx, ftsFeatures, familyBaseline, aex, tde,
                         rq2CdCsv, rq2RbCsv, rq3EffCsv);
                 addOpScores(aggTm, ps.tm);
                 addOpScores(aggAex, ps.aex);

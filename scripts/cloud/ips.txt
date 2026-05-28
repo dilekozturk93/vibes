@@ -1,0 +1,8 @@
+# scripts/cloud/ips.txt — one DigitalOcean droplet IP per line.
+# Comments + blank lines ignored.
+#
+# Example (replace with your actual droplet IPs):
+# 159.203.10.21
+# 159.203.10.22
+# 159.203.10.23
+# ...
