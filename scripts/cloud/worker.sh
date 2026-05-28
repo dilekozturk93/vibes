@@ -42,8 +42,13 @@ LOG_FILE="$LOG_DIR/${TASK}_${SPL}_shard${SHARD_ID}.log"
 CP_FILE="$(mktemp)"
 trap 'rm -f "$CP_FILE"' EXIT
 
-mvn -q -pl vibes-testgeneration dependency:build-classpath \
-    -DincludeScope=test -Dmdep.outputFile="$CP_FILE" 2>/dev/null
+# -am required because vibes-testgeneration depends on sibling modules
+# (vibes-core/fexpression/dsl/selection) that are NOT installed to
+# ~/.m2/repository/ — they only exist in the multi-module reactor. Without
+# -am, dependency:build-classpath fails to resolve siblings and the
+# worker silently dies under `set -e`.
+mvn -q -pl vibes-testgeneration -am dependency:build-classpath \
+    -DincludeScope=test -Dmdep.outputFile="$CP_FILE"
 CP="vibes-testgeneration/target/classes:vibes-testgeneration/target/test-classes:$(cat "$CP_FILE")"
 
 # Make sure test-compile has happened so target/test-classes is populated.
