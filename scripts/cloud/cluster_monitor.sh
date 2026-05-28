@@ -17,7 +17,10 @@ if [ ! -f "$IPS_FILE" ]; then
     exit 1
 fi
 tr -d '\r' < "$IPS_FILE" | grep -v '^[[:space:]]*$' > "${IPS_FILE}.clean"
-mapfile -t IPS < "${IPS_FILE}.clean"
+IPS=()
+while IFS= read -r line; do
+    [ -n "$line" ] && IPS+=("$line")
+done < "${IPS_FILE}.clean"
 rm -f "${IPS_FILE}.clean"
 
 clear

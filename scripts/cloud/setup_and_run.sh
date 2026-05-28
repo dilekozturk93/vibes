@@ -33,7 +33,10 @@ fi
 
 # Normalize line endings, strip blanks
 tr -d '\r' < "$IPS_FILE" | grep -v '^[[:space:]]*$' > "${IPS_FILE}.clean"
-mapfile -t IP_LIST < "${IPS_FILE}.clean"
+IP_LIST=()
+while IFS= read -r line; do
+    [ -n "$line" ] && IP_LIST+=("$line")
+done < "${IPS_FILE}.clean"
 rm -f "${IPS_FILE}.clean"
 
 TOTAL_NODES=${#IP_LIST[@]}
