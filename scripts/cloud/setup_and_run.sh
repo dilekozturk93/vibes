@@ -70,26 +70,31 @@ export DEBIAN_FRONTEND=noninteractive
 export NEEDRESTART_MODE=a
 export NEEDRESTART_SUSPEND=1
 
-echo "[1/5] Waiting for cloud-init + dpkg locks..."
+echo "[1/4] Waiting for cloud-init (pre-installed Java/Maven via provision_cluster.sh)..."
 cloud-init status --wait 2>/dev/null || true
 while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do sleep 5; done
 
-echo "[2/5] Installing OpenJDK 11 + Maven + git..."
-apt-get update -y -qq
-apt-get install -y -qq openjdk-11-jdk maven git dos2unix curl
+# Fallback: install Java/Maven/git if cloud-init didn't (e.g. droplet
+# created via web UI without our user-data). Idempotent.
+if ! command -v mvn >/dev/null || ! command -v java >/dev/null; then
+    echo "[1b/4] cloud-init didn't pre-install — running apt-get fallback..."
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update -y -qq
+    apt-get install -y -qq openjdk-11-jdk maven git dos2unix curl rsync
+fi
 
-echo "[3/5] Cloning repo $REPO_URL (branch $BRANCH)..."
+echo "[2/4] Cloning repo $REPO_URL (branch $BRANCH)..."
 rm -rf /root/vibes
 cd /root
 git clone --depth 1 --branch "$BRANCH" "$REPO_URL"
 cd /root/vibes
 
-echo "[4/5] Generating shards.txt + preparing scripts..."
+echo "[3/4] Generating shards.txt + preparing scripts..."
 dos2unix scripts/cloud/*.sh 2>/dev/null || true
 chmod +x scripts/cloud/*.sh
 bash scripts/cloud/generate_shards.sh
 
-echo "[5/5] Starting node_orchestrator (node=$NODE_INDEX/$TOTAL_NODES, parallel=$PARALLEL_WORKERS)..."
+echo "[4/4] Starting node_orchestrator (node=$NODE_INDEX/$TOTAL_NODES, parallel=$PARALLEL_WORKERS)..."
 nohup bash scripts/cloud/node_orchestrator.sh "$NODE_INDEX" "$TOTAL_NODES" "$PARALLEL_WORKERS" \
     > /root/node_orchestrator.log 2>&1 &
 

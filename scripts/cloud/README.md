@@ -37,46 +37,51 @@ collect_results.sh      ← rsync shard CSVs back, aggregate into unified rq{1,2
 
 ## Step-by-step
 
-### 1. Provision 9× DigitalOcean droplets
+### 1. Provision 9× DigitalOcean droplets (one command, doctl)
 
-Recommended size: **s-8vcpu-16gb** (8 vCPU / 16 GB RAM, Ubuntu 22.04 LTS),
-about **$0.10/h**. With 9 nodes for ~7 hours = **~$6.30** total.
-
-After provisioning, you should have nine IPs accessible via SSH key
-(no password — `ssh root@<IP>` should connect without prompt).
-
-### 2. Fill `scripts/cloud/ips.txt`
-
-One IP per line:
-
-```
-159.203.10.21
-159.203.10.22
-...
-```
-
-### 3. Generate shards (optional — `setup_and_run.sh` does this remotely)
+**Recommended: doctl** (DigitalOcean CLI) — opens 9 droplets, cloud-init
+pre-installs Java/Maven, IPs auto-written to `ips.txt`.
 
 ```bash
-scripts/cloud/generate_shards.sh
-# → scripts/cloud/shards.txt (118 work units)
+# One-time setup
+brew install doctl                # macOS; Linux: snap install doctl
+doctl auth init                   # paste your DO Personal Access Token
+doctl compute ssh-key list        # note your SSH key ID
+
+# Provision (replace 12345678 with YOUR ssh key id)
+SSH_KEY_ID=12345678 scripts/cloud/provision_cluster.sh
+
+# Defaults: 9 nodes, s-8vcpu-16gb, nyc3 region, ubuntu-22-04-x64
+# Overrides: NODE_COUNT=5 REGION=fra1 SSH_KEY_ID=... ./provision_cluster.sh
 ```
 
-### 4. Bootstrap the cluster
+This:
+- Creates 9× `vibes-node-{1..9}` droplets tagged `vibes-cluster`
+- Bakes user-data so cloud-init installs `openjdk-11-jdk + maven + git`
+  while the droplets boot
+- Waits for SSH readiness on every droplet (`/var/lib/cloud/instance/boot-finished`)
+- Writes public IPs to `scripts/cloud/ips.txt`
+
+About **3-5 minutes total**. Cost: $0.10/h × 9 = **~$0.90/h while running**.
+
+**Alternative (manual web UI)**: Create droplets via DO console, copy
+public IPs into `scripts/cloud/ips.txt` manually. `setup_and_run.sh` has
+a fallback that runs `apt-get install` if cloud-init didn't pre-install.
+
+### 2. Bootstrap pipeline
 
 ```bash
-GIT_REPO=https://github.com/<your-user>/vibes.git \
+GIT_REPO=https://github.com/dilekozturk93/vibes.git \
 GIT_BRANCH=feat/product-test-generation \
 scripts/cloud/setup_and_run.sh
 ```
 
-This SSHes into every node in `ips.txt` and:
-- installs OpenJDK 11 + Maven + git
+SSHes into every node in `ips.txt` and:
 - clones the repo on the specified branch
 - generates `shards.txt`
 - starts `node_orchestrator.sh` in `nohup` mode
 
-Returns within ~3-5 minutes (per-node setup ~2 min in parallel).
+About 1-2 minutes since cloud-init already installed Java/Maven.
 
 ### 5. Monitor
 
@@ -105,13 +110,18 @@ This rsyncs `milestone-reports/metrics/shards/` from every node, then
 aggregates shard CSVs into unified `milestone-reports/metrics/rq{1,2,3}-*.csv`
 locally. Header is dedup'd; data rows concatenated in shard-name order.
 
-### 7. (Optional) Tear down droplets
+### 7. Tear down droplets (CRITICAL — do this!)
 
-After collection, destroy the droplets to stop billing:
+After collection, destroy the droplets immediately — billing continues
+hourly until they're deleted.
 
 ```bash
-# Manually via DigitalOcean web console, or `doctl compute droplet delete <ID>`
+scripts/cloud/destroy_cluster.sh
+# Prompts "type 'destroy' to confirm" → deletes every droplet tagged
+# vibes-cluster and clears ips.txt
 ```
+
+Verify in DO console afterwards that the droplets are gone.
 
 ## Per-shard CSV naming convention
 
