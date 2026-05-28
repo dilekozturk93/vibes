@@ -39,8 +39,13 @@ echo "node_orchestrator: node=$NODE_INDEX/$TOTAL_NODES parallel=$PARALLEL_WORKER
 echo "  $(date)" | tee -a "$NODE_LOG"
 echo "=============================================" | tee -a "$NODE_LOG"
 
-# Build the project once before workers start so each JVM doesn't re-run mvn.
-mvn -q -pl vibes-testgeneration -am test-compile 2>&1 | tee -a "$NODE_LOG"
+# Build + install once before workers start. `install -DskipTests` puts
+# every sibling module (vibes-core, vibes-fexpression, vibes-dsl, etc.)
+# into ~/.m2/repository/ so worker.sh's `mvn dependency:build-classpath`
+# can resolve them. Without this, dependency:build-classpath fails to
+# find sibling JARs (they only exist in target/ otherwise) and workers
+# silently die under set -e.
+mvn -q install -pl vibes-testgeneration -am -DskipTests 2>&1 | tee -a "$NODE_LOG"
 
 # Filter shards to those assigned to this node (round-robin by global index).
 ASSIGNED_SHARDS=()
