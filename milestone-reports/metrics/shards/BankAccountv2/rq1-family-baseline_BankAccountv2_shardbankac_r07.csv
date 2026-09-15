@@ -1,0 +1,2 @@
+RunID;SPL Name;FTS States;FTS Transitions;Family Test Cases;Family Total Actions;Generation Time(ms);Generation Peak Memory(MB);Wall Clock Time(ms);Termination Reason
+7;BankAccountv2;26;44;16;56;95,42;11,34;95,42;completed

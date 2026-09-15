@@ -1,0 +1,2 @@
+RunID;SPL Name;FTS States;FTS Transitions;Family Test Cases;Family Total Actions;Generation Time(ms);Generation Peak Memory(MB);Wall Clock Time(ms);Termination Reason
+8;eMail;11;24;6;20;154,55;11,21;154,55;completed

@@ -1,0 +1,4 @@
+SPL;FTS_states;FTS_transitions;family_tcs;family_actions;wallMs;peakMemMB;terminationReason
+Syngovia;78;307;0;0;7201000;5120.00;timeout-120min
+Tesla;41;147;0;0;7200000;5120.00;timeout-120min
+HockertyShirts;61;303;2;123;354306;828.60;completed

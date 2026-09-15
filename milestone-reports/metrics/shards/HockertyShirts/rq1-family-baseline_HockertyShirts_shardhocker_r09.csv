@@ -1,0 +1,2 @@
+RunID;SPL Name;FTS States;FTS Transitions;Family Test Cases;Family Total Actions;Generation Time(ms);Generation Peak Memory(MB);Wall Clock Time(ms);Termination Reason
+9;HockertyShirts;61;303;0;0;0,03;10,69;0,03;skipped-samples-mode

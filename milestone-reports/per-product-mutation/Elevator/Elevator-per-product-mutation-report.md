@@ -13,7 +13,11 @@
 5. **Replay test suite on each mutant.** A TestCase **kills** a mutant iff at least one of its non-synthetic transitions `(source, action, target)` is NOT present in the mutant. For TransitionMissing this happens whenever the suite traverses the removed transition; for ActionExchange whenever the suite traverses the mutated transition (the original `(s, a_orig, t)` triple is gone — replaced by `(s, a_new, t)`).
 6. **Mutation score per criterion** = killed mutants / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). The equivalent set is conservatively defined as mutants surviving all five suites in this study (family + product state + product transition + product pair + random).
 
-**Note on coverage saturation.** TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models. RQ3 is reframed around the cost dimension under this saturation property.
+**Random baseline column.** The "Random" column shows a single representative random suite (seed 0, action budget matched to the product's transition-coverage suite, per-walk step ceiling 2 × |T_repaired|, cut-and-include semantics — see `RandomBaselineGenerator` JavaDoc). The full 100-seed × 3-budget random-baseline distribution per (product × operator) — with median / quartiles / extremes and aborted-walk counts — lives in `milestone-reports/metrics/rq2-random-baseline.csv` (per-coverage-level budget; this column is the legacy display only).
+
+**Note on coverage saturation vs. TransitionDestinationExchange.** TransitionMissing, ActionExchange, and StateMissing mutants on a deterministic FTS are killed precisely when the mutated transition is traversed (mid-replay `canExecute` refusal at the mutation site); transition coverage therefore detects them by construction and stronger criteria add execution cost without detection. [`TransitionDestinationExchange`](../../../vibes-testgeneration/src/main/java/be/vibes/testgeneration/mutation/TransitionDestinationExchange.java) (TDE) breaks this saturation: it leaves the original action label intact so replay continues past the mutated site, and divergence surfaces only on the SUBSEQUENT step when the executor — now at the wrong target state — tries to fire the expected next transition. Pair coverage exercises EVERY t-outgoing pair as a separate consecutive sequence, giving it combinatorially more opportunities to expose that divergence than transition coverage (which fixes one arbitrary follow-up to t). The detection gap on TDE is RQ3's primary signal that pair coverage's marginal cost buys actual detection.
+
+**Note on test-case granularity (methodology-fairness fix 2026-05-24).** All three coverage generators (`StateCoverageGenerator`, `TransitionCoverageGenerator`, `TransitionPairCoverageGenerator`) return `List<TestCase>` split at every initial-return of the walk. Each TC is one round-trip from the initial state, and the executor RESETS between TCs. Earlier the state and transition generators returned a single `TestCase` and the executor reset only once at suite start; pair coverage's multi-TC suite reset between every TC. That asymmetry inflated transition-coverage's TDE detection (a TDE mutant whose mutated transition has target = initial was caught mid-cycle in single-TC replay because the next transition tried to fire from the wrong state; in multi-TC replay the same mutated transition is the final step of a TC, the reset wipes the divergence, and the mutant survives — measured as a false +27pt transition-coverage advantage on SAS in the v2 pilot). Aligning all generators on the same TC = initial-return-trip semantic restores fair comparison.
 
 ---
 
@@ -22,301 +26,13 @@
 
 ### Product 1
 
-**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 11/22 = 50.0% |
-| ActionExchange | 78 | 0/78 = 0.0% | 34/78 = 43.6% | 38/78 = 48.7% | 78/78 = 100.0% | 78/78 = 100.0% | 45/78 = 57.7% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
-
-### Product 2
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 50 | 0/50 = 0.0% | 27/50 = 54.0% | 28/50 = 56.0% | 50/50 = 100.0% | 50/50 = 100.0% | 38/50 = 76.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-
-### Product 3
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom}
-
-**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 71 | 0/71 = 0.0% | 32/71 = 45.1% | 32/71 = 45.1% | 71/71 = 100.0% | 71/71 = 100.0% | 51/71 = 71.8% |
-| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-
-### Product 4
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 30 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 12/28 = 42.9% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% | 15/28 = 53.6% |
-| ActionExchange | 115 | 0/115 = 0.0% | 56/115 = 48.7% | 46/115 = 40.0% | 115/115 = 100.0% | 115/115 = 100.0% | 68/115 = 59.1% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
-
-### Product 5
-
-**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 60 | 0/60 = 0.0% | 28/60 = 46.7% | 32/60 = 53.3% | 60/60 = 100.0% | 60/60 = 100.0% | 48/60 = 80.0% |
-| StateMissing | 7 | 0/7 = 0.0% | 5/7 = 71.4% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-
-### Product 6
-
-**Selected features:** selected = {ControlButtons, Intercom, PinPad}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 12 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 6/18 = 33.3% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
-| ActionExchange | 50 | 0/50 = 0.0% | 25/50 = 50.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 41/50 = 82.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-
-### Product 7
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
-
-**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 7 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 8/28 = 28.6% | 11/28 = 39.3% | 28/28 = 100.0% | 28/28 = 100.0% | 18/28 = 64.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 42/115 = 36.5% | 53/115 = 46.1% | 115/115 = 100.0% | 115/115 = 100.0% | 78/115 = 67.8% |
-| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
-
-### Product 8
-
-**Selected features:** selected = {ControlButtons, FirefighterService, Intercom}
-
-**Repaired FTS:** 10 states, 24 transitions (20 real / 4 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
-
-**Random baseline:** 4 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
-| ActionExchange | 57 | 0/57 = 0.0% | 27/57 = 47.4% | 33/57 = 57.9% | 57/57 = 100.0% | 57/57 = 100.0% | 37/57 = 64.9% |
-| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
-
-### Product 9
-
-**Selected features:** selected = {Alarm, ControlButtons, MobileKey}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 50 | 0/50 = 0.0% | 28/50 = 56.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 37/50 = 74.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-
-### Product 10
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 28 real step(s) applicable.
-
-**Random baseline:** 7 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 11/26 = 42.3% |
-| ActionExchange | 96 | 0/96 = 0.0% | 49/96 = 51.0% | 43/96 = 44.8% | 96/96 = 100.0% | 96/96 = 100.0% | 45/96 = 46.9% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
-
-### Product 11
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 13/20 = 65.0% |
-| ActionExchange | 60 | 0/60 = 0.0% | 29/60 = 48.3% | 32/60 = 53.3% | 60/60 = 100.0% | 60/60 = 100.0% | 48/60 = 80.0% |
-| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-
-### Product 12
-
-**Selected features:** selected = {ControlButtons, FirefighterService, Intercom, ManualDoorControl}
-
-**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 7/24 = 29.2% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 14/24 = 58.3% |
-| ActionExchange | 87 | 0/87 = 0.0% | 35/87 = 40.2% | 55/87 = 63.2% | 87/87 = 100.0% | 87/87 = 100.0% | 61/87 = 70.1% |
-| StateMissing | 11 | 0/11 = 0.0% | 6/11 = 54.5% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
-
-### Product 13
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ManualDoorControl}
-
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 4 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
-| ActionExchange | 78 | 0/78 = 0.0% | 35/78 = 44.9% | 36/78 = 46.2% | 78/78 = 100.0% | 78/78 = 100.0% | 51/78 = 65.4% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
-
-### Product 14
-
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, PinPad}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 60 | 0/60 = 0.0% | 30/60 = 50.0% | 36/60 = 60.0% | 60/60 = 100.0% | 60/60 = 100.0% | 49/60 = 81.7% |
-| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-
-### Product 15
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom}
-
-**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 8/19 = 42.1% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
-| ActionExchange | 60 | 0/60 = 0.0% | 30/60 = 50.0% | 30/60 = 50.0% | 60/60 = 100.0% | 60/60 = 100.0% | 43/60 = 71.7% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-
-### Product 16
-
-**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, Intercom}
-
-**Repaired FTS:** 10 states, 25 transitions (21 real / 4 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 18 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 21 | 0/21 = 0.0% | 10/21 = 47.6% | 10/21 = 47.6% | 21/21 = 100.0% | 21/21 = 100.0% | 12/21 = 57.1% |
-| ActionExchange | 68 | 0/68 = 0.0% | 36/68 = 52.9% | 36/68 = 52.9% | 68/68 = 100.0% | 68/68 = 100.0% | 45/68 = 66.2% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
-
-### Product 17
-
 **Selected features:** selected = {Alarm, ControlButtons, FirefighterService}
 
 **Repaired FTS:** 10 states, 24 transitions (20 real / 4 `__end__`).
 
 **Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 18 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -325,170 +41,18 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | TransitionMissing | 20 | 0/20 = 0.0% | 10/20 = 50.0% | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
 | ActionExchange | 57 | 0/57 = 0.0% | 33/57 = 57.9% | 33/57 = 57.9% | 57/57 = 100.0% | 57/57 = 100.0% | 37/57 = 64.9% |
 | StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionDestinationExchange | 65 | 2/65 = 3.1% | 23/63 = 36.5% | 25/63 = 39.7% | 55/63 = 87.3% | 63/63 = 100.0% | 32/63 = 50.8% |
 
-### Product 18
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, PinPad}
+_TransitionDestinationExchange_ (2):
 
-**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 13 real step(s) applicable.
-
-**Random baseline:** 4 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
-| ActionExchange | 78 | 0/78 = 0.0% | 32/78 = 41.0% | 37/78 = 47.4% | 78/78 = 100.0% | 78/78 = 100.0% | 51/78 = 65.4% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
-
-### Product 19
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, MobileKey}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 24 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
-| ActionExchange | 60 | 0/60 = 0.0% | 37/60 = 61.7% | 30/60 = 50.0% | 60/60 = 100.0% | 60/60 = 100.0% | 44/60 = 73.3% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-
-### Product 20
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, PinPad}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
-| ActionExchange | 96 | 0/96 = 0.0% | 39/96 = 40.6% | 49/96 = 51.0% | 96/96 = 100.0% | 96/96 = 100.0% | 62/96 = 64.6% |
-| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
-
-### Product 21
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, ManualDoorControl}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
-| ActionExchange | 96 | 0/96 = 0.0% | 37/96 = 38.5% | 41/96 = 42.7% | 96/96 = 100.0% | 96/96 = 100.0% | 62/96 = 64.6% |
-| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
-
-### Product 22
-
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, MobileKey}
-
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 25 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
-| ActionExchange | 60 | 0/60 = 0.0% | 37/60 = 61.7% | 30/60 = 50.0% | 60/60 = 100.0% | 60/60 = 100.0% | 44/60 = 73.3% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
-
-### Product 23
-
-**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, ManualDoorControl}
-
-**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 18 real step(s) applicable.
-
-**Random baseline:** 6 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 24 | 0/24 = 0.0% | 10/24 = 41.7% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 14/24 = 58.3% |
-| ActionExchange | 87 | 0/87 = 0.0% | 45/87 = 51.7% | 55/87 = 63.2% | 87/87 = 100.0% | 87/87 = 100.0% | 61/87 = 70.1% |
-| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 8/11 = 72.7% |
-
-### Product 24
-
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
-
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 29 real step(s) applicable.
-
-**Random baseline:** 7 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 11/26 = 42.3% |
-| ActionExchange | 96 | 0/96 = 0.0% | 49/96 = 51.0% | 43/96 = 44.8% | 96/96 = 100.0% | 96/96 = 100.0% | 45/96 = 46.9% |
-| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
-
-### Product 25
-
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
-
-**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
-
-**Random baseline:** 7 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 28 | 0/28 = 0.0% | 8/28 = 28.6% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% | 18/28 = 64.3% |
-| ActionExchange | 115 | 0/115 = 0.0% | 40/115 = 34.8% | 44/115 = 38.3% | 115/115 = 100.0% | 115/115 = 100.0% | 80/115 = 69.6% |
-| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
-
-### Product 26
-
-**Selected features:** selected = {CardReader, ControlButtons, Intercom}
-
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 50 | 0/50 = 0.0% | 26/50 = 52.0% | 28/50 = 56.0% | 50/50 = 100.0% | 50/50 = 100.0% | 38/50 = 76.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
-
-### Product 27
+### Product 2
 
 **Selected features:** selected = {Alarm, ControlButtons, FirefighterService, Intercom, ManualDoorControl}
 
@@ -496,53 +60,127 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 18 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 25 | 0/25 = 0.0% | 10/25 = 40.0% | 13/25 = 52.0% | 25/25 = 100.0% | 25/25 = 100.0% | 15/25 = 60.0% |
-| ActionExchange | 102 | 0/102 = 0.0% | 48/102 = 47.1% | 60/102 = 58.8% | 102/102 = 100.0% | 102/102 = 100.0% | 71/102 = 69.6% |
+| TransitionMissing | 25 | 0/25 = 0.0% | 10/25 = 40.0% | 13/25 = 52.0% | 25/25 = 100.0% | 25/25 = 100.0% | 17/25 = 68.0% |
+| ActionExchange | 102 | 0/102 = 0.0% | 48/102 = 47.1% | 60/102 = 58.8% | 102/102 = 100.0% | 102/102 = 100.0% | 82/102 = 80.4% |
 | StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 9/11 = 81.8% |
+| TransitionDestinationExchange | 104 | 2/104 = 1.9% | 31/102 = 30.4% | 44/102 = 43.1% | 90/102 = 88.2% | 102/102 = 100.0% | 60/102 = 58.8% |
 
-### Product 28
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom, ManualDoorControl}
+_TransitionDestinationExchange_ (2):
 
-**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+### Product 3
 
-**Random baseline:** 5 test case(s).
+**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
+
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 92 | 0/92 = 0.0% | 38/92 = 41.3% | 39/92 = 42.4% | 92/92 = 100.0% | 92/92 = 100.0% | 65/92 = 70.7% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
+| ActionExchange | 60 | 0/60 = 0.0% | 28/60 = 46.7% | 32/60 = 53.3% | 60/60 = 100.0% | 60/60 = 100.0% | 53/60 = 88.3% |
+| StateMissing | 7 | 0/7 = 0.0% | 5/7 = 71.4% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 57 | 6/57 = 10.5% | 6/51 = 11.8% | 11/51 = 21.6% | 39/51 = 76.5% | 51/51 = 100.0% | 34/51 = 66.7% |
 
-### Product 29
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 4
+
+**Selected features:** selected = {ControlButtons, Intercom, MobileKey}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 16 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
+| ActionExchange | 50 | 0/50 = 0.0% | 28/50 = 56.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 41/50 = 82.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 47 | 2/47 = 4.3% | 5/45 = 11.1% | 10/45 = 22.2% | 33/45 = 73.3% | 45/45 = 100.0% | 25/45 = 55.6% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 5
+
+**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
 
 **Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
 
 **Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 96 | 0/96 = 0.0% | 36/96 = 37.5% | 49/96 = 51.0% | 96/96 = 100.0% | 96/96 = 100.0% | 58/96 = 60.4% |
-| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
+| ActionExchange | 96 | 0/96 = 0.0% | 34/96 = 35.4% | 41/96 = 42.7% | 96/96 = 100.0% | 96/96 = 100.0% | 62/96 = 64.6% |
+| StateMissing | 9 | 0/9 = 0.0% | 5/9 = 55.6% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionDestinationExchange | 99 | 10/99 = 10.1% | 6/89 = 6.7% | 19/89 = 21.3% | 57/89 = 64.0% | 89/89 = 100.0% | 44/89 = 49.4% |
 
-### Product 30
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (10):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state12__press intercom__state9__state7`
+- `TDE__state12__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 6
 
 **Selected features:** selected = {CardReader, ControlButtons, Intercom, ManualDoorControl}
 
@@ -550,7 +188,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 5 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -559,26 +197,402 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
 | ActionExchange | 78 | 0/78 = 0.0% | 32/78 = 41.0% | 36/78 = 46.2% | 78/78 = 100.0% | 78/78 = 100.0% | 51/78 = 65.4% |
 | StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionDestinationExchange | 79 | 4/79 = 5.1% | 5/75 = 6.7% | 18/75 = 24.0% | 47/75 = 62.7% | 75/75 = 100.0% | 33/75 = 44.0% |
 
-### Product 31
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, PinPad}
+_TransitionDestinationExchange_ (4):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 7
+
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, MobileKey}
 
 **Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 13 real step(s) applicable.
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 7/19 = 36.8% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 12/19 = 63.2% |
-| ActionExchange | 60 | 0/60 = 0.0% | 28/60 = 46.7% | 28/60 = 46.7% | 60/60 = 100.0% | 60/60 = 100.0% | 44/60 = 73.3% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 8/19 = 42.1% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 13/19 = 68.4% |
+| ActionExchange | 60 | 0/60 = 0.0% | 30/60 = 50.0% | 28/60 = 46.7% | 60/60 = 100.0% | 60/60 = 100.0% | 47/60 = 78.3% |
 | StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 48 | 2/48 = 4.2% | 8/46 = 17.4% | 10/46 = 21.7% | 35/46 = 76.1% | 46/46 = 100.0% | 26/46 = 56.5% |
 
-### Product 32
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 8
+
+**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, Intercom}
+
+**Repaired FTS:** 10 states, 25 transitions (21 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 18 real step(s) applicable.
+
+**Random baseline:** 8 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 21 | 0/21 = 0.0% | 10/21 = 47.6% | 10/21 = 47.6% | 21/21 = 100.0% | 21/21 = 100.0% | 15/21 = 71.4% |
+| ActionExchange | 68 | 0/68 = 0.0% | 36/68 = 52.9% | 36/68 = 52.9% | 68/68 = 100.0% | 68/68 = 100.0% | 51/68 = 75.0% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionDestinationExchange | 68 | 2/68 = 2.9% | 23/66 = 34.8% | 25/66 = 37.9% | 58/66 = 87.9% | 66/66 = 100.0% | 43/66 = 65.2% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 9
+
+**Selected features:** selected = {ControlButtons, FirefighterService, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
+
+**Random baseline:** 9 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 24 | 0/24 = 0.0% | 7/24 = 29.2% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 87 | 0/87 = 0.0% | 35/87 = 40.2% | 55/87 = 63.2% | 87/87 = 100.0% | 87/87 = 100.0% | 66/87 = 75.9% |
+| StateMissing | 11 | 0/11 = 0.0% | 6/11 = 54.5% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 10/11 = 90.9% |
+| TransitionDestinationExchange | 99 | 2/99 = 2.0% | 15/97 = 15.5% | 44/97 = 45.4% | 83/97 = 85.6% | 97/97 = 100.0% | 55/97 = 56.7% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 10
+
+**Selected features:** selected = {Alarm, ControlButtons, FirefighterService, ManualDoorControl}
+
+**Repaired FTS:** 12 states, 30 transitions (24 real / 6 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 18 real step(s) applicable.
+
+**Random baseline:** 9 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 24 | 0/24 = 0.0% | 10/24 = 41.7% | 13/24 = 54.2% | 24/24 = 100.0% | 24/24 = 100.0% | 17/24 = 70.8% |
+| ActionExchange | 87 | 0/87 = 0.0% | 45/87 = 51.7% | 55/87 = 63.2% | 87/87 = 100.0% | 87/87 = 100.0% | 66/87 = 75.9% |
+| StateMissing | 11 | 0/11 = 0.0% | 9/11 = 81.8% | 11/11 = 100.0% | 11/11 = 100.0% | 11/11 = 100.0% | 10/11 = 90.9% |
+| TransitionDestinationExchange | 99 | 2/99 = 2.0% | 31/97 = 32.0% | 44/97 = 45.4% | 83/97 = 85.6% | 97/97 = 100.0% | 55/97 = 56.7% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 11
+
+**Selected features:** selected = {Alarm, ControlButtons, MobileKey}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
+| ActionExchange | 50 | 0/50 = 0.0% | 28/50 = 56.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 41/50 = 82.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 47 | 2/47 = 4.3% | 8/45 = 17.8% | 10/45 = 22.2% | 33/45 = 73.3% | 45/45 = 100.0% | 25/45 = 55.6% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 12
+
+**Selected features:** selected = {ControlButtons, FirefighterService, Intercom}
+
+**Repaired FTS:** 10 states, 24 transitions (20 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
+
+**Random baseline:** 8 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 10/20 = 50.0% | 20/20 = 100.0% | 20/20 = 100.0% | 12/20 = 60.0% |
+| ActionExchange | 57 | 0/57 = 0.0% | 27/57 = 47.4% | 33/57 = 57.9% | 57/57 = 100.0% | 57/57 = 100.0% | 37/57 = 64.9% |
+| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionDestinationExchange | 65 | 2/65 = 3.1% | 11/63 = 17.5% | 25/63 = 39.7% | 55/63 = 87.3% | 63/63 = 100.0% | 32/63 = 50.8% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 13
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, ManualDoorControl}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 9 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
+| ActionExchange | 96 | 0/96 = 0.0% | 37/96 = 38.5% | 41/96 = 42.7% | 96/96 = 100.0% | 96/96 = 100.0% | 70/96 = 72.9% |
+| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| TransitionDestinationExchange | 99 | 10/99 = 10.1% | 11/89 = 12.4% | 19/89 = 21.3% | 57/89 = 64.0% | 89/89 = 100.0% | 48/89 = 53.9% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (10):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state12__press alarm
+button__state9__state7`
+- `TDE__state12__press alarm
+button__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 14
+
+**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 11/22 = 50.0% |
+| ActionExchange | 78 | 0/78 = 0.0% | 34/78 = 43.6% | 38/78 = 48.7% | 78/78 = 100.0% | 78/78 = 100.0% | 45/78 = 57.7% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
+| TransitionDestinationExchange | 79 | 4/79 = 5.1% | 10/75 = 13.3% | 18/75 = 24.0% | 47/75 = 62.7% | 75/75 = 100.0% | 27/75 = 36.0% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (4):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 15
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, PinPad}
+
+**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 10 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 8/22 = 36.4% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 71 | 0/71 = 0.0% | 34/71 = 47.9% | 37/71 = 52.1% | 71/71 = 100.0% | 71/71 = 100.0% | 55/71 = 77.5% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 59 | 6/59 = 10.2% | 9/53 = 17.0% | 12/53 = 22.6% | 42/53 = 79.2% | 53/53 = 100.0% | 31/53 = 58.5% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 16
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 92 | 0/92 = 0.0% | 38/92 = 41.3% | 39/92 = 42.4% | 92/92 = 100.0% | 92/92 = 100.0% | 76/92 = 82.6% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionDestinationExchange | 82 | 6/82 = 7.3% | 10/76 = 13.2% | 18/76 = 23.7% | 51/76 = 67.1% | 76/76 = 100.0% | 46/76 = 60.5% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 17
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, MobileKey}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 24 real step(s) applicable.
+
+**Random baseline:** 8 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 60 | 0/60 = 0.0% | 37/60 = 61.7% | 30/60 = 50.0% | 60/60 = 100.0% | 60/60 = 100.0% | 48/60 = 80.0% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 57 | 6/57 = 10.5% | 13/51 = 25.5% | 11/51 = 21.6% | 39/51 = 76.5% | 51/51 = 100.0% | 31/51 = 60.8% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 18
+
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
+
+**Random baseline:** 8 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
+| ActionExchange | 96 | 0/96 = 0.0% | 36/96 = 37.5% | 49/96 = 51.0% | 96/96 = 100.0% | 96/96 = 100.0% | 62/96 = 64.6% |
+| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionDestinationExchange | 99 | 10/99 = 10.1% | 6/89 = 6.7% | 23/89 = 25.8% | 57/89 = 64.0% | 89/89 = 100.0% | 44/89 = 49.4% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (10):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state12__press intercom__state9__state7`
+- `TDE__state12__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 19
 
 **Selected features:** selected = {ControlButtons, Intercom, ManualDoorControl, MobileKey}
 
@@ -586,7 +600,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 16 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 7 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -595,32 +609,26 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 11/22 = 50.0% |
 | ActionExchange | 78 | 0/78 = 0.0% | 32/78 = 41.0% | 38/78 = 48.7% | 78/78 = 100.0% | 78/78 = 100.0% | 45/78 = 57.7% |
 | StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
+| TransitionDestinationExchange | 79 | 4/79 = 5.1% | 5/75 = 6.7% | 18/75 = 24.0% | 47/75 = 62.7% | 75/75 = 100.0% | 27/75 = 36.0% |
 
-### Product 33
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
+_TransitionDestinationExchange_ (4):
 
-**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
+### Product 20
 
-**Random baseline:** 4 test case(s).
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, Intercom}
 
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
 
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 26 | 0/26 = 0.0% | 7/26 = 26.9% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 14/26 = 53.8% |
-| ActionExchange | 96 | 0/96 = 0.0% | 34/96 = 35.4% | 41/96 = 42.7% | 96/96 = 100.0% | 96/96 = 100.0% | 58/96 = 60.4% |
-| StateMissing | 9 | 0/9 = 0.0% | 5/9 = 55.6% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 7/9 = 77.8% |
-
-### Product 34
-
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, MobileKey}
-
-**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 26 real step(s) applicable.
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
 
 **Random baseline:** 7 test case(s).
 
@@ -628,35 +636,215 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 10/22 = 45.5% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 11/22 = 50.0% |
-| ActionExchange | 71 | 0/71 = 0.0% | 40/71 = 56.3% | 34/71 = 47.9% | 71/71 = 100.0% | 71/71 = 100.0% | 44/71 = 62.0% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 5/7 = 71.4% |
+| TransitionMissing | 19 | 0/19 = 0.0% | 8/19 = 42.1% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 13/19 = 68.4% |
+| ActionExchange | 60 | 0/60 = 0.0% | 30/60 = 50.0% | 30/60 = 50.0% | 60/60 = 100.0% | 60/60 = 100.0% | 45/60 = 75.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 48 | 2/48 = 4.2% | 8/46 = 17.4% | 10/46 = 21.7% | 35/46 = 76.1% | 46/46 = 100.0% | 25/46 = 54.3% |
 
-### Product 35
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, PinPad}
+_TransitionDestinationExchange_ (2):
 
-**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+### Product 21
 
-**Random baseline:** 6 test case(s).
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 29 real step(s) applicable.
+
+**Random baseline:** 11 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
-| ActionExchange | 60 | 0/60 = 0.0% | 31/60 = 51.7% | 36/60 = 60.0% | 60/60 = 100.0% | 60/60 = 100.0% | 49/60 = 81.7% |
-| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
+| ActionExchange | 96 | 0/96 = 0.0% | 49/96 = 51.0% | 43/96 = 44.8% | 96/96 = 100.0% | 96/96 = 100.0% | 65/96 = 67.7% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| TransitionDestinationExchange | 99 | 10/99 = 10.1% | 16/89 = 18.0% | 19/89 = 21.3% | 57/89 = 64.0% | 89/89 = 100.0% | 41/89 = 46.1% |
 
-### Product 36
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {Alarm, ControlButtons, PinPad}
+_TransitionDestinationExchange_ (10):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state12__press intercom__state9__state7`
+- `TDE__state12__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 22
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 28 real step(s) applicable.
+
+**Random baseline:** 10 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 26 | 0/26 = 0.0% | 11/26 = 42.3% | 9/26 = 34.6% | 26/26 = 100.0% | 26/26 = 100.0% | 16/26 = 61.5% |
+| ActionExchange | 96 | 0/96 = 0.0% | 49/96 = 51.0% | 43/96 = 44.8% | 96/96 = 100.0% | 96/96 = 100.0% | 64/96 = 66.7% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| TransitionDestinationExchange | 99 | 10/99 = 10.1% | 20/89 = 22.5% | 19/89 = 21.3% | 57/89 = 64.0% | 89/89 = 100.0% | 43/89 = 48.3% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (10):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state12__press alarm
+button__state9__state7`
+- `TDE__state12__press alarm
+button__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 23
+
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
+| ActionExchange | 92 | 0/92 = 0.0% | 36/92 = 39.1% | 41/92 = 44.6% | 92/92 = 100.0% | 92/92 = 100.0% | 70/92 = 76.1% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionDestinationExchange | 82 | 6/82 = 7.3% | 10/76 = 13.2% | 18/76 = 23.7% | 51/76 = 67.1% | 76/76 = 100.0% | 43/76 = 56.6% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 24
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl}
+
+**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 11 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 28 | 0/28 = 0.0% | 8/28 = 28.6% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% | 22/28 = 78.6% |
+| ActionExchange | 115 | 0/115 = 0.0% | 40/115 = 34.8% | 44/115 = 38.3% | 115/115 = 100.0% | 115/115 = 100.0% | 93/115 = 80.9% |
+| StateMissing | 9 | 0/9 = 0.0% | 6/9 = 66.7% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionDestinationExchange | 105 | 14/105 = 13.3% | 11/91 = 12.1% | 19/91 = 20.9% | 62/91 = 68.1% | 91/91 = 100.0% | 65/91 = 71.4% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (14):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state12__press alarm
+button__state9__state7`
+- `TDE__state12__press alarm
+button__state9__state8`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state12__press intercom__state9__state7`
+- `TDE__state12__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 25
+
+**Selected features:** selected = {CardReader, ControlButtons, Intercom}
 
 **Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 13 real step(s) applicable.
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
+| ActionExchange | 50 | 0/50 = 0.0% | 26/50 = 52.0% | 28/50 = 56.0% | 50/50 = 100.0% | 50/50 = 100.0% | 42/50 = 84.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 47 | 2/47 = 4.3% | 5/45 = 11.1% | 10/45 = 22.2% | 33/45 = 73.3% | 45/45 = 100.0% | 25/45 = 55.6% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 26
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ManualDoorControl}
+
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
 
 **Random baseline:** 5 test case(s).
 
@@ -664,27 +852,403 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
-| ActionExchange | 50 | 0/50 = 0.0% | 26/50 = 52.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 41/50 = 82.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 78 | 0/78 = 0.0% | 35/78 = 44.9% | 36/78 = 46.2% | 78/78 = 100.0% | 78/78 = 100.0% | 51/78 = 65.4% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionDestinationExchange | 79 | 4/79 = 5.1% | 10/75 = 13.3% | 18/75 = 24.0% | 47/75 = 62.7% | 75/75 = 100.0% | 33/75 = 44.0% |
 
-### Product 37
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, PinPad}
+_TransitionDestinationExchange_ (4):
 
-**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+### Product 27
 
-**Random baseline:** 6 test case(s).
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, MobileKey}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 25 real step(s) applicable.
+
+**Random baseline:** 8 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 8/22 = 36.4% | 22/22 = 100.0% | 22/22 = 100.0% | 13/22 = 59.1% |
-| ActionExchange | 71 | 0/71 = 0.0% | 34/71 = 47.9% | 37/71 = 52.1% | 71/71 = 100.0% | 71/71 = 100.0% | 52/71 = 73.2% |
+| TransitionMissing | 20 | 0/20 = 0.0% | 9/20 = 45.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 14/20 = 70.0% |
+| ActionExchange | 60 | 0/60 = 0.0% | 37/60 = 61.7% | 30/60 = 50.0% | 60/60 = 100.0% | 60/60 = 100.0% | 48/60 = 80.0% |
 | StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 57 | 6/57 = 10.5% | 12/51 = 23.5% | 11/51 = 21.6% | 39/51 = 76.5% | 51/51 = 100.0% | 31/51 = 60.8% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 28
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor, Intercom}
+
+**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 10 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 22 | 0/22 = 0.0% | 8/22 = 36.4% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
+| ActionExchange | 71 | 0/71 = 0.0% | 32/71 = 45.1% | 32/71 = 45.1% | 71/71 = 100.0% | 71/71 = 100.0% | 54/71 = 76.1% |
+| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 59 | 6/59 = 10.2% | 9/53 = 17.0% | 11/53 = 20.8% | 42/53 = 79.2% | 53/53 = 100.0% | 30/53 = 56.6% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 29
+
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, PinPad}
+
+**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 13 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 23 | 0/23 = 0.0% | 7/23 = 30.4% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 18/23 = 78.3% |
+| ActionExchange | 92 | 0/92 = 0.0% | 34/92 = 37.0% | 40/92 = 43.5% | 92/92 = 100.0% | 92/92 = 100.0% | 73/92 = 79.3% |
+| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionDestinationExchange | 82 | 6/82 = 7.3% | 8/76 = 10.5% | 18/76 = 23.7% | 51/76 = 67.1% | 76/76 = 100.0% | 45/76 = 59.2% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 30
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons, ExecutiveFloor}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 9 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 7/20 = 35.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
+| ActionExchange | 60 | 0/60 = 0.0% | 29/60 = 48.3% | 32/60 = 53.3% | 60/60 = 100.0% | 60/60 = 100.0% | 53/60 = 88.3% |
+| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 57 | 6/57 = 10.5% | 9/51 = 17.6% | 11/51 = 21.6% | 39/51 = 76.5% | 51/51 = 100.0% | 34/51 = 66.7% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 31
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, PinPad}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 9 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 20 | 0/20 = 0.0% | 8/20 = 40.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
+| ActionExchange | 60 | 0/60 = 0.0% | 31/60 = 51.7% | 36/60 = 60.0% | 60/60 = 100.0% | 60/60 = 100.0% | 51/60 = 85.0% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 57 | 6/57 = 10.5% | 9/51 = 17.6% | 12/51 = 23.5% | 39/51 = 76.5% | 51/51 = 100.0% | 32/51 = 62.7% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 32
+
+**Selected features:** selected = {Alarm, CardReader, ControlButtons}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 18 | 0/18 = 0.0% | 8/18 = 44.4% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 12/18 = 66.7% |
+| ActionExchange | 50 | 0/50 = 0.0% | 27/50 = 54.0% | 28/50 = 56.0% | 50/50 = 100.0% | 50/50 = 100.0% | 42/50 = 84.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 47 | 2/47 = 4.3% | 8/45 = 17.8% | 10/45 = 22.2% | 33/45 = 73.3% | 45/45 = 100.0% | 25/45 = 55.6% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 33
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, PinPad}
+
+**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
+
+**Random baseline:** 11 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 28 | 0/28 = 0.0% | 8/28 = 28.6% | 11/28 = 39.3% | 28/28 = 100.0% | 28/28 = 100.0% | 21/28 = 75.0% |
+| ActionExchange | 115 | 0/115 = 0.0% | 42/115 = 36.5% | 53/115 = 46.1% | 115/115 = 100.0% | 115/115 = 100.0% | 88/115 = 76.5% |
+| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 8/9 = 88.9% |
+| TransitionDestinationExchange | 105 | 14/105 = 13.3% | 11/91 = 12.1% | 23/91 = 25.3% | 62/91 = 68.1% | 91/91 = 100.0% | 62/91 = 68.1% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (14):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state12__press alarm
+button__state9__state7`
+- `TDE__state12__press alarm
+button__state9__state8`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state12__press intercom__state9__state7`
+- `TDE__state12__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 34
+
+**Selected features:** selected = {Alarm, ControlButtons, Intercom, PinPad}
+
+**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 13 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 19 | 0/19 = 0.0% | 7/19 = 36.8% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 14/19 = 73.7% |
+| ActionExchange | 60 | 0/60 = 0.0% | 28/60 = 46.7% | 28/60 = 46.7% | 60/60 = 100.0% | 60/60 = 100.0% | 49/60 = 81.7% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 48 | 2/48 = 4.2% | 6/46 = 13.0% | 10/46 = 21.7% | 35/46 = 76.1% | 46/46 = 100.0% | 28/46 = 60.9% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 35
+
+**Selected features:** selected = {ControlButtons, ExecutiveFloor, Intercom, PinPad}
+
+**Repaired FTS:** 8 states, 23 transitions (20 real / 3 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 14 real step(s) applicable.
+
+**Random baseline:** 9 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 20 | 0/20 = 0.0% | 7/20 = 35.0% | 8/20 = 40.0% | 20/20 = 100.0% | 20/20 = 100.0% | 16/20 = 80.0% |
+| ActionExchange | 60 | 0/60 = 0.0% | 30/60 = 50.0% | 36/60 = 60.0% | 60/60 = 100.0% | 60/60 = 100.0% | 51/60 = 85.0% |
+| StateMissing | 7 | 0/7 = 0.0% | 6/7 = 85.7% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 57 | 6/57 = 10.5% | 6/51 = 11.8% | 12/51 = 23.5% | 39/51 = 76.5% | 51/51 = 100.0% | 32/51 = 62.7% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 36
+
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, ManualDoorControl, MobileKey}
+
+**Repaired FTS:** 10 states, 33 transitions (28 real / 5 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 30 real step(s) applicable.
+
+**Random baseline:** 11 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 28 | 0/28 = 0.0% | 12/28 = 42.9% | 9/28 = 32.1% | 28/28 = 100.0% | 28/28 = 100.0% | 19/28 = 67.9% |
+| ActionExchange | 115 | 0/115 = 0.0% | 56/115 = 48.7% | 46/115 = 40.0% | 115/115 = 100.0% | 115/115 = 100.0% | 85/115 = 73.9% |
+| StateMissing | 9 | 0/9 = 0.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| TransitionDestinationExchange | 105 | 14/105 = 13.3% | 21/91 = 23.1% | 19/91 = 20.9% | 62/91 = 68.1% | 91/91 = 100.0% | 59/91 = 64.8% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (14):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state12__press alarm
+button__state9__state7`
+- `TDE__state12__press alarm
+button__state9__state8`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state12__press intercom__state9__state7`
+- `TDE__state12__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 37
+
+**Selected features:** selected = {ControlButtons, Intercom, PinPad}
+
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 12 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 18 | 0/18 = 0.0% | 6/18 = 33.3% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| ActionExchange | 50 | 0/50 = 0.0% | 25/50 = 50.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 44/50 = 88.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 47 | 2/47 = 4.3% | 3/45 = 6.7% | 10/45 = 22.2% | 33/45 = 73.3% | 45/45 = 100.0% | 27/45 = 60.0% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
 ### Product 38
 
@@ -694,7 +1258,7 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 **Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 12 real step(s) applicable.
 
-**Random baseline:** 4 test case(s).
+**Random baseline:** 5 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
@@ -703,30 +1267,94 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 | TransitionMissing | 22 | 0/22 = 0.0% | 6/22 = 27.3% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
 | ActionExchange | 78 | 0/78 = 0.0% | 29/78 = 37.2% | 37/78 = 47.4% | 78/78 = 100.0% | 78/78 = 100.0% | 51/78 = 65.4% |
 | StateMissing | 8 | 0/8 = 0.0% | 5/8 = 62.5% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionDestinationExchange | 79 | 4/79 = 5.1% | 3/75 = 4.0% | 18/75 = 24.0% | 47/75 = 62.7% | 75/75 = 100.0% | 34/75 = 45.3% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (4):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press intercom__state9__state7`
+- `TDE__state5__press intercom__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
 ### Product 39
 
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, MobileKey}
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, ManualDoorControl, PinPad}
 
-**Repaired FTS:** 7 states, 21 transitions (19 real / 2 `__end__`).
+**Repaired FTS:** 10 states, 31 transitions (26 real / 5 `__end__`).
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 15 real step(s) applicable.
 
-**Random baseline:** 6 test case(s).
+**Random baseline:** 9 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 19 | 0/19 = 0.0% | 8/19 = 42.1% | 7/19 = 36.8% | 19/19 = 100.0% | 19/19 = 100.0% | 9/19 = 47.4% |
-| ActionExchange | 60 | 0/60 = 0.0% | 30/60 = 50.0% | 28/60 = 46.7% | 60/60 = 100.0% | 60/60 = 100.0% | 40/60 = 66.7% |
-| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 5/6 = 83.3% |
+| TransitionMissing | 26 | 0/26 = 0.0% | 8/26 = 30.8% | 11/26 = 42.3% | 26/26 = 100.0% | 26/26 = 100.0% | 18/26 = 69.2% |
+| ActionExchange | 96 | 0/96 = 0.0% | 39/96 = 40.6% | 49/96 = 51.0% | 96/96 = 100.0% | 96/96 = 100.0% | 70/96 = 72.9% |
+| StateMissing | 9 | 0/9 = 0.0% | 7/9 = 77.8% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% | 9/9 = 100.0% |
+| TransitionDestinationExchange | 99 | 10/99 = 10.1% | 11/89 = 12.4% | 23/89 = 25.8% | 57/89 = 64.0% | 89/89 = 100.0% | 49/89 = 55.1% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (10):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state12__press alarm
+button__state9__state7`
+- `TDE__state12__press alarm
+button__state9__state8`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
 ### Product 40
 
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, PinPad}
+**Selected features:** selected = {Alarm, ControlButtons, PinPad}
 
-**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
+**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 13 real step(s) applicable.
+
+**Random baseline:** 7 test case(s).
+
+Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
+
+| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
+|---|---|---|---|---|---|---|---|
+| TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 14/18 = 77.8% |
+| ActionExchange | 50 | 0/50 = 0.0% | 26/50 = 52.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 44/50 = 88.0% |
+| StateMissing | 6 | 0/6 = 0.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionDestinationExchange | 47 | 2/47 = 4.3% | 6/45 = 13.3% | 10/45 = 22.2% | 33/45 = 73.3% | 45/45 = 100.0% | 27/45 = 60.0% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (2):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
+
+### Product 41
+
+**Selected features:** selected = {Alarm, ControlButtons, ManualDoorControl, PinPad}
+
+**Repaired FTS:** 9 states, 26 transitions (22 real / 4 `__end__`).
 
 **Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 13 real step(s) applicable.
 
@@ -736,45 +1364,57 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 7/23 = 30.4% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 16/23 = 69.6% |
-| ActionExchange | 92 | 0/92 = 0.0% | 34/92 = 37.0% | 40/92 = 43.5% | 92/92 = 100.0% | 92/92 = 100.0% | 65/92 = 70.7% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 7/22 = 31.8% | 9/22 = 40.9% | 22/22 = 100.0% | 22/22 = 100.0% | 14/22 = 63.6% |
+| ActionExchange | 78 | 0/78 = 0.0% | 32/78 = 41.0% | 37/78 = 47.4% | 78/78 = 100.0% | 78/78 = 100.0% | 51/78 = 65.4% |
 | StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% |
+| TransitionDestinationExchange | 79 | 4/79 = 5.1% | 8/75 = 10.7% | 18/75 = 24.0% | 47/75 = 62.7% | 75/75 = 100.0% | 34/75 = 45.3% |
 
-### Product 41
+**Equivalent mutants (not killed by any of the five suites):**
 
-**Selected features:** selected = {Alarm, ControlButtons, Intercom, ManualDoorControl, MobileKey}
+_TransitionDestinationExchange_ (4):
 
-**Repaired FTS:** 9 states, 27 transitions (23 real / 4 `__end__`).
-
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 17 real step(s) applicable.
-
-**Random baseline:** 5 test case(s).
-
-Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
-
-| Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
-|---|---|---|---|---|---|---|---|
-| TransitionMissing | 23 | 0/23 = 0.0% | 8/23 = 34.8% | 9/23 = 39.1% | 23/23 = 100.0% | 23/23 = 100.0% | 13/23 = 56.5% |
-| ActionExchange | 92 | 0/92 = 0.0% | 36/92 = 39.1% | 41/92 = 44.6% | 92/92 = 100.0% | 92/92 = 100.0% | 62/92 = 67.4% |
-| StateMissing | 8 | 0/8 = 0.0% | 6/8 = 75.0% | 8/8 = 100.0% | 8/8 = 100.0% | 8/8 = 100.0% | 7/8 = 87.5% |
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state5__press alarm
+button__state9__state7`
+- `TDE__state5__press alarm
+button__state9__state8`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 
 ### Product 42
 
-**Selected features:** selected = {ControlButtons, Intercom, MobileKey}
+**Selected features:** selected = {Alarm, ControlButtons, ExecutiveFloor, Intercom, MobileKey}
 
-**Repaired FTS:** 7 states, 20 transitions (18 real / 2 `__end__`).
+**Repaired FTS:** 8 states, 25 transitions (22 real / 3 `__end__`).
 
-**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 16 real step(s) applicable.
+**Family baseline projected to this product:** 9 test case(s) (of 9 family-level), 26 real step(s) applicable.
 
-**Random baseline:** 5 test case(s).
+**Random baseline:** 10 test case(s).
 
 Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014 treatment — mutant not killed by ANY of five suites is equivalent and excluded from denominator).
 
 | Operator | Total | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 18 | 0/18 = 0.0% | 7/18 = 38.9% | 7/18 = 38.9% | 18/18 = 100.0% | 18/18 = 100.0% | 10/18 = 55.6% |
-| ActionExchange | 50 | 0/50 = 0.0% | 28/50 = 56.0% | 26/50 = 52.0% | 50/50 = 100.0% | 50/50 = 100.0% | 37/50 = 74.0% |
-| StateMissing | 6 | 0/6 = 0.0% | 5/6 = 83.3% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% | 6/6 = 100.0% |
+| TransitionMissing | 22 | 0/22 = 0.0% | 10/22 = 45.5% | 7/22 = 31.8% | 22/22 = 100.0% | 22/22 = 100.0% | 15/22 = 68.2% |
+| ActionExchange | 71 | 0/71 = 0.0% | 40/71 = 56.3% | 34/71 = 47.9% | 71/71 = 100.0% | 71/71 = 100.0% | 57/71 = 80.3% |
+| StateMissing | 7 | 0/7 = 0.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% | 7/7 = 100.0% |
+| TransitionDestinationExchange | 59 | 6/59 = 10.2% | 15/53 = 28.3% | 11/53 = 20.8% | 42/53 = 79.2% | 53/53 = 100.0% | 32/53 = 60.4% |
+
+**Equivalent mutants (not killed by any of the five suites):**
+
+_TransitionDestinationExchange_ (6):
+
+- `TDE__state1__press hall 
+RoofDown__state2__state3`
+- `TDE__state6__press cabin lobby__state5__state12`
+- `TDE__state6__press cabin 
+[1-N] floor__state5__state12`
+- `TDE__state6__press cabin 
+executive floor__state12__state5`
+- `TDE__state6__press cabin roof__state5__state12`
+- `TDE__state1__press hall 
+LobbyUp__state4__state3`
 ---
 
 ## Elevator summary (aggregate over 42 products)
@@ -785,8 +1425,9 @@ Scores below: **killed / non-equivalent = adjusted%** (Inozemtseva & Holmes 2014
 
 | Operator | Total mutants | Equivalent | Family (Devroey) | Product state-cov | Product transition-cov | Product pair-cov | Random |
 |---|---|---|---|---|---|---|---|
-| TransitionMissing | 926 | 0/926 = 0.0% | 340/926 = 36.7% | 366/926 = 39.5% | 926/926 = 100.0% | 926/926 = 100.0% | 547/926 = 59.1% |
-| ActionExchange | 3176 | 0/3176 = 0.0% | 1454/3176 = 45.8% | 1568/3176 = 49.4% | 3176/3176 = 100.0% | 3176/3176 = 100.0% | 2142/3176 = 67.4% |
-| StateMissing | 330 | 0/330 = 0.0% | 272/330 = 82.4% | 330/330 = 100.0% | 330/330 = 100.0% | 330/330 = 100.0% | 302/330 = 91.5% |
+| TransitionMissing | 926 | 0/926 = 0.0% | 340/926 = 36.7% | 366/926 = 39.5% | 926/926 = 100.0% | 926/926 = 100.0% | 634/926 = 68.5% |
+| ActionExchange | 3176 | 0/3176 = 0.0% | 1454/3176 = 45.8% | 1568/3176 = 49.4% | 3176/3176 = 100.0% | 3176/3176 = 100.0% | 2376/3176 = 74.8% |
+| StateMissing | 330 | 0/330 = 0.0% | 272/330 = 82.4% | 330/330 = 100.0% | 330/330 = 100.0% | 330/330 = 100.0% | 317/330 = 96.1% |
+| TransitionDestinationExchange | 3074 | 228/3074 = 7.4% | 461/2846 = 16.2% | 744/2846 = 26.1% | 2050/2846 = 72.0% | 2846/2846 = 100.0% | 1574/2846 = 55.3% |
 
 Total products: 42.

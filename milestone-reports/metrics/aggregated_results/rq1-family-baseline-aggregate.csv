@@ -1,0 +1,6 @@
+SPL Name;FTS States;FTS Transitions;Runs;Family Test Cases median;Family Test Cases p25;Family Test Cases p75;Family Total Actions median;Family Total Actions p25;Family Total Actions p75;Generation Time(ms) median;Generation Time(ms) p25;Generation Time(ms) p75;Generation Peak Memory(MB) median;Generation Peak Memory(MB) p25;Generation Peak Memory(MB) p75;Wall Clock Time(ms) median;Wall Clock Time(ms) p25;Wall Clock Time(ms) p75
+SVM;9;13;11;3,0;3,0;3,0;18,0;18,0;18,0;21,2;21,09;21,41;15,21;15,21;15,25;21,2;21,09;21,41
+eMail;11;24;11;6,0;6,0;6,0;20,0;20,0;20,0;7,58;7,515;8,015;23,21;23,21;23,25;7,58;7,515;8,015
+Elevator;14;49;11;9,0;9,0;9,0;33,0;33,0;33,0;45,32;42,58;52,32;25,63;25,425;25,93;45,32;42,58;52,32
+BankAccountv2;26;44;11;16,0;16,0;16,0;56,0;56,0;56,0;2,63;2,39;2,715;32,94;32,25;33,035;2,63;2,39;2,715
+StudentAttendanceSystem;35;76;11;19,0;19,0;19,0;105,0;105,0;105,0;5,97;5,58;6,915;52,38;49,625;58,19;5,97;5,58;6,915

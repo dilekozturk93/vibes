@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/>
+<title>Per-Product Mutation — Syngovia</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 1080px; margin: 2em auto; padding: 0 1em; line-height: 1.55; color: #222; }
+h1 { border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { margin-top: 2em; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+h3 { margin-top: 1.6em; color: #555; }
+code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95em; }
+table { border-collapse: collapse; margin: 1em 0; }
+th { background: #eee; text-align: left; }
+td { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.93em; }
+ul { padding-left: 1.4em; } hr { border: 0; border-top: 1px solid #ccc; margin: 2.5em 0; }
+</style>
+</head><body>
+<h1>Per-Product Mutation Report — Syngovia</h1>
+<h2>How mutation scores are computed</h2>
+<p><strong>Why a fresh mutation module, not <code>vibes-mutation</code>.</strong> The legacy module is on the obsolete <code>be.unamur.transitionsystem.*</code> namespace, commented out in the root pom, and depends on the dormant <code>vibes-transformation</code> plus a non-existent <code>vibes-execution</code>. We re-implement the two operators referenced in the ICTSS abstract against the current <code>be.vibes.ts.*</code> types.</p>
+<ol>
+<li><strong>Project + repair</strong> via <code>FExpressionPreservingProjection.project</code> + <code>InitialSccFilter.keepInitialScc</code>.</li>
+<li><strong>Generate test suites</strong> via the three coverage generators (state, transition, pair).</li>
+<li><strong>Generate mutants</strong> via <code>TransitionMissing</code> (one per transition, removed) and <code>ActionExchange</code> (one per (transition, neighbourhood-adjacent action) pair — replacement drawn from <code>OutgoingActions(s) ∪ OutgoingActions(d) \ {α}</code> for <code>t = (s, α, d)</code>, skipping pre-existing triples, restricted to feature-compatible swaps via SAT under the feature model).</li>
+<li><strong>Filter synthetic mutants</strong> — drop mutants whose mutation site is on an <code>__end__</code> transition (no SUT meaning).</li>
+<li><strong>Replay each suite on each mutant</strong> — a TestCase kills a mutant iff at least one of its non-synthetic transitions <code>(source, action, target)</code> is absent in the mutant.</li>
+<li><strong>Mutation score</strong> = killed / (total &minus; equivalent), per Inozemtseva &amp; Holmes (2014). Equivalent set is mutants surviving all five suites (family + product state + product transition + product pair + random).</li>
+<p><strong>Random baseline column.</strong> The &quot;Random&quot; column shows one representative random suite (seed 0, action budget matched to the transition-coverage suite, step ceiling 2&nbsp;&times;&nbsp;|T_repaired|, cut-and-include semantics — see <code>RandomBaselineGenerator</code> JavaDoc). The full 100-seed &times;&nbsp;3-budget distribution per (product &times; operator) — with median / quartiles / extremes / aborted-walk count — is in <code>milestone-reports/metrics/rq2-random-baseline.csv</code>.</p>
+</ol>
+<p><strong>Note on coverage saturation.</strong> TransitionMissing and ActionExchange mutants on a deterministic FTS are killed precisely when the mutated transition is traversed; transition coverage therefore detects them by construction. Stronger criteria such as transition-pair coverage cannot improve detection for this operator set, though they do increase execution cost. This is an inherent property of these mutation operators on deterministic models.</p>
+<hr/>
+<h2>Products</h2>
+<h3>Product 1</h3>
+<p><strong>Selected features:</strong> selected = {MMR, ab, as, bl, br, cli, clop, fip, ftp, iar, inl, layg, mfa, pat, pb, rel, sa, ser, sp, srl, sso, swl, tl, tob, tog, tr, vi, vip, wfl, wlb}</p>
+<p><strong>Repaired FTS:</strong> 74 states, 271 transitions (270 real / 1 <code>__end__</code>).</p>
+<p><strong>Family baseline projected to this product:</strong> 0 test case(s) (of 0 family-level), 0 real step(s) applicable.</p>
+<p><strong>Random baseline:</strong> 106 test case(s).</p>
+<p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
+<tr><td>TransitionMissing</td><td>270</td><td>0/270 = 0.0%</td><td>0/270 = 0.0%</td><td>100/270 = 37.0%</td><td>270/270 = 100.0%</td><td>270/270 = 100.0%</td><td>111/270 = 41.1%</td></tr>
+<tr><td>ActionExchange</td><td>1964</td><td>0/1964 = 0.0%</td><td>0/1964 = 0.0%</td><td>876/1964 = 44.6%</td><td>1964/1964 = 100.0%</td><td>1964/1964 = 100.0%</td><td>718/1964 = 36.6%</td></tr>
+<tr><td>StateMissing</td><td>73</td><td>0/73 = 0.0%</td><td>0/73 = 0.0%</td><td>73/73 = 100.0%</td><td>73/73 = 100.0%</td><td>73/73 = 100.0%</td><td>48/73 = 65.8%</td></tr>
+<tr><td>TransitionDestinationExchange</td><td>1277</td><td>558/1277 = 43.7%</td><td>0/719 = 0.0%</td><td>306/719 = 42.6%</td><td>667/719 = 92.8%</td><td>719/719 = 100.0%</td><td>319/719 = 44.4%</td></tr>
+</table>
+<details><summary>Equivalent mutants (not killed by any of the five suites)</summary>
+<p><em>TransitionDestinationExchange</em> (558):</p>
+<ul>
+<li><code>TDE__state30__Hide Graphics__state45__state44</code></li>
+<li><code>TDE__state30__Hide Graphics__state45__state46</code></li>
+<li><code>TDE__state61__Remove from 
+Favorites__state1__state4</code></li>
+<li><code>TDE__state61__Remove from 
+Favorites__state1__state3</code></li>
+<li><code>TDE__state61__Remove from 
+Favorites__state1__state2</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state62</code></li>
+<li><code>TDE__state39__select instance
+from Instances list__state58__state39</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state62</code></li>
+<li><code>TDE__state60__Discard Changes__state1__state4</code></li>
+<li><code>TDE__state60__Discard Changes__state1__state3</code></li>
+<li><code>TDE__state60__Discard Changes__state1__state2</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state66</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state65</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state63</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state62</code></li>
+<li><code>TDE__state30__Align Timepoints__state45__state44</code></li>
+<li><code>TDE__state30__Align Timepoints__state45__state46</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state58</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state4</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state2</code></li>
+<li><code>TDE__state44__Save and Send__state1__state59</code></li>
+<li><code>TDE__state44__Save and Send__state1__state60</code></li>
+<li><code>TDE__state44__Save and Send__state1__state4</code></li>
+<li><code>TDE__state44__Save and Send__state1__state3</code></li>
+<li><code>TDE__state44__Save and Send__state1__state2</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state58</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state39</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state4</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state2</code></li>
+<li><code>TDE__state24__LayoutGallery icon__state35__state33</code></li>
+<li><code>TDE__state26__Delete__state1__state26</code></li>
+<li><code>TDE__state26__Delete__state1__state14</code></li>
+<li><code>TDE__state26__Delete__state1__state13</code></li>
+<li><code>TDE__state26__Delete__state1__state39</code></li>
+<li><code>TDE__state26__Delete__state1__state41</code></li>
+<li><code>TDE__state26__Delete__state1__state40</code></li>
+<li><code>TDE__state26__Delete__state1__state4</code></li>
+<li><code>TDE__state26__Delete__state1__state3</code></li>
+<li><code>TDE__state26__Delete__state1__state2</code></li>
+<li><code>TDE__state62__Save and Send__state1__state45</code></li>
+<li><code>TDE__state62__Save and Send__state1__state60</code></li>
+<li><code>TDE__state62__Save and Send__state1__state4</code></li>
+<li><code>TDE__state62__Save and Send__state1__state3</code></li>
+<li><code>TDE__state62__Save and Send__state1__state2</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state62</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state26</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state14</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state13</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state39</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state41</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state40</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state4</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state3</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state2</code></li>
+<li><code>TDE__state45__Save and Send__state1__state60</code></li>
+<li><code>TDE__state45__Save and Send__state1__state4</code></li>
+<li><code>TDE__state45__Save and Send__state1__state3</code></li>
+<li><code>TDE__state45__Save and Send__state1__state2</code></li>
+<li><code>TDE__state63__Save and Send__state1__state45</code></li>
+<li><code>TDE__state63__Save and Send__state1__state60</code></li>
+<li><code>TDE__state63__Save and Send__state1__state4</code></li>
+<li><code>TDE__state63__Save and Send__state1__state3</code></li>
+<li><code>TDE__state63__Save and Send__state1__state2</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state66</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state65</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state63</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state62</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state59__Time curve__state45__state73</code></li>
+<li><code>TDE__state30__Hide Lines__state45__state44</code></li>
+<li><code>TDE__state30__Hide Lines__state45__state46</code></li>
+<li><code>TDE__state59__Time ROI__state45__state73</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state61</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state47__Home Position__state45__state66</code></li>
+<li><code>TDE__state47__Home Position__state45__state65</code></li>
+<li><code>TDE__state47__Home Position__state45__state63</code></li>
+<li><code>TDE__state47__Home Position__state45__state62</code></li>
+<li><code>TDE__state68__Rename Layout__state1__state4</code></li>
+<li><code>TDE__state68__Rename Layout__state1__state3</code></li>
+<li><code>TDE__state68__Rename Layout__state1__state2</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state26</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state39</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state40</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state4</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state2</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state14</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state13</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state4</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state3</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state2</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state64</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state59__Show Vessel__state45__state73</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state77</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state60</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state4</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state3</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state2</code></li>
+<li><code>TDE__state47__Save as Series__state45__state66</code></li>
+<li><code>TDE__state47__Save as Series__state45__state65</code></li>
+<li><code>TDE__state47__Save as Series__state45__state63</code></li>
+<li><code>TDE__state47__Save as Series__state45__state62</code></li>
+<li><code>TDE__state30__Align__state45__state44</code></li>
+<li><code>TDE__state30__Align__state45__state46</code></li>
+<li><code>TDE__state78__export
+findings__state1__state4</code></li>
+<li><code>TDE__state78__export
+findings__state1__state3</code></li>
+<li><code>TDE__state78__export
+findings__state1__state2</code></li>
+<li><code>TDE__state26__double-click
+to assign default 
+workflow__state41__state26</code></li>
+<li><code>TDE__state26__double-click
+to assign default 
+workflow__state41__state39</code></li>
+<li><code>TDE__state77__Add to Favorites__state1__state4</code></li>
+<li><code>TDE__state77__Add to Favorites__state1__state3</code></li>
+<li><code>TDE__state77__Add to Favorites__state1__state2</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state66</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state65</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state63</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state62</code></li>
+<li><code>TDE__state30__Print Layout__state45__state44</code></li>
+<li><code>TDE__state30__Print Layout__state45__state46</code></li>
+<li><code>TDE__state47__Punch__state45__state66</code></li>
+<li><code>TDE__state47__Punch__state45__state65</code></li>
+<li><code>TDE__state47__Punch__state45__state63</code></li>
+<li><code>TDE__state47__Punch__state45__state62</code></li>
+<li><code>TDE__state58__Correct__state1__state58</code></li>
+<li><code>TDE__state58__Correct__state1__state14</code></li>
+<li><code>TDE__state58__Correct__state1__state13</code></li>
+<li><code>TDE__state58__Correct__state1__state41</code></li>
+<li><code>TDE__state58__Correct__state1__state4</code></li>
+<li><code>TDE__state58__Correct__state1__state3</code></li>
+<li><code>TDE__state58__Correct__state1__state2</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state62</code></li>
+<li><code>TDE__state30__Print Image__state45__state44</code></li>
+<li><code>TDE__state30__Print Image__state45__state46</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state45</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state66</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state65</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state63</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state62</code></li>
+<li><code>TDE__state30__Print Stack__state45__state44</code></li>
+<li><code>TDE__state30__Print Stack__state45__state46</code></li>
+<li><code>TDE__state24__Minimize__state1__state34</code></li>
+<li><code>TDE__state24__Minimize__state1__state33</code></li>
+<li><code>TDE__state24__Minimize__state1__state10</code></li>
+<li><code>TDE__state24__Minimize__state1__state31</code></li>
+<li><code>TDE__state24__Minimize__state1__state36</code></li>
+<li><code>TDE__state24__Minimize__state1__state35</code></li>
+<li><code>TDE__state24__Minimize__state1__state30</code></li>
+<li><code>TDE__state24__Minimize__state1__state4</code></li>
+<li><code>TDE__state24__Minimize__state1__state3</code></li>
+<li><code>TDE__state24__Minimize__state1__state2</code></li>
+<li><code>TDE__state47__Region Growing__state67__state45</code></li>
+<li><code>TDE__state47__Region Growing__state67__state66</code></li>
+<li><code>TDE__state47__Region Growing__state67__state65</code></li>
+<li><code>TDE__state47__Region Growing__state67__state64</code></li>
+<li><code>TDE__state47__Region Growing__state67__state63</code></li>
+<li><code>TDE__state47__Region Growing__state67__state62</code></li>
+<li><code>TDE__state24__Layout Gallery__state33__state35</code></li>
+<li><code>TDE__state39__Correct__state1__state58</code></li>
+<li><code>TDE__state39__Correct__state1__state14</code></li>
+<li><code>TDE__state39__Correct__state1__state13</code></li>
+<li><code>TDE__state39__Correct__state1__state39</code></li>
+<li><code>TDE__state39__Correct__state1__state41</code></li>
+<li><code>TDE__state39__Correct__state1__state4</code></li>
+<li><code>TDE__state39__Correct__state1__state3</code></li>
+<li><code>TDE__state39__Correct__state1__state2</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state66</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state65</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state63</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state62</code></li>
+<li><code>TDE__state39__double-click
+to assign default 
+workflow__state41__state58</code></li>
+<li><code>TDE__state39__double-click
+to assign default 
+workflow__state41__state39</code></li>
+<li><code>TDE__state10__Minimize__state1__state5</code></li>
+<li><code>TDE__state10__Minimize__state1__state7</code></li>
+<li><code>TDE__state10__Minimize__state1__state6</code></li>
+<li><code>TDE__state10__Minimize__state1__state9</code></li>
+<li><code>TDE__state10__Minimize__state1__state8</code></li>
+<li><code>TDE__state10__Minimize__state1__state4</code></li>
+<li><code>TDE__state10__Minimize__state1__state3</code></li>
+<li><code>TDE__state10__Minimize__state1__state2</code></li>
+<li><code>TDE__state58__double-click
+to assign default 
+workflow__state41__state58</code></li>
+<li><code>TDE__state47__Edit Result__state45__state66</code></li>
+<li><code>TDE__state47__Edit Result__state45__state65</code></li>
+<li><code>TDE__state47__Edit Result__state45__state63</code></li>
+<li><code>TDE__state47__Edit Result__state45__state62</code></li>
+<li><code>TDE__state75__Replace__state1__state4</code></li>
+<li><code>TDE__state75__Replace__state1__state3</code></li>
+<li><code>TDE__state75__Replace__state1__state2</code></li>
+<li><code>TDE__state34__Change View__state1__state53</code></li>
+<li><code>TDE__state34__Change View__state1__state52</code></li>
+<li><code>TDE__state34__Change View__state1__state4</code></li>
+<li><code>TDE__state34__Change View__state1__state3</code></li>
+<li><code>TDE__state34__Change View__state1__state2</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state34</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state33</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state10</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state31</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state36</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state35</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state30</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state4</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state3</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state2</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state45</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state66</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state65</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state63</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state62</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state66</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state65</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state63</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state62</code></li>
+<li><code>TDE__state26__Correct__state1__state26</code></li>
+<li><code>TDE__state26__Correct__state1__state14</code></li>
+<li><code>TDE__state26__Correct__state1__state13</code></li>
+<li><code>TDE__state26__Correct__state1__state39</code></li>
+<li><code>TDE__state26__Correct__state1__state41</code></li>
+<li><code>TDE__state26__Correct__state1__state40</code></li>
+<li><code>TDE__state26__Correct__state1__state4</code></li>
+<li><code>TDE__state26__Correct__state1__state3</code></li>
+<li><code>TDE__state26__Correct__state1__state2</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state59__NextStudy&amp;
+PreviousStudy__state45__state73</code></li>
+<li><code>TDE__state47__Table Removal__state67__state45</code></li>
+<li><code>TDE__state47__Table Removal__state67__state66</code></li>
+<li><code>TDE__state47__Table Removal__state67__state65</code></li>
+<li><code>TDE__state47__Table Removal__state67__state64</code></li>
+<li><code>TDE__state47__Table Removal__state67__state63</code></li>
+<li><code>TDE__state47__Table Removal__state67__state62</code></li>
+<li><code>TDE__state19__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state39__Print__state1__state58</code></li>
+<li><code>TDE__state39__Print__state1__state14</code></li>
+<li><code>TDE__state39__Print__state1__state13</code></li>
+<li><code>TDE__state39__Print__state1__state39</code></li>
+<li><code>TDE__state39__Print__state1__state41</code></li>
+<li><code>TDE__state39__Print__state1__state4</code></li>
+<li><code>TDE__state39__Print__state1__state3</code></li>
+<li><code>TDE__state39__Print__state1__state2</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state14</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state13</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state4</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state3</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state2</code></li>
+<li><code>TDE__state75__Insert before__state1__state4</code></li>
+<li><code>TDE__state75__Insert before__state1__state3</code></li>
+<li><code>TDE__state75__Insert before__state1__state2</code></li>
+<li><code>TDE__state26__Import__state1__state26</code></li>
+<li><code>TDE__state26__Import__state1__state14</code></li>
+<li><code>TDE__state26__Import__state1__state13</code></li>
+<li><code>TDE__state26__Import__state1__state39</code></li>
+<li><code>TDE__state26__Import__state1__state41</code></li>
+<li><code>TDE__state26__Import__state1__state40</code></li>
+<li><code>TDE__state26__Import__state1__state4</code></li>
+<li><code>TDE__state26__Import__state1__state3</code></li>
+<li><code>TDE__state26__Import__state1__state2</code></li>
+<li><code>TDE__state17__Remove search 
+condition field__state19__state17</code></li>
+<li><code>TDE__state58__Print__state1__state58</code></li>
+<li><code>TDE__state58__Print__state1__state14</code></li>
+<li><code>TDE__state58__Print__state1__state13</code></li>
+<li><code>TDE__state58__Print__state1__state41</code></li>
+<li><code>TDE__state58__Print__state1__state4</code></li>
+<li><code>TDE__state58__Print__state1__state3</code></li>
+<li><code>TDE__state58__Print__state1__state2</code></li>
+<li><code>TDE__state17__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state47__Scroll__state45__state66</code></li>
+<li><code>TDE__state47__Scroll__state45__state65</code></li>
+<li><code>TDE__state47__Scroll__state45__state63</code></li>
+<li><code>TDE__state47__Scroll__state45__state62</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state38</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state4</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state3</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state2</code></li>
+<li><code>TDE__state16__Abort search__state1__state26</code></li>
+<li><code>TDE__state16__Abort search__state1__state4</code></li>
+<li><code>TDE__state16__Abort search__state1__state3</code></li>
+<li><code>TDE__state16__Abort search__state1__state2</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state53</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state52</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state4</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state3</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state2</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state5</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state7</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state6</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state9</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state8</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state4</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state3</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state2</code></li>
+<li><code>TDE__state26__Print__state1__state26</code></li>
+<li><code>TDE__state26__Print__state1__state14</code></li>
+<li><code>TDE__state26__Print__state1__state13</code></li>
+<li><code>TDE__state26__Print__state1__state39</code></li>
+<li><code>TDE__state26__Print__state1__state41</code></li>
+<li><code>TDE__state26__Print__state1__state40</code></li>
+<li><code>TDE__state26__Print__state1__state4</code></li>
+<li><code>TDE__state26__Print__state1__state3</code></li>
+<li><code>TDE__state26__Print__state1__state2</code></li>
+<li><code>TDE__state39__Import__state1__state58</code></li>
+<li><code>TDE__state39__Import__state1__state14</code></li>
+<li><code>TDE__state39__Import__state1__state13</code></li>
+<li><code>TDE__state39__Import__state1__state39</code></li>
+<li><code>TDE__state39__Import__state1__state41</code></li>
+<li><code>TDE__state39__Import__state1__state4</code></li>
+<li><code>TDE__state39__Import__state1__state3</code></li>
+<li><code>TDE__state39__Import__state1__state2</code></li>
+<li><code>TDE__state59__Assisted 
+Perpendicular__state45__state73</code></li>
+<li><code>TDE__state47__Clip Box__state45__state66</code></li>
+<li><code>TDE__state47__Clip Box__state45__state65</code></li>
+<li><code>TDE__state47__Clip Box__state45__state63</code></li>
+<li><code>TDE__state47__Clip Box__state45__state62</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state66</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state65</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state63</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state62</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state66</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state65</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state63</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state62</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state66</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state65</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state63</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state62</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state34</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state33</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state10</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state31</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state36</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state35</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state30</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state4</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state3</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state2</code></li>
+<li><code>TDE__state24__Close__state1__state34</code></li>
+<li><code>TDE__state24__Close__state1__state33</code></li>
+<li><code>TDE__state24__Close__state1__state10</code></li>
+<li><code>TDE__state24__Close__state1__state31</code></li>
+<li><code>TDE__state24__Close__state1__state36</code></li>
+<li><code>TDE__state24__Close__state1__state35</code></li>
+<li><code>TDE__state24__Close__state1__state30</code></li>
+<li><code>TDE__state24__Close__state1__state4</code></li>
+<li><code>TDE__state24__Close__state1__state3</code></li>
+<li><code>TDE__state24__Close__state1__state2</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state66</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state65</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state63</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state62</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state47__Windowing__state45__state66</code></li>
+<li><code>TDE__state47__Windowing__state45__state65</code></li>
+<li><code>TDE__state47__Windowing__state45__state63</code></li>
+<li><code>TDE__state47__Windowing__state45__state62</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state53</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state52</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state4</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state3</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state2</code></li>
+<li><code>TDE__state39__Delete__state1__state58</code></li>
+<li><code>TDE__state39__Delete__state1__state14</code></li>
+<li><code>TDE__state39__Delete__state1__state13</code></li>
+<li><code>TDE__state39__Delete__state1__state39</code></li>
+<li><code>TDE__state39__Delete__state1__state41</code></li>
+<li><code>TDE__state39__Delete__state1__state4</code></li>
+<li><code>TDE__state39__Delete__state1__state3</code></li>
+<li><code>TDE__state39__Delete__state1__state2</code></li>
+<li><code>TDE__state43__confirm__state1__state4</code></li>
+<li><code>TDE__state43__confirm__state1__state3</code></li>
+<li><code>TDE__state43__confirm__state1__state2</code></li>
+<li><code>TDE__state58__Delete__state1__state58</code></li>
+<li><code>TDE__state58__Delete__state1__state14</code></li>
+<li><code>TDE__state58__Delete__state1__state13</code></li>
+<li><code>TDE__state58__Delete__state1__state41</code></li>
+<li><code>TDE__state58__Delete__state1__state4</code></li>
+<li><code>TDE__state58__Delete__state1__state3</code></li>
+<li><code>TDE__state58__Delete__state1__state2</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state5</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state7</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state6</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state9</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state8</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state4</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state3</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state2</code></li>
+<li><code>TDE__state26__Export__state1__state26</code></li>
+<li><code>TDE__state26__Export__state1__state14</code></li>
+<li><code>TDE__state26__Export__state1__state13</code></li>
+<li><code>TDE__state26__Export__state1__state39</code></li>
+<li><code>TDE__state26__Export__state1__state41</code></li>
+<li><code>TDE__state26__Export__state1__state40</code></li>
+<li><code>TDE__state26__Export__state1__state4</code></li>
+<li><code>TDE__state26__Export__state1__state3</code></li>
+<li><code>TDE__state26__Export__state1__state2</code></li>
+<li><code>TDE__state58__Import__state1__state58</code></li>
+<li><code>TDE__state58__Import__state1__state14</code></li>
+<li><code>TDE__state58__Import__state1__state13</code></li>
+<li><code>TDE__state58__Import__state1__state41</code></li>
+<li><code>TDE__state58__Import__state1__state4</code></li>
+<li><code>TDE__state58__Import__state1__state3</code></li>
+<li><code>TDE__state58__Import__state1__state2</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state66</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state65</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state63</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state62</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state77</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state66</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state65</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state63</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state62</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state62</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state62</code></li>
+<li><code>TDE__state45__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state45__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state45__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state45__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state74__Load Data__state1__state4</code></li>
+<li><code>TDE__state74__Load Data__state1__state3</code></li>
+<li><code>TDE__state74__Load Data__state1__state2</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state66</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state65</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state63</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state62</code></li>
+<li><code>TDE__state2__Delete the search 
+criteria in the Quick
+Search field__state8__state10</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state59</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state10__Close__state1__state5</code></li>
+<li><code>TDE__state10__Close__state1__state7</code></li>
+<li><code>TDE__state10__Close__state1__state6</code></li>
+<li><code>TDE__state10__Close__state1__state9</code></li>
+<li><code>TDE__state10__Close__state1__state8</code></li>
+<li><code>TDE__state10__Close__state1__state4</code></li>
+<li><code>TDE__state10__Close__state1__state3</code></li>
+<li><code>TDE__state10__Close__state1__state2</code></li>
+<li><code>TDE__state46__Save and Send__state1__state61</code></li>
+<li><code>TDE__state46__Save and Send__state1__state60</code></li>
+<li><code>TDE__state46__Save and Send__state1__state4</code></li>
+<li><code>TDE__state46__Save and Send__state1__state3</code></li>
+<li><code>TDE__state46__Save and Send__state1__state2</code></li>
+<li><code>TDE__state73__Save and Send__state1__state77</code></li>
+<li><code>TDE__state73__Save and Send__state1__state60</code></li>
+<li><code>TDE__state73__Save and Send__state1__state4</code></li>
+<li><code>TDE__state73__Save and Send__state1__state3</code></li>
+<li><code>TDE__state73__Save and Send__state1__state2</code></li>
+<li><code>TDE__state64__Save and Send__state1__state60</code></li>
+<li><code>TDE__state64__Save and Send__state1__state4</code></li>
+<li><code>TDE__state64__Save and Send__state1__state3</code></li>
+<li><code>TDE__state64__Save and Send__state1__state2</code></li>
+<li><code>TDE__state58__Export__state1__state58</code></li>
+<li><code>TDE__state58__Export__state1__state14</code></li>
+<li><code>TDE__state58__Export__state1__state13</code></li>
+<li><code>TDE__state58__Export__state1__state41</code></li>
+<li><code>TDE__state58__Export__state1__state4</code></li>
+<li><code>TDE__state58__Export__state1__state3</code></li>
+<li><code>TDE__state58__Export__state1__state2</code></li>
+<li><code>TDE__state30__Custom text__state45__state44</code></li>
+<li><code>TDE__state30__Custom text__state45__state46</code></li>
+<li><code>TDE__state65__Save and Send__state1__state45</code></li>
+<li><code>TDE__state65__Save and Send__state1__state60</code></li>
+<li><code>TDE__state65__Save and Send__state1__state4</code></li>
+<li><code>TDE__state65__Save and Send__state1__state3</code></li>
+<li><code>TDE__state65__Save and Send__state1__state2</code></li>
+<li><code>TDE__state39__Export__state1__state58</code></li>
+<li><code>TDE__state39__Export__state1__state14</code></li>
+<li><code>TDE__state39__Export__state1__state13</code></li>
+<li><code>TDE__state39__Export__state1__state39</code></li>
+<li><code>TDE__state39__Export__state1__state41</code></li>
+<li><code>TDE__state39__Export__state1__state4</code></li>
+<li><code>TDE__state39__Export__state1__state3</code></li>
+<li><code>TDE__state39__Export__state1__state2</code></li>
+<li><code>TDE__state30__Full text__state45__state44</code></li>
+<li><code>TDE__state30__Full text__state45__state46</code></li>
+<li><code>TDE__state66__Save and Send__state1__state64</code></li>
+<li><code>TDE__state66__Save and Send__state1__state60</code></li>
+<li><code>TDE__state66__Save and Send__state1__state4</code></li>
+<li><code>TDE__state66__Save and Send__state1__state3</code></li>
+<li><code>TDE__state66__Save and Send__state1__state2</code></li>
+<li><code>TDE__state47__Rotate__state45__state66</code></li>
+<li><code>TDE__state47__Rotate__state45__state65</code></li>
+<li><code>TDE__state47__Rotate__state45__state63</code></li>
+<li><code>TDE__state47__Rotate__state45__state62</code></li>
+<li><code>TDE__state18__Remove search 
+condition field__state19__state17</code></li>
+<li><code>TDE__state47__Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Ranges__state45__state62</code></li>
+<li><code>TDE__state9__Remove search 
+condition field__state19__state17</code></li>
+<li><code>TDE__state9__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state30__Synch__state45__state44</code></li>
+<li><code>TDE__state30__Synch__state45__state46</code></li>
+</ul>
+</details>
+<h3>Product 2</h3>
+<p><strong>Selected features:</strong> selected = {MMR, ab, as, bl, br, clop, ct, fip, ftp, hi, iar, inl, layg, mfa, mrca, pat, pb, rel, sa, ser, sp, srl, sso, swl, tl, tob, tog, tr, vi, vip, wfl, wlb}</p>
+<p><strong>Repaired FTS:</strong> 70 states, 274 transitions (273 real / 1 <code>__end__</code>).</p>
+<p><strong>Family baseline projected to this product:</strong> 0 test case(s) (of 0 family-level), 0 real step(s) applicable.</p>
+<p><strong>Random baseline:</strong> 112 test case(s).</p>
+<p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
+<tr><td>TransitionMissing</td><td>273</td><td>0/273 = 0.0%</td><td>0/273 = 0.0%</td><td>95/273 = 34.8%</td><td>273/273 = 100.0%</td><td>273/273 = 100.0%</td><td>116/273 = 42.5%</td></tr>
+<tr><td>ActionExchange</td><td>1945</td><td>0/1945 = 0.0%</td><td>0/1945 = 0.0%</td><td>863/1945 = 44.4%</td><td>1945/1945 = 100.0%</td><td>1945/1945 = 100.0%</td><td>689/1945 = 35.4%</td></tr>
+<tr><td>StateMissing</td><td>69</td><td>0/69 = 0.0%</td><td>0/69 = 0.0%</td><td>69/69 = 100.0%</td><td>69/69 = 100.0%</td><td>69/69 = 100.0%</td><td>55/69 = 79.7%</td></tr>
+<tr><td>TransitionDestinationExchange</td><td>1228</td><td>508/1228 = 41.4%</td><td>0/720 = 0.0%</td><td>293/720 = 40.7%</td><td>667/720 = 92.6%</td><td>720/720 = 100.0%</td><td>338/720 = 46.9%</td></tr>
+</table>
+<details><summary>Equivalent mutants (not killed by any of the five suites)</summary>
+<p><em>TransitionDestinationExchange</em> (508):</p>
+<ul>
+<li><code>TDE__state30__Hide Graphics__state45__state44</code></li>
+<li><code>TDE__state30__Hide Graphics__state45__state46</code></li>
+<li><code>TDE__state61__Remove from 
+Favorites__state1__state3</code></li>
+<li><code>TDE__state61__Remove from 
+Favorites__state1__state2</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state62</code></li>
+<li><code>TDE__state39__select instance
+from Instances list__state58__state39</code></li>
+<li><code>TDE__state59__2D Distortion 
+Correction__state45__state73</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state62</code></li>
+<li><code>TDE__state60__Discard Changes__state1__state3</code></li>
+<li><code>TDE__state60__Discard Changes__state1__state2</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state66</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state65</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state63</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state62</code></li>
+<li><code>TDE__state30__Align Timepoints__state45__state44</code></li>
+<li><code>TDE__state30__Align Timepoints__state45__state46</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state58</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state2</code></li>
+<li><code>TDE__state44__Save and Send__state1__state59</code></li>
+<li><code>TDE__state44__Save and Send__state1__state60</code></li>
+<li><code>TDE__state44__Save and Send__state1__state3</code></li>
+<li><code>TDE__state44__Save and Send__state1__state2</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state58</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state39</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state2</code></li>
+<li><code>TDE__state24__LayoutGallery icon__state35__state33</code></li>
+<li><code>TDE__state26__Delete__state1__state26</code></li>
+<li><code>TDE__state26__Delete__state1__state14</code></li>
+<li><code>TDE__state26__Delete__state1__state13</code></li>
+<li><code>TDE__state26__Delete__state1__state39</code></li>
+<li><code>TDE__state26__Delete__state1__state41</code></li>
+<li><code>TDE__state26__Delete__state1__state40</code></li>
+<li><code>TDE__state26__Delete__state1__state3</code></li>
+<li><code>TDE__state26__Delete__state1__state2</code></li>
+<li><code>TDE__state62__Save and Send__state1__state45</code></li>
+<li><code>TDE__state62__Save and Send__state1__state60</code></li>
+<li><code>TDE__state62__Save and Send__state1__state3</code></li>
+<li><code>TDE__state62__Save and Send__state1__state2</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state62</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state26</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state14</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state13</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state39</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state41</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state40</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state3</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state2</code></li>
+<li><code>TDE__state45__Save and Send__state1__state60</code></li>
+<li><code>TDE__state45__Save and Send__state1__state3</code></li>
+<li><code>TDE__state45__Save and Send__state1__state2</code></li>
+<li><code>TDE__state63__Save and Send__state1__state45</code></li>
+<li><code>TDE__state63__Save and Send__state1__state60</code></li>
+<li><code>TDE__state63__Save and Send__state1__state3</code></li>
+<li><code>TDE__state63__Save and Send__state1__state2</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state66</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state65</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state63</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state62</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state59__Time curve__state45__state73</code></li>
+<li><code>TDE__state30__Hide Lines__state45__state44</code></li>
+<li><code>TDE__state30__Hide Lines__state45__state46</code></li>
+<li><code>TDE__state59__Time ROI__state45__state73</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state61</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state46__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state47__Home Position__state45__state66</code></li>
+<li><code>TDE__state47__Home Position__state45__state65</code></li>
+<li><code>TDE__state47__Home Position__state45__state63</code></li>
+<li><code>TDE__state47__Home Position__state45__state62</code></li>
+<li><code>TDE__state68__Rename Layout__state1__state3</code></li>
+<li><code>TDE__state68__Rename Layout__state1__state2</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state26</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state39</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state40</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state2</code></li>
+<li><code>TDE__state59__Multiplication__state45__state73</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state14</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state13</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state3</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state2</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state64</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state59__Show Vessel__state45__state73</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state77</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state60</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state3</code></li>
+<li><code>TDE__state73__drag icon to the
+Favorite Tools 
+Panel__state1__state2</code></li>
+<li><code>TDE__state47__Save as Series__state45__state66</code></li>
+<li><code>TDE__state47__Save as Series__state45__state65</code></li>
+<li><code>TDE__state47__Save as Series__state45__state63</code></li>
+<li><code>TDE__state47__Save as Series__state45__state62</code></li>
+<li><code>TDE__state30__Align__state45__state44</code></li>
+<li><code>TDE__state30__Align__state45__state46</code></li>
+<li><code>TDE__state78__export
+findings__state1__state3</code></li>
+<li><code>TDE__state78__export
+findings__state1__state2</code></li>
+<li><code>TDE__state26__double-click
+to assign default 
+workflow__state41__state26</code></li>
+<li><code>TDE__state26__double-click
+to assign default 
+workflow__state41__state39</code></li>
+<li><code>TDE__state77__Add to Favorites__state1__state3</code></li>
+<li><code>TDE__state77__Add to Favorites__state1__state2</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state66</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state65</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state63</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state62</code></li>
+<li><code>TDE__state30__Print Layout__state45__state44</code></li>
+<li><code>TDE__state30__Print Layout__state45__state46</code></li>
+<li><code>TDE__state47__Punch__state45__state66</code></li>
+<li><code>TDE__state47__Punch__state45__state65</code></li>
+<li><code>TDE__state47__Punch__state45__state63</code></li>
+<li><code>TDE__state47__Punch__state45__state62</code></li>
+<li><code>TDE__state58__Correct__state1__state58</code></li>
+<li><code>TDE__state58__Correct__state1__state14</code></li>
+<li><code>TDE__state58__Correct__state1__state13</code></li>
+<li><code>TDE__state58__Correct__state1__state41</code></li>
+<li><code>TDE__state58__Correct__state1__state3</code></li>
+<li><code>TDE__state58__Correct__state1__state2</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state62</code></li>
+<li><code>TDE__state59__Image Filter&amp;
+Smooth__state45__state73</code></li>
+<li><code>TDE__state30__Print Image__state45__state44</code></li>
+<li><code>TDE__state30__Print Image__state45__state46</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state45</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state66</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state65</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state63</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state62</code></li>
+<li><code>TDE__state30__Print Stack__state45__state44</code></li>
+<li><code>TDE__state30__Print Stack__state45__state46</code></li>
+<li><code>TDE__state24__Minimize__state1__state34</code></li>
+<li><code>TDE__state24__Minimize__state1__state33</code></li>
+<li><code>TDE__state24__Minimize__state1__state10</code></li>
+<li><code>TDE__state24__Minimize__state1__state31</code></li>
+<li><code>TDE__state24__Minimize__state1__state36</code></li>
+<li><code>TDE__state24__Minimize__state1__state35</code></li>
+<li><code>TDE__state24__Minimize__state1__state30</code></li>
+<li><code>TDE__state24__Minimize__state1__state3</code></li>
+<li><code>TDE__state24__Minimize__state1__state2</code></li>
+<li><code>TDE__state47__Region Growing__state67__state45</code></li>
+<li><code>TDE__state47__Region Growing__state67__state66</code></li>
+<li><code>TDE__state47__Region Growing__state67__state65</code></li>
+<li><code>TDE__state47__Region Growing__state67__state64</code></li>
+<li><code>TDE__state47__Region Growing__state67__state63</code></li>
+<li><code>TDE__state47__Region Growing__state67__state62</code></li>
+<li><code>TDE__state24__Layout Gallery__state33__state35</code></li>
+<li><code>TDE__state39__Correct__state1__state58</code></li>
+<li><code>TDE__state39__Correct__state1__state14</code></li>
+<li><code>TDE__state39__Correct__state1__state13</code></li>
+<li><code>TDE__state39__Correct__state1__state39</code></li>
+<li><code>TDE__state39__Correct__state1__state41</code></li>
+<li><code>TDE__state39__Correct__state1__state3</code></li>
+<li><code>TDE__state39__Correct__state1__state2</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state66</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state65</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state63</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state62</code></li>
+<li><code>TDE__state39__double-click
+to assign default 
+workflow__state41__state58</code></li>
+<li><code>TDE__state39__double-click
+to assign default 
+workflow__state41__state39</code></li>
+<li><code>TDE__state10__Minimize__state1__state5</code></li>
+<li><code>TDE__state10__Minimize__state1__state7</code></li>
+<li><code>TDE__state10__Minimize__state1__state6</code></li>
+<li><code>TDE__state10__Minimize__state1__state9</code></li>
+<li><code>TDE__state10__Minimize__state1__state8</code></li>
+<li><code>TDE__state10__Minimize__state1__state3</code></li>
+<li><code>TDE__state10__Minimize__state1__state2</code></li>
+<li><code>TDE__state58__double-click
+to assign default 
+workflow__state41__state58</code></li>
+<li><code>TDE__state47__Edit Result__state45__state66</code></li>
+<li><code>TDE__state47__Edit Result__state45__state65</code></li>
+<li><code>TDE__state47__Edit Result__state45__state63</code></li>
+<li><code>TDE__state47__Edit Result__state45__state62</code></li>
+<li><code>TDE__state75__Replace__state1__state3</code></li>
+<li><code>TDE__state75__Replace__state1__state2</code></li>
+<li><code>TDE__state34__Change View__state1__state53</code></li>
+<li><code>TDE__state34__Change View__state1__state52</code></li>
+<li><code>TDE__state34__Change View__state1__state3</code></li>
+<li><code>TDE__state34__Change View__state1__state2</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state34</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state33</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state10</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state31</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state36</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state35</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state30</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state3</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state2</code></li>
+<li><code>TDE__state59__Arithmetic Mean__state45__state73</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state45</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state66</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state65</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state63</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state62</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state66</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state65</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state63</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state62</code></li>
+<li><code>TDE__state26__Correct__state1__state26</code></li>
+<li><code>TDE__state26__Correct__state1__state14</code></li>
+<li><code>TDE__state26__Correct__state1__state13</code></li>
+<li><code>TDE__state26__Correct__state1__state39</code></li>
+<li><code>TDE__state26__Correct__state1__state41</code></li>
+<li><code>TDE__state26__Correct__state1__state40</code></li>
+<li><code>TDE__state26__Correct__state1__state3</code></li>
+<li><code>TDE__state26__Correct__state1__state2</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state59__Addition__state45__state73</code></li>
+<li><code>TDE__state59__NextStudy&amp;
+PreviousStudy__state45__state73</code></li>
+<li><code>TDE__state47__Table Removal__state67__state45</code></li>
+<li><code>TDE__state47__Table Removal__state67__state66</code></li>
+<li><code>TDE__state47__Table Removal__state67__state65</code></li>
+<li><code>TDE__state47__Table Removal__state67__state64</code></li>
+<li><code>TDE__state47__Table Removal__state67__state63</code></li>
+<li><code>TDE__state47__Table Removal__state67__state62</code></li>
+<li><code>TDE__state19__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state59__Subtraction__state45__state73</code></li>
+<li><code>TDE__state39__Print__state1__state58</code></li>
+<li><code>TDE__state39__Print__state1__state14</code></li>
+<li><code>TDE__state39__Print__state1__state13</code></li>
+<li><code>TDE__state39__Print__state1__state39</code></li>
+<li><code>TDE__state39__Print__state1__state41</code></li>
+<li><code>TDE__state39__Print__state1__state3</code></li>
+<li><code>TDE__state39__Print__state1__state2</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state14</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state13</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state3</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state2</code></li>
+<li><code>TDE__state75__Insert before__state1__state3</code></li>
+<li><code>TDE__state75__Insert before__state1__state2</code></li>
+<li><code>TDE__state26__Import__state1__state26</code></li>
+<li><code>TDE__state26__Import__state1__state14</code></li>
+<li><code>TDE__state26__Import__state1__state13</code></li>
+<li><code>TDE__state26__Import__state1__state39</code></li>
+<li><code>TDE__state26__Import__state1__state41</code></li>
+<li><code>TDE__state26__Import__state1__state40</code></li>
+<li><code>TDE__state26__Import__state1__state3</code></li>
+<li><code>TDE__state26__Import__state1__state2</code></li>
+<li><code>TDE__state17__Remove search 
+condition field__state19__state17</code></li>
+<li><code>TDE__state58__Print__state1__state58</code></li>
+<li><code>TDE__state58__Print__state1__state14</code></li>
+<li><code>TDE__state58__Print__state1__state13</code></li>
+<li><code>TDE__state58__Print__state1__state41</code></li>
+<li><code>TDE__state58__Print__state1__state3</code></li>
+<li><code>TDE__state58__Print__state1__state2</code></li>
+<li><code>TDE__state59__Coronary Tree__state45__state73</code></li>
+<li><code>TDE__state17__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state47__Scroll__state45__state66</code></li>
+<li><code>TDE__state47__Scroll__state45__state65</code></li>
+<li><code>TDE__state47__Scroll__state45__state63</code></li>
+<li><code>TDE__state47__Scroll__state45__state62</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state38</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state3</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state2</code></li>
+<li><code>TDE__state16__Abort search__state1__state26</code></li>
+<li><code>TDE__state16__Abort search__state1__state3</code></li>
+<li><code>TDE__state16__Abort search__state1__state2</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state53</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state52</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state3</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state2</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state5</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state7</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state6</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state9</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state8</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state3</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state2</code></li>
+<li><code>TDE__state59__ADC&amp;b-value__state45__state73</code></li>
+<li><code>TDE__state26__Print__state1__state26</code></li>
+<li><code>TDE__state26__Print__state1__state14</code></li>
+<li><code>TDE__state26__Print__state1__state13</code></li>
+<li><code>TDE__state26__Print__state1__state39</code></li>
+<li><code>TDE__state26__Print__state1__state41</code></li>
+<li><code>TDE__state26__Print__state1__state40</code></li>
+<li><code>TDE__state26__Print__state1__state3</code></li>
+<li><code>TDE__state26__Print__state1__state2</code></li>
+<li><code>TDE__state59__Division__state45__state73</code></li>
+<li><code>TDE__state39__Import__state1__state58</code></li>
+<li><code>TDE__state39__Import__state1__state14</code></li>
+<li><code>TDE__state39__Import__state1__state13</code></li>
+<li><code>TDE__state39__Import__state1__state39</code></li>
+<li><code>TDE__state39__Import__state1__state41</code></li>
+<li><code>TDE__state39__Import__state1__state3</code></li>
+<li><code>TDE__state39__Import__state1__state2</code></li>
+<li><code>TDE__state59__Assisted 
+Perpendicular__state45__state73</code></li>
+<li><code>TDE__state47__Clip Box__state45__state66</code></li>
+<li><code>TDE__state47__Clip Box__state45__state65</code></li>
+<li><code>TDE__state47__Clip Box__state45__state63</code></li>
+<li><code>TDE__state47__Clip Box__state45__state62</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state66</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state65</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state63</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state62</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state66</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state65</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state63</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state62</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state66</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state65</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state63</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state62</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state34</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state33</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state10</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state31</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state36</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state35</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state30</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state3</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state2</code></li>
+<li><code>TDE__state24__Close__state1__state34</code></li>
+<li><code>TDE__state24__Close__state1__state33</code></li>
+<li><code>TDE__state24__Close__state1__state10</code></li>
+<li><code>TDE__state24__Close__state1__state31</code></li>
+<li><code>TDE__state24__Close__state1__state36</code></li>
+<li><code>TDE__state24__Close__state1__state35</code></li>
+<li><code>TDE__state24__Close__state1__state30</code></li>
+<li><code>TDE__state24__Close__state1__state3</code></li>
+<li><code>TDE__state24__Close__state1__state2</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state66</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state65</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state63</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state62</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state59__Heart Isolation__state45__state73</code></li>
+<li><code>TDE__state47__Windowing__state45__state66</code></li>
+<li><code>TDE__state47__Windowing__state45__state65</code></li>
+<li><code>TDE__state47__Windowing__state45__state63</code></li>
+<li><code>TDE__state47__Windowing__state45__state62</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state53</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state52</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state3</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state2</code></li>
+<li><code>TDE__state39__Delete__state1__state58</code></li>
+<li><code>TDE__state39__Delete__state1__state14</code></li>
+<li><code>TDE__state39__Delete__state1__state13</code></li>
+<li><code>TDE__state39__Delete__state1__state39</code></li>
+<li><code>TDE__state39__Delete__state1__state41</code></li>
+<li><code>TDE__state39__Delete__state1__state3</code></li>
+<li><code>TDE__state39__Delete__state1__state2</code></li>
+<li><code>TDE__state43__confirm__state1__state3</code></li>
+<li><code>TDE__state43__confirm__state1__state2</code></li>
+<li><code>TDE__state58__Delete__state1__state58</code></li>
+<li><code>TDE__state58__Delete__state1__state14</code></li>
+<li><code>TDE__state58__Delete__state1__state13</code></li>
+<li><code>TDE__state58__Delete__state1__state41</code></li>
+<li><code>TDE__state58__Delete__state1__state3</code></li>
+<li><code>TDE__state58__Delete__state1__state2</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state5</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state7</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state6</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state9</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state8</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state3</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state2</code></li>
+<li><code>TDE__state26__Export__state1__state26</code></li>
+<li><code>TDE__state26__Export__state1__state14</code></li>
+<li><code>TDE__state26__Export__state1__state13</code></li>
+<li><code>TDE__state26__Export__state1__state39</code></li>
+<li><code>TDE__state26__Export__state1__state41</code></li>
+<li><code>TDE__state26__Export__state1__state40</code></li>
+<li><code>TDE__state26__Export__state1__state3</code></li>
+<li><code>TDE__state26__Export__state1__state2</code></li>
+<li><code>TDE__state58__Import__state1__state58</code></li>
+<li><code>TDE__state58__Import__state1__state14</code></li>
+<li><code>TDE__state58__Import__state1__state13</code></li>
+<li><code>TDE__state58__Import__state1__state41</code></li>
+<li><code>TDE__state58__Import__state1__state3</code></li>
+<li><code>TDE__state58__Import__state1__state2</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state66</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state65</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state63</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state62</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state77</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state73__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state66</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state65</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state63</code></li>
+<li><code>TDE__state47__Edit Bone Removal__state45__state62</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Body__state45__state62</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Parallel Ranges__state45__state62</code></li>
+<li><code>TDE__state45__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state45__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state45__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state63__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state74__Load Data__state1__state3</code></li>
+<li><code>TDE__state74__Load Data__state1__state2</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state66</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state65</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state63</code></li>
+<li><code>TDE__state47__Automatic 
+Registration__state45__state62</code></li>
+<li><code>TDE__state2__Delete the search 
+criteria in the Quick
+Search field__state8__state10</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state59</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state44__Save and Pause__state1__state2</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Radial 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state10__Close__state1__state5</code></li>
+<li><code>TDE__state10__Close__state1__state7</code></li>
+<li><code>TDE__state10__Close__state1__state6</code></li>
+<li><code>TDE__state10__Close__state1__state9</code></li>
+<li><code>TDE__state10__Close__state1__state8</code></li>
+<li><code>TDE__state10__Close__state1__state3</code></li>
+<li><code>TDE__state10__Close__state1__state2</code></li>
+<li><code>TDE__state46__Save and Send__state1__state61</code></li>
+<li><code>TDE__state46__Save and Send__state1__state60</code></li>
+<li><code>TDE__state46__Save and Send__state1__state3</code></li>
+<li><code>TDE__state46__Save and Send__state1__state2</code></li>
+<li><code>TDE__state73__Save and Send__state1__state77</code></li>
+<li><code>TDE__state73__Save and Send__state1__state60</code></li>
+<li><code>TDE__state73__Save and Send__state1__state3</code></li>
+<li><code>TDE__state73__Save and Send__state1__state2</code></li>
+<li><code>TDE__state64__Save and Send__state1__state60</code></li>
+<li><code>TDE__state64__Save and Send__state1__state3</code></li>
+<li><code>TDE__state64__Save and Send__state1__state2</code></li>
+<li><code>TDE__state58__Export__state1__state58</code></li>
+<li><code>TDE__state58__Export__state1__state14</code></li>
+<li><code>TDE__state58__Export__state1__state13</code></li>
+<li><code>TDE__state58__Export__state1__state41</code></li>
+<li><code>TDE__state58__Export__state1__state3</code></li>
+<li><code>TDE__state58__Export__state1__state2</code></li>
+<li><code>TDE__state30__Custom text__state45__state44</code></li>
+<li><code>TDE__state30__Custom text__state45__state46</code></li>
+<li><code>TDE__state59__Motion 
+Correction__state45__state73</code></li>
+<li><code>TDE__state65__Save and Send__state1__state45</code></li>
+<li><code>TDE__state65__Save and Send__state1__state60</code></li>
+<li><code>TDE__state65__Save and Send__state1__state3</code></li>
+<li><code>TDE__state65__Save and Send__state1__state2</code></li>
+<li><code>TDE__state39__Export__state1__state58</code></li>
+<li><code>TDE__state39__Export__state1__state14</code></li>
+<li><code>TDE__state39__Export__state1__state13</code></li>
+<li><code>TDE__state39__Export__state1__state39</code></li>
+<li><code>TDE__state39__Export__state1__state41</code></li>
+<li><code>TDE__state39__Export__state1__state3</code></li>
+<li><code>TDE__state39__Export__state1__state2</code></li>
+<li><code>TDE__state30__Full text__state45__state44</code></li>
+<li><code>TDE__state30__Full text__state45__state46</code></li>
+<li><code>TDE__state66__Save and Send__state1__state64</code></li>
+<li><code>TDE__state66__Save and Send__state1__state60</code></li>
+<li><code>TDE__state66__Save and Send__state1__state3</code></li>
+<li><code>TDE__state66__Save and Send__state1__state2</code></li>
+<li><code>TDE__state47__Rotate__state45__state66</code></li>
+<li><code>TDE__state47__Rotate__state45__state65</code></li>
+<li><code>TDE__state47__Rotate__state45__state63</code></li>
+<li><code>TDE__state47__Rotate__state45__state62</code></li>
+<li><code>TDE__state18__Remove search 
+condition field__state19__state17</code></li>
+<li><code>TDE__state47__Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Ranges__state45__state62</code></li>
+<li><code>TDE__state9__Remove search 
+condition field__state19__state17</code></li>
+<li><code>TDE__state9__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state30__Synch__state45__state44</code></li>
+<li><code>TDE__state30__Synch__state45__state46</code></li>
+</ul>
+</details>
+<h3>Product 3</h3>
+<p><strong>Selected features:</strong> selected = {USR, ab, as, bl, br, cli, clop, fnav, iar, inl, layg, layt, mfa, pat, pb, rel, sa, ser, sp, srl, swl, tl, tob, tr, vi, wfl, wlb, wst}</p>
+<p><strong>Repaired FTS:</strong> 63 states, 231 transitions (230 real / 1 <code>__end__</code>).</p>
+<p><strong>Family baseline projected to this product:</strong> 0 test case(s) (of 0 family-level), 0 real step(s) applicable.</p>
+<p><strong>Random baseline:</strong> 107 test case(s).</p>
+<p>Scores: <strong>killed / non-equivalent = adjusted%</strong>. Equivalent = mutant not killed by ANY of five suites (Inozemtseva &amp; Holmes 2014).</p>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Operator</th><th>Total</th><th>Equivalent</th><th>Family (Devroey)</th><th>Product state-cov</th><th>Product transition-cov</th><th>Product pair-cov</th><th>Random</th></tr>
+<tr><td>TransitionMissing</td><td>230</td><td>0/230 = 0.0%</td><td>0/230 = 0.0%</td><td>86/230 = 37.4%</td><td>230/230 = 100.0%</td><td>230/230 = 100.0%</td><td>107/230 = 46.5%</td></tr>
+<tr><td>ActionExchange</td><td>1659</td><td>0/1659 = 0.0%</td><td>0/1659 = 0.0%</td><td>730/1659 = 44.0%</td><td>1659/1659 = 100.0%</td><td>1659/1659 = 100.0%</td><td>588/1659 = 35.4%</td></tr>
+<tr><td>StateMissing</td><td>62</td><td>0/62 = 0.0%</td><td>0/62 = 0.0%</td><td>62/62 = 100.0%</td><td>62/62 = 100.0%</td><td>62/62 = 100.0%</td><td>46/62 = 74.2%</td></tr>
+<tr><td>TransitionDestinationExchange</td><td>1049</td><td>440/1049 = 41.9%</td><td>0/609 = 0.0%</td><td>246/609 = 40.4%</td><td>555/609 = 91.1%</td><td>609/609 = 100.0%</td><td>295/609 = 48.4%</td></tr>
+</table>
+<details><summary>Equivalent mutants (not killed by any of the five suites)</summary>
+<p><em>TransitionDestinationExchange</em> (440):</p>
+<ul>
+<li><code>TDE__state54__Save As__state1__state4</code></li>
+<li><code>TDE__state54__Save As__state1__state3</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Head__state45__state62</code></li>
+<li><code>TDE__state39__select instance
+from Instances list__state58__state39</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Leg__state45__state62</code></li>
+<li><code>TDE__state60__Discard Changes__state1__state4</code></li>
+<li><code>TDE__state60__Discard Changes__state1__state3</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state66</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state65</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state63</code></li>
+<li><code>TDE__state47__Lock Reference
+Lines__state45__state62</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state58</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state4</code></li>
+<li><code>TDE__state58__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state58</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state39</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state4</code></li>
+<li><code>TDE__state39__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state26__Delete__state1__state26</code></li>
+<li><code>TDE__state26__Delete__state1__state14</code></li>
+<li><code>TDE__state26__Delete__state1__state13</code></li>
+<li><code>TDE__state26__Delete__state1__state39</code></li>
+<li><code>TDE__state26__Delete__state1__state41</code></li>
+<li><code>TDE__state26__Delete__state1__state40</code></li>
+<li><code>TDE__state26__Delete__state1__state4</code></li>
+<li><code>TDE__state26__Delete__state1__state3</code></li>
+<li><code>TDE__state62__Save and Send__state1__state45</code></li>
+<li><code>TDE__state62__Save and Send__state1__state60</code></li>
+<li><code>TDE__state62__Save and Send__state1__state4</code></li>
+<li><code>TDE__state62__Save and Send__state1__state3</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state66</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state65</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state63</code></li>
+<li><code>TDE__state47__Bone Removal Auto__state45__state62</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state26</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state14</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state13</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state39</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state41</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state40</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state4</code></li>
+<li><code>TDE__state26__Add into 
+Demo List__state1__state3</code></li>
+<li><code>TDE__state45__Save and Send__state1__state60</code></li>
+<li><code>TDE__state45__Save and Send__state1__state4</code></li>
+<li><code>TDE__state45__Save and Send__state1__state3</code></li>
+<li><code>TDE__state57__include findings 
+in the report__state1__state4</code></li>
+<li><code>TDE__state57__include findings 
+in the report__state1__state3</code></li>
+<li><code>TDE__state63__Save and Send__state1__state45</code></li>
+<li><code>TDE__state63__Save and Send__state1__state60</code></li>
+<li><code>TDE__state63__Save and Send__state1__state4</code></li>
+<li><code>TDE__state63__Save and Send__state1__state3</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state66</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state65</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state63</code></li>
+<li><code>TDE__state47__Structure Isolation__state45__state62</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state65__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state47__Home Position__state45__state66</code></li>
+<li><code>TDE__state47__Home Position__state45__state65</code></li>
+<li><code>TDE__state47__Home Position__state45__state63</code></li>
+<li><code>TDE__state47__Home Position__state45__state62</code></li>
+<li><code>TDE__state68__Rename Layout__state1__state4</code></li>
+<li><code>TDE__state68__Rename Layout__state1__state3</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state26</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state14</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state13</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state39</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state41</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state40</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state4</code></li>
+<li><code>TDE__state26__Drag data
+into Patient
+tab__state1__state3</code></li>
+<li><code>TDE__state54__Save__state1__state4</code></li>
+<li><code>TDE__state54__Save__state1__state3</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state14</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state13</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state4</code></li>
+<li><code>TDE__state15__drag&amp;drop from
+More work 
+list menu__state1__state3</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state64</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state66__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state47__Save as Series__state45__state66</code></li>
+<li><code>TDE__state47__Save as Series__state45__state65</code></li>
+<li><code>TDE__state47__Save as Series__state45__state63</code></li>
+<li><code>TDE__state47__Save as Series__state45__state62</code></li>
+<li><code>TDE__state26__double-click
+to assign default 
+workflow__state41__state26</code></li>
+<li><code>TDE__state26__double-click
+to assign default 
+workflow__state41__state39</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state66</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state65</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state63</code></li>
+<li><code>TDE__state47__Shutters On&amp;Off__state45__state62</code></li>
+<li><code>TDE__state47__Punch__state45__state66</code></li>
+<li><code>TDE__state47__Punch__state45__state65</code></li>
+<li><code>TDE__state47__Punch__state45__state63</code></li>
+<li><code>TDE__state47__Punch__state45__state62</code></li>
+<li><code>TDE__state58__Correct__state1__state58</code></li>
+<li><code>TDE__state58__Correct__state1__state14</code></li>
+<li><code>TDE__state58__Correct__state1__state13</code></li>
+<li><code>TDE__state58__Correct__state1__state41</code></li>
+<li><code>TDE__state58__Correct__state1__state4</code></li>
+<li><code>TDE__state58__Correct__state1__state3</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Radial Sliced
+Ranges__state45__state62</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state45</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state66</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state65</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state63</code></li>
+<li><code>TDE__state47__Fit to Acquisition
+Size__state64__state62</code></li>
+<li><code>TDE__state24__Minimize__state1__state34</code></li>
+<li><code>TDE__state24__Minimize__state1__state32</code></li>
+<li><code>TDE__state24__Minimize__state1__state10</code></li>
+<li><code>TDE__state24__Minimize__state1__state31</code></li>
+<li><code>TDE__state24__Minimize__state1__state37</code></li>
+<li><code>TDE__state24__Minimize__state1__state35</code></li>
+<li><code>TDE__state24__Minimize__state1__state4</code></li>
+<li><code>TDE__state24__Minimize__state1__state3</code></li>
+<li><code>TDE__state47__Region Growing__state67__state45</code></li>
+<li><code>TDE__state47__Region Growing__state67__state66</code></li>
+<li><code>TDE__state47__Region Growing__state67__state65</code></li>
+<li><code>TDE__state47__Region Growing__state67__state64</code></li>
+<li><code>TDE__state47__Region Growing__state67__state63</code></li>
+<li><code>TDE__state47__Region Growing__state67__state62</code></li>
+<li><code>TDE__state39__Correct__state1__state58</code></li>
+<li><code>TDE__state39__Correct__state1__state14</code></li>
+<li><code>TDE__state39__Correct__state1__state13</code></li>
+<li><code>TDE__state39__Correct__state1__state39</code></li>
+<li><code>TDE__state39__Correct__state1__state41</code></li>
+<li><code>TDE__state39__Correct__state1__state4</code></li>
+<li><code>TDE__state39__Correct__state1__state3</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state66</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state65</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state63</code></li>
+<li><code>TDE__state47__Zoom&amp;Pan__state45__state62</code></li>
+<li><code>TDE__state39__double-click
+to assign default 
+workflow__state41__state58</code></li>
+<li><code>TDE__state39__double-click
+to assign default 
+workflow__state41__state39</code></li>
+<li><code>TDE__state10__Minimize__state1__state5</code></li>
+<li><code>TDE__state10__Minimize__state1__state7</code></li>
+<li><code>TDE__state10__Minimize__state1__state6</code></li>
+<li><code>TDE__state10__Minimize__state1__state9</code></li>
+<li><code>TDE__state10__Minimize__state1__state8</code></li>
+<li><code>TDE__state10__Minimize__state1__state4</code></li>
+<li><code>TDE__state10__Minimize__state1__state3</code></li>
+<li><code>TDE__state58__double-click
+to assign default 
+workflow__state41__state58</code></li>
+<li><code>TDE__state47__Edit Result__state45__state66</code></li>
+<li><code>TDE__state47__Edit Result__state45__state65</code></li>
+<li><code>TDE__state47__Edit Result__state45__state63</code></li>
+<li><code>TDE__state47__Edit Result__state45__state62</code></li>
+<li><code>TDE__state75__Replace__state1__state4</code></li>
+<li><code>TDE__state75__Replace__state1__state3</code></li>
+<li><code>TDE__state32__confirm info__state1__state4</code></li>
+<li><code>TDE__state32__confirm info__state1__state3</code></li>
+<li><code>TDE__state34__Change View__state1__state53</code></li>
+<li><code>TDE__state34__Change View__state1__state52</code></li>
+<li><code>TDE__state34__Change View__state1__state4</code></li>
+<li><code>TDE__state34__Change View__state1__state3</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state34</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state32</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state10</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state31</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state37</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state35</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state4</code></li>
+<li><code>TDE__state24__Configuration 
+Panel__state1__state3</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state45</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state66</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state65</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state63</code></li>
+<li><code>TDE__state47__Fit to Segment__state64__state62</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state66</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state65</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state63</code></li>
+<li><code>TDE__state47__Bone Opacity__state45__state62</code></li>
+<li><code>TDE__state26__Correct__state1__state26</code></li>
+<li><code>TDE__state26__Correct__state1__state14</code></li>
+<li><code>TDE__state26__Correct__state1__state13</code></li>
+<li><code>TDE__state26__Correct__state1__state39</code></li>
+<li><code>TDE__state26__Correct__state1__state41</code></li>
+<li><code>TDE__state26__Correct__state1__state40</code></li>
+<li><code>TDE__state26__Correct__state1__state4</code></li>
+<li><code>TDE__state26__Correct__state1__state3</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Curved 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state47__Table Removal__state67__state45</code></li>
+<li><code>TDE__state47__Table Removal__state67__state66</code></li>
+<li><code>TDE__state47__Table Removal__state67__state65</code></li>
+<li><code>TDE__state47__Table Removal__state67__state64</code></li>
+<li><code>TDE__state47__Table Removal__state67__state63</code></li>
+<li><code>TDE__state47__Table Removal__state67__state62</code></li>
+<li><code>TDE__state19__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state39__Print__state1__state58</code></li>
+<li><code>TDE__state39__Print__state1__state14</code></li>
+<li><code>TDE__state39__Print__state1__state13</code></li>
+<li><code>TDE__state39__Print__state1__state39</code></li>
+<li><code>TDE__state39__Print__state1__state41</code></li>
+<li><code>TDE__state39__Print__state1__state4</code></li>
+<li><code>TDE__state39__Print__state1__state3</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state14</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state13</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state4</code></li>
+<li><code>TDE__state5__drag&amp;drop to
+More work 
+list menu__state1__state3</code></li>
+<li><code>TDE__state75__Insert before__state1__state4</code></li>
+<li><code>TDE__state75__Insert before__state1__state3</code></li>
+<li><code>TDE__state26__Import__state1__state26</code></li>
+<li><code>TDE__state26__Import__state1__state14</code></li>
+<li><code>TDE__state26__Import__state1__state13</code></li>
+<li><code>TDE__state26__Import__state1__state39</code></li>
+<li><code>TDE__state26__Import__state1__state41</code></li>
+<li><code>TDE__state26__Import__state1__state40</code></li>
+<li><code>TDE__state26__Import__state1__state4</code></li>
+<li><code>TDE__state26__Import__state1__state3</code></li>
+<li><code>TDE__state17__Remove search 
+condition field__state19__state17</code></li>
+<li><code>TDE__state58__Print__state1__state58</code></li>
+<li><code>TDE__state58__Print__state1__state14</code></li>
+<li><code>TDE__state58__Print__state1__state13</code></li>
+<li><code>TDE__state58__Print__state1__state41</code></li>
+<li><code>TDE__state58__Print__state1__state4</code></li>
+<li><code>TDE__state58__Print__state1__state3</code></li>
+<li><code>TDE__state17__Add search 
+condition field__state18__state17</code></li>
+<li><code>TDE__state47__Scroll__state45__state66</code></li>
+<li><code>TDE__state47__Scroll__state45__state65</code></li>
+<li><code>TDE__state47__Scroll__state45__state63</code></li>
+<li><code>TDE__state47__Scroll__state45__state62</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Spine 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state38</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state4</code></li>
+<li><code>TDE__state25__Asterisk to add
+to favorite 
+workflows__state1__state3</code></li>
+<li><code>TDE__state16__Abort search__state1__state26</code></li>
+<li><code>TDE__state16__Abort search__state1__state4</code></li>
+<li><code>TDE__state16__Abort search__state1__state3</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state66</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state65</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state63</code></li>
+<li><code>TDE__state47__Vascular 
+Ranges__state45__state62</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state53</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state52</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state4</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Series Panel__state1__state3</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state5</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state7</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state6</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state9</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state8</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state4</code></li>
+<li><code>TDE__state10__Configuration 
+Panel__state1__state3</code></li>
+<li><code>TDE__state26__Print__state1__state26</code></li>
+<li><code>TDE__state26__Print__state1__state14</code></li>
+<li><code>TDE__state26__Print__state1__state13</code></li>
+<li><code>TDE__state26__Print__state1__state39</code></li>
+<li><code>TDE__state26__Print__state1__state41</code></li>
+<li><code>TDE__state26__Print__state1__state40</code></li>
+<li><code>TDE__state26__Print__state1__state4</code></li>
+<li><code>TDE__state26__Print__state1__state3</code></li>
+<li><code>TDE__state39__Import__state1__state58</code></li>
+<li><code>TDE__state39__Import__state1__state14</code></li>
+<li><code>TDE__state39__Import__state1__state13</code></li>
+<li><code>TDE__state39__Import__state1__state39</code></li>
+<li><code>TDE__state39__Import__state1__state41</code></li>
+<li><code>TDE__state39__Import__state1__state4</code></li>
+<li><code>TDE__state39__Import__state1__state3</code></li>
+<li><code>TDE__state47__Clip Box__state45__state66</code></li>
+<li><code>TDE__state47__Clip Box__state45__state65</code></li>
+<li><code>TDE__state47__Clip Box__state45__state63</code></li>
+<li><code>TDE__state47__Clip Box__state45__state62</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state66</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state65</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state63</code></li>
+<li><code>TDE__state47__Clip Plane__state45__state62</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state66</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state65</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state63</code></li>
+<li><code>TDE__state47__Visual Alignment__state45__state62</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state66</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state65</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state63</code></li>
+<li><code>TDE__state47__Correlated Cursors__state45__state62</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state34</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state32</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state10</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state31</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state37</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state35</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state4</code></li>
+<li><code>TDE__state24__Online 
+Help__state1__state3</code></li>
+<li><code>TDE__state24__Close__state1__state34</code></li>
+<li><code>TDE__state24__Close__state1__state32</code></li>
+<li><code>TDE__state24__Close__state1__state10</code></li>
+<li><code>TDE__state24__Close__state1__state31</code></li>
+<li><code>TDE__state24__Close__state1__state37</code></li>
+<li><code>TDE__state24__Close__state1__state35</code></li>
+<li><code>TDE__state24__Close__state1__state4</code></li>
+<li><code>TDE__state24__Close__state1__state3</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state66</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state65</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state63</code></li>
+<li><code>TDE__state47__Anatomy Visualizer__state45__state62</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state45</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state60</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state4</code></li>
+<li><code>TDE__state62__Save and Pause__state1__state3</code></li>
+<li><code>TDE__state47__Windowing__state45__state66</code></li>
+<li><code>TDE__state47__Windowing__state45__state65</code></li>
+<li><code>TDE__state47__Windowing__state45__state63</code></li>
+<li><code>TDE__state47__Windowing__state45__state62</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state53</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state52</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state4</code></li>
+<li><code>TDE__state34__Expand&amp;Collapse
+Hierarchy__state1__state3</code></li>
+<li><code>TDE__state39__Delete__state1__state58</code></li>
+<li><code>TDE__state39__Delete__state1__state14</code></li>
+<li><code>TDE__state39__Delete__state1__state13</code></li>
+<li><code>TDE__state39__Delete__state1__state39</code></li>
+<li><code>TDE__state39__Delete__state1__state41</code></li>
+<li><code>TDE__state39__Delete__state1__state4</code></li>
+<li><code>TDE__state39__Delete__state1__state3</code></li>
+<li><code>TDE__state43__confirm__state1__state4</code></li>
+<li><code>TDE__state43__confirm__state1__state3</code></li>
+<li><code>TDE__state58__Delete__state1__state58</code></li>
+<li><code>TDE__state58__Delete__state1__state14</code></li>
+<li><code>TDE__state58__Delete__state1__state13</code></li>
+<li><code>TDE__state58__Delete__state1__state41</code></li>
+<li><code>TDE__state58__Delete__state1__state4</code></li>
+<li><code>TDE__state58__Delete__state1__state3</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state5</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state7</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state6</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state9</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state8</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state4</code></li>
+<li><code>TDE__state10__Online 
+Help__state1__state3</code></li>
+<li><code>TDE__state26__Export__state1__state26</code></li>
+<li><code>TDE__state26__Export__state1__state14</code></li>
+<li><code>TDE__state26__Export__state1__state13</code></li>
+<li><code>TDE__state26__Export__state1__state39</code></li>
+<li><code>TDE__state26__Export__state1__state41</code></li>
+<li><code>TDE__state26__Export__state1__state40</code></li>
+<li><code>TDE__state26__Export__state1__state4</code></li>
+<li><code>TDE__state26__Export__state1__state3</code></li>
+<li><code>TDE__state58__Import__state1__state58</code></li>
+<li><code>TDE__state58__Import__state1__state14</code></li>
+<li><code>TDE__state58__Import__state1__state13</code></li>
+<li><code>TDE__state58__Import__state1__state41</code></li>
+<li><code>TDE__state58__Import__state1__state4</code></li>
+<li><code>TDE__state58__Import__state1__state3</code></li>
+<li><code>TDE__state47__Clip Plane Slab__state45__state66</code></li>
+<li><code>T

@@ -1,0 +1,17 @@
+RunID;SPL Name;Product Index;Coverage Type;Operator;Total Mutants;Equivalent Count;Killed Count;Survived Count;Mutation Score(%);Executed Transitions Total;Efficiency (killed/transition)
+1;Syngovia;213;state;TransitionMissing;282;0;100;182;35,46;184;0,54
+1;Syngovia;213;transition;TransitionMissing;282;0;282;0;100;1388;0,2
+1;Syngovia;213;pair;TransitionMissing;282;0;282;0;100;4479;0,06
+1;Syngovia;213;family-baseline;TransitionMissing;282;0;0;282;0;0;0
+1;Syngovia;213;state;ActionExchange;2036;0;896;1140;44,01;184;4,87
+1;Syngovia;213;transition;ActionExchange;2036;0;2036;0;100;1388;1,47
+1;Syngovia;213;pair;ActionExchange;2036;0;2036;0;100;4479;0,45
+1;Syngovia;213;family-baseline;ActionExchange;2036;0;0;2036;0;0;0
+1;Syngovia;213;state;StateMissing;73;0;73;0;100;184;0,4
+1;Syngovia;213;transition;StateMissing;73;0;73;0;100;1388;0,05
+1;Syngovia;213;pair;StateMissing;73;0;73;0;100;4479;0,02
+1;Syngovia;213;family-baseline;StateMissing;73;0;0;73;0;0;0
+1;Syngovia;213;state;TransitionDestinationExchange;1313;570;306;437;41,18;184;1,66
+1;Syngovia;213;transition;TransitionDestinationExchange;1313;570;691;52;93;1388;0,5
+1;Syngovia;213;pair;TransitionDestinationExchange;1313;570;743;0;100;4479;0,17
+1;Syngovia;213;family-baseline;TransitionDestinationExchange;1313;570;0;743;0;0;0

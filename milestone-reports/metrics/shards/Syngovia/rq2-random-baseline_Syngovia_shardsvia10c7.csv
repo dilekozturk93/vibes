@@ -1,0 +1,13 @@
+RunID;SPL Name;Product Index;Coverage Budget Source;Operator;Total Mutants;Equivalent Count;Action Budget;Max Steps Per Case;Seed Count;Aborted Walks Total;Killed Min;Killed P25;Killed Median;Killed P75;Killed Max;Mutation Score Min(%);Mutation Score P25(%);Mutation Score Median(%);Mutation Score P75(%);Mutation Score Max(%)
+1;Syngovia;220;state;TransitionMissing;265;0;180;532;100;0;49;57;61;64;73;18,49;21,51;23,02;24,15;27,55
+1;Syngovia;220;state;ActionExchange;1897;0;180;532;100;0;227;301;332;372;471;11,97;15,87;17,5;19,61;24,83
+1;Syngovia;220;state;StateMissing;69;0;180;532;100;0;22;29;32;34;43;31,88;42,03;46,38;49,28;62,32
+1;Syngovia;220;state;TransitionDestinationExchange;1204;500;180;532;100;0;129;173;186;201;244;18,32;24,57;26,42;28,55;34,66
+1;Syngovia;220;transition;TransitionMissing;265;0;1289;532;100;0;91;103;108;112;123;34,34;38,87;40,75;42,26;46,42
+1;Syngovia;220;transition;ActionExchange;1897;0;1289;532;100;0;543;616;655;689;794;28,62;32,47;34,53;36,32;41,86
+1;Syngovia;220;transition;StateMissing;69;0;1289;532;100;0;36;44;48;50;57;52,17;63,77;69,57;72,46;82,61
+1;Syngovia;220;transition;TransitionDestinationExchange;1204;500;1289;532;100;0;261;308;323;336;361;37,07;43,75;45,88;47,73;51,28
+1;Syngovia;220;pair;TransitionMissing;265;0;3570;532;100;0;113;129;132;134;141;42,64;48,68;49,81;50,57;53,21
+1;Syngovia;220;pair;ActionExchange;1897;0;3570;532;100;0;666;782;817;846;922;35,11;41,22;43,07;44,6;48,6
+1;Syngovia;220;pair;StateMissing;69;0;3570;532;100;0;47;53;55;57;60;68,12;76,81;79,71;82,61;86,96
+1;Syngovia;220;pair;TransitionDestinationExchange;1204;500;3570;532;100;0;333;371;379;388;416;47,3;52,7;53,84;55,11;59,09

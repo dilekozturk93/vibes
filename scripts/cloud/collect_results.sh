@@ -55,7 +55,10 @@ aggregate() {
     local out="$REPO_ROOT/milestone-reports/metrics/${task}.csv"
     local first=true
     local shard_files
-    mapfile -t shard_files < <(find "$SHARDS_LOCAL" -name "${task}_*.csv" | sort)
+    shard_files=()
+    while IFS= read -r line; do
+        shard_files+=("$line")
+    done < <(find "$SHARDS_LOCAL" -name "${task}_*.csv" | sort)
     if [ "${#shard_files[@]}" -eq 0 ]; then
         echo "  WARNING: no shards for $task"
         return

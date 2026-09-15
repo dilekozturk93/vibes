@@ -1,0 +1,3 @@
+RunID;SPL Name;FTS States;FTS Transitions;Family Test Cases;Family Total Actions;Generation Time(ms);Generation Peak Memory(MB);Wall Clock Time(ms);Termination Reason
+9;StudentAttendanceSystem;35;76;19;105;189,87;14,29;189,87;completed
+9;StudentAttendanceSystem;35;76;19;105;243,5;14,27;243,5;completed

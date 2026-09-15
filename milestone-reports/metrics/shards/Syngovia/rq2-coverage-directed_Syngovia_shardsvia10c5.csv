@@ -1,0 +1,17 @@
+RunID;SPL Name;Product Index;Coverage Type;Operator;Total Mutants;Equivalent Count;Killed Count;Survived Count;Mutation Score(%)
+1;Syngovia;218;state;TransitionMissing;272;0;100;172;36,76
+1;Syngovia;218;transition;TransitionMissing;272;0;272;0;100
+1;Syngovia;218;pair;TransitionMissing;272;0;272;0;100
+1;Syngovia;218;family-baseline;TransitionMissing;272;0;0;272;0
+1;Syngovia;218;state;ActionExchange;1976;0;882;1094;44,64
+1;Syngovia;218;transition;ActionExchange;1976;0;1976;0;100
+1;Syngovia;218;pair;ActionExchange;1976;0;1976;0;100
+1;Syngovia;218;family-baseline;ActionExchange;1976;0;0;1976;0
+1;Syngovia;218;state;StateMissing;73;0;73;0;100
+1;Syngovia;218;transition;StateMissing;73;0;73;0;100
+1;Syngovia;218;pair;StateMissing;73;0;73;0;100
+1;Syngovia;218;family-baseline;StateMissing;73;0;0;73;0
+1;Syngovia;218;state;TransitionDestinationExchange;1283;560;306;417;42,32
+1;Syngovia;218;transition;TransitionDestinationExchange;1283;560;670;53;92,67
+1;Syngovia;218;pair;TransitionDestinationExchange;1283;560;723;0;100
+1;Syngovia;218;family-baseline;TransitionDestinationExchange;1283;560;0;723;0

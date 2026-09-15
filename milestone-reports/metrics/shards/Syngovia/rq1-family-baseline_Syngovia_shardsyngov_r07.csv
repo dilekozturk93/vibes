@@ -1,0 +1,3 @@
+RunID;SPL Name;FTS States;FTS Transitions;Family Test Cases;Family Total Actions;Generation Time(ms);Generation Peak Memory(MB);Wall Clock Time(ms);Termination Reason
+7;Syngovia;78;307;0;0;0,04;10,04;0,04;skipped-samples-mode
+7;Syngovia;78;307;0;0;0,05;10,42;0,05;skipped-samples-mode
