@@ -1,0 +1,62 @@
+<?xml version="1.0"?><ts><start>state1</start><states><state id="state9"><transition target="state17" action="enter 
+receiver's 
+IBAN" fexpression="t"></transition></state><state id="state6"><transition target="state1" action="confirm 
+interest rate" fexpression="i"></transition><transition target="state13" action="enter days 
+left" fexpression="ie"></transition></state><state id="state5"><transition target="state1" action="confirm 
+credit 
+amount" fexpression="c"></transition></state><state id="state8"><transition target="state15" action="update contact 
+information" fexpression="up"></transition><transition target="state16" action="update 
+preferences" fexpression="up"></transition></state><state id="state7"><transition target="state14" action="select 
+currency" fexpression="b"></transition></state><state id="state2"><transition target="state10" action="select 
+deposit" fexpression="d"></transition><transition target="state11" action="select 
+withdraw" fexpression="w"></transition><transition target="state12" action="revoke" fexpression="cd"></transition></state><state id="state1"><transition target="state2" action="get 
+balance" fexpression="b"></transition><transition target="state3" action="enter 
+daily 
+withdraw 
+limit" fexpression="dl"></transition><transition target="state4" action="enter 
+overdraft 
+limit" fexpression="o"></transition><transition target="state5" action="enter 
+a credit 
+amount" fexpression="c"></transition><transition target="state6" action="request an 
+interest rate" fexpression="i"></transition><transition target="state7" action="open 
+account" fexpression="b"></transition><transition target="state8" action="update 
+profile" fexpression="up"></transition><transition target="state9" action="transfer 
+money" fexpression="t"></transition></state><state id="state4"><transition target="state1" action="confirm 
+overdraft 
+limit" fexpression="o"></transition></state><state id="state3"><transition target="state1" action="confirm 
+daily 
+withdraw 
+limit" fexpression="dl"></transition></state><state id="state19"><transition target="state1" action="take 
+money" fexpression="w"></transition><transition target="state24" action="confirm 
+daily limit 
+excess" fexpression="dl"></transition></state><state id="state18"><transition target="state1" action="put 
+money" fexpression="d"></transition></state><state id="state13"><transition target="state1" action="get estimated
+interest for 
+days left" fexpression="ie"></transition></state><state id="state12"><transition target="state10" action="select 
+deposit" fexpression="d"></transition></state><state id="state11"><transition target="state19" action="enter 
+withdraw 
+amount" fexpression="w"></transition><transition target="state1" action="cancel 
+withdraw" fexpression="cw"></transition></state><state id="state10"><transition target="state18" action="enter 
+deposit 
+amount" fexpression="d"></transition><transition target="state1" action="cancel 
+deposit" fexpression="cd"></transition></state><state id="state17"><transition target="state23" action="enter 
+amount" fexpression="t"></transition></state><state id="state16"><transition target="state1" action="save 
+preference
+changes" fexpression="up"></transition></state><state id="state15"><transition target="state1" action="save contact 
+information 
+changes" fexpression="up"></transition></state><state id="state14"><transition target="state20" action="TL" fexpression="tl"></transition><transition target="state21" action="EUR" fexpression="eu"></transition><transition target="state22" action="USD" fexpression="us"></transition></state><state id="state20"><transition target="state1" action="confirm 
+TL account 
+openning" fexpression="tl"></transition></state><state id="state24"><transition target="state11" action="confirm 
+overdraft limit 
+excess" fexpression="o"></transition><transition target="state1" action="cancel 
+withdraw" fexpression="cw"></transition></state><state id="state23"><transition target="state25" action="select 
+transfer 
+type" fexpression="t"></transition></state><state id="state22"><transition target="state1" action="confirm 
+USD account 
+openning" fexpression="us"></transition></state><state id="state21"><transition target="state1" action="confirm 
+EUR account 
+openning" fexpression="eu"></transition></state><state id="state26"><transition target="state1" action="confirm 
+transfer" fexpression="t"></transition><transition target="state1" action="cancel 
+transfer" fexpression="t"></transition></state><state id="state25"><transition target="state26" action="view 
+transfer 
+details" fexpression="t"></transition></state></states></ts>
